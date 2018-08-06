@@ -213,6 +213,10 @@ class ImportEosKey extends BaseComponent {
           },
           callback: (data) => {
               EasyShowLD.loadingClose();
+              if(data && data.code == 500 && data.msg){
+                EasyToast.show(data.msg);
+                return;
+              }
               if (data == undefined || data.code != '0') {
                 pthis.opendelay(active_publicKey, data);
                 return;
