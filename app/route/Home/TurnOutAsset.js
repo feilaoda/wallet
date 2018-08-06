@@ -268,9 +268,8 @@ class TurnOutAsset extends BaseComponent {
         const c = this.props.navigation.state.params.coins;
         return (
         <View style={styles.container}>
-                
-            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
-                <ScrollView  keyboardShouldPersistTaps="always">
+            <ScrollView  keyboardShouldPersistTaps="always">
+                <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
                     <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
                         <View style={styles.header}>
                             <Text style={styles.headertext}>{this.state.balance==""? "0.0000" :this.state.balance.replace(c.asset.name, "")} {c.asset.name}</Text>
@@ -308,26 +307,25 @@ class TurnOutAsset extends BaseComponent {
                                         onChangeText={(memo) => this.setState({ memo })}
                                         />
                                 </View>
-
-                        <View style={styles.warningout}>
-                            <Image source={UImage.warning} style={styles.imgBtn} />
-                            <Text style={styles.headtitle}>温馨提示：如果您是向交易所转账，请务必填写相应的备注（MEMO）信息，否则可能无法到账。</Text>
-                        </View>
-
-                                <View style={styles.separate}></View>
-                                <Button onPress={this._rightButtonClick.bind(this)} style={styles.btnnextstep}>
-                                    <View style={styles.nextstep}>
-                                        <Text style={styles.nextsteptext}>下一步</Text>
-                                    </View>
-                                </Button>
                             </View>
-                        </View>
+                            </View>
                     </TouchableOpacity>
-                </ScrollView>
-            </KeyboardAvoidingView>
-                <View style={styles.pupuo}>
-                    <Modal animationType={'slide'} transparent={true} visible={this.state.show} onShow={() => { }} onRequestClose={() => { }} >
-                        <TouchableOpacity style={styles.modalStyle} activeOpacity={1.0}>
+                </KeyboardAvoidingView>
+                <View style={styles.warningout}>
+                    <Image source={UImage.warning} style={styles.imgBtn} />
+                    <Text style={styles.headtitle}>温馨提示：如果您是向交易所转账，请务必填写相应的备注（MEMO）信息，否则可能无法到账。</Text>
+                </View>
+
+                <View style={styles.separate}></View>
+                <Button onPress={this._rightButtonClick.bind(this)} style={styles.btnnextstep}>
+                    <View style={styles.nextstep}>
+                        <Text style={styles.nextsteptext}>下一步</Text>
+                    </View>
+                </Button>
+            </ScrollView>
+            <View style={styles.pupuo}>
+                <Modal animationType={'slide'} transparent={true} visible={this.state.show} onShow={() => { }} onRequestClose={() => { }} >
+                    <TouchableOpacity style={styles.modalStyle} activeOpacity={1.0}>
                         <View style={{ width: maxWidth,  height: maxHeight*4/6,  backgroundColor: UColor.fontColor,paddingHorizontal: 10}}>
                                 <View style={styles.subView}>
                                     <Text style={styles.buttontext}/>
@@ -367,9 +365,9 @@ class TurnOutAsset extends BaseComponent {
                                     </Button>
                                 </View>
                         </View>
-                        </TouchableOpacity>
-                    </Modal>
-                </View>
+                    </TouchableOpacity>
+                </Modal>
+            </View>
         </View>
         )
     }
@@ -473,7 +471,7 @@ const styles = StyleSheet.create({
 
     // 按钮  
     btnoutsource: {
-        marginTop: 10,
+        marginTop: 20,
         marginHorizontal: 15,
         height: 45,
         borderRadius: 6,
@@ -552,7 +550,7 @@ const styles = StyleSheet.create({
     },
     btnnextstep: {
         height: 85,
-        marginTop: 40,
+        marginTop: 30,
     },
     nextstep: {
         height: 45,
@@ -570,7 +568,7 @@ const styles = StyleSheet.create({
 
     warningout: {
         width: maxWidth-40,
-        marginTop: 20,
+        marginHorizontal: 20,
         flexDirection: "row",
         alignItems: 'center', 
         paddingHorizontal: 10,
@@ -581,9 +579,9 @@ const styles = StyleSheet.create({
     },
 
     warningoutShow: {
-        marginHorizontal: 10,
+        marginHorizontal: 15,
         width: maxWidth-40,
-        marginTop: 10,
+        marginTop: 20,
         flexDirection: "row",
         alignItems: 'center', 
         paddingHorizontal: 10,
@@ -601,7 +599,7 @@ const styles = StyleSheet.create({
         flex: 1,
         color: UColor.showy,
         fontSize: 12,
-        // lineHeight: 25,
+        lineHeight: 20,
         paddingLeft: 10,
     },
 })
