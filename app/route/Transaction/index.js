@@ -515,7 +515,7 @@ class Transaction extends BaseComponent {
             if (plaintext_privateKey.indexOf('eostoken') != -1) {
                 plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
                 EasyShowLD.loadingShow();
-                Eos.sellram(plaintext_privateKey, this.props.defaultWallet.account, this.state.sellRamBytes * 1024, (r) => {
+                Eos.sellram(plaintext_privateKey, this.props.defaultWallet.account, (this.state.sellRamBytes * 1024).toFixed(0), (r) => {
                     EasyShowLD.loadingClose();
                     if(r.isSuccess){
                         this.getAccountInfo();
