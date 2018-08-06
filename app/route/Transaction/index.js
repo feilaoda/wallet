@@ -70,6 +70,7 @@ class Transaction extends BaseComponent {
       myRamAvailable: '0', // 我的可用字节
       dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }),
       logRefreshing: false,
+      newramTradeLog: []
    };
   }
 
@@ -143,7 +144,16 @@ class Transaction extends BaseComponent {
   }
 
   getRamTradeLog(){
-    this.props.dispatch({type: 'ram/getRamTradeLog',payload: {}, callback: () => {
+    this.props.dispatch({type: 'ram/getRamTradeLog',payload: {}, callback: (resp) => {
+        if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+            this.setState({
+              newramTradeLog: [],
+            })
+          }else{
+            this.setState({
+              newramTradeLog: resp.data,
+            })
+          }
     }}); 
   }
 
@@ -244,16 +254,36 @@ class Transaction extends BaseComponent {
             if(!onRefreshing){
                 this.setState({logRefreshing: true});
             }
-            this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: this.props.defaultWallet.account}, callback: () => {
-                this.setState({logRefreshing: false});
+            this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: this.props.defaultWallet.account}, callback: (resp) => {
+                if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+                    this.setState({
+                      newramTradeLog: [],
+                      logRefreshing: true
+                    })
+                  }else{
+                    this.setState({
+                      newramTradeLog: resp.data,
+                      logRefreshing: false
+                    })
+                  }
             }});
         }
     }else{
         if(!onRefreshing){
             this.setState({logRefreshing: true});
         }
-        this.props.dispatch({type: 'ram/getRamTradeLog',payload: {}, callback: () => {
-            this.setState({logRefreshing: false});
+        this.props.dispatch({type: 'ram/getRamTradeLog',payload: {}, callback: (resp) => {
+            if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+                this.setState({
+                  newramTradeLog: [],
+                  logRefreshing: true
+                })
+              }else{
+                this.setState({
+                  newramTradeLog: resp.data,
+                  logRefreshing: false
+                })
+              }
         }}); 
     }
   }
@@ -794,7 +824,7 @@ class Transaction extends BaseComponent {
                             <SegmentedControls tint= {UColor.mainColor} selectedTint= {UColor.fontColor} onSelection={this.selectedTransactionRecord.bind(this) }
                                 selectedOption={ this.state.selectedTransactionRecord } backTint= {UColor.secdColor} options={transactionOption} />
                         </View>
-                        {(this.props.ramTradeLog != null &&  this.props.ramTradeLog.length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
+                        {(this.props.ramTradeLog  != null &&  this.props.ramTradeLog .length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                         <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                                 renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
                                 <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: UColor.mainColor}}>账号</Text>
@@ -803,7 +833,7 @@ class Transaction extends BaseComponent {
                                 <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: UColor.mainColor}}>时间</Text>
                                 </View>
                             }
-                            dataSource={this.state.dataSource.cloneWithRows(this.props.ramTradeLog == null ? [] : this.props.ramTradeLog)} 
+                            dataSource={this.state.dataSource.cloneWithRows(this.state.newramTradeLog == null ? [] : this.state.newramTradeLog)} 
                             renderRow={(rowData, sectionID, rowID) => (                 
                             <Button onPress={this.openQuery.bind(this,rowData.payer)}>
                                 <View style={styles.businessout}>
