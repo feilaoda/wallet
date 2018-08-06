@@ -928,14 +928,14 @@ class Resources extends BaseComponent {
                             </View>}
                             {this.state.isMemory?
                             <View style={styles.basc}>
-                                <Text style={styles.basctext}>当前内存价格：{this.state.Currentprice}/KB</Text>
-                                <Text style={styles.basctext}>内存资源，可以使用EOS买入，也可以出售得EOS</Text>
+                                <Text style={styles.basctext}>· 当前内存价格：{this.state.Currentprice}/KB</Text>
+                                <Text style={styles.basctext}>· 内存资源，可以使用EOS买入，也可以出售得EOS</Text>
                             </View>
                             :
                             <View style={styles.basc}>
-                                <Text style={styles.basctext}>获取资源需要抵押EOS </Text>
-                                <Text style={styles.basctext}>抵押的EOS可撤销抵押，并于3天后退回</Text>
-                                <Text style={styles.basctext}>租赁抵押的EOS可自行赎回，过户抵押的EOS，自己无赎回权限。</Text>
+                                <Text style={styles.basctext}>· 获取资源需要抵押EOS。 </Text>
+                                <Text style={styles.basctext}>· 抵押的EOS可撤销抵押，并于3天后退回。</Text>
+                                <Text style={styles.basctext}>· 租赁抵押的EOS可自行赎回，过户抵押的EOS，将无法赎回。</Text>
                             </View>}
                         </View>}
                 </TouchableOpacity>
