@@ -64,9 +64,9 @@ class Resources extends BaseComponent {
         isTransfer: false,
         LeaseTransfer: 0,
         tetletext: '内存概况',
-        column_One: '0%',
-        column_Two: '0%',
-        column_Three: '0%',
+        column_One: '100%',
+        column_Two: '100%',
+        column_Three: '100%',
         ContrastOne: '0.00/0.00',
         ContrastTwo: '0.00/0.00',
         ContrastThree: '0.00/0.00',
@@ -225,9 +225,9 @@ class Resources extends BaseComponent {
             if (current == 'isMemory'){
                 this.setState({ 
                     tetletext: '内存概况',
-                    column_One: this.props.Resources.display_data.ram_usage_percent,
-                    column_Two: this.props.Resources.display_data.ram_left_percent,
-                    column_Three: this.props.globaldata.used_Percentage + '%',
+                    column_One: (100-this.props.Resources.display_data.ram_usage_percent.replace("%", "")) + '%',
+                    column_Two: (100-this.props.Resources.display_data.ram_left_percent.replace("%", "")) + '%',
+                    column_Three: (100-this.props.globaldata.used_Percentage) + '%',
                     ContrastOne: this.props.Resources.display_data.ram_usage + '/' + this.props.Resources.display_data.ram_bytes,
                     ContrastTwo: this.props.Resources.display_data.ram_left + '/' + this.props.Resources.display_data.ram_bytes,
                     ContrastThree: this.props.globaldata.used + 'GB/' + this.props.globaldata.total + 'GB',
@@ -238,9 +238,9 @@ class Resources extends BaseComponent {
             }else if (current == 'isCalculation'){
                 this.setState({ 
                     tetletext: '计算概况',
-                    column_One: this.props.Resources.display_data.cpu_limit_available_percent,
-                    column_Two: this.props.Resources.display_data.self_delegated_bandwidth_cpu_weight_percent,
-                    column_Three: (this.props.Resources.refund_request?this.falseAlarm(this.props.Resources.display_data.refund_request_cpu_left_second_percent):'0%'),
+                    column_One: (100-this.props.Resources.display_data.cpu_limit_available_percent.replace("%", "")) + '%',
+                    column_Two: (100-this.props.Resources.display_data.self_delegated_bandwidth_cpu_weight_percent.replace("%", "")) + '%',
+                    column_Three: ((this.props.Resources.refund_request&&this.props.Resources.refund_request.cpu_amount!="0.0000 EOS")?this.falseAlarm(this.props.Resources.display_data.refund_request_cpu_left_second_percent):'100%'),
                     ContrastOne: this.props.Resources.display_data.cpu_limit_available + '/' + this.props.Resources.display_data.cpu_limit_max,
                     ContrastTwo: (this.props.Resources.self_delegated_bandwidth?Math.floor(this.props.Resources.self_delegated_bandwidth.cpu_weight.replace("EOS", "")*100)/100:'0') + '/' + Math.floor(this.props.Resources.total_resources.cpu_weight.replace("EOS", "")*100)/100,
                     ContrastThree: ((this.props.Resources.refund_request&&this.props.Resources.refund_request.cpu_amount!="0.0000 EOS")?this.transferTimeZone(this.props.Resources.refund_request.request_time.replace("T", " ")):'00:00:00'),
@@ -251,9 +251,9 @@ class Resources extends BaseComponent {
             }else if (current == 'isNetwork'){
                 this.setState({ 
                     tetletext: '网络概况',
-                    column_One: this.props.Resources.display_data.net_limit_available_percent,
-                    column_Two: this.props.Resources.display_data.self_delegated_bandwidth_net_weight_percent,
-                    column_Three: (this.props.Resources.refund_request?this.falseAlarm(this.props.Resources.display_data.refund_request_net_left_second_percent):'0%'),
+                    column_One: (100-this.props.Resources.display_data.net_limit_available_percent.replace("%", "")) + '%',
+                    column_Two: (100-this.props.Resources.display_data.self_delegated_bandwidth_net_weight_percent.replace("%", "")) + '%',
+                    column_Three: ((this.props.Resources.refund_request&&this.props.Resources.refund_request.net_amount!="0.0000 EOS")?this.falseAlarm(this.props.Resources.display_data.refund_request_net_left_second_percent):'100%'),
                     ContrastOne: this.props.Resources.display_data.net_limit_available + '/' + this.props.Resources.display_data.net_limit_max,
                     ContrastTwo: (this.props.Resources.self_delegated_bandwidth?Math.floor(this.props.Resources.self_delegated_bandwidth.net_weight.replace("EOS", "")*100)/100:'0') + '/' + Math.floor(this.props.Resources.total_resources.net_weight.replace("EOS", "")*100)/100,
                     ContrastThree: ((this.props.Resources.refund_request&&this.props.Resources.refund_request.net_amount!="0.0000 EOS")?this.transferTimeZone(this.props.Resources.refund_request.request_time.replace("T", " ")):'00:00:00'),
@@ -427,7 +427,7 @@ class Resources extends BaseComponent {
         }else if(Percentage >= 100){
             newtimePercentage = '100%'
         }else{
-            newtimePercentage = (100 - Percentage) + '%';
+            newtimePercentage = timePercentage;
         }
         return newtimePercentage
     }
@@ -772,7 +772,7 @@ class Resources extends BaseComponent {
                         <View style={styles.tetleout}>
                             <Text style={styles.tetletext}>{this.state.tetletext}</Text>
                             <ImageBackground source={UImage.line_bg} resizeMode="cover" style={styles.linebgout}>
-                                {/* <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
+                                <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
                                     <View style={styles.stripbg} height={this.state.column_One}/>
                                 </ImageBackground>
                                 <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
@@ -780,8 +780,8 @@ class Resources extends BaseComponent {
                                 </ImageBackground>
                                 <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
                                     <View style={styles.stripbg} height={this.state.column_Three}/>
-                                </ImageBackground> */}
-                                <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5, backgroundColor: '#43536d',marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
+                                </ImageBackground>
+                                {/* <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5, backgroundColor: '#43536d',marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
                                     <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,}} height={this.state.column_One}/>
                                 </View>
                                 <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5,backgroundColor: '#43536d',marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
@@ -789,7 +789,7 @@ class Resources extends BaseComponent {
                                 </View>
                                 <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5,backgroundColor: '#43536d',marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
                                     <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236}} height={this.state.column_Three}/>
-                                </View>
+                                </View> */}
                             </ImageBackground>
                             <View style={styles.record}>
                                 <View style={styles.recordout}>
