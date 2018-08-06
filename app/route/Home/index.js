@@ -564,7 +564,7 @@ class Home extends React.Component {
                     {(this.props.defaultWallet != null && (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived'))) ? <View style={styles.notactivedout}><Text style={styles.notactived} onPress={this.WalletDetail.bind(this,this.props.defaultWallet)}>未激活</Text></View>:((this.props.defaultWallet == null || this.props.defaultWallet.name == null || (this.props.defaultWallet != null &&this.props.defaultWallet.isBackups)) ? null :  <View style={styles.stopoutBackupsout}><Text style={styles.stopoutBackups} onPress={this.WalletDetail.bind(this,this.props.defaultWallet)}>未备份</Text></View>) }   
                   </View>
                 <View style={styles.addtoout}>
-                  <Text style={styles.addtoouttext}>≈{this.state.isEye ? (this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance) : '****'}（￥）</Text>
+                  <Text style={styles.addtoouttext}>≈{this.state.isEye ? ((this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance)) : '****'}（￥）</Text>
                   <Text style={(this.state.increase>=0 || this.state.totalBalance == "0.00")?styles.incdo:styles.incup}>今日 {this.state.isEye ? this.getTodayIncrease() : '****'}</Text>
                 </View>
               </View>
@@ -646,7 +646,7 @@ class Home extends React.Component {
                           <Text style={styles.outname}>{rowData.name}</Text>
                           {(!rowData.isactived || !rowData.hasOwnProperty('isactived')) ? <View style={styles.notactivedout}><Text style={styles.notactived} onPress={this.WalletDetail.bind(this, rowData)}>未激活</Text></View>:(rowData.isBackups ? null :  <View style={styles.stopoutBackupsout}><Text style={styles.stopoutBackups} onPress={this.WalletDetail.bind(this, rowData)}>未备份</Text></View>)}  
                         </View>
-                        <Text style={styles.walletaccount} numberOfLines={1} ellipsizeMode='middle'>{rowData.isactived && rowData.balance != null && rowData.balance != ""? rowData.balance : '0.0000'} EOS</Text>
+                        <Text style={styles.walletaccount} numberOfLines={1} ellipsizeMode='middle'>{this.state.isEye ? (rowData.isactived && rowData.balance != null && rowData.balance != ""? rowData.balance : '0.0000') : '****'} EOS</Text>
                       </View>
                     </Button> 
                   )}
@@ -669,7 +669,6 @@ class Home extends React.Component {
             </TouchableOpacity>
           </TouchableOpacity>
         </Modal>
-
          <Modal style={styles.touchableouts} animationType={'slide'} transparent={true}  visible={this.props.Invalid} onRequestClose={()=>{}}>
             <TouchableOpacity style={styles.pupuo} activeOpacity={1.0}>
               <View style={styles.modalStyle}>
