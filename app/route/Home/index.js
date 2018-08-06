@@ -187,6 +187,7 @@ class Home extends React.Component {
   
   getDefaultWalletEosBalance(callback) { 
     if (this.props.defaultWallet == null || this.props.defaultWallet.name == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+      if(callback) callback();
       return;
     }
 
