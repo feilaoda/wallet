@@ -165,7 +165,7 @@ class BackupsPkey extends BaseComponent {
             <View style={styles.header}>
                 <View style={styles.inptoutbg}>
                     <View style={styles.headout}>
-                        <Text style={styles.inptitle}>立即备份你的私钥</Text>
+                        <Text style={styles.inptitle}>请立即备份您的私钥</Text>
                         <View style={styles.warningout}>
                             <Image source={UImage.warning} style={styles.imgBtn} />
                             <Text style={styles.headtitle}>安全警告：私钥相当于您的银行卡密码，请妥善保管！（切勿截图、存储到网络硬盘、微信等传输！）</Text>

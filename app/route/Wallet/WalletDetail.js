@@ -203,7 +203,7 @@ class WalletDetail extends BaseComponent {
             }else if(result.code == 521){
                 //msg:账号不存在,data:null,code:521
                 EasyShowLD.dialogShow("免责声明",  (<View>
-                <Text style={{color: UColor.arrow,fontSize: 14,}}>系统检测到该账号还没激活，如果你不打算激活此账号，建议删除。</Text>
+                <Text style={{color: UColor.arrow,fontSize: 14,}}>系统检测到该账号还没激活，如果您不打算激活此账号，建议删除。</Text>
               </View>),"删除","取消",  () => {
                   this.deletionDirect();
                   EasyShowLD.dialogClose()

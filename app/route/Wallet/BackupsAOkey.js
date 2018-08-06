@@ -261,8 +261,8 @@ class BackupsAOkey extends BaseComponent {
                 <View style={styles.header}>
                     <View style={styles.inptoutbg}>
                         <View style={styles.headout}>
-                            <Text style={styles.inptitle}>确认你的钱包私钥</Text>
-                            <Text style={styles.headtitle}>请填入你所抄写的私钥，确保你填入无误后，按下一步.</Text>
+                            <Text style={styles.inptitle}>确认您的钱包私钥</Text>
+                            <Text style={styles.headtitle}>请填入您所抄写的私钥，确保您填入无误后，按下一步.</Text>
                         </View>  
                         {this.state.txt_active != ''&& 
                         <View style={styles.inptoutgo} >

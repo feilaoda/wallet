@@ -1102,7 +1102,7 @@ class Route extends React.Component {
                             <Text style={{fontSize: 14, color: "#000000",}}>{this.state.turninamount}</Text>
                         </View>
                         <View style={{backgroundColor: '#445877', paddingHorizontal: 18, paddingVertical: 8,}}>
-                            <Text style={{color: '#FFFFFF', fontSize: 12, lineHeight: 25,}}>该好友正在使用EosToken钱包激活账号并向你发出代付求助，建议帮助他支付激活前先联系确认清楚！</Text>
+                            <Text style={{color: '#FFFFFF', fontSize: 12, lineHeight: 25,}}>该好友正在使用EosToken钱包激活账号并向您发出代付求助，建议帮助他支付激活前先联系确认清楚！</Text>
                         </View>
                       </View>
                     </View>

@@ -113,7 +113,7 @@ class APactivation extends BaseComponent {
                         <Text style={styles.Becarefultext}>{this.state.accountName}</Text>
                         <Text style={styles.inptpasstext}>该账号完成支付，请告知账号主人点击激活即可正常使用。</Text>
                         <View style={styles.linkout}>
-                            <Text style={styles.linktext} onPress={() => this.onShareFriend()}>分享给你的朋友</Text>
+                            <Text style={styles.linktext} onPress={() => this.onShareFriend()}>分享给您的朋友</Text>
                         </View>
                     </View>), "知道了", null,  () => { EasyShowLD.dialogClose();this.props.navigation.goBack(); });
                   }else{
