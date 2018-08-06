@@ -188,6 +188,7 @@ class BackupsAOkey extends BaseComponent {
         if(wallet.isactived){
             // 已经激活，这时钱包为已激活已备份状态，则跳回至钱包管理页面
             this.pop(3, true);
+            EasyToast.show('备份成功');
         }else{
             // 未激活，这时钱包为已备份未激活状态，则开始激活账号流程
             this.activeWalletOnServer();
