@@ -145,15 +145,19 @@ class Transaction extends BaseComponent {
 
   getRamTradeLog(){
     this.props.dispatch({type: 'ram/getRamTradeLog',payload: {}, callback: (resp) => {
-        if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
-            this.setState({
-              newramTradeLog: [],
-            })
-          }else{
-            this.setState({
-              newramTradeLog: resp.data,
-            })
-          }
+        try {
+            if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+                this.setState({
+                  newramTradeLog: [],
+                });
+              }else{
+                this.setState({
+                  newramTradeLog: resp.data,
+                });
+              }
+        } catch (error) {
+
+        }
     }}); 
   }
 
@@ -255,17 +259,24 @@ class Transaction extends BaseComponent {
                 this.setState({logRefreshing: true});
             }
             this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: this.props.defaultWallet.account}, callback: (resp) => {
-                if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+                try {
+                    if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+                        this.setState({
+                          newramTradeLog: [],
+                          logRefreshing: false,
+                        });
+                      }else{
+                        this.setState({
+                          newramTradeLog: resp.data,
+                          logRefreshing: false
+                        });
+                      }
+                } catch (error) {
                     this.setState({
-                      newramTradeLog: [],
-                      logRefreshing: true
-                    })
-                  }else{
-                    this.setState({
-                      newramTradeLog: resp.data,
-                      logRefreshing: false
-                    })
-                  }
+                        logRefreshing: false
+                    });
+                }
+
             }});
         }
     }else{
@@ -273,17 +284,23 @@ class Transaction extends BaseComponent {
             this.setState({logRefreshing: true});
         }
         this.props.dispatch({type: 'ram/getRamTradeLog',payload: {}, callback: (resp) => {
-            if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+            try {
+                if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+                    this.setState({
+                      newramTradeLog: [],
+                      logRefreshing: false,
+                    });
+                  }else{
+                    this.setState({
+                      newramTradeLog: resp.data,
+                      logRefreshing: false
+                    });
+                  }
+            } catch (error) {
                 this.setState({
-                  newramTradeLog: [],
-                  logRefreshing: true
-                })
-              }else{
-                this.setState({
-                  newramTradeLog: resp.data,
-                  logRefreshing: false
-                })
-              }
+                    logRefreshing: false
+                });
+            }
         }}); 
     }
   }
