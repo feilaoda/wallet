@@ -70,7 +70,8 @@ class Transaction extends BaseComponent {
       myRamAvailable: '0', // 我的可用字节
       dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }),
       logRefreshing: false,
-      newramTradeLog: []
+      newramTradeLog: [],
+      logId: "-1",
    };
   }
 
@@ -258,7 +259,7 @@ class Transaction extends BaseComponent {
             if(!onRefreshing){
                 this.setState({logRefreshing: true});
             }
-            this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: this.props.defaultWallet.account}, callback: (resp) => {
+            this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: this.props.defaultWallet.account, last_id: this.state.logId}, callback: (resp) => {
                 try {
                     if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
                         this.setState({
@@ -276,7 +277,6 @@ class Transaction extends BaseComponent {
                         logRefreshing: false
                     });
                 }
-
             }});
         }
     }else{

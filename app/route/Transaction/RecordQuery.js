@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, TextInput, KeyboardAvoidingView, ImageBackground, ScrollView } from 'react-native';
+import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, TextInput, KeyboardAvoidingView, ImageBackground, ScrollView, RefreshControl } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter' 
 import store from 'react-native-simple-store';
@@ -11,7 +11,6 @@ import UImage from '../../utils/Img'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import QRCode from 'react-native-qrcode-svg';
 import { EasyToast } from "../../components/Toast"
-import { EasyShowLD } from '../../components/EasyShow'
 import moment from 'moment';
 var dismissKeyboard = require('dismissKeyboard');
 var Dimensions = require('Dimensions')
@@ -35,49 +34,74 @@ class RecordQuery extends React.Component {
       newramTradeLog: [],
       show: false,
       labelname: '',
+      logId: "-1",
+      logRefreshing: false,
     }
   }
 
   //加载地址数据
   componentDidMount() {
-    EasyShowLD.loadingShow();
-    this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: this.props.navigation.state.params.record}, callback: (resp) => {
-      EasyShowLD.loadingClose();
-      if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
-        this.setState({
-          newramTradeLog: [],
-          show: true
-        })
-      }else{
-        this.setState({
-          newramTradeLog: resp.data,
-          show: false,
-        })
+    this.setState({logRefreshing: true});
+    this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: this.props.navigation.state.params.record, last_id: this.state.logId}, callback: (resp) => {
+      try {
+        if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+          this.setState({
+            newramTradeLog: [],
+            show: true
+          })
+        }else{
+          this.setState({
+            newramTradeLog: resp.data,
+            show: false,
+          })
+        }
+      } catch (error) {
+        
       }
+      this.processLogId();
+      this.setState({logRefreshing: false});
+
     }});    
   }
 
+  processLogId(){
+    if(this.state.newramTradeLog && (this.state.newramTradeLog.length > 0)){
+        this.setState({logId: this.state.newramTradeLog[this.state.newramTradeLog.length - 1]._id});
+    }else{
+        this.setState({logId: "-1"});
+    }
+  }
+
   // 根据账号查找交易记录
-  _query = (labelname) =>{
+  query = (labelname) =>{
    
     if (labelname == ""||labelname == undefined||labelname==null) {
       EasyToast.show('请输入Eos账号');
       return;
     }else{
-      EasyShowLD.loadingShow();
-      this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: labelname.toLowerCase()}, callback: (resp) => {
-          if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
-            this.setState({
-              newramTradeLog: [],
-              show: true
-            })
-          }else{
-            this.setState({
-                newramTradeLog: resp.data,
-                show: false,
-            })
+      if(this.state.logRefreshing){
+        return;
+      }
+      this.setState({logRefreshing: true});
+      this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: labelname.toLowerCase(), last_id: this.state.logId}, callback: (resp) => {
+        try {
+            if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+              this.setState({
+                newramTradeLog: [],
+                show: true
+              })
+            }else{
+              this.setState({
+                  newramTradeLog: resp.data,
+                  show: false,
+              })
+            }
+          } catch (error) {
+
           }
-          EasyShowLD.loadingClose();
+          this.processLogId();
+          this.setState({logRefreshing: false});
+
       }});  
     }  
   }
@@ -94,6 +118,69 @@ class RecordQuery extends React.Component {
     dismissKeyboard();
   }
 
+  onRefresh(){
+    if(this.state.logRefreshing){
+      return;
+    }
+    this.setState({logRefreshing: true});
+    var accountName = this.state.labelname;
+    if (this.state.labelname == ""||this.state.labelname == undefined||this.state.labelname==null) {
+      accountName = this.props.navigation.state.params.record;
+    }
+    this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: accountName.toLowerCase(), last_id: "-1"}, callback: (resp) => {
+      try {
+          if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+            this.setState({
+              newramTradeLog: [],
+              show: true
+            })
+          }else{
+            this.setState({
+                newramTradeLog: resp.data,
+                show: false,
+            })
+          }
+        } catch (error) {
+
+        }
+        this.processLogId();
+        this.setState({logRefreshing: false});
+
+    }}); 
+  }
+
+  onEndReached(){
+    if(this.state.logRefreshing || this.state.logId == "-1"){
+      return;
+    }
+    this.setState({logRefreshing: true});
+    var accountName = this.state.labelname;
+    if (this.state.labelname == ""||this.state.labelname == undefined||this.state.labelname==null) {
+      accountName = this.props.navigation.state.params.record;
+    }
+
+    this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: accountName.toLowerCase(), last_id: this.state.logId}, callback: (resp) => {
+      try {
+          if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+            this.setState({
+              newramTradeLog: [],
+              show: true
+            })
+          }else{
+            this.setState({
+                newramTradeLog: resp.data,
+                show: false,
+            })
+          }
+        } catch (error) {
+
+        }
+        this.processLogId();
+        this.setState({logRefreshing: false});
+
+    }}); 
+  }
+
   render() {
     return (<View style={styles.container}>
       <View style={styles.header}>  
@@ -105,7 +192,7 @@ class RecordQuery extends React.Component {
                   onChangeText={(labelname) => this.setState({ labelname })}   
                   />      
           </View>    
-          <TouchableOpacity onPress={this._query.bind(this,this.state.labelname)}>  
+          <TouchableOpacity onPress={this.query.bind(this,this.state.labelname)}>  
               <Text style={styles.canceltext}>查询</Text>
           </TouchableOpacity>   
           <TouchableOpacity   onPress={this._empty.bind(this)}>  
@@ -114,6 +201,16 @@ class RecordQuery extends React.Component {
       </View>   
       {this.state.show && <View style={styles.nothave}><Text style={styles.copytext}>还没有交易记录哟~</Text></View>}       
       <ListView style={styles.btn} renderRow={this.renderRow} enableEmptySections={true} 
+        // onEndReached={() => this.onEndReached()}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.logRefreshing}
+            onRefresh={() => this.onRefresh()}
+            tintColor="#fff"
+            colors={['#ddd', UColor.tintColor]}
+            progressBackgroundColor="#ffffff"
+          />
+        }
         dataSource={this.state.dataSource.cloneWithRows(this.state.newramTradeLog == null ? [] : this.state.newramTradeLog)} 
         renderRow={(rowData, sectionID, rowID) => (   
           <View style={styles.package}>
