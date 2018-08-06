@@ -138,12 +138,14 @@ class WalletDetail extends BaseComponent {
   }
  
   eospark() {
+    this._setModalVisible();
     EasyShowLD.dialogClose()
     const { navigate } = this.props.navigation;
     navigate('Web', { title: "区块浏览器", url: "https://eospark.com/MainNet/account/" + this.props.navigation.state.params.data.name});
   }
 
   eoseco() {
+    this._setModalVisible();
     EasyShowLD.dialogClose()
     const { navigate } = this.props.navigation;
     navigate('Web', { title: "区块浏览器", url: "https://eoseco.com/accounts/" + this.props.navigation.state.params.data.name});
@@ -526,7 +528,7 @@ class WalletDetail extends BaseComponent {
                     <Ionicons style={{ color: '#CBCBCB'}} name="ios-close-outline" size={28} />
                 </View>
               </Button>
-              <View style={{paddingHorizontal: 11, paddingVertical: 15,  marginBottom: 18, marginHorizontal: 40, flexDirection: "row",borderColor: UColor.tintColor, borderWidth: 1,borderRadius: 5,}}>
+              <View style={{paddingHorizontal: 11, paddingVertical: 15,  marginBottom: 18, marginHorizontal: 20, flexDirection: "row",borderColor: UColor.tintColor, borderWidth: 1,borderRadius: 5,}}>
                 <Text style={{flex: 1, fontSize: 20, color: UColor.mainColor}}>eospark.com</Text>
                 <Button onPress={() => { this.eospark() }}>
                   <View style={{ width: 64, height: 30, borderRadius: 5, backgroundColor:  UColor.tintColor, justifyContent: 'center', alignItems: 'center'}}>
@@ -534,7 +536,7 @@ class WalletDetail extends BaseComponent {
                   </View>
                 </Button>
               </View>
-              <View style={{paddingHorizontal: 11, paddingVertical: 15, marginBottom: 34, marginHorizontal: 40, flexDirection: "row",borderColor: UColor.tintColor, borderWidth: 1,borderRadius: 5, }}>
+              <View style={{paddingHorizontal: 11, paddingVertical: 15, marginBottom: 34, marginHorizontal: 20, flexDirection: "row",borderColor: UColor.tintColor, borderWidth: 1,borderRadius: 5, }}>
                 <Text style={{flex: 1, fontSize: 20, color: UColor.mainColor}}>eoseco.com</Text>
                 <Button onPress={() => { this.eoseco() }}>
                   <View style={{ width: 64, height: 30, borderRadius: 5, backgroundColor:  UColor.tintColor, justifyContent: 'center', alignItems: 'center'}}>
@@ -709,7 +711,7 @@ const styles = StyleSheet.create({
   },
   // modal上子View的样式  
   subView: {
-    marginHorizontal: 30,
+    marginHorizontal: 15,
     backgroundColor:  UColor.fontColor,
     alignSelf: 'stretch',
     justifyContent: 'center',
