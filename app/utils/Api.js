@@ -64,5 +64,8 @@ export const getRamTradeLogByAccount = rootaddr + '/ramprice/getNewTradeOrdersBy
 
 export const getBigRamRank = rootaddr + '/ramprice/getLargeRamRank';
 
+export const getRamKLines = rootaddr + '/ramprice/getRamKLines';
+
+
 
 

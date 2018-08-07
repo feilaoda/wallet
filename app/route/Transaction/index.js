@@ -49,297 +49,199 @@ function splitData(rawData) {
     };
 }
 
-// // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
-var data = splitData([
-    ['2013/1/24', 2320.26,2320.26,2287.3,2362.94,117990000],
-    ['2013/1/25', 2300,2291.3,2288.26,2308.38,117990000],
-    ['2013/1/28', 2295.35,2346.5,2295.35,2346.92,117990000],
-    ['2013/1/29', 2347.22,2358.98,2337.35,2363.8,117990000],
-    ['2013/1/30', 2360.75,2382.48,2347.89,2383.76,117990000],
-    ['2013/1/31', 2383.43,2385.42,2371.23,2391.82,117990000],
-    ['2013/2/1', 2377.41,2419.02,2369.57,2421.15,117990000],
-    ['2013/2/4', 2425.92,2428.15,2417.58,2440.38,117990000],
-    ['2013/2/5', 2411,2433.13,2403.3,2437.42,117990000],
-    ['2013/2/6', 2432.68,2434.48,2427.7,2441.73,117990000],
-    ['2013/2/7', 2430.69,2418.53,2394.22,2433.89,117990000],
-    ['2013/2/8', 2416.62,2432.4,2414.4,2443.03,117990000],
-    ['2013/2/18', 2441.91,2421.56,2415.43,2444.8,321230016],
-    ['2013/2/19', 2420.26,2382.91,2373.53,2427.07,321230016],
-    ['2013/2/20', 2383.49,2397.18,2370.61,2397.94,321230016],
-    ['2013/2/21', 2378.82,2325.95,2309.17,2378.82,321230016],
-    ['2013/2/22', 2322.94,2314.16,2308.76,2330.88,321230016],
-    ['2013/2/25', 2320.62,2325.82,2315.01,2338.78,321230016],
-    ['2013/2/26', 2313.74,2293.34,2289.89,2340.71,321230016],
-    ['2013/2/27', 2297.77,2313.22,2292.03,2324.63,321230016],
-    ['2013/2/28', 2322.32,2365.59,2308.92,2366.16,321230016],
-    ['2013/3/1', 2364.54,2359.51,2330.86,2369.65,84410000],
-    ['2013/3/4', 2332.08,2273.4,2259.25,2333.54,84410000],
-    ['2013/3/5', 2274.81,2326.31,2270.1,2328.14,84410000],
-    ['2013/3/6', 2333.61,2347.18,2321.6,2351.44,84410000],
-    ['2013/3/7', 2340.44,2324.29,2304.27,2352.02,84410000],
-    ['2013/3/8', 2326.42,2318.61,2314.59,2333.67,84410000],
-    ['2013/3/11', 2314.68,2310.59,2296.58,2320.96,84410000],
-    ['2013/3/12', 2309.16,2286.6,2264.83,2333.29,84410000],
-    ['2013/3/13', 2282.17,2263.97,2253.25,2286.33,84410000],
-    ['2013/3/14', 2255.77,2270.28,2253.31,2276.22,84410000],
-    ['2013/3/15', 2269.31,2278.4,2250,2312.08,84410000],
-    ['2013/3/18', 2267.29,2240.02,2239.21,2276.05,84410000],
-    ['2013/3/19', 2244.26,2257.43,2232.02,2261.31,84410000],
-    ['2013/3/20', 2257.74,2317.37,2257.42,2317.86,84410000],
-    ['2013/3/21', 2318.21,2324.24,2311.6,2330.81,248860000],
-    ['2013/3/22', 2321.4,2328.28,2314.97,2332,248860000],
-    ['2013/3/25', 2334.74,2326.72,2319.91,2344.89,248860000],
-    ['2013/3/26', 2318.58,2297.67,2281.12,2319.99,248860000],
-    ['2013/3/27', 2299.38,2301.26,2289,2323.48,248860000],
-    ['2013/3/28', 2273.55,2236.3,2232.91,2273.55,248860000],
-    ['2013/3/29', 2238.49,2236.62,2228.81,2246.87,248860000],
-    ['2013/4/1', 2229.46,2234.4,2227.31,2243.95,248860000],
-    ['2013/4/2', 2234.9,2227.74,2220.44,2253.42,248860000],
-    ['2013/4/3', 2232.69,2225.29,2217.25,2241.34,248860000],
-    ['2013/4/8', 2196.24,2211.59,2180.67,2212.59,248860000],
-    ['2013/4/9', 2215.47,2225.77,2215.47,2234.73,248860000],
-    ['2013/4/10', 2224.93,2226.13,2212.56,2233.04,248860000],
-    ['2013/4/11', 2236.98,2219.55,2217.26,2242.48,248860000],
-    ['2013/4/12', 2218.09,2206.78,2204.44,2226.26,248860000],
-    ['2013/4/15', 2199.91,2181.94,2177.39,2204.99,94130000],
-    ['2013/4/16', 2169.63,2194.85,2165.78,2196.43,94130000],
-    ['2013/4/17', 2195.03,2193.8,2178.47,2197.51,94130000],
-    ['2013/4/18', 2181.82,2197.6,2175.44,2206.03,94130000],
-    ['2013/4/19', 2201.12,2244.64,2200.58,2250.11,94130000],
-    ['2013/4/22', 2236.4,2242.17,2232.26,2245.12,94130000],
-    ['2013/4/23', 2242.62,2184.54,2182.81,2242.62,94130000],
-    ['2013/4/24', 2187.35,2218.32,2184.11,2226.12,94130000],
-    ['2013/4/25', 2213.19,2199.31,2191.85,2224.63,94130000],
-    ['2013/4/26', 2203.89,2177.91,2173.86,2210.58,94130000],
-    ['2013/5/2', 2170.78,2174.12,2161.14,2179.65,94130000],
-    ['2013/5/3', 2179.05,2205.5,2179.05,2222.81,94130000],
-    ['2013/5/6', 2212.5,2231.17,2212.5,2236.07,94130000],
-    ['2013/5/7', 2227.86,2235.57,2219.44,2240.26,94130000],
-    ['2013/5/8', 2242.39,2246.3,2235.42,2255.21,94130000],
-    ['2013/5/9', 2246.96,2232.97,2221.38,2247.86,75560000],
-    ['2013/5/10', 2228.82,2246.83,2225.81,2247.67,75560000],
-    ['2013/5/13', 2247.68,2241.92,2231.36,2250.85,75560000],
-    ['2013/5/14', 2238.9,2217.01,2205.87,2239.93,75560000],
-    ['2013/5/15', 2217.09,2224.8,2213.58,2225.19,75560000],
-    ['2013/5/16', 2221.34,2251.81,2210.77,2252.87,75560000],
-    ['2013/5/17', 2249.81,2282.87,2248.41,2288.09,75560000],
-    ['2013/5/20', 2286.33,2299.99,2281.9,2309.39,75560000],
-    ['2013/5/21', 2297.11,2305.11,2290.12,2305.3,75560000],
-    ['2013/5/22', 2303.75,2302.4,2292.43,2314.18,75560000],
-    ['2013/5/23', 2293.81,2275.67,2274.1,2304.95,75560000],
-    ['2013/5/24', 2281.45,2288.53,2270.25,2292.59,75560000],
-    ['2013/5/27', 2286.66,2293.08,2283.94,2301.7,75560000],
-    ['2013/5/28', 2293.4,2321.32,2281.47,2322.1,75560000],
-    ['2013/5/29', 2323.54,2324.02,2321.17,2334.33,75560000],
-    ['2013/5/30', 2316.25,2317.75,2310.49,2325.72,75560000],
-    ['2013/5/31', 2320.74,2300.59,2299.37,2325.53,75560000],
-    ['2013/6/3', 2300.21,2299.25,2294.11,2313.43,75560000],
-    ['2013/6/4', 2297.1,2272.42,2264.76,2297.1,75560000],
-    ['2013/6/5', 2270.71,2270.93,2260.87,2276.86,75560000],
-    ['2013/6/6', 2264.43,2242.11,2240.07,2266.69,75560000],
-    ['2013/6/7', 2242.26,2210.9,2205.07,2250.63,75560000],
-    ['2013/6/13', 2190.1,2148.35,2126.22,2190.1,75560000]
-]);
-
-const  echartoption = {
-    // backgroundColor: '#fff',
-    animation: false,
-    // legend: {
-    //     bottom: 10,
-    //     left: 'center',
-    //     data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
-    // },
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'cross'
-        },
-        backgroundColor: 'rgba(245, 245, 245, 0.8)',
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        textStyle: {
-            color: '#000'
-        },
-        position: function (pos, params, el, elRect, size) {
-            var obj = {top: 10};
-            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
-            return obj;
-        }
-        // extraCssText: 'width: 170px'
-    },
-    axisPointer: {
-        link: {xAxisIndex: 'all'},
-        label: {
-            backgroundColor: '#777'
-        }
-    },
-    toolbox: {
-        feature: {
-            dataZoom: {
-                yAxisIndex: false
-            },
-            brush: {
-                type: ['lineX', 'clear']
-            }
-        }
-    },
-    brush: {
-        xAxisIndex: 'all',
-        brushLink: 'all',
-        outOfBrush: {
-            colorAlpha: 0.1
-        }
-    },
-    visualMap: {
-        show: false,
-        // seriesIndex: 5,
-        seriesIndex: 1,
-        dimension: 2,
-        pieces: [{
-            value: 1,
-            color: downColor
-        }, {
-            value: -1,
-            color: upColor
-        }]
-    },
-    grid: [
-        {
-            top: '2%',
-            left: '10%',
-            right: '4%',
-            height: '50%'
-        },
-        {
-            left: '10%',
-            right: '4%',
-            top: '60%',
-            height: '16%',
-            bottom: '0',
-        }
-    ],
-    xAxis: [
-        {
-            type: 'category',
-            data: data.categoryData,
-            scale: true,
-            boundaryGap : false,
-            axisLine: {onZero: false},
-            splitLine: {show: false},
-            splitNumber: 20,
-            min: 'dataMin',
-            max: 'dataMax',
+function combineKLine(data) {
+    return {
+        // backgroundColor: '#fff',
+        animation: false,
+        // legend: {
+        //     bottom: 10,
+        //     left: 'center',
+        //     data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
+        // },
+        tooltip: {
+            trigger: 'axis',
             axisPointer: {
-                z: 100
+                type: 'cross'
+            },
+            backgroundColor: 'rgba(245, 245, 245, 0.8)',
+            borderWidth: 1,
+            borderColor: '#ccc',
+            padding: 10,
+            textStyle: {
+                color: '#000'
+            },
+            position: function (pos, params, el, elRect, size) {
+                var obj = {top: 10};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                return obj;
+            }
+            // extraCssText: 'width: 170px'
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
             }
         },
-        {
-            type: 'category',
-            gridIndex: 1,
-            data: data.categoryData,
-            scale: true,
-            boundaryGap : false,
-            axisLine: {onZero: false},
-            axisTick: {show: false},
-            splitLine: {show: false},
-            axisLabel: {show: false},
-            splitNumber: 20,
-            min: 'dataMin',
-            max: 'dataMax'
-            // axisPointer: {
-            //     label: {
-            //         formatter: function (params) {
-            //             var seriesValue = (params.seriesData[0] || {}).value;
-            //             return params.value
-            //             + (seriesValue != null
-            //                 ? '\n' + echarts.format.addCommas(seriesValue)
-            //                 : ''
-            //             );
-            //         }
-            //     }
-            // }
-        }
-    ],
-    yAxis: [
-        {
-            scale: true,
-            splitArea: {
-                show: true
+        toolbox: {
+            feature: {
+                dataZoom: {
+                    yAxisIndex: false
+                },
+                brush: {
+                    type: ['lineX', 'clear']
+                }
             }
         },
-        {
-            scale: true,
-            gridIndex: 1,
-            splitNumber: 2,
-            axisLabel: {show: false},
-            axisLine: {show: false},
-            axisTick: {show: false},
-            splitLine: {show: false}
-        }
-    ],
-    // dataZoom: [
-    //     {
-    //         type: 'inside',
-    //         xAxisIndex: [0, 1],
-    //         start: 98,
-    //         end: 100
-    //     },
-    //     {
-    //         show: true,
-    //         xAxisIndex: [0, 1],
-    //         type: 'slider',
-    //         top: '85%',
-    //         start: 98,
-    //         end: 100
-    //     }
-    // ],
-    series: [
-        {
-            name: 'Dow-Jones index',
-            type: 'candlestick',
-            data: data.values,
-            itemStyle: {
-                normal: {
-                    color: upColor,
-                    color0: downColor,
-                    borderColor: null,
-                    borderColor0: null
+        brush: {
+            xAxisIndex: 'all',
+            brushLink: 'all',
+            outOfBrush: {
+                colorAlpha: 0.1
+            }
+        },
+        visualMap: {
+            show: false,
+            seriesIndex: 1,
+            dimension: 2,
+            pieces: [{
+                value: 1,
+                color: downColor
+            }, {
+                value: -1,
+                color: upColor
+            }]
+        },
+        grid: [
+            {
+                top: '8%',
+                left: '10%',
+                right: '4%',
+                height: '50%'
+            },
+            {
+                left: '10%',
+                right: '4%',
+                top: '65%',
+                height: '16%',
+                bottom: '0',
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data:  data.categoryData,
+                scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},
+                splitLine: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
+                axisPointer: {
+                    z: 100
                 }
             },
-            tooltip: {
-                formatter: function (param) {
-                    param = param[0];
-                        return [
-                        'Date: ' + '2013-02-19' + '<hr size=1 style="margin: 3px 0">',
-                        'Open: ' + '17627.28' + '<br/>',
-                        'Close: ' + '17627.28' + '<br/>',
-                        'Lowest: ' + '17627.28' + '<br/>',
-                        'Highest: ' + '17627.28' + '<br/>'
-                    ].join('');
-                    // return [
-                    //     'Date: ' + param.name + '<hr size=1 style="margin: 3px 0">',
-                    //     'Open: ' + param.data[0] + '<br/>',
-                    //     'Close: ' + param.data[1] + '<br/>',
-                    //     'Lowest: ' + param.data[2] + '<br/>',
-                    //     'Highest: ' + param.data[3] + '<br/>'
-                    // ].join('');
-
-                }
+            {
+                type: 'category',
+                gridIndex: 1,
+                data:  data.categoryData,
+                scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},
+                axisTick: {show: false},
+                splitLine: {show: false},
+                axisLabel: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax'
+                // axisPointer: {
+                //     label: {
+                //         formatter: function (params) {
+                //             var seriesValue = (params.seriesData[0] || {}).value;
+                //             return params.value
+                //             + (seriesValue != null
+                //                 ? '\n' + echarts.format.addCommas(seriesValue)
+                //                 : ''
+                //             );
+                //         }
+                //     }
+                // }
             }
-        },
-        {
-            name: 'Volume',
-            type: 'bar',
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            data: data.volumes
-        }
-    ]
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: true
+                }
+            },
+            {
+                scale: true,
+                gridIndex: 1,
+                splitNumber: 2,
+                axisLabel: {show: false},
+                axisLine: {show: false},
+                axisTick: {show: false},
+                splitLine: {show: false}
+            }
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                xAxisIndex: [0, 1],
+                start: 85,
+                end: 100
+            },
+            {
+                show: true,
+                xAxisIndex: [0, 1],
+                type: 'slider',
+                top: '85%',
+                start: 85,
+                end: 100
+            }
+        ],
+        series: [
+            {
+                name: 'Dow-Jones index',
+                type: 'candlestick',
+                data: data.values ,
+                itemStyle: {
+                    normal: {
+                        color: upColor,
+                        color0: downColor,
+                        borderColor: null,
+                        borderColor0: null
+                    }
+                },
+                tooltip: {
+                    formatter: function (param) {
+                        return [
+                            '日期:' + param.name + '<hr size=1 style="margin: 3px 0">',
+                            '开盘:' + param.data[0] + '<br/>',
+                            '收盘:' + param.data[1] + '<br/>',
+                            '最低:' + param.data[2] + '<br/>',
+                            '最高:' + param.data[3] + '<br/>'
+                        ].join('');
     
-};
+                    }
+                }
+            },
+            {
+                name: 'Volume',
+                type: 'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                data: data.volumes,
+            }
+        ]
+        
+    };
+}
 
-@connect(({ram,sticker,wallet, assets}) => ({...ram, ...sticker, ...wallet, ...assets}))
+
+@connect(({ram,sticker,wallet}) => ({...ram, ...sticker, ...wallet}))
 class Transaction extends BaseComponent {
 
     static navigationOptions = ({ navigation }) => {
@@ -385,6 +287,7 @@ class Transaction extends BaseComponent {
       showMore:false,  
       showMoreTitle:"更多",
       isKLine:false,  //是否K线
+      dataKLine: null,
    };
   }
 
@@ -403,8 +306,8 @@ class Transaction extends BaseComponent {
             this.setState({logRefreshing: false});
         }});
     
-        // 默认获取2小时K线图
-        this.fetchLine(2,'2小时');
+        // 默认获取RAM的时分图
+        this.fetchLine(24,'24小时');
        
         // 获取钱包信息和余额
         this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }, callback: () => {
@@ -442,11 +345,8 @@ class Transaction extends BaseComponent {
     _leftTopClick = () => {
         this.setState({ modal: !this.state.modal });
         this.props.dispatch({type:'sticker/list',payload:{type:1}});
-        // this.props.dispatch({ type: 'assets/myAssetInfo', payload: { page: 1, isInit: true}, callback: (myAssets) => {}});
     }
-//   _rightTopClick = () => {
  
-//   };
     changeToRamTx(){
         this.setState({
             modal: false,
@@ -511,43 +411,103 @@ class Transaction extends BaseComponent {
   } 
 
   fetchLine(type,opt){
-    // this.setState({selectedSegment:opt});
     InteractionManager.runAfterInteractions(() => {
         this.props.dispatch({type:'ram/getRamPriceLine',payload:{type}});
     });
   }
-  
-  fetchKLine(type,opt){
+  fetchRAMKLine(type,opt){
+    InteractionManager.runAfterInteractions(() => {
+        this.props.dispatch({type: 'ram/getRamKLines',payload: {pageSize: 180, dateType: type}, callback: (resp) => {
+            try {
+                if(resp.code == '0'){
+                  if(resp.data && resp.data.length > 0){
+                    // // 数据意义：日期(record_date),开盘(open)，收盘(close)，最低(min)，最高(max),交易量(volum)
+                    // var data = splitData([
+                    //     ['2013/1/24', 2320.26,2320.26,2287.3,2362.94,117990000],
+                    var  arrayObj = new Array();
+                    for(var i = 0;i < resp.data.length;i++){
+                        var elementArray = new Array("",0,0,0,0,0);
+                        var element = resp.data[i];
+                        if(element.record_date){
+                            var timezone;
+                            try {
+                                timezone = moment(element.record_date).format('MM-DD HH:mm');
+                            } catch (error) {
+                                timezone = "";
+                            }
+                            elementArray[0] = timezone;
+                        }   
+                        if(element.open) {
+                            elementArray[1] = element.open;
+                        }
+                        if(element.close){
+                            elementArray[2] = element.close;
+                        }
+                        if(element.min){
+                            elementArray[3] = element.min;
+                        }
+                        if(element.max){
+                            elementArray[4] = element.max;
+                        }
+                        if(element.volum){
+                            elementArray[5] = element.volum;
+                        }
+                        arrayObj[i] = elementArray;
+                    }
+                    var constructdata = splitData(arrayObj);
+                    var echartsoption = combineKLine(constructdata);
+                    this.setState({ dataKLine : echartsoption});
+                  }else{
+                    this.setState({ dataKLine : {}});
+                  }
+                }
+            } catch (error) {
+                this.setState({ dataKLine : {}});
+            }
+        }});
+    
+    });
+    
+  }
+  fetchCoinKLine(type,opt){
     EasyToast.show("暂未实现K线");
+ }
+  fetchKLine(type,opt){
+    if(this.state.tradename == "RAM")
+    {
+        this.fetchRAMKLine(type,opt);
+    }else{
+        this.fetchCoinKLine(type,opt);
+    }
   }
 
   onClickTimer(opt){
 
     if(opt == "时分"){
         this.setState({isKLine:false, showMore: false,selectedSegment:opt});
-        this.fetchLine(2,opt);
+        this.fetchLine(24,'24小时');
         return ;
     }
     
     this.setState({isKLine:true, showMore: false,selectedSegment:opt});
     if(opt == "5分"){
-        this.fetchKLine(6,opt);
+        this.fetchKLine("5m",opt);
     }else if(opt == "15分"){
-        this.fetchKLine(24,opt);
+        this.fetchKLine("15m",opt);
     }else if(opt == "30分"){
-        this.fetchKLine(48,opt);
+        this.fetchKLine("30m",opt);
     }else if(opt == "1小时"){
         this.setState({showMoreTitle:opt});
-        this.fetchKLine(48,opt);
+        this.fetchKLine("1h",opt);
     }else if(opt == "1天"){
         this.setState({showMoreTitle:opt});
-        this.fetchKLine(48,opt);
+        this.fetchKLine("1d",opt);
     }else if(opt == "1周"){
         this.setState({showMoreTitle:opt});
-        this.fetchKLine(48,opt);
+        this.fetchKLine("1w",opt);
     }else if(opt == "1月"){
         this.setState({showMoreTitle:opt});
-        this.fetchKLine(48,opt);
+        this.fetchKLine("1M",opt);
     }
   }
   
@@ -1193,7 +1153,7 @@ class Transaction extends BaseComponent {
             this.state.isKLine ? 
             <View style={styles.echartsout}>
             {
-                <Echarts option={echartoption} width={ScreenWidth} height={300} />
+                <Echarts option={this.state.dataKLine?this.state.dataKLine:{}} width={ScreenWidth} height={300} />
             }
             </View>
             : <View style={styles.echartsout}>
@@ -1704,7 +1664,7 @@ const styles = StyleSheet.create({
     },
     echartsout: {
         flex: 1,
-        paddingTop: 5
+        // paddingTop: 0
     },
     tablayout: {   
         flex: 1,

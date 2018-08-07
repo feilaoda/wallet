@@ -1,5 +1,6 @@
 import Request from '../utils/RequestUtil';
-import {getRamInfo, getRamPriceLine, getRamTradeLog, getRamBigTradeLog, getRamTradeLogByAccount, getBigRamRank} from '../utils/Api';
+import {getRamInfo, getRamPriceLine, getRamTradeLog, getRamBigTradeLog, getRamTradeLogByAccount, getBigRamRank,
+    getRamKLines} from '../utils/Api';
 import store from 'react-native-simple-store';
 import { EasyToast } from '../components/Toast';
 let newarr = new Array();
@@ -98,6 +99,22 @@ export default {
                 // alert('getBigRamRank: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateBigRamRank', payload: { bigRamRank:resp.data } });
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);                
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
+            }
+        },
+        //ramK线图
+        *getRamKLines({ payload, callback }, { call, put }) {
+            try{
+                const resp = yield call(Request.request, getRamKLines, 'post', payload);
+                //  alert('getRamKLines: '+JSON.stringify(resp));
+                if(resp.code=='0'){               
+                    // yield put({ type: 'updateRamPriceLine', payload: { data: resp.data, ...payload } });
                 }else{
                     EasyToast.show(resp.msg);
                 }
