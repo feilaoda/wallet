@@ -1972,7 +1972,6 @@ const styles = StyleSheet.create({
         flex:1,
         // backgroundColor:UColor.mainColor,
         flexDirection:"row",
-        padding: 10,
         // borderBottomColor: UColor.secdColor,
         borderBottomColor: '#4D607E',
         borderBottomWidth: 0.6,
