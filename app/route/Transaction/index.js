@@ -941,6 +941,160 @@ class Transaction extends BaseComponent {
     }, () => { EasyShowLD.dialogClose() });
   };
 
+// 购买
+buy = (rowData) => { 
+    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+        EasyToast.show('请先创建并激活钱包');
+        return;
+    }
+
+    if(this.state.buyRamAmount == ""){
+        EasyToast.show('请输入购买金额');
+        return;
+    }
+    if(this.chkAmountIsZero(this.state.buyRamAmount,'请输入购买金额')){
+        this.setState({ buyRamAmount: "" })
+        return ;
+    }
+    this. dismissKeyboardClick();
+        const view =
+        <View style={styles.passoutsource}>
+            <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
+                selectionColor={UColor.tintColor} secureTextEntry={true} keyboardType="ascii-capable" style={styles.inptpass} maxLength={Constants.PWD_MAX_LENGTH}
+                placeholderTextColor={UColor.arrow} placeholder="请输入密码" underlineColorAndroid="transparent" />
+            <Text style={styles.inptpasstext}></Text>  
+        </View>
+        EasyShowLD.dialogShow("请输入密码", view, "确认", "取消", () => {
+        if (this.state.password == "" || this.state.password.length < Constants.PWD_MIN_LENGTH) {
+            EasyToast.show('密码长度至少4位,请重输');
+            return;
+        }
+        var privateKey = this.props.defaultWallet.activePrivate;
+        try {
+            var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.defaultWallet.salt);
+            var plaintext_privateKey = bytes_privateKey.toString(CryptoJS.enc.Utf8);
+            if (plaintext_privateKey.indexOf('eostoken') != -1) {
+                plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
+                EasyShowLD.loadingShow();
+                Eos.transaction({
+                    actions: [{
+                        account: "etbexchanger",
+                        name: "buytoken", 
+                        authorization: [{
+                        actor: 'eostokenapp1',
+                        permission: 'active'
+                        }], 
+                        data: {
+                            payer: "eostokenapp1",
+                            eos_quant: formatEosQua(this.state.buyRamAmount + " EOS"),
+                            token_contract: "issuemytoken",
+                            token_symbol: "4,TEST",
+                            fee_account: "eostokenapp1",
+                            fee_rate: "1", 
+                        }
+                    }]
+                }, plaintext_privateKey, (r) => {
+                    EasyShowLD.loadingClose();
+                    if(r.isSuccess){
+                        this.getAccountInfo();
+                        EasyToast.show("购买成功");
+                    }else{
+                        if(r.data){
+                            if(r.data.msg){
+                                EasyToast.show(r.data.msg);
+                            }else{
+                                EasyToast.show("出售失败");
+                            }
+                        }else{
+                            EasyToast.show("出售失败");
+                        }
+                    }
+                });
+            } else {
+                EasyShowLD.loadingClose();
+                EasyToast.show('密码错误');
+            }
+        } catch (e) {
+            EasyShowLD.loadingClose();
+            EasyToast.show('未知异常');
+        }
+        // EasyShowLD.dialogClose();
+    }, () => { EasyShowLD.dialogClose() });
+};
+// 出售
+sell = (rowData) => {
+    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+        EasyToast.show('请先创建并激活钱包');
+        return;
+    }
+
+    this. dismissKeyboardClick();
+    const view =
+    <View style={styles.passoutsource}>
+        <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
+            selectionColor={UColor.tintColor} secureTextEntry={true}  keyboardType="ascii-capable" style={styles.inptpass} maxLength={Constants.PWD_MAX_LENGTH}
+            placeholderTextColor={UColor.arrow} placeholder="请输入密码" underlineColorAndroid="transparent" />
+        <Text style={styles.inptpasstext}></Text>  
+    </View>
+    EasyShowLD.dialogShow("请输入密码", view, "确认", "取消", () => {
+    if (this.state.password == "" || this.state.password.length < Constants.PWD_MIN_LENGTH) {
+        EasyToast.show('密码长度至少4位,请重输');
+        return;
+    }
+    var privateKey = this.props.defaultWallet.activePrivate;
+    try {
+        var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.defaultWallet.salt);
+        var plaintext_privateKey = bytes_privateKey.toString(CryptoJS.enc.Utf8);
+        if (plaintext_privateKey.indexOf('eostoken') != -1) {
+            plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
+            EasyShowLD.loadingShow();
+
+            Eos.transaction({
+                actions: [{
+                    account: "etbexchanger",
+                    name: "selltoken", 
+                    authorization: [{
+                    actor: 'eostokenapp1',
+                    permission: 'active'
+                    }], 
+                    data: {
+                        receiver: "eostokenapp1",
+                        token_contract: "issuemytoken",
+                        quant: formatEosQua("100.0000 TEST"),
+                        fee_account: "eostokenapp1",
+                        fee_rate: "1", 
+                    }
+                }]
+            }, plaintext_privateKey, (r) => {
+                EasyShowLD.loadingClose();
+                if(r.isSuccess){
+                    this.getAccountInfo();
+                    EasyToast.show("出售成功");
+                }else{
+                    if(r.data){
+                        if(r.data.msg){
+                            EasyToast.show(r.data.msg);
+                        }else{
+                            EasyToast.show("出售失败");
+                        }
+                    }else{
+                        EasyToast.show("出售失败");
+                    }
+                }
+            });
+
+        } else {
+            EasyShowLD.loadingClose();
+            EasyToast.show('密码错误');
+        }
+    } catch (e) {
+        EasyShowLD.loadingClose();
+        EasyToast.show('未知异常');
+    }
+    // EasyShowLD.dialogClose();
+    }, () => { EasyShowLD.dialogClose() });
+};
+
     dismissKeyboardClick() {
       dismissKeyboard();
   }
