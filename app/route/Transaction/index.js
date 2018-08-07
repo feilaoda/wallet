@@ -1298,10 +1298,10 @@ class Transaction extends BaseComponent {
                         {(this.props.ramTradeLog  != null &&  this.props.ramTradeLog .length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                         <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                                 renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
-                                <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: UColor.mainColor}}>账号</Text>
-                                <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: UColor.mainColor}}>数量(EOS)</Text>
-                                <Text style={{ flex: 3,paddingLeft: 8,textAlign: 'left',color: UColor.mainColor}}>价格(KB)</Text>
-                                <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: UColor.mainColor}}>时间</Text>
+                                <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
+                                <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
+                                <Text style={{ flex: 3,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
+                                <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>时间</Text>
                                 </View>
                             }
                             dataSource={this.state.dataSource.cloneWithRows(this.state.newramTradeLog == null ? [] : this.state.newramTradeLog)} 
@@ -1339,10 +1339,10 @@ class Transaction extends BaseComponent {
                     {(this.props.ramBigTradeLog != null &&  this.props.ramBigTradeLog.length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                     <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                     renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
-                        <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: UColor.mainColor}}>账号</Text>
-                        <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: UColor.mainColor}}>数量(EOS)</Text>
-                        <Text style={{ flex: 3,paddingLeft: 8,textAlign: 'left',color: UColor.mainColor}}>价格(KB)</Text>
-                        <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: UColor.mainColor}}>时间</Text>
+                        <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
+                        <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
+                        <Text style={{ flex: 3,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
+                        <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>时间</Text>
                         </View>
                     }
                       dataSource={this.state.dataSource.cloneWithRows(this.props.ramBigTradeLog == null ? [] : this.props.ramBigTradeLog)} 

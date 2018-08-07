@@ -155,7 +155,7 @@ export default {
                 },
                 axisLine: {
                     lineStyle: {
-                        color: "#586D8F"
+                        color: "#7382a1"
                     }
                 },
                 axisLabel: {
@@ -178,7 +178,7 @@ export default {
                 },
                 axisLine: {
                     lineStyle: {
-                        color: "#586D8F"
+                        color: "#7382a1"
                     }
                 },
                 axisTick: {
