@@ -963,10 +963,10 @@ buy = (rowData) => {
                             if(r.data.msg){
                                 EasyToast.show(r.data.msg);
                             }else{
-                                EasyToast.show("出售失败");
+                                EasyToast.show("购买失败");
                             }
                         }else{
-                            EasyToast.show("出售失败");
+                            EasyToast.show("购买失败");
                         }
                     }
                 });
