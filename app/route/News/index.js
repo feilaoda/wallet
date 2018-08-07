@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { BackHandler, NavigationActions, Dimensions, Image, ScrollView, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, WebView, FlatList, Platform, Clipboard } from 'react-native';
+import { BackHandler, NavigationActions, Dimensions, Image, ScrollView, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, WebView, FlatList, Platform, Clipboard, TouchableHighlight } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import Swiper from 'react-native-swiper';
 import store from 'react-native-simple-store';
@@ -246,11 +246,11 @@ class News extends React.Component {
         }
         dataSource={this.state.dataSource.cloneWithRows(this.props.newsData[route.key] == null ? [] : this.props.newsData[route.key])}
         renderRow={(rowData) => (
-          <Button onPress={() => { this.onPress(rowData) }} >
+          <TouchableHighlight onPress={() => { this.onPress(rowData) }} onLongPress={this.onShare.bind(this, rowData)} activeOpacity={0.8} underlayColor={UColor.secdColor}>
             <View style={styles.row}>
               <Text style={{ fontSize: 16, color: UColor.fontColor, marginTop: 5, }}>{rowData.title}</Text>
               {
-                route.type == 2 && <Text numberOfLines={rowData.row} style={{ fontSize: 15, color: '#8696B0', marginTop: 10, lineHeight: 25 }} onLongPress={this.onShare.bind(this, rowData)}>{rowData.content}</Text>
+                route.type == 2 && <Text numberOfLines={rowData.row} style={{ fontSize: 15, color: '#8696B0', marginTop: 10, lineHeight: 25 }} >{rowData.content}</Text>
               }
               {route.type == 2 && rowData.row == 3 && <Text style={{ fontSize: 13, color: '#65caff', lineHeight: 20, textAlign: "right", }}>展开更多</Text>}
               {
@@ -272,7 +272,7 @@ class News extends React.Component {
                 </View>
               </View>
             </View>
-          </Button>
+          </TouchableHighlight>
         )}
       />
     );
