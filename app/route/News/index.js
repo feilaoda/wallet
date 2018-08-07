@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { BackHandler, NavigationActions, Dimensions, Image, ScrollView, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, WebView, FlatList, Platform, Clipboard } from 'react-native';
+import { BackHandler, NavigationActions, Dimensions, Image, ScrollView, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, WebView, FlatList, Platform, Clipboard, TouchableHighlight } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import Swiper from 'react-native-swiper';
 import store from 'react-native-simple-store';
@@ -246,25 +246,25 @@ class News extends React.Component {
         }
         dataSource={this.state.dataSource.cloneWithRows(this.props.newsData[route.key] == null ? [] : this.props.newsData[route.key])}
         renderRow={(rowData) => (
-          <Button onPress={() => { this.onPress(rowData) }} >
+          <TouchableHighlight onPress={() => { this.onPress(rowData) }} onLongPress={this.onShare.bind(this, rowData)} activeOpacity={0.8} underlayColor={UColor.secdColor}>
             <View style={styles.row}>
               <Text style={{ fontSize: 16, color: UColor.fontColor, marginTop: 5, }}>{rowData.title}</Text>
               {
-                route.type == 2 && <Text numberOfLines={rowData.row} style={{ fontSize: 15, color: '#8696B0', marginTop: 10, lineHeight: 25 }} onLongPress={this.onShare.bind(this, rowData)}>{rowData.content}</Text>
+                route.type == 2 && <Text numberOfLines={rowData.row} style={{ fontSize: 15, color: '#abb9d7', marginTop: 10, lineHeight: 25 }} >{rowData.content}</Text>
               }
               {route.type == 2 && rowData.row == 3 && <Text style={{ fontSize: 13, color: '#65caff', lineHeight: 20, textAlign: "right", }}>展开更多</Text>}
               {
-                route.type != 2 && <Text style={{ fontSize: 15, color: '#8696B0', marginTop: 10, lineHeight: 25 }} >{rowData.content}</Text>
+                route.type != 2 && <Text style={{ fontSize: 15, color: '#abb9d7', marginTop: 10, lineHeight: 25 }} >{rowData.content}</Text>
               }
               <View style={styles.rowFooter}>
-                <Text style={{ fontSize: 13, color: '#8696B0', paddingBottom: 10, marginTop: 10 }}>{moment(rowData.createdate).fromNow()}</Text>
+                <Text style={{ fontSize: 13, color: '#abb9d7', paddingBottom: 10, marginTop: 10 }}>{moment(rowData.createdate).fromNow()}</Text>
 
                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
                   <Button onPress={this.onUp.bind(this, rowData)}>
-                    <View style={{ flex: 1, flexDirection: "row", padding: 10 }}><Image style={{ width: 18, height: 18 }} source={rowData.isUp ? UImage.up_h : UImage.up} /><Text style={{ marginLeft: 5, fontSize: 13, color: '#8696B0' }}>{rowData.up}</Text></View>
+                    <View style={{ flex: 1, flexDirection: "row", padding: 10 }}><Image style={{ width: 18, height: 18 }} source={rowData.isUp ? UImage.up_h : UImage.up} /><Text style={{ marginLeft: 5, fontSize: 13, color: '#abb9d7' }}>{rowData.up}</Text></View>
                   </Button>
                   <Button onPress={this.onDown.bind(this, rowData)}>
-                    <View style={{ flex: 1, flexDirection: "row", padding: 10 }}><Image style={{ width: 18, height: 18 }} source={rowData.isDown ? UImage.down_h : UImage.down} /><Text style={{ marginLeft: 5, fontSize: 13, color: '#8696B0' }}>{rowData.down}</Text></View>
+                    <View style={{ flex: 1, flexDirection: "row", padding: 10 }}><Image style={{ width: 18, height: 18 }} source={rowData.isDown ? UImage.down_h : UImage.down} /><Text style={{ marginLeft: 5, fontSize: 13, color: '#abb9d7' }}>{rowData.down}</Text></View>
                   </Button>
                   <Button onPress={this.onShare.bind(this, rowData)}>
                     <View style={{ flex: 1, flexDirection: "row", padding: 10 }}><Image style={{ width: 18, height: 18 }} source={UImage.share} /></View>
@@ -272,7 +272,7 @@ class News extends React.Component {
                 </View>
               </View>
             </View>
-          </Button>
+          </TouchableHighlight>
         )}
       />
     );

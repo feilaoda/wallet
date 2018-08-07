@@ -122,7 +122,7 @@ const TabContainer = TabNavigator(
     animationEnabled: false,
     tabBarOptions: {
       activeTintColor: UColor.tintColor,
-      inactiveTintColor: "#6579a0",
+      inactiveTintColor: "#abb9d7",
       showIcon: true,
       showLabel: true,
       style: {
