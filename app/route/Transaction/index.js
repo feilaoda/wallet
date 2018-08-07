@@ -174,23 +174,23 @@ const  echartoption = {
             backgroundColor: '#777'
         }
     },
-    // toolbox: {
-    //     feature: {
-    //         dataZoom: {
-    //             yAxisIndex: false
-    //         },
-    //         brush: {
-    //             type: ['lineX', 'clear']
-    //         }
-    //     }
-    // },
-    // brush: {
-    //     xAxisIndex: 'all',
-    //     brushLink: 'all',
-    //     outOfBrush: {
-    //         colorAlpha: 0.1
-    //     }
-    // },
+    toolbox: {
+        feature: {
+            dataZoom: {
+                yAxisIndex: false
+            },
+            brush: {
+                type: ['lineX', 'clear']
+            }
+        }
+    },
+    brush: {
+        xAxisIndex: 'all',
+        brushLink: 'all',
+        outOfBrush: {
+            colorAlpha: 0.1
+        }
+    },
     visualMap: {
         show: false,
         // seriesIndex: 5,
@@ -208,15 +208,15 @@ const  echartoption = {
         {
             top: '2%',
             left: '10%',
-            right: '8%',
+            right: '4%',
             height: '50%'
         },
         {
             left: '10%',
-            right: '8%',
-            top: '58%',
+            right: '4%',
+            top: '60%',
             height: '16%',
-            bottom: '3%',
+            bottom: '0',
         }
     ],
     xAxis: [
