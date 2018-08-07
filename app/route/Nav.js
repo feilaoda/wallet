@@ -731,8 +731,10 @@ class Route extends React.Component {
 
   startTimer(){
     this.timer = setInterval( ()  =>{
-      this.getBalance();
-      this.getIncrease();
+      // this.getBalance();
+      // this.getIncrease();
+      DeviceEventEmitter.emit('refreshWalletInfo', '');
+
     },30000);
   }
 

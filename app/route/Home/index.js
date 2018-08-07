@@ -127,6 +127,15 @@ class Home extends React.Component {
     DeviceEventEmitter.addListener('updateMyAssetsPrice', (data) => {
       this.calTotalBalance();
     });
+
+    DeviceEventEmitter.addListener('refreshWalletInfo', (data) => {
+      this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }, callback: () => {
+        this.getDefaultWalletEosBalance(); // 默认钱包余额
+        this.getAllWalletEosBalance();
+        this.getAssetBalance();  
+        this.getIncrease();
+      } });
+    });
   }
 
   componentWillUnmount(){
