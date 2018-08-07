@@ -1147,22 +1147,15 @@ headtitle: {
 },
 
 
-    // modal上子View的样式  
-subView: {
-      flexDirection: "row", 
-      height: 50, 
-      alignItems: 'center'
-  },
+  // modal上子View的样式  
   subViewBackup: {
     alignItems: 'flex-end',
     justifyContent: 'center',
     width: maxWidth-20,
-    height: 20,
-    paddingHorizontal: 5,
+    height: 30,
   },
   buttonView2: {
-    width: 30,
-    height: 20,
+    width: 40,
     alignItems: 'center',
     justifyContent: 'center',
 },
