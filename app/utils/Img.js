@@ -48,7 +48,6 @@ export default {
   my_share:require('../img/my_share.png'),
   my_system:require('../img/my_system.png'),
   my_wallet:require('../img/my_wallet.png'),
-  nash:require('../img/nash.png'),
   network:require('../img/network.png'),
   phone:require('../img/phone.png'),
   point_empty:require('../img/point_empty.png'),
@@ -124,4 +123,7 @@ export default {
   warning_h:require('../img/warning_h.png'),
   xin0:require('../img/xin0.png'),
   xin1:require('../img/xin1.png'),
+  tx_slide0:require('../img/tx_slide0.png'),
+  tx_slide1:require('../img/tx_slide1.png'),
+  txbtn_more:require('../img/txbtn_more.png'),
 }
