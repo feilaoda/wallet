@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {ProgressBarAndroid,Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,TouchableOpacity,Image,Platform,TextInput,Slider,KeyboardAvoidingView} from 'react-native';
+import {Modal,Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,TouchableOpacity,Image,Platform,TextInput,Slider,KeyboardAvoidingView} from 'react-native';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
@@ -10,6 +10,7 @@ import UImage from '../../utils/Img'
 import { SegmentedControls } from 'react-native-radio-buttons'
 import Echarts from 'native-echarts'
 var ScreenWidth = Dimensions.get('window').width;
+var ScreenHeight = Dimensions.get('window').height;
 import {formatterNumber,formatterUnit} from '../../utils/FormatUtil'
 import { EasyToast } from '../../components/Toast';
 
@@ -27,19 +28,325 @@ var dismissKeyboard = require('dismissKeyboard');
 
 const trackOption = ['最近交易','持仓大户'];
 const transactionOption = ['我的交易','大盘交易'];
-@connect(({ram,sticker,wallet}) => ({...ram, ...sticker, ...wallet}))
+
+var upColor = '#00da3c';
+var downColor = '#ec0000';
+
+function splitData(rawData) {
+    var categoryData = [];
+    var values = [];
+    var volumes = [];
+    for (var i = 0; i < rawData.length; i++) {
+        categoryData.push(rawData[i].splice(0, 1)[0]);
+        values.push(rawData[i]);
+        volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]);
+    }
+
+    return {
+        categoryData: categoryData,
+        values: values,
+        volumes: volumes
+    };
+}
+
+// // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+var data = splitData([
+    ['2013/1/24', 2320.26,2320.26,2287.3,2362.94,117990000],
+    ['2013/1/25', 2300,2291.3,2288.26,2308.38,117990000],
+    ['2013/1/28', 2295.35,2346.5,2295.35,2346.92,117990000],
+    ['2013/1/29', 2347.22,2358.98,2337.35,2363.8,117990000],
+    ['2013/1/30', 2360.75,2382.48,2347.89,2383.76,117990000],
+    ['2013/1/31', 2383.43,2385.42,2371.23,2391.82,117990000],
+    ['2013/2/1', 2377.41,2419.02,2369.57,2421.15,117990000],
+    ['2013/2/4', 2425.92,2428.15,2417.58,2440.38,117990000],
+    ['2013/2/5', 2411,2433.13,2403.3,2437.42,117990000],
+    ['2013/2/6', 2432.68,2434.48,2427.7,2441.73,117990000],
+    ['2013/2/7', 2430.69,2418.53,2394.22,2433.89,117990000],
+    ['2013/2/8', 2416.62,2432.4,2414.4,2443.03,117990000],
+    ['2013/2/18', 2441.91,2421.56,2415.43,2444.8,321230016],
+    ['2013/2/19', 2420.26,2382.91,2373.53,2427.07,321230016],
+    ['2013/2/20', 2383.49,2397.18,2370.61,2397.94,321230016],
+    ['2013/2/21', 2378.82,2325.95,2309.17,2378.82,321230016],
+    ['2013/2/22', 2322.94,2314.16,2308.76,2330.88,321230016],
+    ['2013/2/25', 2320.62,2325.82,2315.01,2338.78,321230016],
+    ['2013/2/26', 2313.74,2293.34,2289.89,2340.71,321230016],
+    ['2013/2/27', 2297.77,2313.22,2292.03,2324.63,321230016],
+    ['2013/2/28', 2322.32,2365.59,2308.92,2366.16,321230016],
+    ['2013/3/1', 2364.54,2359.51,2330.86,2369.65,84410000],
+    ['2013/3/4', 2332.08,2273.4,2259.25,2333.54,84410000],
+    ['2013/3/5', 2274.81,2326.31,2270.1,2328.14,84410000],
+    ['2013/3/6', 2333.61,2347.18,2321.6,2351.44,84410000],
+    ['2013/3/7', 2340.44,2324.29,2304.27,2352.02,84410000],
+    ['2013/3/8', 2326.42,2318.61,2314.59,2333.67,84410000],
+    ['2013/3/11', 2314.68,2310.59,2296.58,2320.96,84410000],
+    ['2013/3/12', 2309.16,2286.6,2264.83,2333.29,84410000],
+    ['2013/3/13', 2282.17,2263.97,2253.25,2286.33,84410000],
+    ['2013/3/14', 2255.77,2270.28,2253.31,2276.22,84410000],
+    ['2013/3/15', 2269.31,2278.4,2250,2312.08,84410000],
+    ['2013/3/18', 2267.29,2240.02,2239.21,2276.05,84410000],
+    ['2013/3/19', 2244.26,2257.43,2232.02,2261.31,84410000],
+    ['2013/3/20', 2257.74,2317.37,2257.42,2317.86,84410000],
+    ['2013/3/21', 2318.21,2324.24,2311.6,2330.81,248860000],
+    ['2013/3/22', 2321.4,2328.28,2314.97,2332,248860000],
+    ['2013/3/25', 2334.74,2326.72,2319.91,2344.89,248860000],
+    ['2013/3/26', 2318.58,2297.67,2281.12,2319.99,248860000],
+    ['2013/3/27', 2299.38,2301.26,2289,2323.48,248860000],
+    ['2013/3/28', 2273.55,2236.3,2232.91,2273.55,248860000],
+    ['2013/3/29', 2238.49,2236.62,2228.81,2246.87,248860000],
+    ['2013/4/1', 2229.46,2234.4,2227.31,2243.95,248860000],
+    ['2013/4/2', 2234.9,2227.74,2220.44,2253.42,248860000],
+    ['2013/4/3', 2232.69,2225.29,2217.25,2241.34,248860000],
+    ['2013/4/8', 2196.24,2211.59,2180.67,2212.59,248860000],
+    ['2013/4/9', 2215.47,2225.77,2215.47,2234.73,248860000],
+    ['2013/4/10', 2224.93,2226.13,2212.56,2233.04,248860000],
+    ['2013/4/11', 2236.98,2219.55,2217.26,2242.48,248860000],
+    ['2013/4/12', 2218.09,2206.78,2204.44,2226.26,248860000],
+    ['2013/4/15', 2199.91,2181.94,2177.39,2204.99,94130000],
+    ['2013/4/16', 2169.63,2194.85,2165.78,2196.43,94130000],
+    ['2013/4/17', 2195.03,2193.8,2178.47,2197.51,94130000],
+    ['2013/4/18', 2181.82,2197.6,2175.44,2206.03,94130000],
+    ['2013/4/19', 2201.12,2244.64,2200.58,2250.11,94130000],
+    ['2013/4/22', 2236.4,2242.17,2232.26,2245.12,94130000],
+    ['2013/4/23', 2242.62,2184.54,2182.81,2242.62,94130000],
+    ['2013/4/24', 2187.35,2218.32,2184.11,2226.12,94130000],
+    ['2013/4/25', 2213.19,2199.31,2191.85,2224.63,94130000],
+    ['2013/4/26', 2203.89,2177.91,2173.86,2210.58,94130000],
+    ['2013/5/2', 2170.78,2174.12,2161.14,2179.65,94130000],
+    ['2013/5/3', 2179.05,2205.5,2179.05,2222.81,94130000],
+    ['2013/5/6', 2212.5,2231.17,2212.5,2236.07,94130000],
+    ['2013/5/7', 2227.86,2235.57,2219.44,2240.26,94130000],
+    ['2013/5/8', 2242.39,2246.3,2235.42,2255.21,94130000],
+    ['2013/5/9', 2246.96,2232.97,2221.38,2247.86,75560000],
+    ['2013/5/10', 2228.82,2246.83,2225.81,2247.67,75560000],
+    ['2013/5/13', 2247.68,2241.92,2231.36,2250.85,75560000],
+    ['2013/5/14', 2238.9,2217.01,2205.87,2239.93,75560000],
+    ['2013/5/15', 2217.09,2224.8,2213.58,2225.19,75560000],
+    ['2013/5/16', 2221.34,2251.81,2210.77,2252.87,75560000],
+    ['2013/5/17', 2249.81,2282.87,2248.41,2288.09,75560000],
+    ['2013/5/20', 2286.33,2299.99,2281.9,2309.39,75560000],
+    ['2013/5/21', 2297.11,2305.11,2290.12,2305.3,75560000],
+    ['2013/5/22', 2303.75,2302.4,2292.43,2314.18,75560000],
+    ['2013/5/23', 2293.81,2275.67,2274.1,2304.95,75560000],
+    ['2013/5/24', 2281.45,2288.53,2270.25,2292.59,75560000],
+    ['2013/5/27', 2286.66,2293.08,2283.94,2301.7,75560000],
+    ['2013/5/28', 2293.4,2321.32,2281.47,2322.1,75560000],
+    ['2013/5/29', 2323.54,2324.02,2321.17,2334.33,75560000],
+    ['2013/5/30', 2316.25,2317.75,2310.49,2325.72,75560000],
+    ['2013/5/31', 2320.74,2300.59,2299.37,2325.53,75560000],
+    ['2013/6/3', 2300.21,2299.25,2294.11,2313.43,75560000],
+    ['2013/6/4', 2297.1,2272.42,2264.76,2297.1,75560000],
+    ['2013/6/5', 2270.71,2270.93,2260.87,2276.86,75560000],
+    ['2013/6/6', 2264.43,2242.11,2240.07,2266.69,75560000],
+    ['2013/6/7', 2242.26,2210.9,2205.07,2250.63,75560000],
+    ['2013/6/13', 2190.1,2148.35,2126.22,2190.1,75560000]
+]);
+
+const  echartoption = {
+    // backgroundColor: '#fff',
+    animation: false,
+    // legend: {
+    //     bottom: 10,
+    //     left: 'center',
+    //     data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
+    // },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross'
+        },
+        backgroundColor: 'rgba(245, 245, 245, 0.8)',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 10,
+        textStyle: {
+            color: '#000'
+        },
+        position: function (pos, params, el, elRect, size) {
+            var obj = {top: 10};
+            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+            return obj;
+        }
+        // extraCssText: 'width: 170px'
+    },
+    axisPointer: {
+        link: {xAxisIndex: 'all'},
+        label: {
+            backgroundColor: '#777'
+        }
+    },
+    // toolbox: {
+    //     feature: {
+    //         dataZoom: {
+    //             yAxisIndex: false
+    //         },
+    //         brush: {
+    //             type: ['lineX', 'clear']
+    //         }
+    //     }
+    // },
+    // brush: {
+    //     xAxisIndex: 'all',
+    //     brushLink: 'all',
+    //     outOfBrush: {
+    //         colorAlpha: 0.1
+    //     }
+    // },
+    visualMap: {
+        show: false,
+        // seriesIndex: 5,
+        seriesIndex: 1,
+        dimension: 2,
+        pieces: [{
+            value: 1,
+            color: downColor
+        }, {
+            value: -1,
+            color: upColor
+        }]
+    },
+    grid: [
+        {
+            top: '2%',
+            left: '10%',
+            right: '8%',
+            height: '50%'
+        },
+        {
+            left: '10%',
+            right: '8%',
+            top: '58%',
+            height: '16%',
+            bottom: '3%',
+        }
+    ],
+    xAxis: [
+        {
+            type: 'category',
+            data: data.categoryData,
+            scale: true,
+            boundaryGap : false,
+            axisLine: {onZero: false},
+            splitLine: {show: false},
+            splitNumber: 20,
+            min: 'dataMin',
+            max: 'dataMax',
+            axisPointer: {
+                z: 100
+            }
+        },
+        {
+            type: 'category',
+            gridIndex: 1,
+            data: data.categoryData,
+            scale: true,
+            boundaryGap : false,
+            axisLine: {onZero: false},
+            axisTick: {show: false},
+            splitLine: {show: false},
+            axisLabel: {show: false},
+            splitNumber: 20,
+            min: 'dataMin',
+            max: 'dataMax'
+            // axisPointer: {
+            //     label: {
+            //         formatter: function (params) {
+            //             var seriesValue = (params.seriesData[0] || {}).value;
+            //             return params.value
+            //             + (seriesValue != null
+            //                 ? '\n' + echarts.format.addCommas(seriesValue)
+            //                 : ''
+            //             );
+            //         }
+            //     }
+            // }
+        }
+    ],
+    yAxis: [
+        {
+            scale: true,
+            splitArea: {
+                show: true
+            }
+        },
+        {
+            scale: true,
+            gridIndex: 1,
+            splitNumber: 2,
+            axisLabel: {show: false},
+            axisLine: {show: false},
+            axisTick: {show: false},
+            splitLine: {show: false}
+        }
+    ],
+    // dataZoom: [
+    //     {
+    //         type: 'inside',
+    //         xAxisIndex: [0, 1],
+    //         start: 98,
+    //         end: 100
+    //     },
+    //     {
+    //         show: true,
+    //         xAxisIndex: [0, 1],
+    //         type: 'slider',
+    //         top: '85%',
+    //         start: 98,
+    //         end: 100
+    //     }
+    // ],
+    series: [
+        {
+            name: 'Dow-Jones index',
+            type: 'candlestick',
+            data: data.values,
+            itemStyle: {
+                normal: {
+                    color: upColor,
+                    color0: downColor,
+                    borderColor: null,
+                    borderColor0: null
+                }
+            },
+            tooltip: {
+                formatter: function (param) {
+                    param = param[0];
+                        return [
+                        'Date: ' + '2013-02-19' + '<hr size=1 style="margin: 3px 0">',
+                        'Open: ' + '17627.28' + '<br/>',
+                        'Close: ' + '17627.28' + '<br/>',
+                        'Lowest: ' + '17627.28' + '<br/>',
+                        'Highest: ' + '17627.28' + '<br/>'
+                    ].join('');
+                    // return [
+                    //     'Date: ' + param.name + '<hr size=1 style="margin: 3px 0">',
+                    //     'Open: ' + param.data[0] + '<br/>',
+                    //     'Close: ' + param.data[1] + '<br/>',
+                    //     'Lowest: ' + param.data[2] + '<br/>',
+                    //     'Highest: ' + param.data[3] + '<br/>'
+                    // ].join('');
+
+                }
+            }
+        },
+        {
+            name: 'Volume',
+            type: 'bar',
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            data: data.volumes
+        }
+    ]
+    
+};
+
+@connect(({ram,sticker,wallet, assets}) => ({...ram, ...sticker, ...wallet, ...assets}))
 class Transaction extends BaseComponent {
 
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
           title: '交易',
-          headerTitle: "内存交易",
-          headerStyle: {
-            paddingTop: Platform.OS == "ios" ? 30 : 20,
-            backgroundColor: UColor.mainColor,
-            borderBottomWidth:0,
-          },
+          header:null,  //隐藏顶部导航栏
          //铃铛small_bell/small_bell_h
         //   headerRight: (
         //     // <Button name="share" onPress={() => this._rightTopClick()} >
@@ -54,7 +361,8 @@ class Transaction extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSegment:"2小时",
+        
+      selectedSegment:"时分",
       selectedTrackSegment: trackOption[0],
       selectedTransactionRecord: transactionOption[1],
       isBuy: false,
@@ -72,19 +380,13 @@ class Transaction extends BaseComponent {
       logRefreshing: false,
       newramTradeLog: [],
       logId: "-1",
+      modal: false,
+      tradename:"RAM",  //交易币种
+      showMore:false,  
+      showMoreTitle:"更多",
+      isKLine:false,  //是否K线
    };
   }
-
-  _rightTopClick = () => {
-    // DeviceEventEmitter.emit(
-    //   "turninShare",
-    //   '{"toaccount":"' +
-    //     this.props.defaultWallet.account +
-    //     '","amount":"' +
-    //     this.state.amount +
-    //     '","symbol":"EOS"}'
-    // );
-  };
 
   componentWillMount() {
 
@@ -137,11 +439,32 @@ class Transaction extends BaseComponent {
     super.componentWillUnmount();
   }
 
+    _leftTopClick = () => {
+        this.setState({ modal: !this.state.modal });
+        this.props.dispatch({type:'sticker/list',payload:{type:1}});
+        // this.props.dispatch({ type: 'assets/myAssetInfo', payload: { page: 1, isInit: true}, callback: (myAssets) => {}});
+    }
+//   _rightTopClick = () => {
+ 
+//   };
+    changeToRamTx(){
+        this.setState({
+            modal: false,
+            tradename:"RAM",
+          });
+    }
+    changeCoinType(rowData){
+        this.setState({
+            modal: false,
+            tradename:rowData.name,
+          });
+    }
+
   getRamInfo(){
     this.props.dispatch({type: 'ram/getRamInfo',payload: {}});
 
     // 获取曲线
-    this.setSelectedOption(this.state.selectedSegment);
+    // this.setSelectedOption(this.state.selectedSegment);
   }
 
   getRamTradeLog(){
@@ -188,22 +511,48 @@ class Transaction extends BaseComponent {
   } 
 
   fetchLine(type,opt){
-    this.setState({selectedSegment:opt});
+    // this.setState({selectedSegment:opt});
     InteractionManager.runAfterInteractions(() => {
         this.props.dispatch({type:'ram/getRamPriceLine',payload:{type}});
     });
   }
+  
+  fetchKLine(type,opt){
+    EasyToast.show("暂未实现K线");
+  }
 
-  setSelectedOption(opt){
-    if(opt=="2小时"){
-      this.fetchLine(2,opt);
-    }else if(opt=="6小时"){
-      this.fetchLine(6,opt);
-    }else if(opt=="24小时"){
-      this.fetchLine(24,opt);
-    }else if(opt=="48小时"){
-      this.fetchLine(48,opt);
+  onClickTimer(opt){
+
+    if(opt == "时分"){
+        this.setState({isKLine:false, showMore: false,selectedSegment:opt});
+        this.fetchLine(2,opt);
+        return ;
     }
+    
+    this.setState({isKLine:true, showMore: false,selectedSegment:opt});
+    if(opt == "5分"){
+        this.fetchKLine(6,opt);
+    }else if(opt == "15分"){
+        this.fetchKLine(24,opt);
+    }else if(opt == "30分"){
+        this.fetchKLine(48,opt);
+    }else if(opt == "1小时"){
+        this.setState({showMoreTitle:opt});
+        this.fetchKLine(48,opt);
+    }else if(opt == "1天"){
+        this.setState({showMoreTitle:opt});
+        this.fetchKLine(48,opt);
+    }else if(opt == "1周"){
+        this.setState({showMoreTitle:opt});
+        this.fetchKLine(48,opt);
+    }else if(opt == "1月"){
+        this.setState({showMoreTitle:opt});
+        this.fetchKLine(48,opt);
+    }
+  }
+  
+  onClickMore(){
+    this.setState({ showMore: !this.state.showMore });
   }
 
   selectedTrackOption(opt){
@@ -601,39 +950,6 @@ class Transaction extends BaseComponent {
     return info;
   }
 
-  //输入购买数量占总余额的比例
-  getBuyRamRadio(balance)
-  {
-    //  var balance = this.state.balance == ""? "0.0000" :this.state.balance;
-    //  var ratio = 0;             //进度条比例值
-    //  try {
-    //     if(this.state.buyRamAmount){
-    //         if(balance){
-    //             //余额存在且大于0
-    //             var tmpbuyRamAmount = 0;
-    //             var tmpbalance = 0; 
-    //             try {
-    //                 tmpbuyRamAmount = parseFloat(this.state.buyRamAmount);
-    //                 tmpbalance = parseFloat(balance);
-    //               } catch (error) {
-    //                 tmpbuyRamAmount = 0;
-    //                 tmpbalance = 0;
-    //             }
-    //             if(tmpbuyRamAmount > tmpbalance)
-    //             {
-    //                 //余额不足
-    //                 this.setState({buyRamAmount:""});         
-    //                 EasyToast.show("您的余额不足,请重输");           
-    //             }else if(tmpbalance > 0){
-    //                 ratio = tmpbuyRamAmount / tmpbalance;
-    //             }
-    //         }
-    //     }
-    //  } catch (error) {
-    //     ratio = 0;
-    //  }
-    //  return ratio;
-  }
   //输入卖掉的字节数占总字节的比例
   getSellRamRadio()
   {
@@ -701,8 +1017,38 @@ class Transaction extends BaseComponent {
     return timezone;
   }
 
+  fileterSlideEos(coinList){
+    if(coinList == null || coinList == []){
+        return [];
+    }
+   for(var i = 0; i < coinList.length; i++){
+       if(coinList[i].name && coinList[i].name == "EOS"){
+            coinList.splice(i,1);
+            break;
+       }
+   }
+   return coinList;
+  }
+
   render() {
     return <View style={styles.container}>
+    <View style={styles.headerTitle}>  
+        <TouchableOpacity onPress={this._leftTopClick.bind()}>
+            <View style={styles.leftoutTitle} >
+                <Image source={this.state.modal ? UImage.tx_slide0 : UImage.tx_slide1} style={styles.HeadImg}/>
+            </View>
+        </TouchableOpacity>
+          <View style={styles.HeadTitle} >
+              <Text style={{ fontSize: 18,color: UColor.fontColor, justifyContent: 'center',alignItems: 'center',}} 
+                       numberOfLines={1} ellipsizeMode='middle'>{this.state.tradename + "/EOS"}</Text>
+          </View>     
+          {/* <TouchableOpacity onPress={this._rightTopClick.bind()}>
+            <View style={styles.Rightout} >
+              <Image source={this.state.isEye ? UImage.reveal_wallet : UImage.reveal_h_wallet} style={styles.HeadImg}/>
+            </View>
+          </TouchableOpacity> */}
+      </View> 
+
     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
       <ScrollView keyboardShouldPersistTaps="always"refreshControl={
             <RefreshControl refreshing={this.state.logRefreshing} onRefresh={() => this.onRefreshing()}
@@ -713,42 +1059,150 @@ class Transaction extends BaseComponent {
             <View style={styles.leftout}>
               <View style={styles.nameout}>
                 <Text style={styles.nametext}>开盘</Text>
-                <Text style={styles.nametext}>内存占比</Text>
+                {this.state.tradename == "RAM" ? <Text style={styles.nametext}>内存占比</Text> : <View></View>}
                 <Text style={styles.nametext}>总资金</Text>
               </View>
               <View style={styles.recordout}>
-                <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.open : '0'} EOS/KB</Text>
+                <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.open.toFixed(4) : '0'} EOS/KB</Text>
+                {this.state.tradename == "RAM" ?
                 <View style={styles.rowout}>
                     <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.usage_ram : 0} GB/{this.props.ramInfo ? this.props.ramInfo.total_ram : 0} GB</Text>
                     <Text style={styles.ashtext}> ({((this.props.ramInfo ? this.props.ramInfo.usage_ram_percent : '0') * 100).toFixed(2)}%)</Text>
-                </View>
-                <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.total_eos : '0'} EOS</Text>
+                </View> :<View></View>
+               }
+                <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.total_eos.toFixed(4) : '0'} EOS</Text>
               </View>
             </View>
             <View style={styles.rightout}>
-                <View style={styles.titleout}>
-                    <Text style={styles.toptext}>涨幅</Text>
-                    <Text style={(this.props.ramInfo && this.props.ramInfo.increase>=0)?styles.incdo:styles.incup}> {this.props.ramInfo ? (this.props.ramInfo.increase > 0 ? '+' + (this.props.ramInfo.increase * 100).toFixed(2) : (this.props.ramInfo.increase * 100).toFixed(2)): '0.00'}%</Text>
-                </View>
                 <View style={styles.presentprice}>
-                    <Text style={styles.toptext}>当前价格</Text>
-                    <Text style={styles.present}> {this.props.ramInfo ? this.props.ramInfo.price : '0.0000'}</Text>
+                    <Text style={styles.present}> {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'}</Text>
+                    <Text style={styles.toptext}>价格</Text>
+                </View>
+                <View style={styles.titleout}>
+                    <Text style={(this.props.ramInfo && this.props.ramInfo.increase>=0)?styles.incdo:styles.incup}> {this.props.ramInfo ? (this.props.ramInfo.increase > 0 ? '+' + (this.props.ramInfo.increase * 100).toFixed(2) : (this.props.ramInfo.increase * 100).toFixed(2)): '0.00'}%</Text>
+                    <Text style={{color:'#8696B0',fontSize:13,marginTop:2,textAlign:'center', marginLeft:5}}>涨幅</Text>
                 </View>
             </View>
           </View>
-        <View style={styles.toptabout}>
-          <SegmentedControls tint= {UColor.mainColor} selectedTint= {UColor.fontColor} onSelection={this.setSelectedOption.bind(this) }
-          selectedOption={ this.state.selectedSegment } backTint= {UColor.secdColor} options={['2小时','6小时','24小时','48小时']} />
-        </View>
-        <View style={styles.echartsout}>
-          {<Echarts option={this.props.ramLineDatas?this.props.ramLineDatas:{}} width={ScreenWidth} height={160} />}
-        </View>
-        {/* <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
-            <View style={{width:8,height:8,borderRadius:4,backgroundColor:'#65CAFF'}}></View>
-            <Text style={{color:'#8696B0',fontSize:11,marginLeft:5}}>价格走势</Text>
-            <View style={{width:8,height:8,borderRadius:4,backgroundColor:'#556E95',marginLeft:10}}></View>
-            <Text style={{color:'#8696B0',fontSize:11,marginLeft:5}}>交易量</Text>
-        </View> */}
+
+          <View style={{flex:1,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
+            <View style={{flexDirection:"column",flexGrow:1,}}>
+                <Button onPress={this.onClickTimer.bind(this,"时分")}>
+                    <View style={{ marginLeft: 2,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        {this.state.selectedSegment == "时分" ? 
+                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>时分</Text> : 
+                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>时分</Text>}
+                    </View>
+                </Button>   
+            </View>
+            <View style={{flexDirection:"column",flexGrow:1,}}>
+                <Button onPress={this.onClickTimer.bind(this,"5分")}>
+                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        {this.state.selectedSegment == "5分" ? 
+                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>5分</Text> : 
+                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>5分</Text>}
+                    </View>
+                </Button> 
+            </View>
+            <View style={{flexDirection:"column",flexGrow:1}}>
+                <Button onPress={this.onClickTimer.bind(this,"15分")}>
+                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        {this.state.selectedSegment == "15分" ? 
+                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>15分</Text> : 
+                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>15分</Text>}
+                    </View>
+                </Button> 
+            </View>
+            <View style={{flexDirection:"column",flexGrow:1}}>
+                <Button onPress={this.onClickTimer.bind(this,"30分")}>
+                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                       {this.state.selectedSegment == "30分" ? 
+                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>30分</Text> : 
+                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>30分</Text>}
+                    </View>
+                </Button> 
+            </View>
+            <View style={{flexDirection:"column",flexGrow:1}}>
+                <Button onPress={this.onClickMore.bind(this)}>
+                    <View style={{ flexDirection:"row",marginLeft: 0,width: 50, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        {(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
+                           || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? 
+                         <Text style={{fontSize: 15,color: UColor.tintColor,}}>{this.state.showMoreTitle}</Text> : 
+                          <Text style={{fontSize: 15,color: UColor.fontColor,}}>{this.state.showMoreTitle}</Text>}
+                         <Image source={ UImage.txbtn_more } style={ {flex:0,width: 10, height:5,resizeMode:'contain'}}/>
+                    </View>
+                </Button> 
+
+            </View>
+            <View style={{flexDirection:"column",flexGrow:1}}>
+                <Button disabled={true}>
+                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                    </View>
+                </Button> 
+            </View>
+         </View> 
+        {this.state.showMore ?       
+            <View style={{flex:1,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
+            <View style={{flexDirection:"column",flexGrow:1,}}>
+                <Button disabled={true}>
+                    <View style={{ marginLeft: 2,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                    </View>
+                </Button> 
+            </View>
+            <View style={{flexDirection:"column",flexGrow:1,}}>
+                <Button onPress={this.onClickTimer.bind(this,"1小时")}>
+                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1小时</Text>
+                    </View>
+                </Button> 
+            </View>
+            <View style={{flexDirection:"column",flexGrow:1}}>
+                <Button onPress={this.onClickTimer.bind(this,"1天")}>
+                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1天</Text>
+                    </View>
+                </Button> 
+            </View>
+            <View style={{flexDirection:"column",flexGrow:1}}>
+                <Button onPress={this.onClickTimer.bind(this,"1周")}>
+                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1周</Text>
+                    </View>
+                </Button> 
+            </View>
+            <View style={{flexDirection:"column",flexGrow:1}}>
+               <Button onPress={this.onClickTimer.bind(this,"1月")}>
+                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1月</Text>
+                    </View>
+                </Button> 
+            </View>
+            <View style={{flexDirection:"column",flexGrow:1}}>
+               <Button disabled={true}>
+                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                    </View>
+                </Button> 
+            </View>
+         </View> 
+           
+        : <View></View>}  
+        {
+            this.state.isKLine ? 
+            <View style={styles.echartsout}>
+            {
+                <Echarts option={echartoption} width={ScreenWidth} height={300} />
+            }
+            </View>
+            : <View style={styles.echartsout}>
+            {
+                <Echarts option={this.props.ramLineDatas?this.props.ramLineDatas:{}} width={ScreenWidth} height={160} />
+            }
+            </View>
+        }
+
         <View style={styles.tablayout}>  
             {this.funcButton(styles.buytab, this.state.isBuy, 'isBuy', '买')}  
             {this.funcButton(styles.selltab, this.state.isSell, 'isSell', '卖')}  
@@ -1017,6 +1471,106 @@ class Transaction extends BaseComponent {
         </TouchableOpacity>
       </ScrollView>  
     </KeyboardAvoidingView> 
+
+    <Modal style={styles.touchableouts} animationType={'none'} transparent={true} onRequestClose={() => {this.setState({modal: false}); }} visible={this.state.modal}>
+          <TouchableOpacity onPress={() => this.setState({ modal: false })} style={styles.touchable} activeOpacity={1.0}>
+            <TouchableOpacity style={styles.touchable} activeOpacity={1.0}>
+
+              <View style={styles.touchableout}>
+               {/* <TouchableOpacity onPress={this._leftTopClick.bind()}> 
+                <View style={{ paddingRight: 0,alignItems: 'flex-end', }} >
+                    <Image source={UImage.tx_slide0} style={styles.HeadImg}/>
+                </View>
+                </TouchableOpacity> */}
+               <View style={styles.ebhbtnout}>
+                    <View style={{width:'37%'}}>
+                        <View style={{ flex:1,flexDirection:"row",alignItems: 'center', }}>
+                            <Text style={{marginLeft:20,fontSize:15,color:UColor.fontColor}}>内存</Text>
+                        </View>
+                    </View>
+                    <View style={{width:'28%'}}>
+                        <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start", }}>
+                            <Text style={{fontSize:15,marginLeft:0,color:UColor.fontColor}}>涨幅</Text>
+                        </View>
+                    </View>
+                    <View style={{width:'35%'}}>
+                        <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end", }}>
+                            <Text style={{ fontSize:15, color:UColor.fontColor, 
+                                textAlign:'center', marginRight:5}}>单价(EOS)</Text>
+                        </View>
+                    </View>
+                </View>
+
+                <View style={styles.ebhbtnout2}>
+                  <Button onPress={this.changeToRamTx.bind(this)}>
+                      <View style={styles.sliderow}>
+                        <View style={{width:'34%'}}>
+                            <View style={{ flex:1,flexDirection:"row",alignItems: 'center'}}>
+                                <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>RAM</Text>
+                            </View>
+                        </View>
+                        <View style={{width:'31%'}}>
+                            <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start"}}>
+                            <Text style={(this.props.ramInfo && this.props.ramInfo.increase>=0)?styles.greenincup:styles.redincdo}> {this.props.ramInfo ? (this.props.ramInfo.increase > 0 ? '+' + (this.props.ramInfo.increase * 100).toFixed(2) : (this.props.ramInfo.increase * 100).toFixed(2)): '0.00'}%</Text>
+                            </View>
+                        </View>
+                        <View style={{width:'35%'}}>
+                            <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
+                                <Text style={{ fontSize:15, color:UColor.fontColor, 
+                                    textAlign:'center', marginRight:5}}>{this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'}</Text>
+                            </View>
+                        </View>
+                      </View>
+                  </Button>
+                </View>
+                <View style={styles.ebhbtnout}>
+                    <View style={{width:'37%'}}>
+                        <View style={{ flex:1,flexDirection:"row",alignItems: 'center', }}>
+                            <Text style={{marginLeft:20,fontSize:15,color:UColor.fontColor}}>币种</Text>
+                        </View>
+                    </View>
+                    <View style={{width:'28%'}}>
+                        <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start", }}>
+                            <Text style={{fontSize:15,marginLeft:0,color:UColor.fontColor}}>涨幅</Text>
+                        </View>
+                    </View>
+                    <View style={{width:'35%'}}>
+                        <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end", }}>
+                            <Text style={{ fontSize:15, color:UColor.fontColor,textAlign:'center', marginRight:5}}>单价(￥)</Text>
+                        </View>
+                    </View>
+                </View>
+
+                <ListView initialListSize={5} 
+                  renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={{ height: 0.5, backgroundColor: UColor.secdColor ,}} />}
+                  enableEmptySections={true} dataSource={this.state.dataSource.cloneWithRows(this.props.coinList[1]==null?[]:this.fileterSlideEos(this.props.coinList[1]))}
+                  renderRow={(rowData) => (
+                    <Button onPress={this.changeCoinType.bind(this, rowData)}>
+                      <View style={styles.sliderow}>
+                        <View style={{width:'35%'}}>
+                            <View style={{ flex:1,flexDirection:"row",alignItems: 'center'}}>
+                                <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>{rowData.name == null ? "" : rowData.name}</Text>
+                            </View>
+                        </View>
+                        <View style={{width:'30%'}}>
+                            <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start"}}>
+                                <Text style={rowData.increase>0?styles.greenincup:styles.redincdo}>{rowData.increase>0?'+'+rowData.increase:rowData.increase}%</Text>
+                            </View>
+                        </View>
+                        <View style={{width:'35%'}}>
+                            <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
+                                <Text style={{ fontSize:15, color:UColor.fontColor, 
+                                    textAlign:'center', marginRight:5}}>{(rowData.price == null || rowData.price == "") ? "" : rowData.price.toFixed(2)}</Text>
+                            </View>
+                        </View>
+                      </View>
+                    </Button> 
+                  )}
+                />
+           </View>
+          </TouchableOpacity>
+      </TouchableOpacity>
+    </Modal>
   </View>
   }
 }
@@ -1027,6 +1581,29 @@ const styles = StyleSheet.create({
       flexDirection:'column',
       backgroundColor: UColor.secdColor,
     },
+    headerTitle: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop:Platform.OS == 'ios' ? 30 : 20,
+        paddingBottom: 5,
+        backgroundColor: UColor.mainColor,
+      },
+    leftoutTitle: {
+        paddingLeft: 15
+      },
+    HeadImg: {
+        width: 25,
+        height:15,
+        marginHorizontal:1,
+    },
+    HeadTitle: {
+    flex: 1,
+    paddingLeft: 60,
+    paddingHorizontal: 20,
+    justifyContent: 'center', 
+    },
+    
     header: {
       width: ScreenWidth,
       flexDirection: 'row',
@@ -1064,10 +1641,11 @@ const styles = StyleSheet.create({
         fontSize: 11,
     },
     rightout: {
-        flexDirection: 'column',
-        flex: 3,
-        justifyContent: 'space-between',
-        height: 50,
+        flexDirection:'column',flexGrow:1,alignItems:"flex-end",marginRight:10
+        // flexDirection: 'column',
+        // flex: 3,
+        // justifyContent: 'space-between',
+        // height: 50,
     },
     titleout: {
         flex: 1,
@@ -1080,13 +1658,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     toptext: {
-        color: '#8696B0',
-        fontSize: 10,
-        marginTop: 5,
+        color:'#8696B0',fontSize:13,marginTop:2,textAlign:'center', marginLeft:5,marginRight:2
+
+        // color: '#8696B0',
+        // fontSize: 10,
+        // marginTop: 5,
     },
     present: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: 20,
+        textAlign:'center'
     },
 
     row:{
@@ -1123,7 +1704,7 @@ const styles = StyleSheet.create({
     },
     echartsout: {
         flex: 1,
-        paddingTop: 10
+        paddingTop: 5
     },
     tablayout: {   
         flex: 1,
@@ -1386,6 +1967,84 @@ const styles = StyleSheet.create({
         color: UColor.arrow,
         textAlign: 'right',
     },
+
+    sliderow:{
+        flex:1,
+        // backgroundColor:UColor.mainColor,
+        flexDirection:"row",
+        padding: 10,
+        // borderBottomColor: UColor.secdColor,
+        borderBottomColor: '#4D607E',
+        borderBottomWidth: 0.6,
+        height: 30, 
+      },
+    touchableouts: {
+        flex: 1,
+        flexDirection: "column",
+      },
+    touchable: {
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'flex-start', 
+        backgroundColor: UColor.mask,
+    },
+  touchableout: {
+    width: (ScreenWidth * 2)/ 3, 
+    height: ScreenHeight, 
+    backgroundColor: '#4D607E', 
+    alignItems: 'center', 
+    paddingTop: 40,
+  },
+  touchablelist: {
+    width: '100%', 
+    borderBottomWidth: 1, 
+    borderBottomColor: '#4D607E', 
+  },
+
+  imgBtn: {
+    width: 30,
+    height: 30,
+    margin:5,
+  },
+  
+  ebhbtnout: {
+    width: '100%', 
+    height: 30, 
+    flexDirection: "row", 
+    alignItems: 'flex-start', 
+    borderTopWidth: 1, 
+    borderTopColor: UColor.mainColor, 
+    backgroundColor:'#586888',
+   },
+   ebhbtnout2: {
+    width: '100%', 
+    height: 30, 
+    flexDirection: "column", 
+    alignItems: 'flex-start', 
+    borderTopWidth: 1, 
+    borderTopColor: UColor.mainColor, 
+    backgroundColor:'#4D607E',
+   },
+    establishout: {
+      flex: 1, 
+      flexDirection: "row",
+      alignItems: 'center', 
+      height: 30, 
+    },
+    establishimg:{
+      width: 25, 
+      height: 25, 
+    },
+
+    greenincup:{
+        fontSize:15,
+        color:'#25B36B',
+      },
+    redincdo:{
+        fontSize:15,
+        color:'#F25C49',
+    },
+
 });
 
 export default Transaction;
