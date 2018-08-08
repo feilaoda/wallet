@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.secdColor,
     },
     inptext: {
-        width: maxWidth - 60,
         fontSize: 14,
         lineHeight: 25,
         color: UColor.arrow,

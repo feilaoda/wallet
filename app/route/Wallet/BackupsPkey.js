@@ -174,14 +174,14 @@ class BackupsPkey extends BaseComponent {
                     {this.state.activePk != ''&& 
                     <View style={styles.inptoutgo} >
                         <Text style={styles.inptitle}>Active私钥</Text>
-                        <TouchableHighlight style={styles.inptgo}  underlayColor={UColor.secdColor}>
+                        <TouchableHighlight style={styles.inptgo}  underlayColor={UColor.secdColor} onPress={this.prot.bind(this, 'activePk')}>
                             <Text style={styles.inptext}>{this.state.activePk}</Text>
                         </TouchableHighlight>
                     </View>}  
                     {this.state.ownerPk != ''&&
                     <View style={styles.inptoutgo} >
                         <Text style={styles.inptitle}>Owner私钥</Text>
-                        <TouchableHighlight style={styles.inptgo}  underlayColor={UColor.secdColor}>
+                        <TouchableHighlight style={styles.inptgo}  underlayColor={UColor.secdColor} onPress={this.prot.bind(this, 'ownerPk')}>
                             <Text style={styles.inptext}>{this.state.ownerPk}</Text>
                         </TouchableHighlight>
                     </View>}
@@ -354,7 +354,6 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.secdColor,
     },
     inptext: {
-        width: maxWidth - 60,
         fontSize: 14,
         lineHeight: 25,
         color: UColor.arrow,
