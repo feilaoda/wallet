@@ -289,6 +289,7 @@ class Transaction extends BaseComponent {
       isKLine:false,  //是否K线
       dataKLine: {},
       business: false,
+      error: false,
    };
   }
 
@@ -1135,13 +1136,21 @@ class Transaction extends BaseComponent {
   }
 
   openQuery =(payer) => {
-    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-        EasyToast.show('未检测到您的账号信息');
-    }else{
-        this.setState({ business: false });
+      if(payer == 'busines'){
+        if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+            this.setState({ error: true });
+            setTimeout(() => {
+                this.setState({ error: false });
+            }, 2000);
+        }else{
+            this.setState({ business: false});
+            const { navigate } = this.props.navigation;
+            navigate('RecordQuery', {record:this.props.defaultWallet.account});
+        }
+      }else{
         const { navigate } = this.props.navigation;
         navigate('RecordQuery', {record:payer});
-    }
+      }
   }
 
   dismissKeyboardClick() {
@@ -1169,9 +1178,6 @@ class Transaction extends BaseComponent {
        }
    }
    return coinList;
-  }
-  openbusiness(){
-
   }
 
   render() {
@@ -1639,24 +1645,27 @@ class Transaction extends BaseComponent {
       </TouchableOpacity>
     </Modal>
 
-    <Modal style={styles.businesmodal} animationType={'none'} transparent={true} onRequestClose={() => {this.setState({business: false}); }} visible={this.state.business}>
+    <Modal style={styles.businesmodal} animationType={'slide'} transparent={true} onRequestClose={() => {this.setState({business: false}) }} visible={this.state.business}>
+        <TouchableOpacity onPress={() => this.setState({ business: false })} style={styles.businestouchable} activeOpacity={1.0}>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.busines} activeOpacity={1.0}>
             <View style={styles.businesout}>
-                <View style={{width: ScreenWidth,  height: 40, flexDirection: 'row',justifyContent: "center",}}>
+                <View style={styles.headbusines}>
                     <View style={styles.businestab}>  
                         {this.businesButton(styles.buytab, this.state.isBuy, 'isBuy', '买')}  
                         {this.businesButton(styles.selltab, this.state.isSell, 'isSell', '卖')}  
                     </View>
                     <View style={{flex: 1,flexDirection: 'row',}}> 
-                        <TouchableOpacity onPress={this.openQuery.bind(this,this.props.defaultWallet.account,)} style={{flex: 3,flexDirection: 'row',justifyContent: "center",alignItems: "center",}}>
-                            <Image source={ UImage.record } style={ {width: 12, height:16,resizeMode:'contain'}}/>
-                            <Text style={{fontSize: 14,color: '#65CAFF',}}> 我的记录</Text>
+                        <TouchableOpacity onPress={this.openQuery.bind(this,'busines')} style={styles.busrecord}>
+                            <Image source={ UImage.record } style={styles.busrecordimg}/>
+                            <Text style={styles.busrecordtext}> 我的记录</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.setState({ business: false })} style={{width: 40,}}>
-                            <Image source={ UImage.redclose } style={ {width: 40, height:40,resizeMode:'contain'}}/>
+                        <TouchableOpacity onPress={() => this.setState({ business: false })}>
+                            <Image source={ UImage.redclose } style={styles.redclose}/>
                         </TouchableOpacity>
                     </View>
                 </View>
+                {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>未检测到您的账号信息</Text>}
                 {this.state.isBuy?<View>
                     <View style={styles.greeninptout}>
                         <Text style={styles.greenText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
@@ -1698,7 +1707,7 @@ class Transaction extends BaseComponent {
                     </View>
                 </View>
                 :
-                  <View>
+                <View>
                     <View style={styles.greeninptout}>
                         <Text style={styles.redText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
                         <Text style={styles.inptTitle}>可卖: {(this.state.myRamAvailable == null || this.state.myRamAvailable == '') ? '0' : (this.state.myRamAvailable/1024).toFixed(4)} KB</Text>
@@ -1735,8 +1744,8 @@ class Transaction extends BaseComponent {
                                 </View>
                             </Button> 
                         </View>
-                </View>
-            </View>}
+                  </View>
+                </View>}
             </View>
       </TouchableOpacity>
     </Modal>
@@ -1810,11 +1819,10 @@ const styles = StyleSheet.create({
         fontSize: 11,
     },
     rightout: {
-        flexDirection:'column',flexGrow:1,alignItems:"flex-end",marginRight:10
-        // flexDirection: 'column',
-        // flex: 3,
-        // justifyContent: 'space-between',
-        // height: 50,
+        flexDirection:'column',
+        flexGrow:1,
+        alignItems:"flex-end",
+        marginRight:10
     },
     titleout: {
         flex: 1,
@@ -1827,11 +1835,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     toptext: {
-        color:'#8696B0',fontSize:13,marginTop:2,textAlign:'center', marginLeft:5,marginRight:2
-
-        // color: '#8696B0',
-        // fontSize: 10,
-        // marginTop: 5,
+        color: '#8696B0', 
+        fontSize: 13, 
+        marginTop: 2, 
+        textAlign: 'center', 
+        marginLeft: 5, 
+        marginRight: 2
     },
     present: {
         color: '#fff',
@@ -1873,7 +1882,6 @@ const styles = StyleSheet.create({
     },
     echartsout: {
         flex: 1,
-        // paddingTop: 0
     },
     tablayout: {   
         flex: 1,
@@ -1887,7 +1895,7 @@ const styles = StyleSheet.create({
     },
     txRecordtab: {
         flex: 1,
-        height: 33,
+        height: 26,
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
         borderColor: UColor.tintColor,
@@ -1897,7 +1905,7 @@ const styles = StyleSheet.create({
     },
     trackRecordtab: {
         flex: 1,
-        height: 33,
+        height: 26,
         borderTopRightRadius: 5,
         borderBottomRightRadius: 5,
         borderColor: UColor.tintColor,
@@ -2010,7 +2018,6 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.mainColor,
         flexDirection: "row",
         paddingHorizontal: 5,
-        // justifyContent: "space-between",
         borderRadius: 5,
         marginVertical: 2,
         marginHorizontal: 5,
@@ -2019,7 +2026,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         alignItems: 'center',
-        // justifyContent: "space-between",
     },
     sellpricetext: {
         flex: 3,
@@ -2115,9 +2121,7 @@ const styles = StyleSheet.create({
 
     sliderow:{
         flex:1,
-        // backgroundColor:UColor.mainColor,
         flexDirection:"row",
-        // borderBottomColor: UColor.secdColor,
         borderBottomColor: '#4D607E',
         borderBottomWidth: 0.6,
         height: 30, 
@@ -2132,18 +2136,18 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start', 
         backgroundColor: UColor.mask,
     },
-  touchableout: {
-    width: (ScreenWidth * 2)/ 3, 
-    height: ScreenHeight, 
-    backgroundColor: '#4D607E', 
-    alignItems: 'center', 
-    paddingTop: 40,
-  },
-  touchablelist: {
-    width: '100%', 
-    borderBottomWidth: 1, 
-    borderBottomColor: '#4D607E', 
-  },
+    touchableout: {
+        width: (ScreenWidth * 2)/ 3, 
+        height: ScreenHeight, 
+        backgroundColor: '#4D607E', 
+        alignItems: 'center', 
+        paddingTop: 40,
+    },
+    touchablelist: {
+        width: '100%', 
+        borderBottomWidth: 1, 
+        borderBottomColor: '#4D607E', 
+    },
 
   imgBtn: {
     width: 30,
@@ -2195,17 +2199,24 @@ const styles = StyleSheet.create({
         width: ScreenWidth , 
         height: ScreenHeight-50,
         flexDirection: "column",
+        justifyContent: 'flex-end',
+        backgroundColor: UColor.tintColor,
+    },
+    businestouchable: {
+        flex: 1, 
+        backgroundColor: 'rgba(0,0,0,0)'
     },
     busines: {
-        flex: 1, 
-        marginBottom: 49,
+        width: ScreenWidth , 
+        height: 250,
+        paddingBottom: 49,
         justifyContent: 'flex-end', 
         alignItems: 'center', 
-        backgroundColor: UColor.mask,
+        backgroundColor: 'rgba(0,0,0,0)'
     },
     businesout: {
         width: ScreenWidth , 
-        height: ScreenHeight*2/5,
+        height: 250,
         backgroundColor: '#43536D', 
         alignItems: 'center', 
     },
@@ -2237,6 +2248,32 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         alignItems: 'center',   
         justifyContent: 'center', 
+    },
+    busrecord: {
+        flex: 3,
+        flexDirection: 'row',
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    busrecordimg: {
+        width: 12,
+        height: 16,
+        resizeMode: 'contain'
+    },
+    busrecordtext: {
+        fontSize: 14,
+        color: '#65CAFF',
+    },
+    redclose: {
+        width: 40,
+        height: 40,
+        resizeMode: 'contain'
+    },
+    headbusines: {
+        width: ScreenWidth,
+        height: 40,
+        flexDirection: 'row',
+        justifyContent: "center",
     },
 
 });
