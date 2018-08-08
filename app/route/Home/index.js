@@ -1159,23 +1159,20 @@ headtitle: {
 
   // modal上子View的样式  
   subViewBackup: {
+    flexDirection: "row", 
+    alignItems: 'center'
+  },
+  subViewBackup: {
     alignItems: 'flex-end',
     justifyContent: 'center',
     width: maxWidth-20,
     height: 30,
   },
   buttonView2: {
-    width: 40,
+    width: 30,
     alignItems: 'center',
     justifyContent: 'center',
-},
-buttontext: {
-    width: 40,
-    color: '#CBCBCB',
-    fontSize: 28,
-    textAlign: 'right',
   },
-
 });
 
 export default Home;
