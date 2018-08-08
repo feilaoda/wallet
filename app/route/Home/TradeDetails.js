@@ -38,7 +38,7 @@ class TradeDetails extends BaseComponent {
   }
 
   componentDidMount() {
-        // alert('trade: '+JSON.stringify(this.props.navigation.state.params.trade));
+        //alert('trade: '+JSON.stringify(this.props.navigation.state.params.trade));
   }
   componentWillUnmount(){
     //结束页面前，资源释放操作
@@ -64,7 +64,7 @@ class TradeDetails extends BaseComponent {
   transferTimeZone(blockTime){
     var timezone;
     try {
-        timezone = moment(blockTime).add(8,'hours').format('YYYY-MM-DD HH:mm');
+        timezone = moment(blockTime).add(8,'hours').format('YYYY/MM/DD HH:mm');
     } catch (error) {
         timezone = blockTime;
     }
@@ -74,43 +74,56 @@ class TradeDetails extends BaseComponent {
   render() {
     const c = this.props.navigation.state.params.trade;
     return <View style={styles.container}>
-            
+      <ScrollView style={styles.scrollView}>
         <View style={styles.header}>
             <View style={styles.headout}>
-                <Text style={styles.quantitytext}>{c.quantity}</Text>
-                {/* <Text style={styles.headtext}> bytes</Text> */}
+                <Text style={styles.quantitytext}>{c.type=='转出'?'-':'+'} </Text>
+                <Text style={styles.quantitytext}>{c.quantity.replace(c.code, "")} </Text>
+                <Text style={styles.headtext}> {c.code}</Text>
             </View>
             <Text style={styles.description}>({c.description}{c.bytes? c.bytes + " bytes":""})</Text>
         </View>
         <View style={styles.conout}>
           <View style={styles.conouttext}>
             <Text style={styles.context}>发  送  方：</Text> 
-            <Text style={{color: UColor.tintColor, flex: 1,fontSize: 14,}} onPress={this.prot.bind(this, 'from')}>{c.from}</Text>
+            <Text style={styles.tintext} onPress={this.prot.bind(this, 'from')}>{c.from}</Text>
           </View>
           <View style={styles.conouttext}>
             <Text style={styles.context}>接  受  方：</Text>
-            <Text style={{color: UColor.tintColor, flex: 1,fontSize: 14,}} onPress={this.prot.bind(this, 'to')}>{c.to}</Text>
+            <Text style={styles.tintext} onPress={this.prot.bind(this, 'to')}>{c.to}</Text>
           </View>
           <View style={styles.conouttext}> 
             <Text style={styles.context}>区块高度：</Text>
             {(c.blockNum == null || c.blockNum == "") ? 
-            <Text style={{color: UColor.showy, flex: 1,fontSize: 14,}}>未确认</Text>:
-            <Text style={{color: UColor.tintColor, flex: 1,fontSize: 14,}} onPress={this.prot.bind(this, 'blockNum')}>{c.blockNum}</Text>
+            <Text style={styles.showytext}>未确认</Text>:
+            <Text style={styles.tintext} onPress={this.prot.bind(this, 'blockNum')}>{c.blockNum}</Text>
             }
           </View>
           <View style={styles.conouttext}>
-            <Text style={styles.context}> 备    注 ：</Text>
-            <Text style={{color: UColor.arrow, flex: 1,fontSize: 14,}} >{c.memo}</Text>
+            <Text style={styles.context}> 备     注 ：</Text>
+            <Text style={styles.blocktext} >{c.memo}</Text>
           </View>
         </View>
-        <Text style={styles.blocktime}>{this.transferTimeZone(c.blockTime)}</Text>
         <View style={styles.codeout}>
             <View style={styles.qrcode}>
                <QRCode size={105} value={'https://eospark.com/MainNet/tx/' + c.transactionId } />
             </View>
         </View>
-        <Text style={styles.tradehint}>交易号：<Text style={{color: UColor.tintColor,}} onPress={this.prot.bind(this, 'transactionId')}>{c.transactionId.substring(0, 15) +"..."+ c.transactionId.substr(c.transactionId.length-15) }</Text></Text>
-        <Text style={styles.tradehint}>提 示：扫码可获取区块交易状态</Text>
+        <View style={styles.tradehint}>
+          <View style={styles.conouttext}>
+            <Text style={styles.context}> 提     示 ：</Text>
+            <Text style={styles.blocktext}>扫码可获取区块交易状态</Text>
+          </View>
+          <View style={styles.conouttext}>
+            <Text style={styles.context}>交  易  号：</Text>
+            <Text style={styles.tintext} onPress={this.prot.bind(this, 'transactionId')}>{c.transactionId.substring(0, 15) +"..."+ c.transactionId.substr(c.transactionId.length-15) }</Text>
+          </View>
+          <View style={styles.conouttext}>
+            <Text style={styles.context}>交易时间：</Text>
+            <Text style={styles.blocktext}>{this.transferTimeZone(c.blockTime)}</Text>
+          </View>
+        </View>
+      </ScrollView>
     </View>
   }
 }
@@ -141,7 +154,7 @@ const styles = StyleSheet.create({
   },
   headtext: {
     fontSize: 15,
-    color: UColor.fontColor,
+    color: UColor.arrow,
     paddingTop: 10,
   },
   description: {
@@ -164,21 +177,34 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   context: {
-    textAlign: 'left',
+    textAlign: 'justify',
     fontSize: 14,
     color: UColor.arrow,
     width: 90,
   },
 
-  blocktime: {
+  tradehint: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  blocktext: {
+    color: UColor.arrow, 
+    flex: 1,
     fontSize: 14,
-    color: UColor.fontColor,
-    textAlign: 'right',
-    lineHeight: 30,
-    marginRight: 10,
+  },
+  showytext: {
+    color: UColor.showy, 
+    flex: 1,
+    fontSize: 14,
+  },
+  tintext: {
+    color: UColor.tintColor, 
+    flex: 1,
+    fontSize: 14,
   },
   codeout: {
-    margin: 20,
+    marginBottom: 20,
+    marginTop: 40,
     alignItems: 'center',
     justifyContent: 'center',
     alignItems: 'center',
@@ -187,13 +213,6 @@ const styles = StyleSheet.create({
   qrcode: {
     backgroundColor: UColor.fontColor,
     padding: 5,
-  },
- 
-  tradehint: {
-    fontSize: 14,
-    color: UColor.arrow,
-    paddingTop: 10,
-    paddingHorizontal: 25,
   },
 });
 
