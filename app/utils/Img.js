@@ -98,7 +98,6 @@ export default {
   Tick_h:require('../img/Tick_h.png'),
   Tick:require('../img/Tick.png'),
   transfer:require('../img/transfer.png'),
-  trend_cpu:require('../img/trend_cpu.png'),
   turn_out:require('../img/turn_out.png'),
   turnin_head:require('../img/turninhead.png'),
   unconfirm:require('../img/unconfirm.png'),

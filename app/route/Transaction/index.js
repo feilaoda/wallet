@@ -416,8 +416,10 @@ class Transaction extends BaseComponent {
     });
   }
   fetchCoinLine(dateType,opt){
+    EasyToast.show("暂未实现K线");
+
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type:'ram/getRamPriceLine',payload:{dateType}});
+        // this.props.dispatch({type:'ram/getRamPriceLine',payload:{dateType}});
     });
   }
   //获取时分图
