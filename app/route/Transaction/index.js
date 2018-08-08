@@ -241,7 +241,7 @@ function combineKLine(data) {
 }
 
 
-@connect(({ram,sticker,wallet}) => ({...ram, ...sticker, ...wallet}))
+@connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
 class Transaction extends BaseComponent {
 
     static navigationOptions = ({ navigation }) => {
@@ -295,14 +295,14 @@ class Transaction extends BaseComponent {
 
     super.componentWillMount();
 
-    // this.props.dispatch({type: 'ram/clearRamPriceLine',payload:{}});
+    // this.props.dispatch({type: 'transaction/clearRamPriceLine',payload:{}});
   }
 
   componentDidMount(){
       try {
         this.setState({logRefreshing: true});
         // 获取内存市场相关信息
-        this.props.dispatch({type: 'ram/getRamInfo',payload: {}, callback: () => {
+        this.props.dispatch({type: 'transaction/getRamInfo',payload: {}, callback: () => {
             this.setState({logRefreshing: false});
         }});
     
@@ -361,14 +361,14 @@ class Transaction extends BaseComponent {
     }
 
   getRamInfo(){
-    this.props.dispatch({type: 'ram/getRamInfo',payload: {}});
+    this.props.dispatch({type: 'transaction/getRamInfo',payload: {}});
 
     // 获取曲线
     // this.setSelectedOption(this.state.selectedSegment);
   }
 
   getRamTradeLog(){
-    this.props.dispatch({type: 'ram/getRamTradeLog',payload: {}, callback: (resp) => {
+    this.props.dispatch({type: 'transaction/getRamTradeLog',payload: {}, callback: (resp) => {
         try {
             if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
                 this.setState({
@@ -386,11 +386,11 @@ class Transaction extends BaseComponent {
   }
 
   getRamBigTradeLog(){
-    this.props.dispatch({type: 'ram/getRamBigTradeLog',payload: {}});    
+    this.props.dispatch({type: 'transaction/getRamBigTradeLog',payload: {}});    
   }
 
   getBigRamRank(){
-    this.props.dispatch({type: 'ram/getBigRamRank',payload: {}});    
+    this.props.dispatch({type: 'transaction/getBigRamRank',payload: {}});    
   }
 
   getAccountInfo(){
@@ -412,14 +412,14 @@ class Transaction extends BaseComponent {
 
   fetchRAMLine(dateType,opt){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type:'ram/getRamPriceLine',payload:{dateType}});
+        this.props.dispatch({type:'transaction/getRamPriceLine',payload:{dateType}});
     });
   }
   fetchCoinLine(dateType,opt){
     EasyToast.show("暂未实现K线");
 
     InteractionManager.runAfterInteractions(() => {
-        // this.props.dispatch({type:'ram/getRamPriceLine',payload:{dateType}});
+        // this.props.dispatch({type:'transaction/getRamPriceLine',payload:{dateType}});
     });
   }
   //获取时分图
@@ -434,7 +434,7 @@ class Transaction extends BaseComponent {
 
   fetchRAMKLine(dateType,opt){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type: 'ram/getRamKLines',payload: {pageSize: 180, dateType: dateType}, callback: (resp) => {
+        this.props.dispatch({type: 'transaction/getRamKLines',payload: {pageSize: 180, dateType: dateType}, callback: (resp) => {
             try {
                 if(resp.code == '0'){
                   if(resp.data && resp.data.length > 0){
@@ -556,7 +556,7 @@ class Transaction extends BaseComponent {
         if(!onRefreshing){
             this.setState({logRefreshing: true});
         }
-        this.props.dispatch({type: 'ram/getRamBigTradeLog',payload: {}, callback: () => {
+        this.props.dispatch({type: 'transaction/getRamBigTradeLog',payload: {}, callback: () => {
             this.setState({logRefreshing: false});
         }});    
     }else{
@@ -564,7 +564,7 @@ class Transaction extends BaseComponent {
         if(!onRefreshing){
             this.setState({logRefreshing: true});
         }
-        this.props.dispatch({type: 'ram/getBigRamRank',payload: {}, callback: () => {
+        this.props.dispatch({type: 'transaction/getBigRamRank',payload: {}, callback: () => {
             this.setState({logRefreshing: false});
         }});
     }
@@ -591,7 +591,7 @@ class Transaction extends BaseComponent {
             if(!onRefreshing){
                 this.setState({logRefreshing: true});
             }
-            this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: this.props.defaultWallet.account, last_id: this.state.logId}, callback: (resp) => {
+            this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: this.props.defaultWallet.account, last_id: this.state.logId}, callback: (resp) => {
                 try {
                     if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
                         this.setState({
@@ -615,7 +615,7 @@ class Transaction extends BaseComponent {
         if(!onRefreshing){
             this.setState({logRefreshing: true});
         }
-        this.props.dispatch({type: 'ram/getRamTradeLog',payload: {}, callback: (resp) => {
+        this.props.dispatch({type: 'transaction/getRamTradeLog',payload: {}, callback: (resp) => {
             try {
                 if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
                     this.setState({

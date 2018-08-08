@@ -9,7 +9,7 @@ import Login from './Login'
 import Common from './Common'
 import Invite from './Invite'
 import vote from './vote'
-import Ram from './Ram'
+import Transaction from './Transaction'
 const models = [
     Assets,
     Banner,
@@ -22,6 +22,6 @@ const models = [
     Common,
     Invite,
     vote,
-    Ram,
+    Transaction,
 ]
 export default models;

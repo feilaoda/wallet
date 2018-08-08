@@ -14,9 +14,7 @@ import { EasyToast } from "../../components/Toast"
 import moment from 'moment';
 var dismissKeyboard = require('dismissKeyboard');
 var Dimensions = require('Dimensions')
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
-@connect(({ram,sticker,wallet}) => ({...ram, ...sticker, ...wallet}))
+@connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
 class RecordQuery extends React.Component {
   static navigationOptions = {
     title: "搜索交易记录",
@@ -42,7 +40,7 @@ class RecordQuery extends React.Component {
   //加载地址数据
   componentDidMount() {
     this.setState({logRefreshing: true});
-    this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: this.props.navigation.state.params.record, last_id: this.state.logId}, callback: (resp) => {
+    this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: this.props.navigation.state.params.record, last_id: this.state.logId}, callback: (resp) => {
       try {
         if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
           this.setState({
@@ -83,7 +81,7 @@ class RecordQuery extends React.Component {
         return;
       }
       this.setState({logRefreshing: true});
-      this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: labelname.toLowerCase(), last_id: this.state.logId}, callback: (resp) => {
+      this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: labelname.toLowerCase(), last_id: this.state.logId}, callback: (resp) => {
         try {
             if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
               this.setState({
@@ -127,7 +125,7 @@ class RecordQuery extends React.Component {
     if (this.state.labelname == ""||this.state.labelname == undefined||this.state.labelname==null) {
       accountName = this.props.navigation.state.params.record;
     }
-    this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: accountName.toLowerCase(), last_id: "-1"}, callback: (resp) => {
+    this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: accountName.toLowerCase(), last_id: "-1"}, callback: (resp) => {
       try {
           if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
             this.setState({
@@ -159,7 +157,7 @@ class RecordQuery extends React.Component {
       accountName = this.props.navigation.state.params.record;
     }
 
-    this.props.dispatch({type: 'ram/getRamTradeLogByAccount',payload: {account_name: accountName.toLowerCase(), last_id: this.state.logId}, callback: (resp) => {
+    this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: accountName.toLowerCase(), last_id: this.state.logId}, callback: (resp) => {
       try {
           if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
             this.setState({

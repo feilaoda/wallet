@@ -6,7 +6,7 @@ import { EasyToast } from '../components/Toast';
 let newarr = new Array();
 
 export default {
-    namespace: 'ram',
+    namespace: 'transaction',
     state: {
 
     },
