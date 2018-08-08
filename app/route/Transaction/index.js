@@ -1637,7 +1637,7 @@ class Transaction extends BaseComponent {
                     }
                   </View> */}
                  </View>}
-          }   
+        
         </TouchableOpacity>
       </ScrollView>  
     </KeyboardAvoidingView> 
@@ -1744,7 +1744,7 @@ class Transaction extends BaseComponent {
 
     <Modal style={styles.businesmodal} animationType={'slide'} transparent={true} onRequestClose={() => {this.setState({business: false}) }} visible={this.state.business}>
         <TouchableOpacity onPress={() => this.setState({ business: false })} style={styles.businestouchable} activeOpacity={1.0}>
-        </TouchableOpacity>
+
         <TouchableOpacity style={styles.busines} activeOpacity={1.0}>
             <View style={styles.businesout}>
                 <View style={styles.headbusines}>
@@ -1754,11 +1754,11 @@ class Transaction extends BaseComponent {
                     </View>
                     <View style={{flex: 1,flexDirection: 'row',}}> 
                         <TouchableOpacity onPress={this.openQuery.bind(this,'busines')} style={styles.busrecord}>
-                            <Image source={ UImage.record } style={styles.busrecordimg}/>
+                            <Image source={ UImage.record } style={styles.busrecordimg} resizeMode= 'contain'/>
                             <Text style={styles.busrecordtext}> 我的记录</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this.setState({ business: false })}>
-                            <Image source={ UImage.redclose } style={styles.redclose}/>
+                            <Image source={ UImage.redclose } style={styles.redclose}  resizeMode='contain'/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -1844,6 +1844,7 @@ class Transaction extends BaseComponent {
                   </View>
                 </View>}
             </View>
+            </TouchableOpacity>
       </TouchableOpacity>
     </Modal>
   </View>
@@ -2355,7 +2356,7 @@ const styles = StyleSheet.create({
     busrecordimg: {
         width: 12,
         height: 16,
-        resizeMode: 'contain'
+        
     },
     busrecordtext: {
         fontSize: 14,
@@ -2364,7 +2365,7 @@ const styles = StyleSheet.create({
     redclose: {
         width: 40,
         height: 40,
-        resizeMode: 'contain'
+       
     },
     headbusines: {
         width: ScreenWidth,
