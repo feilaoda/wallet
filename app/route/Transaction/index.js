@@ -267,7 +267,7 @@ class Transaction extends BaseComponent {
       selectedSegment:"时分",
       selectedTrackSegment: trackOption[0],
       selectedTransactionRecord: transactionOption[1],
-      isBuy: false,
+      isBuy: true,
       isSell: false,
       isTxRecord: true,
       isTrackRecord: false,
@@ -287,7 +287,8 @@ class Transaction extends BaseComponent {
       showMore:false,  
       showMoreTitle:"更多",
       isKLine:false,  //是否K线
-      dataKLine: null,
+      dataKLine: {},
+      business: false,
    };
   }
 
@@ -649,11 +650,7 @@ class Transaction extends BaseComponent {
 }
 
   goPage(current) {
-    if (current == 'isBuy'){
-        // EasyToast.show('买');
-    }else if (current == 'isSell'){
-        // EasyToast.show('卖');
-    }else if (current == 'isTxRecord'){
+    if (current == 'isTxRecord'){
         this.setSelectedTransactionRecord(this.state.selectedTransactionRecord);
     }
     else if (current == 'isTrackRecord'){
@@ -680,13 +677,23 @@ class Transaction extends BaseComponent {
   }  
 
   funcButton(style, selectedSate, stateType, buttonTitle) {  
-    let BTN_SELECTED_STATE_ARRAY = ['isBuy', 'isSell','isTxRecord', 'isTrackRecord'];  
+    let BTN_SELECTED_STATE_ARRAY = ['isTxRecord', 'isTrackRecord'];  
     return(  
         <TouchableOpacity style={[style, selectedSate ? {backgroundColor:UColor.tintColor} : {backgroundColor: UColor.secdColor}]}  onPress={ () => {this._updateBtnState(stateType, BTN_SELECTED_STATE_ARRAY)}}>  
             <Text style={[styles.tabText, selectedSate ? {color: UColor.fontColor} : {color: UColor.tintColor}]}>{buttonTitle}</Text>  
         </TouchableOpacity>  
     );  
   } 
+
+  businesButton(style, selectedSate, stateType, buttonTitle) {  
+    let BTN_SELECTED_STATE_ARRAY = ['isBuy', 'isSell'];  
+    return(  
+        <TouchableOpacity style={[style, selectedSate ? {backgroundColor:UColor.tintColor} : {backgroundColor: UColor.secdColor}]}  onPress={ () => {this._updateBtnState(stateType, BTN_SELECTED_STATE_ARRAY)}}>  
+            <Text style={[styles.tabText, selectedSate ? {color: UColor.fontColor} : {color: UColor.tintColor}]}>{buttonTitle}</Text>  
+        </TouchableOpacity>  
+    );  
+  } 
+
   transformColor(currentPressed) {
       if(currentPressed == 'isBuy'){
         return '#42B324';
@@ -849,7 +856,8 @@ class Transaction extends BaseComponent {
         }
         // EasyShowLD.dialogClose();
     }, () => { EasyShowLD.dialogClose() });
-};
+  };
+
   // 出售内存
   sellram = (rowData) => {
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
@@ -914,8 +922,8 @@ class Transaction extends BaseComponent {
     }, () => { EasyShowLD.dialogClose() });
   };
 
-// 购买
-buy = (rowData) => { 
+  // 购买
+  buy = (rowData) => { 
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
         EasyToast.show('请先创建并激活钱包');
         return;
@@ -993,9 +1001,10 @@ buy = (rowData) => {
         }
         // EasyShowLD.dialogClose();
     }, () => { EasyShowLD.dialogClose() });
-};
-// 出售
-sell = (rowData) => {
+  };
+
+  // 出售
+  sell = (rowData) => {
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
         EasyToast.show('请先创建并激活钱包');
         return;
@@ -1066,7 +1075,7 @@ sell = (rowData) => {
     }
     // EasyShowLD.dialogClose();
     }, () => { EasyShowLD.dialogClose() });
-};
+  };
 
     dismissKeyboardClick() {
       dismissKeyboard();
@@ -1126,8 +1135,13 @@ sell = (rowData) => {
   }
 
   openQuery =(payer) => {
-    const { navigate } = this.props.navigation;
-    navigate('RecordQuery', {record:payer});
+    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+        EasyToast.show('未检测到您的账号信息');
+    }else{
+        this.setState({ business: false });
+        const { navigate } = this.props.navigation;
+        navigate('RecordQuery', {record:payer});
+    }
   }
 
   dismissKeyboardClick() {
@@ -1156,9 +1170,18 @@ sell = (rowData) => {
    }
    return coinList;
   }
+  openbusiness(){
+
+  }
 
   render() {
     return <View style={styles.container}>
+    <TouchableOpacity style={{ position:'absolute', bottom: 20, right: 0, zIndex: 999, }} onPress={() => this.setState({ business: !this.state.business })}>
+        <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,
+           }}>
+            <Text style={{fontSize: 12, color: '#fff'}}>交易面板</Text>
+        </View>
+    </TouchableOpacity>
     <View style={styles.headerTitle}>  
         <TouchableOpacity onPress={this._leftTopClick.bind()}>
             <View style={styles.leftoutTitle} >
@@ -1329,94 +1352,13 @@ sell = (rowData) => {
             }
             </View>
         }
-
         <View style={styles.tablayout}>  
-            {this.funcButton(styles.buytab, this.state.isBuy, 'isBuy', '买')}  
-            {this.funcButton(styles.selltab, this.state.isSell, 'isSell', '卖')}  
+            {/* {this.funcButton(styles.buytab, this.state.isBuy, 'isBuy', '买')}  
+            {this.funcButton(styles.selltab, this.state.isSell, 'isSell', '卖')}   */}
             {this.funcButton(styles.txRecordtab, this.state.isTxRecord, 'isTxRecord', '交易记录')}  
             {this.funcButton(styles.trackRecordtab, this.state.isTrackRecord, 'isTrackRecord', '大单追踪')}  
         </View> 
-         {this.state.isBuy?<View>
-                <View style={styles.greeninptout}>
-                    <Text style={styles.greenText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
-                    <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0.0000" :this.state.balance} EOS</Text>
-                </View>
-              <View style={styles.inputout}>
-                  <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyRamAmount + ''} returnKeyType="go" 
-                  selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow} 
-                  placeholder="输入购买的额度" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
-                  onChangeText={(buyRamAmount) => this.setState({ buyRamAmount: this.chkBuyEosQuantity(buyRamAmount), 
-                    eosToKB: this.eosToKB(buyRamAmount, this.props.ramInfo?this.props.ramInfo.price:'')})}
-                  />
-                <Text style={styles.unittext}>EOS</Text>
-              </View>
-              <View style={styles.inputout}>
-                  <Text style={styles.conversion}>≈{this.state.eosToKB}</Text>
-                  <Text style={styles.unittext}>KB</Text>
-              </View>
-              <View style={styles.inptoutsource}>
-                <View style={styles.outsource}>
-                    <View style={styles.progressbar}>
-                        <Slider maximumValue={this.state.balance*1} minimumValue={0} step={0.0001} value={this.state.buyRamAmount*1}
-                        onSlidingComplete={(value)=>this.setState({ buyRamAmount: value.toFixed(4), eosToKB: this.eosToKB(value.toFixed(4), this.props.ramInfo?this.props.ramInfo.price:'')})}
-                        maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
-                        />
-                        <View style={styles.paragraph}>
-                            <Text style={styles.subsection}>0</Text>
-                            <Text style={styles.subsection}>1/3</Text>     
-                            <Text style={styles.subsection}>2/3</Text>
-                            <Text style={styles.subsection}>ALL</Text>                                
-                        </View>    
-                    </View>
-                    <Button onPress={this.buyram.bind(this)}>
-                        <View style={styles.botn} backgroundColor={'#42B324'}>
-                            <Text style={styles.botText}>买入</Text>
-                        </View>
-                    </Button> 
-                </View>
-              </View>
-          </View>:  
-               <View>{this.state.isSell?
-                  <View>
-                    <View style={styles.greeninptout}>
-                        <Text style={styles.redText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
-                        <Text style={styles.inptTitle}>可卖: {(this.state.myRamAvailable == null || this.state.myRamAvailable == '') ? '0' : (this.state.myRamAvailable/1024).toFixed(4)} KB</Text>
-                    </View>
-                  <View style={styles.inputout}>
-                      <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellRamBytes + ''} returnKeyType="go" 
-                      selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                      placeholder="输入出售数量" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
-                      onChangeText={(sellRamBytes) => this.setState({ sellRamBytes: this.chkInputSellRamBytes(sellRamBytes), kbToEos: this.kbToEos(sellRamBytes, this.props.ramInfo?this.props.ramInfo.price:'')})}
-                      />
-                      <Text style={styles.unittext}>KB</Text>
-                  </View>
-                  <View style={styles.inputout}>
-                      <Text style={styles.conversion}>≈{(this.state.kbToEos == null || this.state.kbToEos == '') ? '0' : this.state.kbToEos}</Text>
-                      <Text style={styles.unittext}>EOS</Text>
-                  </View>
-                  <View style={styles.inptoutsource}>
-                        <View style={styles.outsource}>
-                            <View style={styles.progressbar}>
-                                <Slider maximumValue={this.state.myRamAvailable*1} minimumValue={0} step={0.0001} value={this.state.sellRamBytes*1024}
-                                    onSlidingComplete={(value)=>this.setState({ sellRamBytes: (value/1024).toFixed(4), kbToEos: this.kbToEos(value/1024, this.props.ramInfo?this.props.ramInfo.price:'')})}
-                                    maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
-                                    />
-                                <View style={styles.paragraph}>
-                                    <Text style={styles.subsection}>0</Text>
-                                    <Text style={styles.subsection}>1/3</Text>     
-                                    <Text style={styles.subsection}>2/3</Text>
-                                    <Text style={styles.subsection}>ALL</Text>                                
-                                </View> 
-                            </View>
-                            <Button onPress={this.sellram.bind(this)}>
-                                <View style={styles.botn} backgroundColor={UColor.showy}>
-                                    <Text style={styles.botText}>卖出</Text>
-                                </View>
-                            </Button> 
-                        </View>
-                </View>
-            </View>:
-                <View>{this.state.isTxRecord ? 
+        {this.state.isTxRecord ? 
                     <View>
                         <View style={styles.toptabout}>
                             <SegmentedControls tint= {UColor.mainColor} selectedTint= {UColor.fontColor} onSelection={this.selectedTransactionRecord.bind(this) }
@@ -1592,8 +1534,6 @@ sell = (rowData) => {
                     }
                   </View> */}
                  </View>}
-               </View>}
-            </View>
           }   
         </TouchableOpacity>
       </ScrollView>  
@@ -1696,6 +1636,108 @@ sell = (rowData) => {
                 />
            </View>
           </TouchableOpacity>
+      </TouchableOpacity>
+    </Modal>
+
+    <Modal style={styles.businesmodal} animationType={'none'} transparent={true} onRequestClose={() => {this.setState({business: false}); }} visible={this.state.business}>
+        <TouchableOpacity style={styles.busines} activeOpacity={1.0}>
+            <View style={styles.businesout}>
+                <View style={{width: ScreenWidth,  height: 40, flexDirection: 'row',justifyContent: "center",}}>
+                    <View style={styles.businestab}>  
+                        {this.businesButton(styles.buytab, this.state.isBuy, 'isBuy', '买')}  
+                        {this.businesButton(styles.selltab, this.state.isSell, 'isSell', '卖')}  
+                    </View>
+                    <View style={{flex: 1,flexDirection: 'row',}}> 
+                        <TouchableOpacity onPress={this.openQuery.bind(this,this.props.defaultWallet.account,)} style={{flex: 3,flexDirection: 'row',justifyContent: "center",alignItems: "center",}}>
+                            <Image source={ UImage.record } style={ {width: 12, height:16,resizeMode:'contain'}}/>
+                            <Text style={{fontSize: 14,color: '#65CAFF',}}> 我的记录</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setState({ business: false })} style={{width: 40,}}>
+                            <Image source={ UImage.redclose } style={ {width: 40, height:40,resizeMode:'contain'}}/>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                {this.state.isBuy?<View>
+                    <View style={styles.greeninptout}>
+                        <Text style={styles.greenText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
+                        <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0.0000" :this.state.balance} EOS</Text>
+                    </View>
+                    <View style={styles.inputout}>
+                        <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyRamAmount + ''} returnKeyType="go" 
+                        selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow} 
+                        placeholder="输入购买的额度" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
+                        onChangeText={(buyRamAmount) => this.setState({ buyRamAmount: this.chkBuyEosQuantity(buyRamAmount), 
+                            eosToKB: this.eosToKB(buyRamAmount, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                        />
+                        <Text style={styles.unittext}>EOS</Text>
+                    </View>
+                    <View style={styles.inputout}>
+                        <Text style={styles.conversion}>≈{this.state.eosToKB}</Text>
+                        <Text style={styles.unittext}>KB</Text>
+                    </View>
+                    <View style={styles.inptoutsource}>
+                        <View style={styles.outsource}>
+                            <View style={styles.progressbar}>
+                                <Slider maximumValue={this.state.balance*1} minimumValue={0} step={0.0001} value={this.state.buyRamAmount*1}
+                                onSlidingComplete={(value)=>this.setState({ buyRamAmount: value.toFixed(4), eosToKB: this.eosToKB(value.toFixed(4), this.props.ramInfo?this.props.ramInfo.price:'')})}
+                                maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
+                                />
+                                <View style={styles.paragraph}>
+                                    <Text style={styles.subsection}>0</Text>
+                                    <Text style={styles.subsection}>1/3</Text>     
+                                    <Text style={styles.subsection}>2/3</Text>
+                                    <Text style={styles.subsection}>ALL</Text>                                
+                                </View>    
+                            </View>
+                            <Button onPress={this.buyram.bind(this)}>
+                                <View style={styles.botn} backgroundColor={'#42B324'}>
+                                    <Text style={styles.botText}>买入</Text>
+                                </View>
+                            </Button> 
+                        </View>
+                    </View>
+                </View>
+                :
+                  <View>
+                    <View style={styles.greeninptout}>
+                        <Text style={styles.redText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
+                        <Text style={styles.inptTitle}>可卖: {(this.state.myRamAvailable == null || this.state.myRamAvailable == '') ? '0' : (this.state.myRamAvailable/1024).toFixed(4)} KB</Text>
+                    </View>
+                  <View style={styles.inputout}>
+                      <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellRamBytes + ''} returnKeyType="go" 
+                      selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
+                      placeholder="输入出售数量" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
+                      onChangeText={(sellRamBytes) => this.setState({ sellRamBytes: this.chkInputSellRamBytes(sellRamBytes), kbToEos: this.kbToEos(sellRamBytes, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                      />
+                      <Text style={styles.unittext}>KB</Text>
+                  </View>
+                  <View style={styles.inputout}>
+                      <Text style={styles.conversion}>≈{(this.state.kbToEos == null || this.state.kbToEos == '') ? '0' : this.state.kbToEos}</Text>
+                      <Text style={styles.unittext}>EOS</Text>
+                  </View>
+                  <View style={styles.inptoutsource}>
+                        <View style={styles.outsource}>
+                            <View style={styles.progressbar}>
+                                <Slider maximumValue={this.state.myRamAvailable*1} minimumValue={0} step={0.0001} value={this.state.sellRamBytes*1024}
+                                    onSlidingComplete={(value)=>this.setState({ sellRamBytes: (value/1024).toFixed(4), kbToEos: this.kbToEos(value/1024, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                                    maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
+                                    />
+                                <View style={styles.paragraph}>
+                                    <Text style={styles.subsection}>0</Text>
+                                    <Text style={styles.subsection}>1/3</Text>     
+                                    <Text style={styles.subsection}>2/3</Text>
+                                    <Text style={styles.subsection}>ALL</Text>                                
+                                </View> 
+                            </View>
+                            <Button onPress={this.sellram.bind(this)}>
+                                <View style={styles.botn} backgroundColor={UColor.showy}>
+                                    <Text style={styles.botText}>卖出</Text>
+                                </View>
+                            </Button> 
+                        </View>
+                </View>
+            </View>}
+            </View>
       </TouchableOpacity>
     </Modal>
   </View>
@@ -1835,6 +1877,7 @@ const styles = StyleSheet.create({
     },
     tablayout: {   
         flex: 1,
+        height: 35,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',  
@@ -1842,37 +1885,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         backgroundColor: UColor.secdColor,
     },
-    buytab: {
+    txRecordtab: {
         flex: 1,
         height: 33,
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
         borderColor: UColor.tintColor,
         borderWidth: 1,
-        alignItems: 'center',   
-        justifyContent: 'center', 
-    },
-    selltab: {
-        flex: 1,
-        height: 33,
-        borderTopColor: UColor.tintColor,
-        borderRightColor: UColor.tintColor,
-        borderBottomColor: UColor.tintColor,
-        borderTopWidth: 1,
-        borderRightWidth: 0.5,
-        borderBottomWidth: 1,
-        alignItems: 'center',   
-        justifyContent: 'center', 
-    },
-    txRecordtab: {
-        flex: 1,
-        height: 33,
-        borderTopColor: UColor.tintColor,
-        borderLeftColor: UColor.tintColor,
-        borderBottomColor: UColor.tintColor,
-        borderTopWidth: 1,
-        borderLeftWidth: 0.5,
-        borderBottomWidth: 1,
         alignItems: 'center',   
         justifyContent: 'center', 
     },
@@ -1922,7 +1941,6 @@ const styles = StyleSheet.create({
         color: UColor.arrow
     },
     greeninptout: {
-      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 20,
@@ -2169,6 +2187,56 @@ const styles = StyleSheet.create({
     redincdo:{
         fontSize:15,
         color:'#F25C49',
+    },
+
+
+
+    businesmodal: {
+        width: ScreenWidth , 
+        height: ScreenHeight-50,
+        flexDirection: "column",
+    },
+    busines: {
+        flex: 1, 
+        marginBottom: 49,
+        justifyContent: 'flex-end', 
+        alignItems: 'center', 
+        backgroundColor: UColor.mask,
+    },
+    businesout: {
+        width: ScreenWidth , 
+        height: ScreenHeight*2/5,
+        backgroundColor: '#43536D', 
+        alignItems: 'center', 
+    },
+    businestab: {
+        flex: 1,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',  
+        paddingLeft: 20,
+        backgroundColor: UColor.secdColor,
+    },
+    buytab: {
+        flex: 1,
+        height: 26,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
+        borderColor: UColor.tintColor,
+        borderWidth: 1,
+        alignItems: 'center',   
+        justifyContent: 'center', 
+    },
+    selltab: {
+        flex: 1,
+        height: 26,
+        borderTopRightRadius: 5,
+        borderBottomRightRadius: 5,
+        borderColor: UColor.tintColor,
+        borderWidth: 1,
+        alignItems: 'center',   
+        justifyContent: 'center', 
     },
 
 });

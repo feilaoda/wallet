@@ -58,6 +58,8 @@ export default {
   publickey:require('../img/publickey.png'),
   qr: require('../img/qr.png'),
   qrcode:require('../img/qrcode.png'),
+  record:require('../img/record.png'),
+  redclose:require('../img/redclose.png'),
   refresh:require('../img/refresh.png'),
   resources_bj:require('../img/resources_bj.png'),
   resources_f:require('../img/resources_f.png'),
