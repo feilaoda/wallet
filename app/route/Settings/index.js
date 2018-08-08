@@ -1,16 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter,NativeModules, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar, Switch } from 'react-native';
+import { Dimensions, DeviceEventEmitter,NativeModules, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar, Switch,Linking, } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import Item from '../../components/Item'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
-
+import Constants from '../../utils/Constants'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from '../../components/EasyShow'
-
+const maxWidth = Dimensions.get('window').width;
+const maxHeight = Dimensions.get('window').height;
 var DeviceInfo = require('react-native-device-info');
 
 @connect(({ login}) => ({ ...login}))
@@ -110,13 +111,31 @@ class Setting extends React.Component {
     }
   }
 
+  goSystemSetting(){
+    // console.log("go to set net!")
+    if (Platform.OS == 'ios') {
+      Linking.openURL('app-settings:')
+        .catch(err => console.log('error', err))
+    } else {
+    }
+
+  }
 
   render() {
     return <View style={styles.container}>
             
 
       <ScrollView style={styles.scrollView}>
-        <View>
+
+      {Constants.netTimeoutFlag==true &&
+      <Button onPress={this.goSystemSetting.bind(this)}>
+        <View style={styles.systemSettingTip}>
+            <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
+            <Text style={styles.systemSettingArrow}>></Text>
+        </View>
+      </Button>}
+
+      <View>
           <Button onPress={this.goProfile.bind(this)}>
             <View style={styles.userHead} >
               <View style={styles.headout}>
@@ -302,6 +321,28 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     marginTop: 5
+  },
+
+
+  systemSettingTip: {
+    flex: 1,
+    width: maxWidth,
+    height:40,
+    flexDirection: "row",
+    alignItems: 'center', 
+    backgroundColor: UColor.showy,
+  },
+  systemSettingText: {
+    color: UColor.fontColor,
+    textAlign: 'center',
+    fontSize: 15
+  },
+  systemSettingArrow: {
+    flex: 1,
+    color: UColor.fontColor,
+    textAlign: 'right',
+    fontSize: 30,
+    marginBottom:6
   },
 });
 

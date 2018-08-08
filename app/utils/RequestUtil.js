@@ -56,6 +56,7 @@ const requestO = (url,method, body, timeout=30000) => {
     }).then((response) => {
         if (response.ok) {
           isOk = true;
+          Constants.netTimeoutFlag=false;
         } else {
           isOk = false;
         }
@@ -95,10 +96,11 @@ const request = (url,method,body, timeout = 30000)=>{
       if(okUrl.indexOf("/")==0){
         okUrl = rootaddr+url
       }
-      
+
       return requestO(okUrl, method, body, timeout)
    }).catch(e=>{
     console.log(e);
+    Constants.netTimeoutFlag=true;
     return { code: 500, msg: '网络繁忙，请稍后再试' };
    
    })
