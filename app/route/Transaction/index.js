@@ -29,8 +29,8 @@ var dismissKeyboard = require('dismissKeyboard');
 const trackOption = ['最近交易','持仓大户'];
 const transactionOption = ['我的交易','大盘交易'];
 
-var upColor = '#00da3c';
-var downColor = '#ec0000';
+var upColor = '#f44961';
+var downColor = '#3fcfb4';
 
 function splitData(rawData) {
     var categoryData = [];
@@ -1279,13 +1279,14 @@ class Transaction extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 20 : 30, right: 0, zIndex: 999, }} onPress={() => this.setState({ business: !this.state.business })} activeOpacity={0.8}>
-        <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
+    <TouchableOpacity style={{ position:'absolute', bottom: 20, right: 0, zIndex: 999, }} onPress={() => this.setState({ business: !this.state.business })}>
+        <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,
+           }}>
             <Text style={{fontSize: 12, color: '#fff'}}>交易面板</Text>
         </View>
     </TouchableOpacity>
     <View style={styles.headerTitle}>  
-        <TouchableOpacity onPress={this._leftTopClick.bind()} activeOpacity={0.8}>
+        <TouchableOpacity onPress={this._leftTopClick.bind()}>
             <View style={styles.leftoutTitle} >
                 <Image source={this.state.modal ? UImage.tx_slide0 : UImage.tx_slide1} style={styles.HeadImg}/>
             </View>
@@ -1742,7 +1743,8 @@ class Transaction extends BaseComponent {
     </Modal>
 
     <Modal style={styles.businesmodal} animationType={'slide'} transparent={true} onRequestClose={() => {this.setState({business: false}) }} visible={this.state.business}>
-    <TouchableOpacity onPress={() => this.setState({ business: false })} style={styles.businestouchable} activeOpacity={1.0}> 
+        <TouchableOpacity onPress={() => this.setState({ business: false })} style={styles.businestouchable} activeOpacity={1.0}>
+
         <TouchableOpacity style={styles.busines} activeOpacity={1.0}>
             <View style={styles.businesout}>
                 <View style={styles.headbusines}>
@@ -1751,11 +1753,11 @@ class Transaction extends BaseComponent {
                         {this.businesButton(styles.selltab, this.state.isSell, 'isSell', '卖')}  
                     </View>
                     <View style={{flex: 1,flexDirection: 'row',}}> 
-                        <TouchableOpacity onPress={this.openQuery.bind(this,'busines')} style={styles.busrecord} activeOpacity={0.8}>
+                        <TouchableOpacity onPress={this.openQuery.bind(this,'busines')} style={styles.busrecord}>
                             <Image source={ UImage.record } style={styles.busrecordimg} resizeMode= 'contain'/>
                             <Text style={styles.busrecordtext}> 我的记录</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.setState({ business: false })} activeOpacity={0.8}>
+                        <TouchableOpacity onPress={() => this.setState({ business: false })}>
                             <Image source={ UImage.redclose } style={styles.redclose}  resizeMode='contain'/>
                         </TouchableOpacity>
                     </View>
@@ -1842,7 +1844,7 @@ class Transaction extends BaseComponent {
                   </View>
                 </View>}
             </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
       </TouchableOpacity>
     </Modal>
   </View>
@@ -2292,25 +2294,27 @@ const styles = StyleSheet.create({
 
 
     businesmodal: {
-        flex: 1,
-        flexDirection:'column',
+        width: ScreenWidth , 
+        height: ScreenHeight-50,
+        flexDirection: "column",
         justifyContent: 'flex-end',
         backgroundColor: UColor.tintColor,
     },
     businestouchable: {
         flex: 1, 
-        justifyContent: 'flex-end', 
         backgroundColor: 'rgba(0,0,0,0)'
     },
-    
     busines: {
         width: ScreenWidth , 
-        height: Platform.OS == 'ios' ? 290:270,
-        paddingBottom:Platform.OS == 'ios' ? 49:49.5,
+        height: 250,
+        paddingBottom: 49,
+        justifyContent: 'flex-end', 
+        alignItems: 'center', 
+        backgroundColor: 'rgba(0,0,0,0)'
     },
-   
     businesout: {
-        flex: 1,
+        width: ScreenWidth , 
+        height: 250,
         backgroundColor: '#43536D', 
         alignItems: 'center', 
     },
