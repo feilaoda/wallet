@@ -410,31 +410,26 @@ class Transaction extends BaseComponent {
 
   } 
 
-  fetchRAMLine(dateType,opt){
+  fetchRAMLine(type,opt){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type:'transaction/getRamPriceLine',payload:{dateType}});
+        this.props.dispatch({type:'transaction/getRamPriceLine',payload:{type}});
     });
   }
-  fetchCoinLine(dateType,opt){
+  fetchCoinLine(type,opt){
     EasyToast.show("暂未实现K线");
-
-    InteractionManager.runAfterInteractions(() => {
-        // this.props.dispatch({type:'transaction/getRamPriceLine',payload:{dateType}});
-    });
   }
   //获取时分图
-  fetchLine(isRamType,dateType,opt){
+  fetchLine(isRamType,type,opt){
     if(isRamType)
     {
-        this.fetchRAMLine(dateType,opt);
+        this.fetchRAMLine(type,opt);
     }else{
-        this.fetchCoinLine(dateType,opt);
+        this.fetchCoinLine(type,opt);
     }
   }
-
   fetchRAMKLine(dateType,opt){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type: 'transaction/getRamKLines',payload: {pageSize: 180, dateType: dateType}, callback: (resp) => {
+        this.props.dispatch({type: 'transaction/getRamKLines',payload: {pageSize: "180", dateType: dateType}, callback: (resp) => {
             try {
                 if(resp.code == '0'){
                   if(resp.data && resp.data.length > 0){
@@ -486,25 +481,20 @@ class Transaction extends BaseComponent {
     });
     
   }
-  fetchCoinKLine(dateType,opt){
-
+  fetchCoinKLine(type,opt){
     EasyToast.show("暂未实现K线");
-    InteractionManager.runAfterInteractions(() => {
-    
-    });
  }
  //获取K线
-  fetchKLine(isRamType,dateType,opt){
+  fetchKLine(isRamType,type,opt){
     if(isRamType)
     {
-        this.fetchRAMKLine(dateType,opt);
+        this.fetchRAMKLine(type,opt);
     }else{
-        this.fetchCoinKLine(dateType,opt);
+        this.fetchCoinKLine(type,opt);
     }
   }
 
   onClickTimeType(opt){
-
     var isRamType = this.state.tradename == "RAM" ? true : false;
     if(opt == "时分"){
         this.setState({isKLine:false, showMore: false,selectedSegment:opt});
