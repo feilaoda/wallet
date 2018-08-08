@@ -29,8 +29,8 @@ var dismissKeyboard = require('dismissKeyboard');
 const trackOption = ['最近交易','持仓大户'];
 const transactionOption = ['我的交易','大盘交易'];
 
-var upColor = '#00da3c';
-var downColor = '#ec0000';
+var upColor = '#f44961';
+var downColor = '#3fcfb4';
 
 function splitData(rawData) {
     var categoryData = [];
