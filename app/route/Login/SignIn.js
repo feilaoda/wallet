@@ -37,6 +37,7 @@ class SignIn extends BaseComponent {
     currentPoint: 0,
     Sign_in: false,
     accumulative: 0,
+    newaccumulative: 0,
   }
 
   constructor(props) {
@@ -60,6 +61,7 @@ class SignIn extends BaseComponent {
           this.setState({
               accumulative:this.props.pointInfo.signin + this.props.pointInfo.share + this.props.pointInfo.interact + this.props.pointInfo.store + this.props.pointInfo.turnin + this.props.pointInfo.turnout
           })
+          this.dynamic(this.state.accumulative);
         }
       },
     });
@@ -67,6 +69,7 @@ class SignIn extends BaseComponent {
       EasyShowLD.loadingClose();
       this.setState({Sign_in: data.data});
     } });
+    
   }
   componentWillUnmount(){
     //结束页面前，资源释放操作
@@ -77,7 +80,9 @@ class SignIn extends BaseComponent {
     const { dispatch } = this.props;
     this.props.dispatch({
       type: 'login/signin', payload: { name: this.state.phone }, callback: (data) => {
+        //alert(JSON.stringify(data));
         if(data.code == 509){
+          EasyToast.show(data.msg);
           this.setState({
             Sign_in: true,
           })
@@ -87,23 +92,36 @@ class SignIn extends BaseComponent {
             this.setState({
               Sign_in: true,
               accumulative:this.props.pointInfo.signin + this.props.pointInfo.share + this.props.pointInfo.interact + this.props.pointInfo.store + this.props.pointInfo.turnin + this.props.pointInfo.turnout
-          })
+            })
+            this.dynamic(this.state.accumulative);
           } });
         } else {
           EasyToast.show(data.msg);
-            this.setState({
-              Sign_in: false,
-            })
+          this.setState({
+            Sign_in: false,
+          })
         }
         EasyShowLD.loadingClose();
       }
     })
   }
+  dynamic(integral){
+    var num = 0;
+    let timer = setInterval(()=>{
+      num++;
+      if(num==integral){
+        clearInterval(timer)
+      }  
+      this.setState({
+        newaccumulative:num
+      })
+    },1);
+}
+ 
+
 
   render() {
     return <View style={styles.container}>
-            
-
       <ScrollView keyboardShouldPersistTaps="always">
         <View>
           <View style={styles.outsource}>
@@ -111,7 +129,7 @@ class SignIn extends BaseComponent {
             <ImageBackground style={styles.imgbg} source={UImage.integral_bg} resizeMode="cover">
               <View style={styles.accumulativeout}>
                 <Text style={styles.accumulativetext}>累计积分</Text>
-                <Text style={styles.accumulative}>{this.state.accumulative}</Text>
+                <Text style={styles.accumulative}>{this.state.newaccumulative}</Text>
               </View>
             </ImageBackground>
             <Image source={UImage.point_full} style={styles.imgsty} />           
