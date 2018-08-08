@@ -9,8 +9,8 @@
     "android": "react-native run-android",
     "ios-bundle-build": "react-native bundle --platform ios --entry-file index.js --bundle-output ./build-ios/main.jsbundle --assets-dest ./build-ios --dev false",
     "android-bundle-build": "react-native bundle --platform android --entry-file index.js --bundle-output ./build-android/index.android.bundle --assets-dest ./build-android --dev false",
-    "ios-push": "code-push release i_eostoken ./build-ios/ 2.1.9 --deploymentName Production  --description '' --mandatory true",
-    "android-push": "code-push release a_eostoken ./build-android/ 2.1.9 --deploymentName Production  --description '' --mandatory true",
+    "ios-push": "code-push release i_eostoken ./build-ios/ 2.2.0 --deploymentName Production  --description '' --mandatory true",
+    "android-push": "code-push release a_eostoken ./build-android/ 2.2.0 --deploymentName Production  --description '' --mandatory true",
     "push-list": "code-push deployment ls i_eostoken"
   },
   "dependencies": {
