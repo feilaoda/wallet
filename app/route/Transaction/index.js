@@ -1622,7 +1622,7 @@ sell = (rowData) => {
                <View style={styles.ebhbtnout}>
                     <View style={{width:'37%'}}>
                         <View style={{ flex:1,flexDirection:"row",alignItems: 'center', }}>
-                            <Text style={{marginLeft:20,fontSize:15,color:UColor.fontColor}}>内存</Text>
+                            <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>内存</Text>
                         </View>
                     </View>
                     <View style={{width:'28%'}}>
@@ -1663,7 +1663,7 @@ sell = (rowData) => {
                 <View style={styles.ebhbtnout}>
                     <View style={{width:'37%'}}>
                         <View style={{ flex:1,flexDirection:"row",alignItems: 'center', }}>
-                            <Text style={{marginLeft:20,fontSize:15,color:UColor.fontColor}}>币种</Text>
+                            <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>币种</Text>
                         </View>
                     </View>
                     <View style={{width:'28%'}}>
