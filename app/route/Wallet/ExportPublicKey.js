@@ -7,10 +7,11 @@ import Button from  '../../components/Button'
 import Item from '../../components/Item'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
-
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 var dismissKeyboard = require('dismissKeyboard');
+const maxWidth = Dimensions.get('window').width;
+
 @connect(({login}) => ({...login}))
 class ExportPublicKey extends BaseComponent {
 
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.secdColor,
     },
     inptext: {
+        width: maxWidth - 60,
         fontSize: 14,
         lineHeight: 25,
         color: UColor.arrow,
