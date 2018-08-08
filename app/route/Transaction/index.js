@@ -307,7 +307,7 @@ class Transaction extends BaseComponent {
         }});
     
         // 默认获取RAM的时分图
-        this.fetchLine(24,'24小时');
+        this.fetchLine(true,24,'24小时');
        
         // 获取钱包信息和余额
         this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }, callback: () => {
@@ -410,14 +410,29 @@ class Transaction extends BaseComponent {
 
   } 
 
-  fetchLine(type,opt){
+  fetchRAMLine(dateType,opt){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type:'ram/getRamPriceLine',payload:{type}});
+        this.props.dispatch({type:'ram/getRamPriceLine',payload:{dateType}});
     });
   }
-  fetchRAMKLine(type,opt){
+  fetchCoinLine(dateType,opt){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type: 'ram/getRamKLines',payload: {pageSize: 180, dateType: type}, callback: (resp) => {
+        this.props.dispatch({type:'ram/getRamPriceLine',payload:{dateType}});
+    });
+  }
+  //获取时分图
+  fetchLine(isRamType,dateType,opt){
+    if(isRamType)
+    {
+        this.fetchRAMLine(dateType,opt);
+    }else{
+        this.fetchCoinLine(dateType,opt);
+    }
+  }
+
+  fetchRAMKLine(dateType,opt){
+    InteractionManager.runAfterInteractions(() => {
+        this.props.dispatch({type: 'ram/getRamKLines',payload: {pageSize: 180, dateType: dateType}, callback: (resp) => {
             try {
                 if(resp.code == '0'){
                   if(resp.data && resp.data.length > 0){
@@ -469,45 +484,51 @@ class Transaction extends BaseComponent {
     });
     
   }
-  fetchCoinKLine(type,opt){
+  fetchCoinKLine(dateType,opt){
+
     EasyToast.show("暂未实现K线");
+    InteractionManager.runAfterInteractions(() => {
+    
+    });
  }
-  fetchKLine(type,opt){
-    if(this.state.tradename == "RAM")
+ //获取K线
+  fetchKLine(isRamType,dateType,opt){
+    if(isRamType)
     {
-        this.fetchRAMKLine(type,opt);
+        this.fetchRAMKLine(dateType,opt);
     }else{
-        this.fetchCoinKLine(type,opt);
+        this.fetchCoinKLine(dateType,opt);
     }
   }
 
-  onClickTimer(opt){
+  onClickTimeType(opt){
 
+    var isRamType = this.state.tradename == "RAM" ? true : false;
     if(opt == "时分"){
         this.setState({isKLine:false, showMore: false,selectedSegment:opt});
-        this.fetchLine(24,'24小时');
+        this.fetchLine(isRamType,24,'24小时');
         return ;
     }
     
     this.setState({isKLine:true, showMore: false,selectedSegment:opt});
     if(opt == "5分"){
-        this.fetchKLine("5m",opt);
+        this.fetchKLine(isRamType,"5m",opt);
     }else if(opt == "15分"){
-        this.fetchKLine("15m",opt);
+        this.fetchKLine(isRamType,"15m",opt);
     }else if(opt == "30分"){
-        this.fetchKLine("30m",opt);
+        this.fetchKLine(isRamType,"30m",opt);
     }else if(opt == "1小时"){
         this.setState({showMoreTitle:opt});
-        this.fetchKLine("1h",opt);
+        this.fetchKLine(isRamType,"1h",opt);
     }else if(opt == "1天"){
         this.setState({showMoreTitle:opt});
-        this.fetchKLine("1d",opt);
+        this.fetchKLine(isRamType,"1d",opt);
     }else if(opt == "1周"){
         this.setState({showMoreTitle:opt});
-        this.fetchKLine("1w",opt);
+        this.fetchKLine(isRamType,"1w",opt);
     }else if(opt == "1月"){
         this.setState({showMoreTitle:opt});
-        this.fetchKLine("1M",opt);
+        this.fetchKLine(isRamType,"1M",opt);
     }
   }
   
@@ -1201,7 +1222,7 @@ sell = (rowData) => {
 
           <View style={{flex:1,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
             <View style={{flexDirection:"column",flexGrow:1,}}>
-                <Button onPress={this.onClickTimer.bind(this,"时分")}>
+                <Button onPress={this.onClickTimeType.bind(this,"时分")}>
                     <View style={{ marginLeft: 2,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                         {this.state.selectedSegment == "时分" ? 
                                 <Text style={{fontSize: 15, color: UColor.tintColor,}}>时分</Text> : 
@@ -1210,7 +1231,7 @@ sell = (rowData) => {
                 </Button>   
             </View>
             <View style={{flexDirection:"column",flexGrow:1,}}>
-                <Button onPress={this.onClickTimer.bind(this,"5分")}>
+                <Button onPress={this.onClickTimeType.bind(this,"5分")}>
                     <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                         {this.state.selectedSegment == "5分" ? 
                                 <Text style={{fontSize: 15, color: UColor.tintColor,}}>5分</Text> : 
@@ -1219,7 +1240,7 @@ sell = (rowData) => {
                 </Button> 
             </View>
             <View style={{flexDirection:"column",flexGrow:1}}>
-                <Button onPress={this.onClickTimer.bind(this,"15分")}>
+                <Button onPress={this.onClickTimeType.bind(this,"15分")}>
                     <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                         {this.state.selectedSegment == "15分" ? 
                                 <Text style={{fontSize: 15, color: UColor.tintColor,}}>15分</Text> : 
@@ -1228,7 +1249,7 @@ sell = (rowData) => {
                 </Button> 
             </View>
             <View style={{flexDirection:"column",flexGrow:1}}>
-                <Button onPress={this.onClickTimer.bind(this,"30分")}>
+                <Button onPress={this.onClickTimeType.bind(this,"30分")}>
                     <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                        {this.state.selectedSegment == "30分" ? 
                                 <Text style={{fontSize: 15, color: UColor.tintColor,}}>30分</Text> : 
@@ -1266,28 +1287,28 @@ sell = (rowData) => {
                 </Button> 
             </View>
             <View style={{flexDirection:"column",flexGrow:1,}}>
-                <Button onPress={this.onClickTimer.bind(this,"1小时")}>
+                <Button onPress={this.onClickTimeType.bind(this,"1小时")}>
                     <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                         <Text style={{fontSize: 15,color: UColor.fontColor,}}>1小时</Text>
                     </View>
                 </Button> 
             </View>
             <View style={{flexDirection:"column",flexGrow:1}}>
-                <Button onPress={this.onClickTimer.bind(this,"1天")}>
+                <Button onPress={this.onClickTimeType.bind(this,"1天")}>
                     <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                         <Text style={{fontSize: 15,color: UColor.fontColor,}}>1天</Text>
                     </View>
                 </Button> 
             </View>
             <View style={{flexDirection:"column",flexGrow:1}}>
-                <Button onPress={this.onClickTimer.bind(this,"1周")}>
+                <Button onPress={this.onClickTimeType.bind(this,"1周")}>
                     <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                         <Text style={{fontSize: 15,color: UColor.fontColor,}}>1周</Text>
                     </View>
                 </Button> 
             </View>
             <View style={{flexDirection:"column",flexGrow:1}}>
-               <Button onPress={this.onClickTimer.bind(this,"1月")}>
+               <Button onPress={this.onClickTimeType.bind(this,"1月")}>
                     <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                         <Text style={{fontSize: 15,color: UColor.fontColor,}}>1月</Text>
                     </View>
