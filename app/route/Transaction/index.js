@@ -382,6 +382,7 @@ class Transaction extends BaseComponent {
       dataKLine: {},
       business: false,
       error: false,
+      errortext: '',
    };
   }
 
@@ -895,18 +896,27 @@ class Transaction extends BaseComponent {
   // 购买内存
   buyram = (rowData) => { 
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-        EasyToast.show('请先创建并激活钱包');
+        //EasyToast.show('请先创建并激活钱包');
+        this.setState({ error: true,errortext: '请先创建并激活钱包' });
+        setTimeout(() => {
+            this.setState({ error: false,errortext: '' });
+        }, 2000);
         return;
     }
 
-    if(this.state.buyRamAmount == ""){
-        EasyToast.show('请输入购买金额');
+    if(this.state.buyRamAmount == ""||this.state.buyRamAmount == '0'){
+        //EasyToast.show('请输入购买金额');
+        this.setState({ error: true,errortext: '请输入购买金额' });
+        setTimeout(() => {
+            this.setState({ error: false,errortext: '' });
+        }, 2000);
         return;
     }
     if(this.chkAmountIsZero(this.state.buyRamAmount,'请输入购买金额')){
         this.setState({ buyRamAmount: "" })
         return ;
     }
+    this.setState({ business: false});
     this. dismissKeyboardClick();
         const view =
         <View style={styles.passoutsource}>
@@ -959,17 +969,26 @@ class Transaction extends BaseComponent {
   // 出售内存
   sellram = (rowData) => {
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-        EasyToast.show('请先创建并激活钱包');
+        //EasyToast.show('请先创建并激活钱包');
+        this.setState({ error: true,errortext: '请先创建并激活钱包' });
+        setTimeout(() => {
+            this.setState({ error: false,errortext: '' });
+        }, 2000);
         return;
     }
-    if(this.state.sellRamBytes == ""){
-        EasyToast.show('请输入出售内存KB数量');
+    if(this.state.sellRamBytes == ""||this.state.sellRamBytes == '0'){
+        //EasyToast.show('请输入出售内存KB数量');
+        this.setState({ error: true,errortext: '请输入出售内存KB数量' });
+        setTimeout(() => {
+            this.setState({ error: false,errortext: '' });
+        }, 2000);
         return;
     }
     if(this.chkAmountIsZero(this.state.sellRamBytes,'请输入出售内存KB数量')){
         this.setState({ sellRamBytes: "" })
         return ;
     }
+    this.setState({ business: false});
     this. dismissKeyboardClick();
         const view =
         <View style={styles.passoutsource}>
@@ -1175,7 +1194,7 @@ class Transaction extends BaseComponent {
     }, () => { EasyShowLD.dialogClose() });
   };
 
-    dismissKeyboardClick() {
+  dismissKeyboardClick() {
       dismissKeyboard();
   }
 
@@ -1235,9 +1254,9 @@ class Transaction extends BaseComponent {
   openQuery =(payer) => {
       if(payer == 'busines'){
         if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-            this.setState({ error: true });
+            this.setState({ error: true,errortext: '未检测到您的账号信息' });
             setTimeout(() => {
-                this.setState({ error: false });
+                this.setState({ error: false,errortext: '' });
             }, 2000);
         }else{
             this.setState({ business: false});
@@ -1277,9 +1296,18 @@ class Transaction extends BaseComponent {
    return coinList;
   }
 
+  openbusiness() {  
+    let business = this.state.business;  
+    this.setState({  
+        business:!business,
+        buyRamAmount: '0',
+        sellRamBytes: '0',  
+      });  
+  }  
+
   render() {
     return <View style={styles.container}>
-    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 20 : 30, right: 0, zIndex: 999, }} onPress={() => this.setState({ business: !this.state.business })} activeOpacity={0.8}>
+    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 20 : 30, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
         <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
             <Text style={{fontSize: 12, color: '#fff'}}>交易面板</Text>
         </View>
@@ -1760,7 +1788,7 @@ class Transaction extends BaseComponent {
                         </TouchableOpacity>
                     </View>
                 </View>
-                {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>未检测到您的账号信息</Text>}
+                {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
                 {this.state.isBuy?<View>
                     <View style={styles.greeninptout}>
                         <Text style={styles.greenText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
@@ -2302,13 +2330,11 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end', 
         backgroundColor: 'rgba(0,0,0,0)'
     },
-    
     busines: {
         width: ScreenWidth , 
         height: Platform.OS == 'ios' ? 290:270,
         paddingBottom:Platform.OS == 'ios' ? 49:49.5,
     },
-   
     businesout: {
         flex: 1,
         backgroundColor: '#43536D', 
