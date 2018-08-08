@@ -10,7 +10,6 @@ import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
 import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
-const maxHeight = Dimensions.get('window').height;
 const {width, height} = Dimensions.get('window');
 
 import { EasyToast } from '../../components/Toast';
@@ -82,12 +81,12 @@ class Thin extends BaseComponent {
             EasyToast.show('请输入收款人地址');
             return;
         }
-        const { dispatch } = this.props;
+        // const { dispatch } = this.props;
         this.props.dispatch({ type: 'contracts/saveWallet', payload: { address: this.state.address, labelname: this.state.labelname }});
        
-        this._setModalVisible();
+        // this._setModalVisible();
 
-        this.componentDidMount();
+        // this.componentDidMount();
 
     }
     renderRow = (rowData, sectionID, rowID) => { // cell样式
@@ -150,12 +149,12 @@ class Thin extends BaseComponent {
                                 </Button>  
                                 <Text style={styles.titleText}>添加地址</Text> 
                                 <View style={styles.inptout} >
-                                    <TextInput onChangeText={(labelname) => this.setState({ labelname })} returnKeyType="next"
+                                    <TextInput onChangeText={(labelname) => this.setState({ labelname })} returnKeyType="next" maxLength = {20}
                                       selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}  
                                       placeholder="输入标签名称" underlineColorAndroid="transparent" value={this.state.labelname} />
                                 </View>    
                                 <View style={styles.inptout} >
-                                    <TextInput onChangeText={(address) => this.setState({ address })} returnKeyType="next"
+                                    <TextInput onChangeText={(address) => this.setState({ address })} returnKeyType="next" maxLength = {12}
                                       selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}
                                       placeholder="粘贴收款人地址" underlineColorAndroid="transparent"  value={this.state.address} />
                                 </View>                               
@@ -350,8 +349,8 @@ const styles = StyleSheet.create({
       
       // modal上子View的样式  
       subView:{  
-        marginLeft:10,  
-        marginRight:10, 
+        width:width-20,
+        marginHorizontal:10,  
         backgroundColor: UColor.fontColor,  
         alignSelf: 'stretch',  
         justifyContent:'center',  
@@ -367,9 +366,12 @@ const styles = StyleSheet.create({
         textAlign:'center',  
       }, 
       inptout: {
-          paddingLeft: 20,
+          width:width-40,
           height: 40,
+          paddingHorizontal: 10,
+          backgroundColor: '#F3F3F3',
           marginBottom: 10,
+          marginHorizontal: 10,
           justifyContent: 'center',
       },
       inpt: {

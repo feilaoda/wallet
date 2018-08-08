@@ -30,8 +30,33 @@ class TurnOutAsset extends BaseComponent {
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
+            headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
+            <View style={{ paddingHorizontal: 10, alignItems: 'center' }}>
+                <Image source={UImage.scan} style={{ width: 28, height: 28 }}></Image>
+            </View>
+          </Button>),
         };
     };
+
+     // 构造函数  
+     constructor(props) {
+        super(props);
+        this.props.navigation.setParams({ onPress: this._rightTopClick });
+        this.state = {
+            show: false,
+            toAccount: '',
+            amount: '',
+            memo: '',
+            defaultWallet: null,
+            balance: '0',
+            name: '',
+        };
+    }
+
+    _rightTopClick = () =>{
+        const { navigate } = this.props.navigation;
+        navigate('BarCode', {isTurnOut:true,coinType:this.state.name});
+      }
 
     //组件加载完成
     componentDidMount() {
@@ -66,7 +91,7 @@ class TurnOutAsset extends BaseComponent {
     }
     scan() {
         const { navigate } = this.props.navigation;
-        navigate('BarCode', {isTurnOut:true,coinType:this.state.name});
+        navigate('Thin', {isTurnOut:true,coinType:this.state.name});
     }
     componentWillUnmount(){
         //结束页面前，资源释放操作
@@ -117,20 +142,6 @@ class TurnOutAsset extends BaseComponent {
         this.setState({
             show: !isShow,
         });
-    }
-
-    // 构造函数  
-    constructor(props) {
-        super(props);
-        this.state = {
-            show: false,
-            toAccount: '',
-            amount: '',
-            memo: '',
-            defaultWallet: null,
-            balance: '0',
-            name: '',
-        };
     }
 
     goPage(coinType) {
@@ -286,7 +297,7 @@ class TurnOutAsset extends BaseComponent {
                                         />
                                     <View style={styles.scanning}>
                                             <Button onPress={() => this.scan()}>                                  
-                                                <Image source={UImage.scan} style={styles.scanningimg} />                                 
+                                                <Image source={UImage.al} style={styles.scanningimg} />                                 
                                             </Button>
                                         </View>
                                     </View>

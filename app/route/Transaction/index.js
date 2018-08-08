@@ -1514,7 +1514,7 @@ sell = (rowData) => {
                             <Button onPress={this.openQuery.bind(this,rowData.account)}>
                                 <View style={styles.businessRan}>
                                     <View style={styles.Rankleftout}>
-                                        <Text style={styles.accounttext}>{rowData.account}</Text>
+                                        <Text style={styles.accounttext} numberOfLines={1}>{rowData.account}</Text>
                                         <Text style={styles.numtext}>排名 {rowData.num}</Text>
                                     </View>
                                     <View style={styles.Rankcenterout}>
@@ -2065,7 +2065,7 @@ const styles = StyleSheet.create({
         height: Platform.OS == 'ios' ? 52 : 45,
         backgroundColor: UColor.mainColor,
         flexDirection: "row",
-        paddingHorizontal: 15,
+        paddingHorizontal: 5,
         borderRadius: 5,
         marginVertical: 2,
         marginHorizontal: 5,
