@@ -15,12 +15,9 @@ import { EasyShowLD } from '../../components/EasyShow'
 import ViewShot from "react-native-view-shot";
 import BaseComponent from "../../components/BaseComponent";
 
-@connect(({wallet}) => ({...wallet}))
+@connect(({vote, wallet}) => ({...vote, ...wallet}))
 class Bvote extends BaseComponent {
     static navigationOptions = ({ navigation }) => {
-    
-        const params = navigation.state.params || {};
-       
         return {    
           title: "节点投票",
           headerStyle: {
@@ -46,8 +43,29 @@ class Bvote extends BaseComponent {
     this.state = {
       transformY: new Animated.Value(200),
       transformY1: new Animated.Value(-1000),
-      value: false,showShare:false,news:{}};
+      value: false,
+      showShare:false,
+      news:{},
+      arr: 0,
+    }
   }
+
+  componentDidMount() {
+    EasyShowLD.loadingShow();
+    this.props.dispatch({
+        type: 'wallet/getDefaultWallet', callback: (data) => {     
+            this.props.dispatch({ type: 'vote/list', payload: { page:1}, callback: (data) => {
+                this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.defaultWallet.account}, callback: (data) => {
+                    this.setState({
+                        arr : this.props.producers.length,
+                    });
+                } });
+                EasyShowLD.loadingClose();
+            }});
+        }
+    })
+  }
+
   goPage(key, data = {}) {
     const { navigate } = this.props.navigation;
     if (key == 'delegate'){
@@ -72,7 +90,7 @@ class Bvote extends BaseComponent {
                  <View style={styles.outsource}>
                     <View style={styles.headoutsource}>
                         <Text style={styles.headSizeone}>进度：33.8764%</Text>
-                        <Text style={styles.headSizetwo}>可投票数：0</Text>
+                        <Text style={styles.headSizetwo}>可投票数：{30 - this.state.arr}</Text>
                     </View>
                     <View>
                       <View style={styles.Underschedule}></View> 

@@ -36,11 +36,11 @@ class Nodevoting extends BaseComponent {
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
           },
-          headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
-            <View style={{ padding: 15 }}>
-                <Image source={UImage.Magnifier} style={{ width: 30, height: 30 }}></Image>
-            </View>
-          </Button>),            
+        //   headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
+        //     <View style={{ padding: 15 }}>
+        //         <Image source={UImage.Magnifier} style={{ width: 30, height: 30 }}></Image>
+        //     </View>
+        //   </Button>),            
         };
       };
 
