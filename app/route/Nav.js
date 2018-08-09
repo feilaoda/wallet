@@ -928,7 +928,6 @@ class Route extends React.Component {
         </View>
       ) : null}
 
-
       {this.state.showVoteShare ? (
           <View style={{ position: 'absolute', zIndex: 100000, top: 0, left: 0, width: ScreenWidth, height: ScreenHeight, backgroundColor: 'rgba(0,0,0,0.8)' }}>
             <Animated.View style={{
@@ -1014,15 +1013,13 @@ class Route extends React.Component {
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                   <ViewShot ref="viewShot" style={{ left: 20, width: ScreenWidth - 40 }} options={{ format: "jpg", quality: 0.9 }}>
                     <View style={{ backgroundColor: "#fff", width: '100%', height: '100%' }}>
-                    
                       <View style={{ padding: 10, }}>
-                        <Image source={UImage.turnin_head} resizeMode="stretch" style={{ width: '100%', height:50 }} />
+                        <Image source={UImage.turnin_head} resizeMode="stretch" style={{ width: ScreenWidth - 60, height:(ScreenWidth - 60)*0.1552 }} />
                         <View style={{ flexDirection: 'row', justifyContent: 'center',alignItems: 'center',}}>
                           <Text style={{fontSize: 30, color:"#000000", padding: 10, textAlign: 'center',}}>{this.state.turninamount}</Text>
                           <Text style={{fontSize: 22, color: "#818181"}}>{this.state.turninsymbol}</Text>
                         </View>
                         <View style={{ justifyContent: 'center', alignSelf: 'center',paddingTop:10, }}>
-                          {/* <QRCode size={150}  value={'":\"' + this.state.turnintoaccount + '\",\"amount\":\"' + this.state.turninamount + '\",\"symbol\":\"' + this.state.turninsymbol + '\"}'} /> */}
                           <QRCode size={150}  value={this.state.turninsymbol.toLowerCase() +':' + this.state.turnintoaccount + '?amount=' + ((this.state.turninamount == "")?'0':this.state.turninamount) + '&token=' + this.state.turninsymbol.toUpperCase()}/>
                         </View>
                         <Text style={{ color: '#5D5D5D', fontSize: 15, textAlign: 'center', marginTop: 10 }}>扫码向他支付</Text>
@@ -1089,7 +1086,6 @@ class Route extends React.Component {
                       <View style={{ }}>
                         <Image source={UImage.activation_head} resizeMode="stretch" style={{ width: ScreenWidth - 40, height: (ScreenWidth - 40)*0.234}} />
                         <View style={{ justifyContent: 'center', alignSelf: 'center',paddingVertical:20, }}>
-                          {/* <QRCode size={120}  value={'activeWallet:' + this.state.turnintoaccount + '?owner=' + this.state.turninamount +'&active=' + this.state.turninsymbol +'&cpu=' + this.state.cpu +'&net=' + this.state.net +'&ram=' + this.state.ram}/> */}
                           <QRCode size={120}  value={'{"action":"' + 'activeWallet'  + '","account":"' + this.state.turnintoaccount + '","owner":"' + this.state.turninamount + '","active":"' + this.state.turninsymbol  + '","cpu":"' + this.state.cpu  + '","net":"' + this.state.net  + '","ram":"' + this.state.ram + '"}'}/>
                         </View>
                         <Text style={{ color: '#999999', fontSize: 15, textAlign: 'center',}}>使用ET钱包扫一扫支付EOS激活此账号</Text>
