@@ -36,7 +36,7 @@ import com.eostoken.umeng.RNUMConfigure;
 import com.theweflex.react.WeChatPackage;
 import com.umeng.commonsdk.UMConfigure;
 import com.reactnativecomponent.barcode.RCTCapturePackage;
-
+import com.eostoken.opensettings.*; 
 public class MainApplication extends Application implements ReactApplication {
 
     private ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -56,6 +56,7 @@ public class MainApplication extends Application implements ReactApplication {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
             new LinearGradientPackage(),
+            new OpenSettingsPackage(), /* setting add */
                     new RCTCapturePackage(),
                     new RNViewShotPackage(),
                     new SvgPackage(),

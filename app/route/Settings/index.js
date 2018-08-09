@@ -10,6 +10,7 @@ import UImage from '../../utils/Img'
 import Constants from '../../utils/Constants'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from '../../components/EasyShow'
+
 const maxWidth = Dimensions.get('window').width;
 const maxHeight = Dimensions.get('window').height;
 var DeviceInfo = require('react-native-device-info');
@@ -111,12 +112,15 @@ class Setting extends React.Component {
     }
   }
 
-  goSystemSetting(){
+  openSystemSetting(){
     // console.log("go to set net!")
     if (Platform.OS == 'ios') {
       Linking.openURL('app-settings:')
         .catch(err => console.log('error', err))
     } else {
+      NativeModules.OpenSettings.openNetworkSettings(data => {
+        console.log('call back data', data)
+      })
     }
 
   }
@@ -128,7 +132,7 @@ class Setting extends React.Component {
       <ScrollView style={styles.scrollView}>
 
       {Constants.netTimeoutFlag==true &&
-      <Button onPress={this.goSystemSetting.bind(this)}>
+      <Button onPress={this.openSystemSetting.bind(this)}>
         <View style={styles.systemSettingTip}>
             <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
             <Text style={styles.systemSettingArrow}>></Text>
