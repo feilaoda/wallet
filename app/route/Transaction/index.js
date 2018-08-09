@@ -26,8 +26,8 @@ var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
 
-const trackOption = ['最近交易','持仓大户'];
-const transactionOption = ['我的交易','大盘交易'];
+const trackOption = ['最近大单','持仓大户'];
+const transactionOption = ['我的交易','最新交易'];
 
 var upColor = '#f44961';
 var downColor = '#3fcfb4';
