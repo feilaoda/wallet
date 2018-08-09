@@ -128,6 +128,14 @@ function combineRamKLine(data) {
                 color: upColor
             }]
         },
+        legend: {
+            data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
+            left: '20%',
+            textStyle:{
+                color: "#7382a1",
+                fontSize: 6,
+            }
+        },
         grid: [
             {
                 top: '8%',
@@ -149,8 +157,29 @@ function combineRamKLine(data) {
                 data:  data.categoryData,
                 scale: true,
                 boundaryGap : true,
-                axisLine: {onZero: false},
-                splitLine: {show: false},
+                axisLabel: {
+                    show: true,
+                    color: "#7382a1",
+                    fontSize: 8,
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    },
+                    onZero: false,
+                },
+                axisTick: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }
+                },
                 splitNumber: 20,
                 min: 'dataMin',
                 max: 'dataMax',
@@ -191,13 +220,26 @@ function combineRamKLine(data) {
                 splitArea: {
                     show: false
                 },
-                // axisLabel: {show: false},
-                // axisLine: {show: false},
-                // axisTick: {show: false},
+                axisLabel: {
+                    show: true,
+                    color: "#7382a1",
+                    fontSize: 8,
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }
+                },
+                axisTick: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }                },
                 splitLine: {
                     show: false,
                     lineStyle: {
-                        color: "#f44961",
+                        color: "#7382a1",
                     }
                 }
             },
@@ -229,7 +271,7 @@ function combineRamKLine(data) {
         ],
         series: [
             {
-                name: 'Dow-Jones index',
+                name: '日K',
                 type: 'candlestick',
                 data: data.values ,
                 itemStyle: {
@@ -269,6 +311,7 @@ function combineRamKLine(data) {
                     normal: {
                         opacity: 1,
                         color: "#6e6e46",
+                        width: 1,
                     }
                 }
             },
@@ -281,6 +324,7 @@ function combineRamKLine(data) {
                     normal: {
                         opacity: 1,
                         color: "#835098",
+                        width: 1,
                     }
                 }
             },
@@ -293,6 +337,7 @@ function combineRamKLine(data) {
                     normal: {
                         opacity: 1,
                         color: "#4b9373",
+                        width: 1,
                     }
                 }
             },
@@ -305,6 +350,7 @@ function combineRamKLine(data) {
                     normal: {
                         opacity: 1,
                         color: "#4b7793",
+                        width: 1,
                     }                
                 }
             },
@@ -1618,7 +1664,7 @@ class Transaction extends BaseComponent {
       })
     }
   }
-  
+
   onMoveLineView() {
     this.setState({scrollEnabled: false});
     return true;
