@@ -370,7 +370,7 @@ function combineETKLine(data) {
                     // formatter: '{value}',
                     formatter: function(value, index) {
                         if(value == null || value == ''){
-                            return '0.0000';
+                            return '0';
                         }
                         return value.toFixed(8);
                     },
