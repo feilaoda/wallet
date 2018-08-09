@@ -649,6 +649,20 @@ class Transaction extends BaseComponent {
     }
   }
   
+   getDataLine()
+   {
+       if(this.chkIsRamTx)
+       {
+           return this.props.ramLineDatas ? this.props.ramLineDatas : {};
+       }
+       else
+       {
+           return this.props.etLineDatas ? this.props.etLineDatas :{};
+       }
+   }
+   getDataKLine(){
+           return this.state.dataKLine?this.state.dataKLine:{};
+   }
   onClickMore(){
     this.setState({ showMore: !this.state.showMore });
   }
@@ -1342,21 +1356,21 @@ class Transaction extends BaseComponent {
             tintColor={UColor.fontColor} colors={['#ddd', UColor.tintColor]} progressBackgroundColor={UColor.fontColor}/>}
             >
         <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
+        {
+          this.chkIsRamTx() ?  
           <View style={styles.header}>
             <View style={styles.leftout}>
               <View style={styles.nameout}>
                 <Text style={styles.nametext}>开盘</Text>
-                {this.state.tradename == "RAM" ? <Text style={styles.nametext}>内存占比</Text> : <View></View>}
+                <Text style={styles.nametext}>内存占比</Text>
                 <Text style={styles.nametext}>总资金</Text>
               </View>
               <View style={styles.recordout}>
                 <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.open.toFixed(4) : '0'} EOS/KB</Text>
-                {this.state.tradename == "RAM" ?
                 <View style={styles.rowout}>
                     <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.usage_ram : 0} GB/{this.props.ramInfo ? this.props.ramInfo.total_ram : 0} GB</Text>
                     <Text style={styles.ashtext}> ({((this.props.ramInfo ? this.props.ramInfo.usage_ram_percent : '0') * 100).toFixed(2)}%)</Text>
-                </View> :<View></View>
-               }
+                </View>
                 <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.total_eos.toFixed(4) : '0'} EOS</Text>
               </View>
             </View>
@@ -1366,12 +1380,39 @@ class Transaction extends BaseComponent {
                     <Text style={styles.toptext}>价格</Text>
                 </View>
                 <View style={styles.titleout}>
-                    <Text style={(this.props.ramInfo && this.props.ramInfo.increase>=0)?styles.incdo:styles.incup}> {this.props.ramInfo ? (this.props.ramInfo.increase > 0 ? '+' + (this.props.ramInfo.increase * 100).toFixed(2) : (this.props.ramInfo.increase * 100).toFixed(2)): '0.00'}%</Text>
+                    <Text style={(this.props.ramInfo && this.props.ramInfo.increase>=0)?styles.incdo:styles.incup}> 
+                        {this.props.ramInfo ? (this.props.ramInfo.increase > 0 ? '+' + (this.props.ramInfo.increase * 100).toFixed(2) : 
+                            (this.props.ramInfo.increase * 100).toFixed(2)): '0.00'}%</Text>
                     <Text style={{color:'#8696B0',fontSize:13,marginTop:2,textAlign:'center', marginLeft:5}}>涨幅</Text>
                 </View>
             </View>
           </View>
-
+          :
+          <View style={styles.header}>
+            <View style={styles.leftout}>
+              <View style={styles.nameout}>
+                <Text style={styles.nametext}>开盘</Text>
+                <Text style={styles.nametext}>交易量</Text>
+              </View>
+              <View style={styles.recordout}>
+                <Text style={styles.recordtext}>{this.props.etinfo ? this.props.etinfo.open.toFixed(8) : '0'} EOS</Text>
+                <Text style={styles.recordtext}>{this.props.etinfo ? this.props.etinfo.today_volum.toFixed(8) : '0'} EOS</Text>
+              </View>
+            </View>
+            <View style={styles.rightout}>
+                <View style={styles.presentprice}>
+                    <Text style={styles.present}> {this.props.etinfo ? this.props.etinfo.price.toFixed(8) : '0'}</Text>
+                    <Text style={styles.toptext}>价格</Text>
+                </View>
+                <View style={styles.titleout}>
+                    <Text style={(this.props.etinfo && this.props.etinfo.increase>=0)?styles.incdo:styles.incup}> 
+                        {this.props.etinfo ? (this.props.etinfo.increase > 0 ? '+' + this.props.etinfo.increase : 
+                              this.props.etinfo.increase): '0.00%'}</Text>
+                    <Text style={{color:'#8696B0',fontSize:13,marginTop:2,textAlign:'center', marginLeft:5}}>涨幅</Text>
+                </View>
+            </View>
+          </View>
+        }
           <View style={{flex:1,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
             <View style={{flexDirection:"column",flexGrow:1,}}>
                 <Button onPress={this.onClickTimeType.bind(this,"时分")}>
@@ -1480,12 +1521,13 @@ class Transaction extends BaseComponent {
             this.state.isKLine ? 
             <View style={styles.echartsout}>
             {
-                <Echarts option={this.state.dataKLine?this.state.dataKLine:{}} width={ScreenWidth} height={300} />
+                <Echarts option={this.getDataKLine()} width={ScreenWidth} height={300} />
             }
             </View>
-            : <View style={styles.echartsout}>
+            : 
+            <View style={styles.echartsout}>
             {
-                <Echarts option={this.props.ramLineDatas?this.props.ramLineDatas:{}} width={ScreenWidth} height={160} />
+                <Echarts option={this.getDataLine()} width={ScreenWidth} height={160} />
             }
             </View>
         }
@@ -1676,7 +1718,7 @@ class Transaction extends BaseComponent {
                     </View>
                     <View style={{width:'35%'}}>
                         <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end", }}>
-                            <Text style={{ fontSize:15, color:UColor.fontColor,textAlign:'center', marginRight:5}}>单价(￥)</Text>
+                            <Text style={{ fontSize:15, color:UColor.fontColor,textAlign:'center', marginRight:5}}>单价(EOS)</Text>
                         </View>
                     </View>
                 </View>
@@ -1700,7 +1742,7 @@ class Transaction extends BaseComponent {
                         <View style={{width:'35%'}}>
                             <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
                                 <Text style={{ fontSize:15, color:UColor.fontColor, 
-                                    textAlign:'center', marginRight:5}}>{(rowData.price_rmb == null || rowData.price_rmb == "") ? "" : rowData.price_rmb.toFixed(2)}</Text>
+                                    textAlign:'center', marginRight:5}}>{(rowData.price == null || rowData.price == "") ? "0" : rowData.price.toFixed(8)}</Text>
                             </View>
                         </View>
                       </View>

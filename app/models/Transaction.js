@@ -267,8 +267,8 @@ export default {
             return { ...state, ...action.payload };
         },
         updateETPriceLine(state, action) {      
-            let ramLineDatas = combine(action.payload.data);
-            return { ...state, ramLineDatas };
+            let etLineDatas = combine(action.payload.data);
+            return { ...state, etLineDatas };
         },
         updateETTradeLog(state, action) {
             return { ...state, ...action.payload };
