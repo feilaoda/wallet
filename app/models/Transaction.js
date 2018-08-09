@@ -1,6 +1,6 @@
 import Request from '../utils/RequestUtil';
 import {getRamInfo, getRamPriceLine, getRamTradeLog, getRamBigTradeLog, getRamTradeLogByAccount, getBigRamRank,
-    getRamKLines} from '../utils/Api';
+    getRamKLines,getETList,getETInfo,getETPriceLine,getETKLine,getETTradeLog,getETBigTradeLog,getETTradeLogByAccount} from '../utils/Api';
 import store from 'react-native-simple-store';
 import { EasyToast } from '../components/Toast';
 let newarr = new Array();
@@ -124,6 +124,119 @@ export default {
                 if (callback) callback({ code: 500, msg: "网络异常" });                
             }
         },
+
+        //ET交易所接口
+        //交易列表
+        *getETList({payload,callback},{call,put}) {
+            try{
+                const resp = yield call(Request.request, getETList, 'get');
+                //  alert('getETList: '+JSON.stringify(resp));
+                if(resp.code=='0'){               
+                    yield put({ type: 'updateETList', payload: { etlist:resp.data } });
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);                
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
+            }
+          },
+        //获取币信息
+        *getETInfo({payload,callback},{call,put}) {
+            try{
+                const resp = yield call(Request.request, getETInfo + payload.code, 'get');
+                // alert('getETInfo: '+JSON.stringify(resp));
+                if(resp.code=='0'){               
+                    yield put({ type: 'updateETInfo', payload: { etinfo:resp.data } });
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);                
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
+            }
+        },
+        //et时分图
+        *getETPriceLine({payload,callback},{call,put}) {
+            try{
+                const resp = yield call(Request.request, getETPriceLine + payload.code + '/' + payload.type, 'post', payload);
+                // alert("getETPriceLine : " + JSON.stringify(resp));
+                if(resp.code=='0'){               
+                    yield put({ type: 'updateETPriceLine', payload: { data: resp.data, ...payload } });
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+            }
+        },
+        //et K线图
+        *getETKLine({ payload, callback }, { call, put }) {
+            try{
+                const resp = yield call(Request.request, getETKLine, 'post', payload);
+                // alert('getETKLine: '+JSON.stringify(resp));
+                if(resp.code=='0'){               
+                    // yield put({ type: 'updateRamPriceLine', payload: { data: resp.data, ...payload } });
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);                
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
+            }
+        },
+        //ET获取最新交易单
+        *getETTradeLog({ payload, callback }, { call, put }) {
+            try{
+                const resp = yield call(Request.request, getETTradeLog + payload.code, 'post', payload);
+                // alert('getETTradeLog: '+JSON.stringify(resp));
+                if(resp.code=='0'){               
+                    yield put({ type: 'updateETTradeLog', payload: { ramTradeLog:resp.data } });
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);                
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
+            }
+        },
+        //ET获取大单交易单
+        *getETBigTradeLog({ payload, callback }, { call, put }) {
+            try{
+                const resp = yield call(Request.request, getETBigTradeLog + payload.code, 'post', payload);
+                //  alert('getETBigTradeLog: '+JSON.stringify(resp));
+                if(resp.code=='0'){               
+                    yield put({ type: 'updateBigTradeLog', payload: { ramBigTradeLog:resp.data } });
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);                
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
+            }
+        },
+        //ET 根据账号分页获取用户最新交易单
+        *getETTradeLogByAccount({ payload, callback }, { call, put }) {
+            try{
+                const resp = yield call(Request.request, getETTradeLogByAccount, 'post', payload);
+                // alert('getETTradeLogByAccount: '+JSON.stringify(resp));
+                if(resp.code=='0'){               
+                    yield put({ type: 'updateTradeLog', payload: { ramTradeLog:resp.data } });
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);                
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
+            }
+        },
     },
 
     reducers : {
@@ -145,6 +258,19 @@ export default {
             return { ...state, ...action.payload };
         },
         updateBigRamRank(state, action) {
+            return { ...state, ...action.payload };
+        },
+        updateETList(state, action) {
+            return { ...state, ...action.payload };
+        },
+        updateETInfo(state, action) {
+            return { ...state, ...action.payload };
+        },
+        updateETPriceLine(state, action) {      
+            let ramLineDatas = combine(action.payload.data);
+            return { ...state, ramLineDatas };
+        },
+        updateETTradeLog(state, action) {
             return { ...state, ...action.payload };
         },
     }

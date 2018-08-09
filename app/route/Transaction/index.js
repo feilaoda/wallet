@@ -49,98 +49,6 @@ function splitData(rawData) {
     };
 }
 
-// // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
-var data = splitData([
-    ['2013/1/24', 2320.26,2320.26,2287.3,2362.94,117990000],
-    ['2013/1/25', 2300,2291.3,2288.26,2308.38,117990000],
-    ['2013/1/28', 2295.35,2346.5,2295.35,2346.92,117990000],
-    ['2013/1/29', 2347.22,2358.98,2337.35,2363.8,117990000],
-    ['2013/1/30', 2360.75,2382.48,2347.89,2383.76,117990000],
-    ['2013/1/31', 2383.43,2385.42,2371.23,2391.82,117990000],
-    ['2013/2/1', 2377.41,2419.02,2369.57,2421.15,117990000],
-    ['2013/2/4', 2425.92,2428.15,2417.58,2440.38,117990000],
-    ['2013/2/5', 2411,2433.13,2403.3,2437.42,117990000],
-    ['2013/2/6', 2432.68,2434.48,2427.7,2441.73,117990000],
-    ['2013/2/7', 2430.69,2418.53,2394.22,2433.89,117990000],
-    ['2013/2/8', 2416.62,2432.4,2414.4,2443.03,117990000],
-    ['2013/2/18', 2441.91,2421.56,2415.43,2444.8,321230016],
-    ['2013/2/19', 2420.26,2382.91,2373.53,2427.07,321230016],
-    ['2013/2/20', 2383.49,2397.18,2370.61,2397.94,321230016],
-    ['2013/2/21', 2378.82,2325.95,2309.17,2378.82,321230016],
-    ['2013/2/22', 2322.94,2314.16,2308.76,2330.88,321230016],
-    ['2013/2/25', 2320.62,2325.82,2315.01,2338.78,321230016],
-    ['2013/2/26', 2313.74,2293.34,2289.89,2340.71,321230016],
-    ['2013/2/27', 2297.77,2313.22,2292.03,2324.63,321230016],
-    ['2013/2/28', 2322.32,2365.59,2308.92,2366.16,321230016],
-    ['2013/3/1', 2364.54,2359.51,2330.86,2369.65,84410000],
-    ['2013/3/4', 2332.08,2273.4,2259.25,2333.54,84410000],
-    ['2013/3/5', 2274.81,2326.31,2270.1,2328.14,84410000],
-    ['2013/3/6', 2333.61,2347.18,2321.6,2351.44,84410000],
-    ['2013/3/7', 2340.44,2324.29,2304.27,2352.02,84410000],
-    ['2013/3/8', 2326.42,2318.61,2314.59,2333.67,84410000],
-    ['2013/3/11', 2314.68,2310.59,2296.58,2320.96,84410000],
-    ['2013/3/12', 2309.16,2286.6,2264.83,2333.29,84410000],
-    ['2013/3/13', 2282.17,2263.97,2253.25,2286.33,84410000],
-    ['2013/3/14', 2255.77,2270.28,2253.31,2276.22,84410000],
-    ['2013/3/15', 2269.31,2278.4,2250,2312.08,84410000],
-    ['2013/3/18', 2267.29,2240.02,2239.21,2276.05,84410000],
-    ['2013/3/19', 2244.26,2257.43,2232.02,2261.31,84410000],
-    ['2013/3/20', 2257.74,2317.37,2257.42,2317.86,84410000],
-    ['2013/3/21', 2318.21,2324.24,2311.6,2330.81,248860000],
-    ['2013/3/22', 2321.4,2328.28,2314.97,2332,248860000],
-    ['2013/3/25', 2334.74,2326.72,2319.91,2344.89,248860000],
-    ['2013/3/26', 2318.58,2297.67,2281.12,2319.99,248860000],
-    ['2013/3/27', 2299.38,2301.26,2289,2323.48,248860000],
-    ['2013/3/28', 2273.55,2236.3,2232.91,2273.55,248860000],
-    ['2013/3/29', 2238.49,2236.62,2228.81,2246.87,248860000],
-    ['2013/4/1', 2229.46,2234.4,2227.31,2243.95,248860000],
-    ['2013/4/2', 2234.9,2227.74,2220.44,2253.42,248860000],
-    ['2013/4/3', 2232.69,2225.29,2217.25,2241.34,248860000],
-    ['2013/4/8', 2196.24,2211.59,2180.67,2212.59,248860000],
-    ['2013/4/9', 2215.47,2225.77,2215.47,2234.73,248860000],
-    ['2013/4/10', 2224.93,2226.13,2212.56,2233.04,248860000],
-    ['2013/4/11', 2236.98,2219.55,2217.26,2242.48,248860000],
-    ['2013/4/12', 2218.09,2206.78,2204.44,2226.26,248860000],
-    ['2013/4/15', 2199.91,2181.94,2177.39,2204.99,94130000],
-    ['2013/4/16', 2169.63,2194.85,2165.78,2196.43,94130000],
-    ['2013/4/17', 2195.03,2193.8,2178.47,2197.51,94130000],
-    ['2013/4/18', 2181.82,2197.6,2175.44,2206.03,94130000],
-    ['2013/4/19', 2201.12,2244.64,2200.58,2250.11,94130000],
-    ['2013/4/22', 2236.4,2242.17,2232.26,2245.12,94130000],
-    ['2013/4/23', 2242.62,2184.54,2182.81,2242.62,94130000],
-    ['2013/4/24', 2187.35,2218.32,2184.11,2226.12,94130000],
-    ['2013/4/25', 2213.19,2199.31,2191.85,2224.63,94130000],
-    ['2013/4/26', 2203.89,2177.91,2173.86,2210.58,94130000],
-    ['2013/5/2', 2170.78,2174.12,2161.14,2179.65,94130000],
-    ['2013/5/3', 2179.05,2205.5,2179.05,2222.81,94130000],
-    ['2013/5/6', 2212.5,2231.17,2212.5,2236.07,94130000],
-    ['2013/5/7', 2227.86,2235.57,2219.44,2240.26,94130000],
-    ['2013/5/8', 2242.39,2246.3,2235.42,2255.21,94130000],
-    ['2013/5/9', 2246.96,2232.97,2221.38,2247.86,75560000],
-    ['2013/5/10', 2228.82,2246.83,2225.81,2247.67,75560000],
-    ['2013/5/13', 2247.68,2241.92,2231.36,2250.85,75560000],
-    ['2013/5/14', 2238.9,2217.01,2205.87,2239.93,75560000],
-    ['2013/5/15', 2217.09,2224.8,2213.58,2225.19,75560000],
-    ['2013/5/16', 2221.34,2251.81,2210.77,2252.87,75560000],
-    ['2013/5/17', 2249.81,2282.87,2248.41,2288.09,75560000],
-    ['2013/5/20', 2286.33,2299.99,2281.9,2309.39,75560000],
-    ['2013/5/21', 2297.11,2305.11,2290.12,2305.3,75560000],
-    ['2013/5/22', 2303.75,2302.4,2292.43,2314.18,75560000],
-    ['2013/5/23', 2293.81,2275.67,2274.1,2304.95,75560000],
-    ['2013/5/24', 2281.45,2288.53,2270.25,2292.59,75560000],
-    ['2013/5/27', 2286.66,2293.08,2283.94,2301.7,75560000],
-    ['2013/5/28', 2293.4,2321.32,2281.47,2322.1,75560000],
-    ['2013/5/29', 2323.54,2324.02,2321.17,2334.33,75560000],
-    ['2013/5/30', 2316.25,2317.75,2310.49,2325.72,75560000],
-    ['2013/5/31', 2320.74,2300.59,2299.37,2325.53,75560000],
-    ['2013/6/3', 2300.21,2299.25,2294.11,2313.43,75560000],
-    ['2013/6/4', 2297.1,2272.42,2264.76,2297.1,75560000],
-    ['2013/6/5', 2270.71,2270.93,2260.87,2276.86,75560000],
-    ['2013/6/6', 2264.43,2242.11,2240.07,2266.69,75560000],
-    ['2013/6/7', 2242.26,2210.9,2205.07,2250.63,75560000],
-    ['2013/6/13', 2190.1,2148.35,2126.22,2190.1,75560000]
-]);
-
 function combineKLine(data) {
     return {
         backgroundColor: UColor.secdColor,
@@ -375,7 +283,8 @@ class Transaction extends BaseComponent {
       newramTradeLog: [],
       logId: "-1",
       modal: false,
-      tradename:"RAM",  //交易币种
+      tradename:"RAM",  //ET交易币种的名称
+      selectcode:"",    //ET交易币种的唯一code
       showMore:false,  
       showMoreTitle:"更多",
       isKLine:false,  //是否K线
@@ -421,8 +330,18 @@ class Transaction extends BaseComponent {
 
   }
 
+    //检测是否ram交易对
+    chkIsRamTx(){
+        return this.state.tradename == "RAM" ? true : false;
+    }
+
   onRefreshing() {
-    this.getRamInfo();
+    if(this.chkIsRamTx())
+    {
+        this.getRamInfo();
+    }else {
+        this.getETInfo();
+    }
     this.getAccountInfo();
     if(this.state.isTxRecord){
         this.setSelectedTransactionRecord(this.state.selectedTransactionRecord, true);
@@ -439,31 +358,65 @@ class Transaction extends BaseComponent {
 
     _leftTopClick = () => {
         this.setState({ modal: !this.state.modal });
-        this.props.dispatch({type:'sticker/list',payload:{type:1}});
+        this.props.dispatch({type:'transaction/getETList',payload:{}});
     }
  
-    changeToRamTx(){
+    //选择ram 交易
+    selectRamTx(){
         this.setState({
             modal: false,
             tradename:"RAM",
-          });
+            selectcode:"",
+        });
+        InteractionManager.runAfterInteractions(() => {
+            this.getRamInfo();
+        });
     }
-    changeCoinType(rowData){
+    //选择ET交易
+    selectETtx(rowData){
         this.setState({
             modal: false,
-            tradename:rowData.name,
-          });
+            tradename:rowData.base_balance_uom,
+            selectcode:rowData.code,
+            });
+        InteractionManager.runAfterInteractions(() => {
+            this.getETInfo();
+        });
     }
 
   getRamInfo(){
+    //取头部开盘等信息
     this.props.dispatch({type: 'transaction/getRamInfo',payload: {}});
 
     // 获取曲线
-    // this.setSelectedOption(this.state.selectedSegment);
+    this.onClickTimeType(this.state.selectedSegment);
+  }
+  getETInfo(){
+    //取头部开盘等信息
+    this.props.dispatch({type:'transaction/getETInfo',payload:{code:this.state.selectcode}});
+    // 获取曲线
+    this.onClickTimeType(this.state.selectedSegment);
   }
 
   getRamTradeLog(){
     this.props.dispatch({type: 'transaction/getRamTradeLog',payload: {}, callback: (resp) => {
+        try {
+            if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+                this.setState({
+                  newramTradeLog: [],
+                });
+              }else{
+                this.setState({
+                  newramTradeLog: resp.data,
+                });
+              }
+        } catch (error) {
+
+        }
+    }}); 
+  }
+  getETTradeLog(){
+    this.props.dispatch({type: 'transaction/getETTradeLog',payload: {code:this.state.selectcode}, callback: (resp) => {
         try {
             if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
                 this.setState({
@@ -484,6 +437,31 @@ class Transaction extends BaseComponent {
     this.props.dispatch({type: 'transaction/getRamBigTradeLog',payload: {}});    
   }
 
+  getETBigTradeLog(){
+    this.props.dispatch({type: 'transaction/getETBigTradeLog',payload: {code:this.state.selectcode}});    
+  }
+
+  getETTradeLogByAccount(){
+    this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: "eostokenapp1", "pageCount":"2", last_id: this.state.logId}, callback: (resp) => {
+        try {
+            if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+                this.setState({
+                  newramTradeLog: [],
+                  logRefreshing: false,
+                });
+              }else{
+                this.setState({
+                  newramTradeLog: resp.data,
+                  logRefreshing: false
+                });
+              }
+        } catch (error) {
+            this.setState({
+                logRefreshing: false
+            });
+        }
+    }});
+  }
   getBigRamRank(){
     this.props.dispatch({type: 'transaction/getBigRamRank',payload: {}});    
   }
@@ -507,11 +485,13 @@ class Transaction extends BaseComponent {
 
   fetchRAMLine(type,opt){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type:'transaction/getRamPriceLine',payload:{type}});
+        this.props.dispatch({type:'transaction/getRamPriceLine',payload:{type:type}});
     });
   }
   fetchCoinLine(type,opt){
-    EasyToast.show("暂未实现K线");
+    InteractionManager.runAfterInteractions(() => {
+        this.props.dispatch({type:'transaction/getETPriceLine',payload:{code:this.state.selectcode,type:type}});
+    });
   }
   //获取时分图
   fetchLine(isRamType,type,opt){
@@ -523,11 +503,6 @@ class Transaction extends BaseComponent {
     }
   }
   fetchRAMKLine(dateType,opt){
-
-    var echartsoption = combineKLine(data);
-    this.setState({ dataKLine : echartsoption});
-    return;
-
     InteractionManager.runAfterInteractions(() => {
         this.props.dispatch({type: 'transaction/getRamKLines',payload: {pageSize: "180", dateType: dateType}, callback: (resp) => {
             try {
@@ -581,8 +556,58 @@ class Transaction extends BaseComponent {
     });
     
   }
-  fetchCoinKLine(type,opt){
-    EasyToast.show("暂未实现K线");
+  fetchCoinKLine(dateType,opt){
+    InteractionManager.runAfterInteractions(() => {
+        this.props.dispatch({type: 'transaction/getETKLine',payload: {code:this.state.selectcode,pageSize: "180", dateType: dateType}, callback: (resp) => {
+            try {
+                if(resp.code == '0'){
+                  if(resp.data && resp.data.length > 0){
+                    // // 数据意义：日期(record_date),开盘(open)，收盘(close)，最低(min)，最高(max),交易量(volum)
+                    // var data = splitData([
+                    //     ['2013/1/24', 2320.26,2320.26,2287.3,2362.94,117990000],
+                    var  arrayObj = new Array();
+                    for(var i = 0;i < resp.data.length;i++){
+                        var elementArray = new Array("",0,0,0,0,0);
+                        var element = resp.data[i];
+                        if(element.record_date){
+                            var timezone;
+                            try {
+                                timezone = moment(element.record_date).add(8,'hours').format('MM-DD HH:mm');
+                            } catch (error) {
+                                timezone = "";
+                            }
+                            elementArray[0] = timezone;
+                        }   
+                        if(element.open) {
+                            elementArray[1] = element.open;
+                        }
+                        if(element.close){
+                            elementArray[2] = element.close;
+                        }
+                        if(element.min){
+                            elementArray[3] = element.min;
+                        }
+                        if(element.max){
+                            elementArray[4] = element.max;
+                        }
+                        if(element.volum){
+                            elementArray[5] = element.volum;
+                        }
+                        arrayObj[i] = elementArray;
+                    }
+                    var constructdata = splitData(arrayObj);
+                    var echartsoption = combineKLine(constructdata);
+                    this.setState({ dataKLine : echartsoption});
+                  }else{
+                    this.setState({ dataKLine : {}});
+                  }
+                }
+            } catch (error) {
+                this.setState({ dataKLine : {}});
+            }
+        }});
+    
+    });
  }
  //获取K线
   fetchKLine(isRamType,type,opt){
@@ -595,7 +620,7 @@ class Transaction extends BaseComponent {
   }
 
   onClickTimeType(opt){
-    var isRamType = this.state.tradename == "RAM" ? true : false;
+    var isRamType = this.chkIsRamTx();
     if(opt == "时分"){
         this.setState({isKLine:false, showMore: false,selectedSegment:opt});
         this.fetchLine(isRamType,24,'24小时');
@@ -1283,19 +1308,6 @@ class Transaction extends BaseComponent {
     return timezone;
   }
 
-  fileterSlideEos(coinList){
-    if(coinList == null || coinList == []){
-        return [];
-    }
-   for(var i = 0; i < coinList.length; i++){
-       if(coinList[i].name && coinList[i].name == "EOS"){
-            coinList.splice(i,1);
-            break;
-       }
-   }
-   return coinList;
-  }
-
   openbusiness() {  
     let business = this.state.business;  
     this.setState({  
@@ -1322,11 +1334,6 @@ class Transaction extends BaseComponent {
               <Text style={{ fontSize: 18,color: UColor.fontColor, justifyContent: 'center',alignItems: 'center',}} 
                        numberOfLines={1} ellipsizeMode='middle'>{this.state.tradename + "/EOS"}</Text>
           </View>     
-          {/* <TouchableOpacity onPress={this._rightTopClick.bind()}>
-            <View style={styles.Rightout} >
-              <Image source={this.state.isEye ? UImage.reveal_wallet : UImage.reveal_h_wallet} style={styles.HeadImg}/>
-            </View>
-          </TouchableOpacity> */}
       </View> 
 
     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
@@ -1599,71 +1606,7 @@ class Transaction extends BaseComponent {
                     /> 
                   </View>
                 }
-                  {/* <Text style={{fontSize: 14,color: UColor.fontColor,lineHeight: 15,paddingHorizontal: 25,textAlign: "center"}}>成交资金分布</Text>
-                  <Text style={{fontSize: 12,color: UColor.tintColor,lineHeight: 15,paddingHorizontal: 25,textAlign: "left"}}>{this.getTextPromp()}</Text> */}
-                  {/* <View style={{flex:1,paddingTop:1}}>
-                    {
-                      <Echarts option={
-                   {
-                            title : {
-                                text: '成交资金分布',
-                                textStyle: {
-                                    align: 'center',
-                                    color: UColor.fontColor,
-                                    fontSize: 14,
-                                },
-                                subtext: "大单>2000 中单500-200 小单<500",
-                                subtextStyle:{
-                                    align: 'left',
-                                }
-                            },
-                            // tooltip : {
-                            //     trigger: 'item',
-                            //     formatter: "{a} <br/>{b} : {c} ({d}%)"
-                            // },
-                            legend: {
-                                orient: 'vertical',
-                                left: 'right',
-                                top: 'middle',
-                                data: ['超大','大单','大中','中单','中小','小单']
-                            },
-                            series : [
-                                {
-                                    name: '',   //访问来源
-                                    type: 'pie',
-                                    radius : ['40%', '70%'],
-                                    center: ['35%', '60%'],
-                                    hoverAnimation: false,
-                                    animation:false,
-                                    roam:false,
-                                    silent:true,
-                                    label:{
-                                        show: true,
-                                        position: 'inner',
-                                    },
-                                    data:[
-                                        {value:335, name:'超大'},
-                                        {value:310, name:'大单'},
-                                        {value:234, name:'大中'},
-                                        {value:135, name:'中单'},
-                                        {value:1548, name:'中小'},
-                                        {value:1548, name:'小单'}
-                                    ],
-                                    itemStyle: {
-                                        emphasis: {
-                                            shadowBlur: 10,
-                                            shadowOffsetX: 0,
-                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                        
-                        } width={ScreenWidth - 10} height={200} />
-                    }
-                  </View> */}
-                 </View>}
+            </View>}
         
         </TouchableOpacity>
       </ScrollView>  
@@ -1699,7 +1642,7 @@ class Transaction extends BaseComponent {
                 </View>
 
                 <View style={styles.ebhbtnout2}>
-                  <Button onPress={this.changeToRamTx.bind(this)}>
+                  <Button onPress={this.selectRamTx.bind(this)}>
                       <View style={styles.sliderow}>
                         <View style={{width:'34%'}}>
                             <View style={{ flex:1,flexDirection:"row",alignItems: 'center'}}>
@@ -1740,24 +1683,24 @@ class Transaction extends BaseComponent {
 
                 <ListView initialListSize={5} 
                   renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={{ height: 0.5, backgroundColor: UColor.secdColor ,}} />}
-                  enableEmptySections={true} dataSource={this.state.dataSource.cloneWithRows(this.props.coinList[1]==null?[]:this.fileterSlideEos(this.props.coinList[1]))}
+                  enableEmptySections={true} dataSource={this.state.dataSource.cloneWithRows(this.props.etlist==null?[]:this.props.etlist)}
                   renderRow={(rowData) => (
-                    <Button onPress={this.changeCoinType.bind(this, rowData)}>
+                    <Button onPress={this.selectETtx.bind(this, rowData)}>
                       <View style={styles.sliderow}>
                         <View style={{width:'35%'}}>
                             <View style={{ flex:1,flexDirection:"row",alignItems: 'center'}}>
-                                <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>{rowData.name == null ? "" : rowData.name}</Text>
+                                <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>{rowData.base_balance_uom == null ? "" : rowData.base_balance_uom}</Text>
                             </View>
                         </View>
                         <View style={{width:'30%'}}>
                             <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start"}}>
-                                <Text style={rowData.increase>0?styles.greenincup:styles.redincdo}>{rowData.increase>0?'+'+rowData.increase:rowData.increase}%</Text>
+                                <Text style={rowData.increase>0?styles.greenincup:styles.redincdo}>{rowData.increase>0?'+'+rowData.increase:rowData.increase}</Text>
                             </View>
                         </View>
                         <View style={{width:'35%'}}>
                             <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
                                 <Text style={{ fontSize:15, color:UColor.fontColor, 
-                                    textAlign:'center', marginRight:5}}>{(rowData.price == null || rowData.price == "") ? "" : rowData.price.toFixed(2)}</Text>
+                                    textAlign:'center', marginRight:5}}>{(rowData.price_rmb == null || rowData.price_rmb == "") ? "" : rowData.price_rmb.toFixed(2)}</Text>
                             </View>
                         </View>
                       </View>

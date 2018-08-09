@@ -66,6 +66,10 @@ export const getBigRamRank = rootaddr + '/ramprice/getLargeRamRank';
 
 export const getRamKLines = rootaddr + '/ramprice/getRamKLines';
 
-
-
-
+export const getETList = rootaddr + '/etExchangePrice/list';
+export const getETInfo = rootaddr + '/etExchangePrice/info/';
+export const getETPriceLine = rootaddr + '/etExchangePrice/line/';
+export const getETKLine = rootaddr + '/etExchangePrice/kline';
+export const getETTradeLog = rootaddr + '/etExchangePrice/getNewTradeOrders/';
+export const getETBigTradeLog = rootaddr + '/etExchangePrice/getBigTradeOrders/';
+export const getETTradeLogByAccount = rootaddr + '/etExchangePrice/getNewTradeOrdersByAccountName';
