@@ -2328,7 +2328,7 @@ const styles = StyleSheet.create({
     businestouchable: {
         flex: 1, 
         justifyContent: 'flex-end', 
-        backgroundColor: 'rgba(0,0,0,0)'
+        backgroundColor: UColor.mask,
     },
     busines: {
         width: ScreenWidth , 
