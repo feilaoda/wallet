@@ -11,7 +11,7 @@ import Button from  '../../components/Button'
 import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
 const {width, height} = Dimensions.get('window');
-
+import { EasyShowLD } from '../../components/EasyShow'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 
@@ -82,7 +82,19 @@ class Thin extends BaseComponent {
             return;
         }
         // const { dispatch } = this.props;
-        this.props.dispatch({ type: 'contracts/saveWallet', payload: { address: this.state.address, labelname: this.state.labelname }});
+
+        try {
+            EasyShowLD.loadingShow();
+
+            this.props.dispatch({ type: 'contracts/saveAddress', payload: { address: this.state.address, labelname: this.state.labelname }, callback: (data) => {
+              EasyShowLD.loadingClose();
+            } });
+          } catch (error) {
+            EasyShowLD.loadingClose();
+          }
+
+
+        // this.props.dispatch({ type: 'contracts/saveWallet', payload: { address: this.state.address, labelname: this.state.labelname }});
        
         // this._setModalVisible();
 
@@ -159,7 +171,7 @@ class Thin extends BaseComponent {
                                       placeholder="粘贴收款人地址" underlineColorAndroid="transparent"  value={this.state.address} />
                                 </View>                               
                                                                                                         
-                                <Button onPress={() => this.confirm() }>
+                                <Button onPress={() => this.confirm(this) }>
                                     <View style={styles.conout}>
                                         <Text style={styles.context}>确认</Text>
                                     </View>

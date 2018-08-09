@@ -43,23 +43,22 @@ export default {
                 EasyToast.show('网络繁忙,请稍后!');
             }
         },
-        *saveWallet({ payload }, { call, put }) {
+        *saveAddress({ payload }, { call, put }) {
             var contracts = yield call(store.get, 'contracts');        
             if (contracts == null) {
                 contracts = [];              
             }
 
             // wallet = JSON.parse(wallet);
-            alert(3);
 
             // var _account = "account" + contracts.length;
             // alert(4);
         
-            var _wallet = {
+            var _address = {
                 labelname: payload.labelname,
                 address: payload.address,               
             }         
-            contracts[contracts.length] = _wallet;
+            contracts[contracts.length] = _address;
             yield call(store.save, 'contracts', contracts);
             yield put({ type: 'updateAction', payload: { data: contracts, ...payload } });
         },
