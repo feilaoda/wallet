@@ -89,7 +89,7 @@ class TurnOutAsset extends BaseComponent {
             }
         });
     }
-    scan() {
+    openAddressThin() {
         const { navigate } = this.props.navigation;
         navigate('Thin', {isTurnOut:true,coinType:this.state.name});
     }
@@ -296,7 +296,7 @@ class TurnOutAsset extends BaseComponent {
                                             onChangeText={(toAccount) => this.setState({ toAccount: this.chkAccount(toAccount)})} 
                                         />
                                     <View style={styles.scanning}>
-                                            <Button onPress={() => this.scan()}>                                  
+                                            <Button onPress={() => this.openAddressThin()}>                                  
                                                 <Image source={UImage.al} style={styles.scanningimg} />                                 
                                             </Button>
                                         </View>

@@ -31,6 +31,11 @@ class TurnOut extends BaseComponent {
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
+            headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
+            <View style={{ paddingHorizontal: 10, alignItems: 'center' }}>
+                <Image source={UImage.scan} style={{ width: 28, height: 28 }}></Image>
+            </View>
+          </Button>),
         };
     };
 
@@ -136,6 +141,7 @@ class TurnOut extends BaseComponent {
     // 构造函数  
     constructor(props) {
         super(props);
+        this.props.navigation.setParams({ onPress: this._rightTopClick });
         this.state = {
             show: false,
             toAccount: '',
@@ -146,6 +152,11 @@ class TurnOut extends BaseComponent {
             name: '',
         };
     }
+
+    _rightTopClick = () =>{
+        const { navigate } = this.props.navigation;
+        navigate('BarCode', {isTurnOut:true,coinType:this.state.name});
+      }
 
     goPage(coinType) {
         const { navigate } = this.props.navigation;
@@ -272,9 +283,10 @@ class TurnOut extends BaseComponent {
         this._ramount.blur();
         this._rnote.blur();
     }
-    scan() {
+    
+    openAddressThin() {
         const { navigate } = this.props.navigation;
-        navigate('BarCode', {isTurnOut:true});
+        navigate('Thin', {isTurnOut:true,coinType:this.state.name});
     }
 
     dismissKeyboardClick() {
@@ -302,8 +314,8 @@ class TurnOut extends BaseComponent {
                                             onChangeText={(toAccount) => this.setState({ toAccount: this.chkAccount(toAccount)})} 
                                         />
                                     <View style={styles.scanning}>
-                                            <Button onPress={() => this.scan()}>                                  
-                                                <Image source={UImage.scan} style={styles.scanningimg} />                                 
+                                            <Button onPress={() => this.openAddressThin()}>                                  
+                                                <Image source={UImage.al} style={styles.scanningimg} />                                 
                                             </Button>
                                         </View>
                                     </View>
