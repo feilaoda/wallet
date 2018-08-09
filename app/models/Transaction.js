@@ -267,7 +267,7 @@ export default {
             return { ...state, ...action.payload };
         },
         updateETPriceLine(state, action) {      
-            let etLineDatas = combine(action.payload.data);
+            let etLineDatas = combineET(action.payload.data);
             return { ...state, etLineDatas };
         },
         updateETTradeLog(state, action) {
@@ -336,6 +336,92 @@ export default {
                             return '0.000';
                         }
                         return value.toFixed(3);
+                    },
+                    color: "#93B5EE",
+                    // interval: '0'
+                },
+            },
+        ],
+        series: [
+            {
+                yAxisIndex: 0,
+                name: '交易量',
+                type: 'line',
+                barWidth: '50%',
+                data: data.ps,
+                lineStyle: {
+                    normal: {
+                        width: 2,  //连线粗细
+                        color: "#6CDAFF"  //连线颜色
+                    }
+                },
+                smooth: true,//折线图是趋缓的
+            },
+ 
+        ]
+    }
+}
+
+function combineET(data) {
+    return  {
+        color: ['#556E95','#6CDAFF'],
+        grid: {
+            top: '15%',
+            left: '0%',
+            right: '5%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: data.x,
+                axisTick: {
+                    alignWithLabel: true
+                },
+                axisTick: {
+                    show: true
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "#7382a1"
+                    }
+                },
+                axisLabel: {
+                    color: "#96BAF0"
+                },
+            }
+        ],
+        yAxis: [
+            {
+                name: 'EOS',
+                nameLocation: 'end',      
+                nameRotate: '0',
+                nameGap: '10', 
+                min: 'dataMin',
+                max: 'dataMax',
+                show: true,
+                type: 'value',
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "#7382a1"
+                    }
+                },
+                axisTick: {
+                    show: true,
+                    // interval: '0'
+                },
+                axisLabel: {
+                    show: true,
+                    // formatter: '{value}',
+                    formatter: function(value, index) {
+                        if(value == null || value == ''){
+                            return '0.000';
+                        }
+                        return value.toFixed(8);
                     },
                     color: "#93B5EE",
                     // interval: '0'

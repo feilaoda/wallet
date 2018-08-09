@@ -49,7 +49,7 @@ function splitData(rawData) {
     };
 }
 
-function combineKLine(data) {
+function combineRamKLine(data) {
     return {
         backgroundColor: UColor.secdColor,
         animation: false,
@@ -239,7 +239,209 @@ function combineKLine(data) {
         
     };
 }
-
+function combineETKLine(data) {
+    return {
+        backgroundColor: UColor.secdColor,
+        animation: false,
+        // legend: {
+        //     bottom: 10,
+        //     left: 'center',
+        //     data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
+        // },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            backgroundColor: 'rgba(245, 245, 245, 0.8)',
+            borderWidth: 1,
+            borderColor: '#ccc',
+            padding: 10,
+            textStyle: {
+                color: '#000'
+            },
+            position: function (pos, params, el, elRect, size) {
+                var obj = {top: 10};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                return obj;
+            }
+            // extraCssText: 'width: 170px'
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
+            }
+        },
+        toolbox: {
+            feature: {
+                dataZoom: {
+                    yAxisIndex: false
+                },
+                brush: {
+                    type: ['lineX', 'clear']
+                }
+            }
+        },
+        brush: {
+            xAxisIndex: 'all',
+            brushLink: 'all',
+            outOfBrush: {
+                colorAlpha: 0.1
+            }
+        },
+        visualMap: {
+            show: false,
+            seriesIndex: 1,
+            dimension: 2,
+            pieces: [{
+                value: 1,
+                color: downColor
+            }, {
+                value: -1,
+                color: upColor
+            }]
+        },
+        grid: [
+            {
+                top: '8%',
+                left: '12%',
+                right: '4%',
+                height: '50%'
+            },
+            {
+                left: '12%',
+                right: '4%',
+                top: '65%',
+                height: '16%',
+                bottom: '0',
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data:  data.categoryData,
+                scale: true,
+                boundaryGap : true,
+                axisLine: {onZero: false},
+                splitLine: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
+                axisPointer: {
+                    z: 100
+                }
+            },
+            {
+                type: 'category',
+                gridIndex: 1,
+                data:  data.categoryData,
+                scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},
+                axisTick: {show: false},
+                splitLine: {show: false},
+                axisLabel: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax'
+                // axisPointer: {
+                //     label: {
+                //         formatter: function (params) {
+                //             var seriesValue = (params.seriesData[0] || {}).value;
+                //             return params.value
+                //             + (seriesValue != null
+                //                 ? '\n' + echarts.format.addCommas(seriesValue)
+                //                 : ''
+                //             );
+                //         }
+                //     }
+                // }
+            }
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                axisLabel: {
+                    show: true,
+                    // formatter: '{value}',
+                    formatter: function(value, index) {
+                        if(value == null || value == ''){
+                            return '0.0000';
+                        }
+                        return value.toFixed(8);
+                    },
+                    color: "#93B5EE",
+                    // interval: '0'
+                },
+            },
+            {
+                scale: true,
+                gridIndex: 1,
+                splitNumber: 2,
+                axisLabel: {show: false},
+                axisLine: {show: false},
+                axisTick: {show: false},
+                splitLine: {show: false}
+            },
+            
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                xAxisIndex: [0, 1],
+                start: 50,
+                end: 100
+            },
+            {
+                show: true,
+                xAxisIndex: [0, 1],
+                type: 'slider',
+                top: '85%',
+                start: 50,
+                end: 100
+            }
+        ],
+        series: [
+            {
+                name: 'Dow-Jones index',
+                type: 'candlestick',
+                data: data.values ,
+                itemStyle: {
+                    normal: {
+                        color: upColor,
+                        color0: downColor,
+                        borderColor: null,
+                        borderColor0: null
+                    }
+                },
+                tooltip: {
+                    formatter: function (param) {
+                        return [
+                            '日期:' + param.name + '<hr size=1 style="margin: 3px 0">',
+                            '开盘:' + param.data[0] + '<br/>',
+                            '收盘:' + param.data[1] + '<br/>',
+                            '最低:' + param.data[2] + '<br/>',
+                            '最高:' + param.data[3] + '<br/>'
+                        ].join('');
+    
+                    }
+                }
+            },
+            {
+                name: 'Volume',
+                type: 'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                data: data.volumes,
+            }
+        ]
+        
+    };
+}
 
 @connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
 class Transaction extends BaseComponent {
@@ -542,7 +744,7 @@ class Transaction extends BaseComponent {
                         arrayObj[i] = elementArray;
                     }
                     var constructdata = splitData(arrayObj);
-                    var echartsoption = combineKLine(constructdata);
+                    var echartsoption = combineRamKLine(constructdata);
                     this.setState({ dataKLine : echartsoption});
                   }else{
                     this.setState({ dataKLine : {}});
@@ -556,7 +758,7 @@ class Transaction extends BaseComponent {
     });
     
   }
-  fetchCoinKLine(dateType,opt){
+  fetchETKLine(dateType,opt){
     InteractionManager.runAfterInteractions(() => {
         this.props.dispatch({type: 'transaction/getETKLine',payload: {code:this.state.selectcode,pageSize: "180", dateType: dateType}, callback: (resp) => {
             try {
@@ -596,7 +798,7 @@ class Transaction extends BaseComponent {
                         arrayObj[i] = elementArray;
                     }
                     var constructdata = splitData(arrayObj);
-                    var echartsoption = combineKLine(constructdata);
+                    var echartsoption = combineETKLine(constructdata);
                     this.setState({ dataKLine : echartsoption});
                   }else{
                     this.setState({ dataKLine : {}});
@@ -615,7 +817,7 @@ class Transaction extends BaseComponent {
     {
         this.fetchRAMKLine(type,opt);
     }else{
-        this.fetchCoinKLine(type,opt);
+        this.fetchETKLine(type,opt);
     }
   }
 
@@ -651,7 +853,7 @@ class Transaction extends BaseComponent {
   
    getDataLine()
    {
-       if(this.chkIsRamTx)
+       if(this.chkIsRamTx())
        {
            return this.props.ramLineDatas ? this.props.ramLineDatas : {};
        }
@@ -661,7 +863,7 @@ class Transaction extends BaseComponent {
        }
    }
    getDataKLine(){
-           return this.state.dataKLine?this.state.dataKLine:{};
+        return this.state.dataKLine?this.state.dataKLine:{};
    }
   onClickMore(){
     this.setState({ showMore: !this.state.showMore });
