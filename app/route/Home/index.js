@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing, Clipboard, ImageBackground, ScrollView, RefreshControl } from 'react-native';
+import { DeviceEventEmitter, ListView,NativeModules, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing, Clipboard, ImageBackground, ScrollView, RefreshControl,Linking, } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter' 
 import store from 'react-native-simple-store';
@@ -16,7 +16,7 @@ const maxHeight = Dimensions.get('window').height;
 import { EasyToast } from "../../components/Toast"
 import { EasyShowLD } from '../../components/EasyShow'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-
+import Constants from '../../utils/Constants'
 import { Eos } from "react-native-eosjs";
 
 @connect(({ wallet, assets }) => ({ ...wallet, ...assets }))
@@ -498,7 +498,21 @@ class Home extends React.Component {
     this._disableTipVisible();
   }
 
+  openSystemSetting(){
+    // console.log("go to set net!")
+    if (Platform.OS == 'ios') {
+      Linking.openURL('app-settings:')
+        .catch(err => console.log('error', err))
+    } else {
+      NativeModules.OpenSettings.openNetworkSettings(data => {
+        console.log('call back data', data)
+      })
+    }
+
+  }
+
   render() {
+
   if(this.props.guide){
     return (
       <View style={styles.container}>
@@ -532,6 +546,15 @@ class Home extends React.Component {
               <Image source={UImage.wallet_h} style={styles.imgBtn} />
             </Button>
           </View>
+
+        {Constants.netTimeoutFlag==true &&
+          <Button onPress={this.openSystemSetting.bind(this)}>
+            <View style={styles.systemSettingTip}>
+                <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
+                <Text style={styles.systemSettingArrow}>></Text>
+            </View>
+          </Button>}
+
           <ImageBackground style={styles.bgout} source={UImage.home_bg} resizeMode="cover">
             <View style={styles.head}>
               <Button onPress={this.onPress.bind(this, 'Receivables')} style={styles.headbtn}>
@@ -1172,6 +1195,30 @@ headtitle: {
     width: 30,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+
+
+    
+  systemSettingTip: {
+    // flex: 1,
+    width: maxWidth,
+    height:40,
+    flexDirection: "row",
+    alignItems: 'center', 
+    backgroundColor: UColor.showy,
+  },
+  systemSettingText: {
+    color: UColor.fontColor,
+    textAlign: 'center',
+    fontSize: 15
+  },
+  systemSettingArrow: {
+    flex: 1,
+    color: UColor.fontColor,
+    textAlign: 'right',
+    fontSize: 30,
+    marginBottom:6
   },
 });
 

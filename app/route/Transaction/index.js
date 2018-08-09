@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Modal,Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,TouchableOpacity,Image,Platform,TextInput,Slider,KeyboardAvoidingView} from 'react-native';
+import {Modal,Dimensions,DeviceEventEmitter,NativeModules,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,TouchableOpacity,Image,Platform,TextInput,Slider,KeyboardAvoidingView,Linking,} from 'react-native';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
@@ -1331,7 +1331,23 @@ class Transaction extends BaseComponent {
       });  
   }  
 
+  openSystemSetting(){
+    // console.log("go to set net!")
+    if (Platform.OS == 'ios') {
+      Linking.openURL('app-settings:')
+        .catch(err => console.log('error', err))
+    } else {
+      NativeModules.OpenSettings.openNetworkSettings(data => {
+        console.log('call back data', data)
+      })
+    }
+
+  }
+
   render() {
+
+
+
     return <View style={styles.container}>
     <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 20 : 30, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
         <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
@@ -1349,7 +1365,13 @@ class Transaction extends BaseComponent {
                        numberOfLines={1} ellipsizeMode='middle'>{this.state.tradename + "/EOS"}</Text>
           </View>     
       </View> 
-
+      {Constants.netTimeoutFlag==true &&
+        <Button onPress={this.openSystemSetting.bind(this)}>
+          <View style={styles.systemSettingTip}>
+              <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
+              <Text style={styles.systemSettingArrow}>></Text>
+          </View>
+        </Button>}
     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
       <ScrollView keyboardShouldPersistTaps="always"refreshControl={
             <RefreshControl refreshing={this.state.logRefreshing} onRefresh={() => this.onRefreshing()}
@@ -2381,6 +2403,27 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 
+
+    systemSettingTip: {
+        // flex: 1,
+        width: ScreenWidth,
+        height:40,
+        flexDirection: "row",
+        alignItems: 'center', 
+        backgroundColor: UColor.showy,
+      },
+      systemSettingText: {
+        color: UColor.fontColor,
+        textAlign: 'center',
+        fontSize: 15
+      },
+      systemSettingArrow: {
+        flex: 1,
+        color: UColor.fontColor,
+        textAlign: 'right',
+        fontSize: 30,
+        marginBottom:6
+      },
 });
 
 export default Transaction;

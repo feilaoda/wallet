@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { BackHandler, NavigationActions, Dimensions, Image, ScrollView, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, WebView, FlatList, Platform, Clipboard, TouchableHighlight } from 'react-native';
+import { BackHandler, NavigationActions, Dimensions,NativeModules, Image, ScrollView, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, WebView, FlatList, Platform, Clipboard, TouchableHighlight,Linking, } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import Swiper from 'react-native-swiper';
 import store from 'react-native-simple-store';
@@ -11,6 +11,7 @@ import UImage from '../../utils/Img'
 import { EasyToast } from '../../components/Toast';
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import NavigationUtil from '../../utils/NavigationUtil'
+import Constants from '../../utils/Constants'
 require('moment/locale/zh-cn');
 
 var WeChat = require('react-native-wechat');
@@ -195,6 +196,21 @@ class News extends React.Component {
     cangoback = e.canGoBack;
   }
 
+
+  openSystemSetting(){
+    // console.log("go to set net!")
+    if (Platform.OS == 'ios') {
+      Linking.openURL('app-settings:')
+        .catch(err => console.log('error', err))
+    } else {
+      NativeModules.OpenSettings.openNetworkSettings(data => {
+        console.log('call back data', data)
+      })
+    }
+
+  }
+
+
   //渲染页面
   renderScene = ({ route }) => {
     if (route.key == '') {
@@ -222,6 +238,15 @@ class News extends React.Component {
         renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={{ height: 0.5, backgroundColor: UColor.secdColor }} />}
         onEndReached={() => this.onEndReached(route.key)}
         renderHeader = {()=><View style={{ height: this.state.h }}>
+
+        {Constants.netTimeoutFlag==true &&
+          <Button onPress={this.openSystemSetting.bind(this)}>
+            <View style={styles.systemSettingTip}>
+                <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
+                <Text style={styles.systemSettingArrow}>></Text>
+            </View>
+          </Button>}
+
           <Swiper
             height={this.state.h}
             loop={true}  
@@ -290,7 +315,6 @@ class News extends React.Component {
       return (<View></View>)
     }
   }
-
   render() {
     return (
       <View style={styles.container}>
@@ -343,7 +367,30 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
-  }
+  },
+
+
+
+  systemSettingTip: {
+    // flex: 1,
+    width: ScreenWidth,
+    height:40,
+    flexDirection: "row",
+    alignItems: 'center', 
+    backgroundColor: UColor.showy,
+  },
+  systemSettingText: {
+    color: UColor.fontColor,
+    textAlign: 'center',
+    fontSize: 15
+  },
+  systemSettingArrow: {
+    flex: 1,
+    color: UColor.fontColor,
+    textAlign: 'right',
+    fontSize: 30,
+    marginBottom:6
+  },
 });
 
 export default News;

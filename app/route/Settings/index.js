@@ -11,8 +11,8 @@ import Constants from '../../utils/Constants'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from '../../components/EasyShow'
 
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var DeviceInfo = require('react-native-device-info');
 
 @connect(({ login}) => ({ ...login}))
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
 
   systemSettingTip: {
     flex: 1,
-    width: maxWidth,
+    width: ScreenWidth,
     height:40,
     flexDirection: "row",
     alignItems: 'center', 
