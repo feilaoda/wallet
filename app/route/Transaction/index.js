@@ -49,9 +49,25 @@ function splitData(rawData) {
     };
 }
 
+function calculateMA(data, dayCount) {
+    var result = [];
+    for (var i = 0, len = data.values.length; i < len; i++) {
+        if (i < dayCount) {
+            result.push('-');
+            continue;
+        }
+        var sum = 0;
+        for (var j = 0; j < dayCount; j++) {
+            sum += data.values[i - j][1];
+        }
+        result.push(sum / dayCount);
+    }
+    return result;
+}
+
 function combineRamKLine(data) {
     return {
-        backgroundColor: UColor.secdColor,
+        backgroundColor: "#2f3b50",
         animation: false,
         // legend: {
         //     bottom: 10,
@@ -83,23 +99,23 @@ function combineRamKLine(data) {
                 backgroundColor: '#777'
             }
         },
-        toolbox: {
-            feature: {
-                dataZoom: {
-                    yAxisIndex: false
-                },
-                brush: {
-                    type: ['lineX', 'clear']
-                }
-            }
-        },
-        brush: {
-            xAxisIndex: 'all',
-            brushLink: 'all',
-            outOfBrush: {
-                colorAlpha: 0.1
-            }
-        },
+        // toolbox: {
+        //     feature: {
+        //         dataZoom: {
+        //             yAxisIndex: false
+        //         },
+        //         brush: {
+        //             type: ['lineX', 'clear']
+        //         }
+        //     }
+        // },
+        // brush: {
+        //     xAxisIndex: 'all',
+        //     brushLink: 'all',
+        //     outOfBrush: {
+        //         colorAlpha: 0.1
+        //     }
+        // },
         visualMap: {
             show: false,
             seriesIndex: 1,
@@ -117,14 +133,14 @@ function combineRamKLine(data) {
                 top: '8%',
                 left: '12%',
                 right: '4%',
-                height: '50%'
+                height: '60%'
             },
             {
                 left: '12%',
                 right: '4%',
-                top: '65%',
-                height: '16%',
-                bottom: '0',
+                top: '70%',
+                height: '30%',
+                // bottom: '0',
             }
         ],
         xAxis: [
@@ -174,6 +190,15 @@ function combineRamKLine(data) {
                 scale: true,
                 splitArea: {
                     show: false
+                },
+                // axisLabel: {show: false},
+                // axisLine: {show: false},
+                // axisTick: {show: false},
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: "#f44961",
+                    }
                 }
             },
             {
@@ -196,7 +221,7 @@ function combineRamKLine(data) {
             {
                 show: true,
                 xAxisIndex: [0, 1],
-                type: 'slider',
+                type: 'inside',
                 top: '85%',
                 start: 50,
                 end: 100
@@ -218,15 +243,15 @@ function combineRamKLine(data) {
                 tooltip: {
                     formatter: function (param) {
                         return [
-                            '日期:' + param.name + '<hr size=1 style="margin: 3px 0">',
-                            '开盘:' + param.data[0] + '<br/>',
-                            '收盘:' + param.data[1] + '<br/>',
-                            '最低:' + param.data[2] + '<br/>',
-                            '最高:' + param.data[3] + '<br/>'
+                            // '日期:' + param.name + '<hr size=1 style="margin: 3px 0">',
+                            // '开盘:' + param.data[0] + '<br/>',
+                            // '收盘:' + param.data[1] + '<br/>',
+                            // '最低:' + param.data[2] + '<br/>',
+                            // '最高:' + param.data[3] + '<br/>'
                         ].join('');
     
                     }
-                }
+                },
             },
             {
                 name: 'Volume',
@@ -234,7 +259,55 @@ function combineRamKLine(data) {
                 xAxisIndex: 1,
                 yAxisIndex: 1,
                 data: data.volumes,
-            }
+            },
+            {
+                name: 'MA5',
+                type: 'line',
+                data: calculateMA(data, 5),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#6e6e46",
+                    }
+                }
+            },
+            {
+                name: 'MA10',
+                type: 'line',
+                data: calculateMA(data, 10),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#835098",
+                    }
+                }
+            },
+            {
+                name: 'MA20',
+                type: 'line',
+                data: calculateMA(data, 20),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#4b9373",
+                    }
+                }
+            },
+            {
+                name: 'MA30',
+                type: 'line',
+                data: calculateMA(data, 30),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#4b7793",
+                    }                
+                }
+            },
         ]
         
     };
@@ -494,6 +567,7 @@ class Transaction extends BaseComponent {
       business: false,
       error: false,
       errortext: '',
+      scrollEnabled: true, 
    };
   }
 
@@ -1543,7 +1617,16 @@ class Transaction extends BaseComponent {
         console.log('call back data', data)
       })
     }
+  }
+  
+  onMoveLineView() {
+    this.setState({scrollEnabled: false});
+    return true;
+  }
 
+  onMoveLineViewEnd(){
+    this.setState({scrollEnabled: true});
+    return true;
   }
 
   render() {
@@ -1575,11 +1658,11 @@ class Transaction extends BaseComponent {
           </View>
         </Button>}
     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
-      <ScrollView keyboardShouldPersistTaps="always"refreshControl={
+      <ScrollView scrollEnabled={this.state.scrollEnabled} keyboardShouldPersistTaps="always"refreshControl={
             <RefreshControl refreshing={this.state.logRefreshing} onRefresh={() => this.onRefreshing()}
             tintColor={UColor.fontColor} colors={['#ddd', UColor.tintColor]} progressBackgroundColor={UColor.fontColor}/>}
             >
-        <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
+        {/* <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}> */}
         {
           this.chkIsRamTx() ?  
           <View style={styles.header}>
@@ -1743,7 +1826,7 @@ class Transaction extends BaseComponent {
         : <View></View>}  
         {
             this.state.isKLine ? 
-            <View style={styles.echartsout}>
+            <View style={styles.echartsout} onStartShouldSetResponderCapture={this.onMoveLineView.bind(this)} onResponderRelease={this.onMoveLineViewEnd.bind(this)}>
             {
                 <Echarts option={this.getDataKLine()} width={ScreenWidth} height={300} />
             }
@@ -1874,7 +1957,7 @@ class Transaction extends BaseComponent {
                 }
             </View>}
         
-        </TouchableOpacity>
+        {/* </TouchableOpacity> */}
       </ScrollView>  
     </KeyboardAvoidingView> 
 
@@ -2085,7 +2168,6 @@ class Transaction extends BaseComponent {
   </View>
   }
 }
-
 const styles = StyleSheet.create({
     container: {
       flex: 1,
