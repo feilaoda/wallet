@@ -64,25 +64,23 @@ class RecordQueryET extends React.Component {
     }
   }
 
-    //小数点位数大于指定位数,强制显示指定位数,少于则按实际位数显示
-    precisionTransfer(data,pos){
-      // try {
-      //     // var str = String.valueOf(data);
-          //  var point = str.lastIndexOf(".");
-          //  if(point < 0){
-          //      return data; //无小数位
-          //  }
-          // var pointnum = str.length - point - 1;
-          // var precisionData = str;
-          // if(pointnum > pos){
-          //     precisionData = str.substring(0,point + 1 + pos);
-          // }
-      //     return precisionData;
-      // } catch (error) {
-      //     return data;
-      // }
-     return data;
+  //小数点位数大于指定位数,强制显示指定位数,少于则按实际位数显示
+  precisionTransfer(data,pos){
+    try {
+        var point = data.lastIndexOf(".");
+        if(point < 0){
+            return data; //无小数位
+        }
+        var pointnum = data.length - point - 1;
+        var precisionData = data;
+        if(pointnum > pos){
+            precisionData = data.substring(0,point + 1 + pos);
+        }
+        return precisionData;
+    } catch (error) {
+        return data;
     }
+  }
 
   // 根据账号查找交易记录
   query = (labelname) =>{

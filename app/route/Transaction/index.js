@@ -76,7 +76,7 @@ class Transaction extends BaseComponent {
       selectcode:"TEST_EOS_issuemytoken",    //ET交易币种的唯一code
       showMore:false,  
       showMoreTitle:"更多",
-      isKLine:false,  //是否K线
+      isKLine:true,  //是否K线
       dataKLine: {},
       business: false,
       error: false,
@@ -145,8 +145,22 @@ class Transaction extends BaseComponent {
     _leftTopClick = () => {
         this.setState({ modal: !this.state.modal });
         this.props.dispatch({type:'transaction/getETList',payload:{}});
+
+        this.props.dispatch({type:'transaction/getRamInfo',payload: {}});
     }
  
+      //选择ram 交易
+    selectRamTx(){
+        this.setState({
+            modal: false,
+            // tradename:"RAM",
+            // selectcode:"",
+        });
+        this._rightTopClick();
+        // InteractionManager.runAfterInteractions(() => {
+        //     this.getRamInfo();
+        // });
+    }
     //选择ET交易
     selectETtx(rowData){
         this.setState({
@@ -189,13 +203,6 @@ class Transaction extends BaseComponent {
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
         return;
       }
-    // this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.defaultWallet.account},callback: (data) => {
-    //   try {
-    //     this.setState({ myETAvailable:((data.total_resources.ram_bytes - data.ram_usage)).toFixed(0)});
-    //   } catch (error) {
-          
-    //   }
-    // } });
 
     this.getBalance();  //取eos余额
     this.getETBalance(); //取ET余额
@@ -763,22 +770,20 @@ class Transaction extends BaseComponent {
   }
   //小数点位数大于指定位数,强制显示指定位数,少于则按实际位数显示
   precisionTransfer(data,pos){
-    // try {
-    //     // var str = String.valueOf(data);
-        //  var point = str.lastIndexOf(".");
-        //  if(point < 0){
-        //      return data; //无小数位
-        //  }
-        // var pointnum = str.length - point - 1;
-        // var precisionData = str;
-        // if(pointnum > pos){
-        //     precisionData = str.substring(0,point + 1 + pos);
-        // }
-    //     return precisionData;
-    // } catch (error) {
-    //     return data;
-    // }
-   return data;
+    try {
+         var point = data.lastIndexOf(".");
+         if(point < 0){
+             return data; //无小数位
+         }
+        var pointnum = data.length - point - 1;
+        var precisionData = data;
+        if(pointnum > pos){
+            precisionData = data.substring(0,point + 1 + pos);
+        }
+        return precisionData;
+    } catch (error) {
+        return data;
+    }
   }
   openQuery =(payer) => {
       if(payer == 'busines'){
@@ -860,11 +865,11 @@ class Transaction extends BaseComponent {
               <Text style={{ fontSize: 18,color: UColor.fontColor, justifyContent: 'center',alignItems: 'center',}} 
                        numberOfLines={1} ellipsizeMode='middle'>{this.state.tradename + "/EOS"}</Text>
           </View>     
-        <TouchableOpacity onPress={this._rightTopClick.bind()}>
+        {/* <TouchableOpacity onPress={this._rightTopClick.bind()}>
         <View style={styles.Rightout} >
             <Image source={UImage.tx_ram } style={styles.imgTeOy}/>
         </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View> 
       {Constants.netTimeoutFlag==true &&
         <Button onPress={this.openSystemSetting.bind(this)}>
@@ -1152,7 +1157,48 @@ class Transaction extends BaseComponent {
                     <Image source={UImage.tx_slide0} style={styles.HeadImg}/>
                 </View>
                 </TouchableOpacity> */}
-                  
+                <View style={styles.ebhbtnout}>
+                    <View style={{width:'37%'}}>
+                        <View style={{ flex:1,flexDirection:"row",alignItems: 'center', }}>
+                            <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>内存</Text>
+                        </View>
+                    </View>
+                    <View style={{width:'28%'}}>
+                        <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start", }}>
+                            <Text style={{fontSize:15,marginLeft:0,color:UColor.fontColor}}>涨幅</Text>
+                        </View>
+                    </View>
+                    <View style={{width:'35%'}}>
+                        <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end", }}>
+                            <Text style={{ fontSize:15, color:UColor.fontColor, 
+                                textAlign:'center', marginRight:5}}>单价(EOS)</Text>
+                        </View>
+                    </View>
+                </View>
+
+                <View style={styles.ebhbtnout2}>
+                  <Button onPress={this.selectRamTx.bind(this)}>
+                      <View style={styles.sliderow}>
+                        <View style={{width:'34%'}}>
+                            <View style={{ flex:1,flexDirection:"row",alignItems: 'center'}}>
+                                <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>RAM</Text>
+                            </View>
+                        </View>
+                        <View style={{width:'31%'}}>
+                            <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start"}}>
+                            <Text style={(this.props.ramInfo && this.props.ramInfo.increase>=0)?styles.greenincup:styles.redincdo}> {this.props.ramInfo ? (this.props.ramInfo.increase > 0 ? '+' + (this.props.ramInfo.increase * 100).toFixed(2) : (this.props.ramInfo.increase * 100).toFixed(2)): '0.00'}%</Text>
+                            </View>
+                        </View>
+                        <View style={{width:'35%'}}>
+                            <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
+                                <Text style={{ fontSize:15, color:UColor.fontColor, 
+                                    textAlign:'center', marginRight:5}}>{this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'}</Text>
+                            </View>
+                        </View>
+                      </View>
+                  </Button>
+                </View>
+
                 <View style={styles.ebhbtnout}>
                     <View style={{width:'37%'}}>
                         <View style={{ flex:1,flexDirection:"row",alignItems: 'center', }}>
@@ -1190,7 +1236,7 @@ class Transaction extends BaseComponent {
                         <View style={{width:'35%'}}>
                             <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
                                 <Text style={{ fontSize:15, color:UColor.fontColor, 
-                                    textAlign:'center', marginRight:5}}>{(rowData.price == null || rowData.price == "") ? "0" : rowData.price.toFixed(8)}</Text>
+                                    textAlign:'center', marginRight:5}}>{(rowData.price == null || rowData.price == "") ? "0" : this.precisionTransfer(rowData.price,8)}</Text>
                             </View>
                         </View>
                       </View>
@@ -1689,7 +1735,7 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         borderBottomColor: '#4D607E',
         borderBottomWidth: 0.6,
-        height: 30, 
+        height: 40, 
       },
     touchableouts: {
         flex: 1,
@@ -1731,7 +1777,7 @@ const styles = StyleSheet.create({
    },
    ebhbtnout2: {
     width: '100%', 
-    height: 30, 
+    height: 40, 
     flexDirection: "column", 
     alignItems: 'flex-start', 
     borderTopWidth: 1, 
