@@ -368,14 +368,6 @@ class Transaction extends BaseComponent {
         return {
           title: '交易',
           header:null,  //隐藏顶部导航栏
-         //铃铛small_bell/small_bell_h
-          headerRight: (
-            <Button name="share" onPress={() => this._rightTopClick()} >
-              <View style={{ padding: 15 }}>
-              <Image source={UImage.small_bell} style={{ width: 22, height: 22 }}></Image>
-              </View>
-            </Button>
-          )
         };
       };
 
@@ -1267,11 +1259,11 @@ class Transaction extends BaseComponent {
         }else{
             this.setState({ business: false});
             const { navigate } = this.props.navigation;
-            navigate('RecordQueryET', {code:this.state.selectcode,record:this.props.defaultWallet.account});
+            navigate('RecordQueryET', {code:this.state.selectcode,tradename:this.state.tradename,record:this.props.defaultWallet.account});
         }
       }else{
         const { navigate } = this.props.navigation;
-        navigate('RecordQueryET', {code:this.state.selectcode,record:payer});
+        navigate('RecordQueryET', {code:this.state.selectcode,tradename:this.state.tradename,record:payer});
       }
   }
 
@@ -1337,6 +1329,11 @@ class Transaction extends BaseComponent {
               <Text style={{ fontSize: 18,color: UColor.fontColor, justifyContent: 'center',alignItems: 'center',}} 
                        numberOfLines={1} ellipsizeMode='middle'>{this.state.tradename + "/EOS"}</Text>
           </View>     
+        <TouchableOpacity onPress={this._rightTopClick.bind()}>
+        <View style={styles.Rightout} >
+            <Image source={UImage.reveal_wallet } style={styles.imgTeOy}/>
+        </View>
+        </TouchableOpacity>
       </View> 
       {Constants.netTimeoutFlag==true &&
         <Button onPress={this.openSystemSetting.bind(this)}>
@@ -1515,18 +1512,18 @@ class Transaction extends BaseComponent {
                             }
                             dataSource={this.state.dataSource.cloneWithRows(this.state.newetTradeLog == null ? [] : this.state.newetTradeLog)} 
                             renderRow={(rowData, sectionID, rowID) => (                 
-                            <Button onPress={this.openQuery.bind(this,rowData.payer)}>
+                            <Button onPress={this.openQuery.bind(this,rowData.account)}>
                                 <View style={styles.businessout}>
                                     {rowData.action_name == 'selltoken' ? 
                                     <View style={styles.liststrip}>
-                                        <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
-                                        <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.ram_qty : rowData.eos_qty.replace("EOS", "")}</Text>
+                                        <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
+                                        <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.token_qty : rowData.eos_qty.replace("EOS", "")}</Text>
                                         <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
                                         <Text style={styles.selltime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                     </View>
                                     :
                                     <View style={styles.liststrip}>
-                                        <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
+                                        <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
                                         <Text style={styles.buytext} numberOfLines={1}>买 {rowData.eos_qty.replace("EOS", "")}</Text>
                                         <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
                                         <Text style={styles.buytime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
@@ -1556,18 +1553,18 @@ class Transaction extends BaseComponent {
                     }
                       dataSource={this.state.dataSource.cloneWithRows(this.props.etBigTradeLog == null ? [] : this.props.etBigTradeLog)} 
                       renderRow={(rowData, sectionID, rowID) => (                 
-                        <Button onPress={this.openQuery.bind(this,rowData.payer)}>
+                        <Button onPress={this.openQuery.bind(this,rowData.account)}>
                             <View style={styles.businessout}>
                                 {rowData.action_name == 'selltoken' ? 
                                 <View style={styles.liststrip}>
-                                    <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
-                                    <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.ram_qty : rowData.eos_qty.replace("EOS", "")}</Text>
+                                    <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
+                                    <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.token_qty : rowData.eos_qty.replace("EOS", "")}</Text>
                                     <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
                                     <Text style={styles.selltime} numberOfLines={1} >{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                 </View>
                                 :
                                 <View style={styles.liststrip}>
-                                    <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
+                                    <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
                                     <Text style={styles.buytext} numberOfLines={1}>买 {rowData.eos_qty.replace("EOS", "")}</Text>
                                     <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
                                     <Text style={styles.buytime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
@@ -1803,6 +1800,15 @@ const styles = StyleSheet.create({
         height:15,
         marginHorizontal:1,
     },
+    Rightout: {
+        paddingLeft: 15
+      },
+    imgTeOy: {
+        width: 25,
+        height: 15,
+        marginHorizontal:5,
+      },
+
     HeadTitle: {
     flex: 1,
     paddingLeft: 60,

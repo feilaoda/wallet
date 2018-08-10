@@ -1,19 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, TextInput, KeyboardAvoidingView, ImageBackground, ScrollView, RefreshControl } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
-import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter' 
-import store from 'react-native-simple-store';
+import {  ListView, StyleSheet, Image, View, Text, Platform,  TouchableOpacity, TextInput, KeyboardAvoidingView, ImageBackground, ScrollView, RefreshControl } from 'react-native';
 import UColor from '../../utils/Colors'
-import Button from '../../components/Button'
-import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
-import AnalyticsUtil from '../../utils/AnalyticsUtil';
-import QRCode from 'react-native-qrcode-svg';
 import { EasyToast } from "../../components/Toast"
 import moment from 'moment';
 var dismissKeyboard = require('dismissKeyboard');
-var Dimensions = require('Dimensions')
 @connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
 class RecordQueryET extends React.Component {
   static navigationOptions = {
@@ -34,6 +26,8 @@ class RecordQueryET extends React.Component {
       labelname: '',
       logId: "-1",
       logRefreshing: false,
+      selectcode:this.props.navigation.state.params.code,    //ET交易币种的唯一code
+      tradename:this.props.navigation.state.params.tradename,     //ET交易币种
     }
   }
 
@@ -185,7 +179,7 @@ class RecordQueryET extends React.Component {
               <Image source={UImage.Magnifier_ash} style={styles.headleftimg}></Image>
               <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
                   selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor="#b3b3b3" maxLength={12} 
-                  placeholder="输入EOS账号名" underlineColorAndroid="transparent" keyboardType="default"
+                  placeholder="输入账号名" underlineColorAndroid="transparent" keyboardType="default"
                   onChangeText={(labelname) => this.setState({ labelname })}   
                   />      
           </View>    
@@ -212,16 +206,16 @@ class RecordQueryET extends React.Component {
         renderRow={(rowData, sectionID, rowID) => (   
           <View style={styles.package}>
             <View style={styles.leftout}>
-              <Text style={styles.payertext}>{rowData.payer}</Text>
+              <Text style={styles.payertext}>{rowData.account}</Text>
               <Text style={styles.timetext}>{moment(rowData.record_date).add(8,'hours').format('MM-DD HH:mm:ss')}</Text>
             </View>
             <View style={styles.rightout}>
               {rowData.action_name == 'selltoken' ? 
-              <Text style={styles.selltext}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.ram_qty : rowData.eos_qty}</Text>
+              <Text style={styles.selltext}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.token_qty : rowData.eos_qty}</Text>
               :
               <Text style={styles.buytext}>买 {rowData.eos_qty}</Text>
               }
-              <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : rowData.price}{(rowData.price == null || rowData.price == '0') ? '' :  ' EOS/KB'}</Text>
+              <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : rowData.price}{(rowData.price == null || rowData.price == '0') ? '' :  ' ' + this.state.tradename}</Text>
             </View>
           </View>
         )}                   
