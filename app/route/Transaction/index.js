@@ -891,7 +891,7 @@ class Transaction extends BaseComponent {
               </View>
               <View style={styles.recordout}>
                 <Text style={styles.recordtext}>{this.props.etinfo ? this.precisionTransfer(this.props.etinfo.open,8) : '0'} EOS</Text>
-                <Text style={styles.recordtext}>{this.props.etinfo ? this.precisionTransfer(this.props.etinfo.today_volum,8) : '0'} EOS</Text>
+                <Text style={styles.recordtext}>{this.props.etinfo ? this.precisionTransfer(this.props.etinfo.today_volum,8) : '0'} {this.state.tradename}</Text>
               </View>
             </View>
             <View style={styles.rightout}>
