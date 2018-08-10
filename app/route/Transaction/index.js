@@ -150,15 +150,8 @@ class Transaction extends BaseComponent {
  
       //选择ram 交易
     selectRamTx(){
-        this.setState({
-            modal: false,
-            // tradename:"RAM",
-            // selectcode:"",
-        });
+        this.setState({modal: false});
         this._rightTopClick();
-        // InteractionManager.runAfterInteractions(() => {
-        //     this.getRamInfo();
-        // });
     }
     //选择ET交易
     selectETtx(rowData){
@@ -560,19 +553,19 @@ class Transaction extends BaseComponent {
     var max = 9999999999.9999;  // 100亿 -1
     var min = 0.0000;
     var value = 0.0000;
-    var ram_bytes = 0;
+    var tmp_et = 0;
     try {
       value = parseFloat(obj);
-      ram_bytes = parseFloat(this.state.myETAvailable);
+      tmp_et = parseFloat(this.state.myETAvailable);
     } catch (error) {
       value = 0.0000;
-      ram_bytes = 0.0000;
+      tmp_et = 0.0000;
     }
     if(value < min|| value > max){
       EasyToast.show("输入错误");
       obj = "";
     }
-    if (value * 1 > ram_bytes) {
+    if (value * 1 > tmp_et) {
       EasyToast.show('可卖数量不足,请重输');
       obj = "";
   }
@@ -758,7 +751,7 @@ class Transaction extends BaseComponent {
     if(eos == null || eos == '' || currentPrice == null || currentPrice == ''){
         return '0';
     }
-    return (eos/currentPrice).toFixed(4); 
+    return (eos/currentPrice).toFixed(8); 
   }
 
   etToEos(et, currentPrice){
@@ -1271,7 +1264,7 @@ class Transaction extends BaseComponent {
                 
                 {this.state.isBuy?<View>
                     <View style={styles.greeninptout}>
-                        <Text style={styles.greenText}>单价: {this.props.etinfo ? this.props.etinfo.price : '0'} EOS</Text>
+                        <Text style={styles.greenText}>单价: {this.props.etinfo ? this.precisionTransfer(this.props.etinfo.price,8) : '0'} EOS</Text>
                         <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0" : this.state.balance}</Text>
                     </View>
                     <View style={styles.inputout}>
@@ -1284,7 +1277,7 @@ class Transaction extends BaseComponent {
                         <Text style={styles.unittext}>EOS</Text>
                     </View>
                     <View style={styles.inputout}>
-                        <Text style={styles.conversion}>≈{this.state.eosToET}</Text>
+                        <Text style={styles.conversion}>≈{this.precisionTransfer(this.state.eosToET,8)}</Text>
                         <Text style={styles.unittext}>{this.state.tradename}</Text>
                     </View>
                     <View style={styles.inptoutsource}>
@@ -1313,8 +1306,8 @@ class Transaction extends BaseComponent {
                 :
                 <View>
                     <View style={styles.greeninptout}>
-                        <Text style={styles.redText}>单价: {this.props.etinfo ? this.props.etinfo.price : '0.0000'} EOS</Text>
-                        <Text style={styles.inptTitle}>可卖: {(this.state.myETAvailable == null || this.state.myETAvailable == '') ? '0' : (this.state.myETAvailable/1).toFixed(4)} {this.state.tradename}</Text>
+                        <Text style={styles.redText}>单价: {this.props.etinfo ? this.precisionTransfer(this.props.etinfo.price,8) : '0.0000'} EOS</Text>
+                        <Text style={styles.inptTitle}>可卖: {(this.state.myETAvailable == null || this.state.myETAvailable == '') ? '0' : this.precisionTransfer(this.state.myETAvailable,8)} {this.state.tradename}</Text>
                     </View>
                   <View style={styles.inputout}>
                       <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellET + ''} returnKeyType="go" 
