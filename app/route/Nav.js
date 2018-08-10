@@ -233,9 +233,6 @@ const Nav = StackNavigator(
     BarCode: {
       screen : BarCode
     },
-    // AddressQr: {
-    //   screen : AddressQr
-    // },
     Login: {
       screen: Login
     },
@@ -1021,18 +1018,18 @@ class Route extends React.Component {
               <ScrollView style={{ marginTop: 50 }}>
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                   <ViewShot ref="viewShot" style={{ left: 20, width: ScreenWidth - 40 }} options={{ format: "jpg", quality: 0.9 }}>
-                    <View style={{ backgroundColor: "#fff", width: '100%', height: '100%' }}>
-                      <View style={{ padding: 10, }}>
-                        <Image source={UImage.turnin_head} resizeMode="stretch" style={{ width: ScreenWidth - 60, height:(ScreenWidth - 60)*0.1552 }} />
+                    <View style={{ backgroundColor: UColor.fontColor, width: '100%', height: '100%' }}>
+                      <View style={{backgroundColor: UColor.mainColor }}>
+                        <Image source={UImage.turninhead_h} resizeMode="stretch" style={{ width: ScreenWidth - 40, height:(ScreenWidth - 40)*0.3167 }} />
                         <View style={{ flexDirection: 'row', justifyContent: 'center',alignItems: 'center',}}>
-                          <Text style={{fontSize: 30, color:"#000000", padding: 10, textAlign: 'center',}}>{this.state.turninamount}</Text>
-                          <Text style={{fontSize: 22, color: "#818181"}}>{this.state.turninsymbol}</Text>
+                          <Text style={{fontSize: 30, color: UColor.fontColor, padding: 10, textAlign: 'center',}}>{this.state.turninamount}</Text>
+                          <Text style={{fontSize: 22, color: "#A6B7DA"}}>{this.state.turninsymbol}</Text>
                         </View>
-                        <View style={{ justifyContent: 'center', alignSelf: 'center',paddingTop:10, }}>
+                        <View style={{ justifyContent: 'center', alignSelf: 'center', paddingHorizontal: 30, paddingVertical:20, backgroundColor: UColor.fontColor }}>
                           <QRCode size={150}  value={this.state.turninsymbol.toLowerCase() +':' + this.state.turnintoaccount + '?amount=' + ((this.state.turninamount == "")?'0':this.state.turninamount) + '&token=' + this.state.turninsymbol.toUpperCase()}/>
+                          <Text style={{ color: UColor.mainColor, fontSize: 19, textAlign: 'center', marginTop: 20 }}>扫码向他支付</Text>
                         </View>
-                        <Text style={{ color: '#5D5D5D', fontSize: 15, textAlign: 'center', marginTop: 10 }}>扫码向他支付</Text>
-                        <Text style={{ color: '#85a7cd', fontSize: 16, textAlign: 'left', marginTop: 5, padding: 20,}}>账户:{this.state.turnintoaccount}</Text>
+                        <Text style={{ color: '#A6B7DA', fontSize: 16, textAlign: 'left', marginTop: 5, paddingHorizontal: 30, paddingTop: 10, paddingBottom: 30,}}>账户: <Text style={{color: UColor.fontColor, fontSize: 15, }}>{this.state.turnintoaccount}</Text></Text>
                       </View>
                     </View>
                   </ViewShot>
