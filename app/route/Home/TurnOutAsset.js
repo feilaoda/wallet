@@ -290,44 +290,43 @@ class TurnOutAsset extends BaseComponent {
                             <View style={styles.outsource}>
                                 <View style={styles.inptoutsource}>
                                     <View style={styles.accountoue} >
+                                        <Text style={styles.inptitle}>账户名称</Text>
                                         <TextInput ref={(ref) => this._raccount = ref}  value={this.state.toAccount} returnKeyType="next"   
                                             selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}      
                                             placeholder="收款人账号" underlineColorAndroid="transparent" keyboardType="default"  maxLength = {12}
                                             onChangeText={(toAccount) => this.setState({ toAccount: this.chkAccount(toAccount)})} 
                                         />
+                                    </View>
                                     <View style={styles.scanning}>
-                                            <Button onPress={() => this.openAddressThin()}>                                  
-                                                <Image source={UImage.al} style={styles.scanningimg} />                                 
-                                            </Button>
-                                        </View>
+                                        <Button onPress={() => this.openAddressThin()}>                                  
+                                            <Image source={UImage.al} style={styles.scanningimg} />                                 
+                                        </Button>
                                     </View>
                                 </View>
-                                <View style={styles.separate}></View>
                                 <View style={styles.textinptoue} >
+                                    <Text style={styles.inptitle}>转账数量</Text>
                                     <TextInput  ref={(ref) => this._ramount = ref} value={this.state.amount} returnKeyType="next"
                                         selectionColor={UColor.tintColor} style={styles.textinpt}  placeholderTextColor={UColor.arrow} 
                                         placeholder="转账数量"  underlineColorAndroid="transparent"   keyboardType="numeric"   maxLength = {15}
                                         onChangeText={(amount) => this.setState({ amount: this.chkPrice(amount) })}
                                         />
                                 </View>
-                                <View style={styles.separate}></View>
                                 <View style={styles.textinptoue} >
+                                    <Text style={styles.inptitle}>备注</Text>
                                     <TextInput  ref={(ref) => this._rnote = ref}  value={this.state.memo} returnKeyType="next"
                                         selectionColor={UColor.tintColor} style={styles.textinpt}  placeholderTextColor={UColor.arrow}
-                                        placeholder="备注(MEMO)" underlineColorAndroid="transparent" keyboardType="default"  
+                                        placeholder="Memo" underlineColorAndroid="transparent" keyboardType="default"  
                                         onChangeText={(memo) => this.setState({ memo })}
                                         />
                                 </View>
                             </View>
-                            </View>
+                        </View>
                     </TouchableOpacity>
                 </KeyboardAvoidingView>
                 <View style={styles.warningout}>
                     <Image source={UImage.warning} style={styles.imgBtn} />
                     <Text style={styles.headtitle}>温馨提示：如果您是向交易所转账，请务必填写相应的备注（MEMO）信息，否则可能无法到账。</Text>
                 </View>
-
-                <View style={styles.separate}></View>
                 <Button onPress={this._rightButtonClick.bind(this)} style={styles.btnnextstep}>
                     <View style={styles.nextstep}>
                         <Text style={styles.nextsteptext}>下一步</Text>
@@ -510,54 +509,47 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: UColor.mainColor,
         marginBottom: 10,
-        paddingLeft: 10,
+        paddingLeft: 5,
     },
     accountoue: {
-        height: 40,
         flex: 1,
         justifyContent: 'center',
-        flexDirection: "row",
+        flexDirection: "column",
     },
 
     inpt: {
         flex: 1,
         color: UColor.arrow,
-        fontSize: 15,
-        height: 40,
-        paddingLeft: 2
+        fontSize: 14,
+        height:Platform.OS == 'ios' ? 35:40,
     },
     scanning: {
-        width: 30,
-        flexDirection: "row",
+        width: 40,
         alignSelf: 'center',
-        justifyContent: "flex-end",
-        marginRight: 10
+        justifyContent: "center",
     },
     scanningimg: {
         width:30,
         height:30,
-        justifyContent: 'center', 
-        alignItems: 'center'
     },
     textinptoue: {
-        paddingLeft: 10,
-        height: 40,
+        paddingHorizontal: 5,
         marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: UColor.mainColor,
         justifyContent: 'center',
     },
 
-    separate: {
-        height: 0.5,
-        backgroundColor: UColor.secdColor
+    inptitle: {
+        flex: 1,
+        fontSize: 14,
+        color: UColor.fontColor,
     },
 
     textinpt: {
         color: UColor.arrow,
-        fontSize: 15,
-        height: 40,
-        paddingLeft: 2
+        fontSize: 14,
+        height:Platform.OS == 'ios' ? 35:40,
     },
     btnnextstep: {
         height: 85,
@@ -576,11 +568,11 @@ const styles = StyleSheet.create({
         color: UColor.fontColor
     },
 
-
     warningout: {
-        width: maxWidth-40,
+        marginVertical: 10,
         marginHorizontal: 20,
         flexDirection: "row",
+        justifyContent: 'center',
         alignItems: 'center', 
         paddingHorizontal: 10,
         paddingVertical: 5,

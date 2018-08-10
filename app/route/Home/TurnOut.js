@@ -296,10 +296,8 @@ class TurnOut extends BaseComponent {
     render() {
         return (
         <View style={styles.container}>
-                
-
-            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
-                <ScrollView  keyboardShouldPersistTaps="always">
+            <ScrollView  keyboardShouldPersistTaps="always">
+                <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
                     <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
                         <View style={styles.header}>
                             <Text style={styles.headertext}>{this.state.balance.replace("EOS", "")} EOS</Text>
@@ -308,98 +306,93 @@ class TurnOut extends BaseComponent {
                             <View style={styles.outsource}>
                                 <View style={styles.inptoutsource}>
                                     <View style={styles.accountoue} >
+                                        <Text style={styles.inptitle}>账户名称</Text>
                                         <TextInput ref={(ref) => this._raccount = ref}  value={this.state.toAccount} returnKeyType="next"   
                                             selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}      
                                             placeholder="收款人账号" underlineColorAndroid="transparent" keyboardType="default"  maxLength = {12}
                                             onChangeText={(toAccount) => this.setState({ toAccount: this.chkAccount(toAccount)})} 
                                         />
+                                    </View>
                                     <View style={styles.scanning}>
-                                            <Button onPress={() => this.openAddressThin()}>                                  
-                                                <Image source={UImage.al} style={styles.scanningimg} />                                 
-                                            </Button>
-                                        </View>
+                                        <Button onPress={() => this.openAddressThin()}>                                  
+                                            <Image source={UImage.al} style={styles.scanningimg} />                                 
+                                        </Button>
                                     </View>
                                 </View>
-                                <View style={styles.separate}></View>
                                 <View style={styles.textinptoue} >
+                                    <Text style={styles.inptitle}>转账数量</Text>
                                     <TextInput  ref={ (ref) => this._ramount = ref} value={this.state.amount} returnKeyType="next"
                                         selectionColor={UColor.tintColor} style={styles.textinpt}  placeholderTextColor={UColor.arrow} 
-                                        placeholder="转账数量"  underlineColorAndroid="transparent"   keyboardType="numeric"   maxLength = {15}
+                                        placeholder="输入转账数量"  underlineColorAndroid="transparent"   keyboardType="numeric"   maxLength = {15}
                                         onChangeText={(amount) => this.setState({ amount: this.chkPrice(amount) })}
                                         />
                                 </View>
-                                <View style={styles.separate}></View>
                                 <View style={styles.textinptoue} >
+                                    <Text style={styles.inptitle}>备注</Text>
                                     <TextInput  ref={(ref) => this._rnote = ref}  value={this.state.memo} returnKeyType="next"
                                         selectionColor={UColor.tintColor} style={styles.textinpt}  placeholderTextColor={UColor.arrow}
-                                        placeholder="备注(MEMO)" underlineColorAndroid="transparent" keyboardType="default" 
+                                        placeholder="Memo" underlineColorAndroid="transparent" keyboardType="default" 
                                         onChangeText={(memo) => this.setState({ memo })}
                                         />
                                 </View>
-
-                        <View style={styles.warningout}>
-                            <Image source={UImage.warning} style={styles.imgBtn} />
-                            <Text style={styles.headtitle}>温馨提示：如果您是向交易所转账，请务必填写相应的备注（MEMO）信息，否则可能无法到账。</Text>
-                        </View>
-                            
-                               
-
-                                <View style={styles.separate}></View>
-                                <Button onPress={this._rightButtonClick.bind(this)} style={styles.btnnextstep}>
-                                    <View style={styles.nextstep}>
-                                        <Text style={styles.nextsteptext}>下一步</Text>
-                                    </View>
-                                </Button>
                             </View>
                         </View>
                     </TouchableOpacity>
-                </ScrollView>
-            </KeyboardAvoidingView>
-                <View style={styles.pupuo}>
-                    <Modal animationType={'slide'} transparent={true} visible={this.state.show} onShow={() => { }} onRequestClose={() => { }} >
-                        <TouchableOpacity style={styles.modalStyle} activeOpacity={1.0}>  
-                            <View style={{ width: maxWidth,  height: maxHeight*4/6,  backgroundColor: UColor.fontColor,}}>
-                                <View style={styles.subView}>
-                                    <Text style={styles.buttontext}/>
-                                    <Text style={styles.titleText}>订单详情</Text>
-                                    <Button  onPress={this._setModalVisible.bind(this)} style={styles.buttonView}>
-                                        <Text style={styles.buttontext}>×</Text>
-                                    </Button>
-                                </View>
-                                 <View style={styles.separationline} >
-                                    <Text style={{fontSize: 26,paddingVertical: 15, lineHeight: 10,color:'#000000',textAlign: 'center',}}>{this.state.amount} </Text>
-                                    <Text style={{fontSize: 13,paddingVertical: 10, lineHeight: 10,color:'#000000',textAlign: 'center',}}> EOS</Text>
-                                </View>
-                                <View style={{flex: 1,}}>
-                                    <View style={styles.separationline} >
-                                        <Text style={styles.explainText}>收款账户：</Text>
-                                        <Text style={styles.contentText}>{this.state.toAccount}</Text>
-                                    </View>
-                                    <View style={styles.separationline} >
-                                        <Text style={styles.explainText}>转出账户：</Text>
-                                        <Text style={styles.contentText}>{this.props.defaultWallet.account}</Text>
-                                    </View>
-                                    <View style={styles.separationline} >
-                                        <Text style={styles.explainText}>备注：</Text> 
-                                        <Text style={styles.contentText} numberOfLines={1}>{this.state.memo}</Text> 
-                                    </View>
-
-                                    {this.state.memo== ""&&
-                                    <View style={styles.warningoutShow}>
-                                        <Image source={UImage.warning} style={styles.imgBtn} />
-                                        <Text style={styles.headtitle}>温馨提示：如果您是向交易所转账，请务必填写相应的备注（MEMO）信息，否则可能无法到账。</Text>
-                                    </View>}
-                                    
-                                    <Button onPress={() => { this.inputPwd() }}>
-                                        <View style={styles.btnoutsource}>
-                                            <Text style={styles.btntext}>确认</Text>
-                                        </View>
-                                    </Button>
-                                </View>
-                        </View>
-                        </TouchableOpacity>
-                    </Modal>
+                </KeyboardAvoidingView>
+                <View style={styles.warningout}>
+                    <Image source={UImage.warning} style={styles.imgBtn} />
+                    <Text style={styles.headtitle}>温馨提示:如果您是向交易所转账,请务必填写相应的备注(MEMO)信息,否则可能无法到账。</Text>
                 </View>
+                <Button onPress={this._rightButtonClick.bind(this)} style={styles.btnnextstep}>
+                    <View style={styles.nextstep}>
+                        <Text style={styles.nextsteptext}>下一步</Text>
+                    </View>
+                </Button>
+            </ScrollView>
+            <View style={styles.pupuo}>
+                <Modal animationType={'slide'} transparent={true} visible={this.state.show} onShow={() => { }} onRequestClose={() => { }} >
+                    <TouchableOpacity style={styles.modalStyle} activeOpacity={1.0}>  
+                        <View style={{ width: maxWidth,  height: maxHeight*4/6,  backgroundColor: UColor.fontColor,}}>
+                            <View style={styles.subView}>
+                                <Text style={styles.buttontext}/>
+                                <Text style={styles.titleText}>订单详情</Text>
+                                <Button  onPress={this._setModalVisible.bind(this)} style={styles.buttonView}>
+                                    <Text style={styles.buttontext}>×</Text>
+                                </Button>
+                            </View>
+                                <View style={styles.separationline} >
+                                <Text style={{fontSize: 26,paddingVertical: 15, lineHeight: 10,color:'#000000',textAlign: 'center',}}>{this.state.amount} </Text>
+                                <Text style={{fontSize: 13,paddingVertical: 10, lineHeight: 10,color:'#000000',textAlign: 'center',}}> EOS</Text>
+                            </View>
+                            <View style={{flex: 1,}}>
+                                <View style={styles.separationline} >
+                                    <Text style={styles.explainText}>收款账户：</Text>
+                                    <Text style={styles.contentText}>{this.state.toAccount}</Text>
+                                </View>
+                                <View style={styles.separationline} >
+                                    <Text style={styles.explainText}>转出账户：</Text>
+                                    <Text style={styles.contentText}>{this.props.defaultWallet.account}</Text>
+                                </View>
+                                <View style={styles.separationline} >
+                                    <Text style={styles.explainText}>备注：</Text> 
+                                    <Text style={styles.contentText} numberOfLines={1}>{this.state.memo}</Text> 
+                                </View>
+                                {this.state.memo== ""&&
+                                <View style={styles.warningoutShow}>
+                                    <Image source={UImage.warning} style={styles.imgBtn} />
+                                    <Text style={styles.headtitle}>温馨提示：如果您是向交易所转账，请务必填写相应的备注（MEMO）信息，否则可能无法到账。</Text>
+                                </View>}
+                                
+                                <Button onPress={() => { this.inputPwd() }}>
+                                    <View style={styles.btnoutsource}>
+                                        <Text style={styles.btntext}>确认</Text>
+                                    </View>
+                                </Button>
+                            </View>
+                    </View>
+                    </TouchableOpacity>
+                </Modal>
+            </View>
         </View>
         )
     }
@@ -461,8 +454,6 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
     },
-
-
 
     pupuo: {
         backgroundColor: '#ECECF0',
@@ -534,7 +525,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: UColor.fontColor
     },
-
    
     taboutsource: {
         flex: 1,
@@ -551,58 +541,51 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: UColor.mainColor,
         marginBottom: 10,
-        paddingLeft: 10,
+        paddingLeft: 5,
     },
     accountoue: {
-        height: 40,
         flex: 1,
         justifyContent: 'center',
-        flexDirection: "row",
+        flexDirection: "column",
     },
 
     inpt: {
         flex: 1,
         color: UColor.arrow,
-        fontSize: 15,
-        height: 40,
-        paddingLeft: 2
+        fontSize: 14,
+        height:Platform.OS == 'ios' ? 35:40,
     },
     scanning: {
-        width: 30,
+        width: 40,
         flexDirection: "row",
         alignSelf: 'center',
-        justifyContent: "flex-end",
-        marginRight: 10
+        justifyContent: "center",
     },
     scanningimg: {
         width:30,
         height:30,
-        justifyContent: 'center', 
-        alignItems: 'center'
     },
     textinptoue: {
-        paddingLeft: 10,
-        height: 40,
+        paddingHorizontal: 5,
         marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: UColor.mainColor,
         justifyContent: 'center',
     },
-
-    separate: {
-        height: 0.5,
-        backgroundColor: UColor.secdColor
+    inptitle: {
+        flex: 1,
+        fontSize: 14,
+        color: UColor.fontColor,
     },
 
     textinpt: {
         color: UColor.arrow,
-        fontSize: 15,
-        height: 40,
-        paddingLeft: 2
+        fontSize: 14,
+        height:Platform.OS == 'ios' ? 35:40,
     },
     btnnextstep: {
         height: 85,
-        marginTop: 60,
+        marginTop: 30,
     },
     nextstep: {
         height: 45,
@@ -617,10 +600,9 @@ const styles = StyleSheet.create({
         color: UColor.fontColor
     },
 
-
     warningout: {
-        width: maxWidth-40,
-        marginTop: 20,
+        marginVertical: 10,
+        marginHorizontal: 20,
         flexDirection: "row",
         alignItems: 'center', 
         paddingHorizontal: 10,
@@ -650,8 +632,8 @@ const styles = StyleSheet.create({
     headtitle: {
         flex: 1,
         color: UColor.showy,
-        fontSize: 14,
-        lineHeight: 25,
+        fontSize: 12,
+        lineHeight: 20,
         paddingLeft: 10,
     },
 })
