@@ -891,7 +891,7 @@ class Transaction extends BaseComponent {
             </View>
             <View style={styles.rightout}>
                 <View style={styles.presentprice}>
-                    <Text style={styles.present}> {this.props.etinfo ? this.props.etinfo.price : '0'}</Text>
+                    <Text style={styles.present}> {this.props.etinfo ? this.precisionTransfer(this.props.etinfo.price,8) : '0'}</Text>
                     <Text style={styles.toptext}>价格</Text>
                 </View>
                 <View style={styles.titleout}>
@@ -1048,15 +1048,15 @@ class Transaction extends BaseComponent {
                                     {rowData.action_name == 'selltoken' ? 
                                     <View style={styles.liststrip}>
                                         <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
-                                        <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.token_qty : rowData.eos_qty.replace("EOS", "")}</Text>
-                                        <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
+                                        <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? this.precisionTransfer(rowData.token_qty,8) : rowData.eos_qty.replace("EOS", "")}</Text>
+                                        <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0? this.precisionTransfer(rowData.price,8):''}</Text>
                                         <Text style={styles.selltime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                     </View>
                                     :
                                     <View style={styles.liststrip}>
                                         <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
                                         <Text style={styles.buytext} numberOfLines={1}>买 {rowData.eos_qty.replace("EOS", "")}</Text>
-                                        <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
+                                        <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0? this.precisionTransfer(rowData.price,8):''}</Text>
                                         <Text style={styles.buytime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                     </View>
                                     }
@@ -1089,15 +1089,15 @@ class Transaction extends BaseComponent {
                                 {rowData.action_name == 'selltoken' ? 
                                 <View style={styles.liststrip}>
                                     <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
-                                    <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.token_qty : rowData.eos_qty.replace("EOS", "")}</Text>
-                                    <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
+                                    <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? this.precisionTransfer(rowData.token_qty,8) : rowData.eos_qty.replace("EOS", "")}</Text>
+                                    <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0 ? this.precisionTransfer(rowData.price,8):''}</Text>
                                     <Text style={styles.selltime} numberOfLines={1} >{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                 </View>
                                 :
                                 <View style={styles.liststrip}>
                                     <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
                                     <Text style={styles.buytext} numberOfLines={1}>买 {rowData.eos_qty.replace("EOS", "")}</Text>
-                                    <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
+                                    <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0 ? this.precisionTransfer(rowData.price,8):''}</Text>
                                     <Text style={styles.buytime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                 </View>
                                 }

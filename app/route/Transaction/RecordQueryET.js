@@ -64,6 +64,26 @@ class RecordQueryET extends React.Component {
     }
   }
 
+    //小数点位数大于指定位数,强制显示指定位数,少于则按实际位数显示
+    precisionTransfer(data,pos){
+      // try {
+      //     // var str = String.valueOf(data);
+          //  var point = str.lastIndexOf(".");
+          //  if(point < 0){
+          //      return data; //无小数位
+          //  }
+          // var pointnum = str.length - point - 1;
+          // var precisionData = str;
+          // if(pointnum > pos){
+          //     precisionData = str.substring(0,point + 1 + pos);
+          // }
+      //     return precisionData;
+      // } catch (error) {
+      //     return data;
+      // }
+     return data;
+    }
+
   // 根据账号查找交易记录
   query = (labelname) =>{
    
@@ -211,11 +231,11 @@ class RecordQueryET extends React.Component {
             </View>
             <View style={styles.rightout}>
               {rowData.action_name == 'selltoken' ? 
-              <Text style={styles.selltext}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.token_qty : rowData.eos_qty}</Text>
+              <Text style={styles.selltext}>卖 {(rowData.price == null || rowData.price == '0') ? this.precisionTransfer(rowData.token_qty,8) : rowData.eos_qty}</Text>
               :
               <Text style={styles.buytext}>买 {rowData.eos_qty}</Text>
               }
-              <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : rowData.price}{(rowData.price == null || rowData.price == '0') ? '' :  ' ' + this.state.tradename}</Text>
+              <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : this.precisionTransfer(rowData.price,8)}{(rowData.price == null || rowData.price == '0') ? '' :  ' ' + this.state.tradename}</Text>
             </View>
           </View>
         )}                   
