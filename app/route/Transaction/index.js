@@ -38,13 +38,13 @@ class Transaction extends BaseComponent {
           title: '交易',
           header:null,  //隐藏顶部导航栏
          //铃铛small_bell/small_bell_h
-          headerRight: (
-            <Button name="share" onPress={() => this._rightTopClick()} >
-              <View style={{ padding: 15 }}>
-              <Image source={UImage.small_bell} style={{ width: 22, height: 22 }}></Image>
-              </View>
-            </Button>
-          )
+        //   headerRight: (
+        //     <Button name="share" onPress={() => this._rightTopClick()} >
+        //       <View style={{ padding: 15 }}>
+        //       <Image source={UImage.small_bell} style={{ width: 22, height: 22 }}></Image>
+        //       </View>
+        //     </Button>
+        //   )
         };
       };
 
@@ -71,7 +71,7 @@ class Transaction extends BaseComponent {
       newetTradeLog: [],
       logId: "-1",
       modal: false,
-      contractAccount:"", //ET合约账户名称
+      contractAccount:"issuemytoken", //ET合约账户名称
       tradename:"TEST",  //ET交易币种的名称
       selectcode:"TEST_EOS_issuemytoken",    //ET交易币种的唯一code
       showMore:false,  
@@ -326,7 +326,7 @@ class Transaction extends BaseComponent {
             this.setState({logRefreshing: false});
         }});    
     }else{
-        // EasyToast.show('开发中，查询区块持仓大户前10名记录');   
+        EasyToast.show('暂未开放');   
         // if(!onRefreshing){
         //     this.setState({logRefreshing: true});
         // }
@@ -1010,7 +1010,7 @@ class Transaction extends BaseComponent {
           </View>     
         <TouchableOpacity onPress={this._rightTopClick.bind()}>
         <View style={styles.Rightout} >
-            <Image source={UImage.reveal_wallet } style={styles.imgTeOy}/>
+            <Image source={UImage.tx_ram } style={styles.imgTeOy}/>
         </View>
         </TouchableOpacity>
       </View> 
@@ -1372,15 +1372,15 @@ class Transaction extends BaseComponent {
                 {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
                 {this.state.isBuy?<View>
                     <View style={styles.greeninptout}>
-                        <Text style={styles.greenText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
-                        <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0.0000" :this.state.balance} EOS</Text>
+                        <Text style={styles.greenText}>单价: {this.props.etinfo ? this.props.etinfo.price.toFixed(4) : '0.0000'} EOS</Text>
+                        <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0.0000" :this.state.balance} {this.state.tradename}</Text>
                     </View>
                     <View style={styles.inputout}>
                         <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyETAmount + ''} returnKeyType="go" 
                         selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow} 
                         placeholder="输入购买的额度" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
                         onChangeText={(buyETAmount) => this.setState({ buyETAmount: this.chkBuyEosQuantity(buyETAmount), 
-                            eosToKB: this.eosToKB(buyETAmount, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                            eosToKB: this.eosToKB(buyETAmount, this.props.etinfo?this.props.etinfo.price:'')})}
                         />
                         <Text style={styles.unittext}>EOS</Text>
                     </View>
@@ -1392,7 +1392,7 @@ class Transaction extends BaseComponent {
                         <View style={styles.outsource}>
                             <View style={styles.progressbar}>
                                 <Slider maximumValue={this.state.balance*1} minimumValue={0} step={0.0001} value={this.state.buyETAmount*1}
-                                onSlidingComplete={(value)=>this.setState({ buyETAmount: value.toFixed(4), eosToKB: this.eosToKB(value.toFixed(4), this.props.ramInfo?this.props.ramInfo.price:'')})}
+                                onSlidingComplete={(value)=>this.setState({ buyETAmount: value.toFixed(4), eosToKB: this.eosToKB(value.toFixed(4), this.props.etinfo?this.props.etinfo.price:'')})}
                                 maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
                                 />
                                 <View style={styles.paragraph}>
@@ -1413,14 +1413,14 @@ class Transaction extends BaseComponent {
                 :
                 <View>
                     <View style={styles.greeninptout}>
-                        <Text style={styles.redText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
+                        <Text style={styles.redText}>单价: {this.props.etinfo ? this.props.etinfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
                         <Text style={styles.inptTitle}>可卖: {(this.state.myRamAvailable == null || this.state.myRamAvailable == '') ? '0' : (this.state.myRamAvailable/1024).toFixed(4)} KB</Text>
                     </View>
                   <View style={styles.inputout}>
                       <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellRamBytes + ''} returnKeyType="go" 
                       selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
                       placeholder="输入出售数量" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
-                      onChangeText={(sellRamBytes) => this.setState({ sellRamBytes: this.chkInputSellRamBytes(sellRamBytes), kbToEos: this.kbToEos(sellRamBytes, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                      onChangeText={(sellRamBytes) => this.setState({ sellRamBytes: this.chkInputSellRamBytes(sellRamBytes), kbToEos: this.kbToEos(sellRamBytes, this.props.etinfo?this.props.etinfo.price:'')})}
                       />
                       <Text style={styles.unittext}>KB</Text>
                   </View>
@@ -1432,7 +1432,7 @@ class Transaction extends BaseComponent {
                         <View style={styles.outsource}>
                             <View style={styles.progressbar}>
                                 <Slider maximumValue={this.state.myRamAvailable*1} minimumValue={0} step={0.0001} value={this.state.sellRamBytes*1024}
-                                    onSlidingComplete={(value)=>this.setState({ sellRamBytes: (value/1024).toFixed(4), kbToEos: this.kbToEos(value/1024, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                                    onSlidingComplete={(value)=>this.setState({ sellRamBytes: (value/1024).toFixed(4), kbToEos: this.kbToEos(value/1024, this.props.etinfo?this.props.etinfo.price:'')})}
                                     maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
                                     />
                                 <View style={styles.paragraph}>
@@ -1480,11 +1480,11 @@ const styles = StyleSheet.create({
         marginHorizontal:1,
     },
     Rightout: {
-        paddingLeft: 15
+        paddingRight: 15
       },
     imgTeOy: {
         width: 25,
-        height: 15,
+        height: 25,
         marginHorizontal:5,
       },
 

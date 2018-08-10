@@ -128,4 +128,5 @@ export default {
   tx_slide0:require('../img/tx_slide0.png'),
   tx_slide1:require('../img/tx_slide1.png'),
   txbtn_more:require('../img/txbtn_more.png'),
+  tx_ram:require('../img/tx_ram.png'),
 }
