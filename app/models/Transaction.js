@@ -1,6 +1,6 @@
 import Request from '../utils/RequestUtil';
 import {getRamInfo, getRamPriceLine, getRamTradeLog, getRamBigTradeLog, getRamTradeLogByAccount, getBigRamRank,
-    getRamKLines,getETList,getETInfo,getETPriceLine,getETKLine,getETTradeLog,getETBigTradeLog,getETTradeLogByAccount} from '../utils/Api';
+    getRamKLines,getETList,getETInfo,getETPriceLine,getETKLine,getETTradeLog,getETBigTradeLog,getETTradeLogByAccount,getBalance} from '../utils/Api';
 import store from 'react-native-simple-store';
 import { EasyToast } from '../components/Toast';
 let newarr = new Array();
@@ -195,7 +195,7 @@ export default {
                 const resp = yield call(Request.request, getETTradeLog + payload.code, 'post', payload);
                 // alert('getETTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
-                    yield put({ type: 'updateETTradeLog', payload: { ramTradeLog:resp.data } });
+                    yield put({ type: 'updateETTradeLog', payload: { etTradeLog:resp.data } });
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -211,7 +211,7 @@ export default {
                 const resp = yield call(Request.request, getETBigTradeLog + payload.code, 'post', payload);
                 //  alert('getETBigTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
-                    yield put({ type: 'updateBigTradeLog', payload: { ramBigTradeLog:resp.data } });
+                    yield put({ type: 'updateETBigTradeLog', payload: { etBigTradeLog:resp.data } });
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -227,7 +227,23 @@ export default {
                 const resp = yield call(Request.request, getETTradeLogByAccount, 'post', payload);
                 // alert('getETTradeLogByAccount: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
-                    yield put({ type: 'updateTradeLog', payload: { ramTradeLog:resp.data } });
+                    yield put({ type: 'updateETTradeLog', payload: { etTradeLog:resp.data } });
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);                
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
+            }
+        },
+        //ET 取余额
+        *getETBalance({payload, callback}, {call, put}){
+            try{
+                const resp = yield call(Request.request, getBalance, 'post', payload);
+                // alert('getETBalance: '+JSON.stringify(resp));
+                if(resp.code=='0'){               
+                    // yield put({ type: 'updateETTradeLog', payload: { etTradeLog:resp.data } });
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -271,6 +287,9 @@ export default {
             return { ...state, etLineDatas };
         },
         updateETTradeLog(state, action) {
+            return { ...state, ...action.payload };
+        },
+        updateETBigTradeLog(state, action) {
             return { ...state, ...action.payload };
         },
     }
