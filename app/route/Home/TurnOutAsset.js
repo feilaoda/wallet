@@ -89,9 +89,9 @@ class TurnOutAsset extends BaseComponent {
             }
         });
     }
-    openAddressThin() {
+    openAddressBook() {
         const { navigate } = this.props.navigation;
-        navigate('Thin', {isTurnOut:true,coinType:this.state.name});
+        navigate('addressManage', {isTurnOut:true,coinType:this.state.name});
     }
     componentWillUnmount(){
         //结束页面前，资源释放操作
@@ -146,7 +146,7 @@ class TurnOutAsset extends BaseComponent {
 
     goPage(coinType) {
         const { navigate } = this.props.navigation;
-        navigate('Thin', { coinType });
+        navigate('addressManage', { coinType });
     }
     inputPwd = () => {
 
@@ -298,7 +298,7 @@ class TurnOutAsset extends BaseComponent {
                                         />
                                     </View>
                                     <View style={styles.scanning}>
-                                        <Button onPress={() => this.openAddressThin()}>                                  
+                                        <Button onPress={() => this.openAddressBook()}>                                  
                                             <Image source={UImage.al} style={styles.scanningimg} />                                 
                                         </Button>
                                     </View>

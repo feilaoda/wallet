@@ -23,7 +23,7 @@ import AddAssets from './Home/AddAssets'
 import AssetSearch from './Home/AssetSearch'
 import FunctionsMore from './Home/FunctionsMore'
 import AssetInfo from './Home/AssetInfo'
-import Thin from './Home/Thin'
+import addressManage from './Home/addressManage'
 import TradeDetails from './Home/TradeDetails'
 import TurnIn from './Home/TurnIn'
 import TurnOut from './Home/TurnOut'
@@ -290,8 +290,8 @@ const Nav = StackNavigator(
     AssetInfo: {
       screen: AssetInfo
     },
-    Thin: {
-      screen: Thin
+    addressManage: {
+      screen: addressManage
     },
     TradeDetails: {
       screen: TradeDetails

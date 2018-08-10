@@ -160,7 +160,7 @@ class TurnOut extends BaseComponent {
 
     goPage(coinType) {
         const { navigate } = this.props.navigation;
-        navigate('Thin', { coinType });
+        navigate('addressManage', { coinType });
     }
     inputPwd = () => {
 
@@ -284,9 +284,9 @@ class TurnOut extends BaseComponent {
         this._rnote.blur();
     }
     
-    openAddressThin() {
+    openAddressBook() {
         const { navigate } = this.props.navigation;
-        navigate('Thin', {isTurnOut:true,coinType:this.state.name});
+        navigate('addressManage', {isTurnOut:true,coinType:this.state.name});
     }
 
     dismissKeyboardClick() {
@@ -314,7 +314,7 @@ class TurnOut extends BaseComponent {
                                         />
                                     </View>
                                     <View style={styles.scanning}>
-                                        <Button onPress={() => this.openAddressThin()}>                                  
+                                        <Button onPress={() => this.openAddressBook()}>                                  
                                             <Image source={UImage.al} style={styles.scanningimg} />                                 
                                         </Button>
                                     </View>

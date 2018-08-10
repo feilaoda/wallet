@@ -15,8 +15,8 @@ import { EasyShowLD } from '../../components/EasyShow'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 
-@connect(({contracts}) => ({...contracts}))
-class Thin extends BaseComponent {
+@connect(({addressBook}) => ({...addressBook}))
+class addressManage extends BaseComponent {
     static navigationOptions = {
         title: 'EOS地址薄',  
         headerStyle:{
@@ -64,7 +64,7 @@ class Thin extends BaseComponent {
         //     dataSource: this.state.dataSource.cloneWithRows(collectionArray)
         // })
         const { dispatch } = this.props;
-        this.props.dispatch({ type: 'contracts/info'});
+        this.props.dispatch({ type: 'addressBook/info'});
     }
 
     componentWillUnmount(){
@@ -86,7 +86,7 @@ class Thin extends BaseComponent {
         try {
             EasyShowLD.loadingShow();
 
-            this.props.dispatch({ type: 'contracts/saveAddress', payload: { address: this.state.address, labelname: this.state.labelname }, callback: (data) => {
+            this.props.dispatch({ type: 'addressBook/saveAddress', payload: { address: this.state.address, labelname: this.state.labelname }, callback: (data) => {
               EasyShowLD.loadingClose();
             } });
           } catch (error) {
@@ -94,7 +94,7 @@ class Thin extends BaseComponent {
           }
 
 
-        // this.props.dispatch({ type: 'contracts/saveWallet', payload: { address: this.state.address, labelname: this.state.labelname }});
+        // this.props.dispatch({ type: 'addressBook/saveWallet', payload: { address: this.state.address, labelname: this.state.labelname }});
        
         // this._setModalVisible();
 
@@ -131,7 +131,7 @@ class Thin extends BaseComponent {
         return (
             <View style={styles.container}>
                 
-                <ListView renderRow={this.renderRow}  enableEmptySections = {true}  dataSource={this.state.dataSource.cloneWithRows((this.props.contracts == null ? [] : this.props.contracts))}></ListView> 
+                <ListView renderRow={this.renderRow}  enableEmptySections = {true}  dataSource={this.state.dataSource.cloneWithRows((this.props.addressBook == null ? [] : this.props.addressBook))}></ListView> 
                 { this.state.isShowBottom == false ? 
                 <View style={styles.replace}>
                     <TouchableOpacity onPress={this.newlyAddedClick.bind(this)} style={styles.added}>
@@ -196,7 +196,7 @@ class Thin extends BaseComponent {
             })
         })    
         const { dispatch } = this.props;
-        this.props.dispatch({ type: 'contracts/info'});   
+        this.props.dispatch({ type: 'addressBook/info'});   
     };
 
     deleteItem = () => { // 删除地址
@@ -204,7 +204,7 @@ class Thin extends BaseComponent {
         // let valueArr = [...selectMap.values()];
         let keyArr = [...selectMap.keys()];
         const { dispatch } = this.props;
-        this.props.dispatch({ type: 'contracts/delWallet', payload: { keyArr: keyArr}});
+        this.props.dispatch({ type: 'addressBook/delWallet', payload: { keyArr: keyArr}});
        
     };
 
@@ -409,4 +409,4 @@ const styles = StyleSheet.create({
   
 })
 
-export default Thin;
+export default addressManage;
