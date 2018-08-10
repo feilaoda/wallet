@@ -2055,7 +2055,7 @@ function combineETKLine(data) {
         //     data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
         // },
         tooltip: {
-            trigger: 'axis',
+            trigger: 'none',
             axisPointer: {
                 type: 'cross'
             },
@@ -2140,7 +2140,7 @@ function combineETKLine(data) {
                 axisLabel: {
                     show: true,
                     color: "#7382a1",
-                    fontSize: 8,
+                    fontSize: 2,
                 },
                 axisLine: {
                     show: true,
@@ -2203,7 +2203,13 @@ function combineETKLine(data) {
                 axisLabel: {
                     show: true,
                     color: "#7382a1",
-                    fontSize: 8,
+                    fontSize: 2,
+                    formatter: function(value, index) {
+                        if(value == null || value == ''){
+                            return parseFloat('0').toExponential(2);
+                        }
+                        return parseFloat(value).toExponential(2);
+                    },
                 },
                 axisLine: {
                     show: true,
