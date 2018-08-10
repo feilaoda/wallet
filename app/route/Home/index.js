@@ -597,7 +597,7 @@ class Home extends React.Component {
                     {(this.props.defaultWallet != null && (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived'))) ? <View style={styles.notactivedout}><Text style={styles.notactived} onPress={this.WalletDetail.bind(this,this.props.defaultWallet)}>未激活</Text></View>:((this.props.defaultWallet == null || this.props.defaultWallet.name == null || (this.props.defaultWallet != null &&this.props.defaultWallet.isBackups)) ? null :  <View style={styles.stopoutBackupsout}><Text style={styles.stopoutBackups} onPress={this.WalletDetail.bind(this,this.props.defaultWallet)}>未备份</Text></View>) }   
                   </View>
                 <View style={styles.addtoout}>
-                  <Text style={styles.addtoouttext}>≈{this.state.isEye ? ((this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance)) : '****'}（￥）</Text>
+                  <Text style={styles.addtoouttext}>≈{this.state.isEye ? ((this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance)) : '****'}(￥)</Text>
                   <Text style={(this.state.increase>=0 || this.state.totalBalance == "0.00")?styles.incdo:styles.incup}>今日 {this.state.isEye ? this.getTodayIncrease() : '****'}</Text>
                 </View>
               </View>
@@ -821,13 +821,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderBottomColor: UColor.tintColor, 
     borderBottomWidth: 2,
+    paddingHorizontal: 5,
   },
   addout: {
     flex: 1, 
     flexDirection: "column", 
     alignItems: 'flex-start', 
     justifyContent: "center",
-    paddingLeft: 10,
   },
   addtotext: { 
     fontSize: 16, 
@@ -849,7 +849,7 @@ const styles = StyleSheet.create({
     color: UColor.fontColor 
   },
   addtobtn: {
-    width:80, 
+    width:60, 
     alignItems: 'center', 
     justifyContent: "center",
   },
