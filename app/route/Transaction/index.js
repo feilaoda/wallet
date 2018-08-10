@@ -29,337 +29,6 @@ var dismissKeyboard = require('dismissKeyboard');
 const trackOption = ['最近大单','持仓大户'];
 const transactionOption = ['我的交易','最新交易'];
 
-var upColor = '#f44961';
-var downColor = '#3fcfb4';
-
-function splitData(rawData) {
-    var categoryData = [];
-    var values = [];
-    var volumes = [];
-    for (var i = 0; i < rawData.length; i++) {
-        categoryData.push(rawData[i].splice(0, 1)[0]);
-        values.push(rawData[i]);
-        volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]);
-    }
-
-    return {
-        categoryData: categoryData,
-        values: values,
-        volumes: volumes
-    };
-}
-
-function calculateMA(data, dayCount) {
-    var result = [];
-    for (var i = 0, len = data.values.length; i < len; i++) {
-        if (i < dayCount) {
-            result.push('-');
-            continue;
-        }
-        var sum = 0;
-        for (var j = 0; j < dayCount; j++) {
-            sum += data.values[i - j][1];
-        }
-        result.push(sum / dayCount);
-    }
-    return result;
-}
-
-
-function combineETKLine(data) {
-    return {
-        backgroundColor: "#2f3b50",
-        animation: false,
-        // legend: {
-        //     bottom: 10,
-        //     left: 'center',
-        //     data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
-        // },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross'
-            },
-            backgroundColor: 'rgba(245, 245, 245, 0.8)',
-            borderWidth: 1,
-            borderColor: '#ccc',
-            padding: 10,
-            textStyle: {
-                color: '#000'
-            },
-            position: function (pos, params, el, elRect, size) {
-                var obj = {top: 10};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
-                return obj;
-            }
-            // extraCssText: 'width: 170px'
-        },
-        axisPointer: {
-            link: {xAxisIndex: 'all'},
-            label: {
-                backgroundColor: '#777'
-            }
-        },
-        // toolbox: {
-        //     feature: {
-        //         dataZoom: {
-        //             yAxisIndex: false
-        //         },
-        //         brush: {
-        //             type: ['lineX', 'clear']
-        //         }
-        //     }
-        // },
-        // brush: {
-        //     xAxisIndex: 'all',
-        //     brushLink: 'all',
-        //     outOfBrush: {
-        //         colorAlpha: 0.1
-        //     }
-        // },
-        visualMap: {
-            show: false,
-            seriesIndex: 1,
-            dimension: 2,
-            pieces: [{
-                value: 1,
-                color: downColor
-            }, {
-                value: -1,
-                color: upColor
-            }]
-        },
-        legend: {
-            data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
-            left: '20%',
-            textStyle:{
-                color: "#7382a1",
-                fontSize: 6,
-            }
-        },
-        grid: [
-            {
-                top: '8%',
-                left: '12%',
-                right: '4%',
-                height: '60%'
-            },
-            {
-                left: '12%',
-                right: '4%',
-                top: '70%',
-                height: '30%',
-                // bottom: '0',
-            }
-        ],
-        xAxis: [
-            {
-                type: 'category',
-                data:  data.categoryData,
-                scale: true,
-                boundaryGap : true,
-                axisLabel: {
-                    show: true,
-                    color: "#7382a1",
-                    fontSize: 8,
-                },
-                axisLine: {
-                    show: true,
-                    lineStyle: {
-                        color: "#7382a1",
-                    },
-                    onZero: false,
-                },
-                axisTick: {
-                    show: true,
-                    lineStyle: {
-                        color: "#7382a1",
-                    }                },
-                splitLine: {
-                    show: false,
-                    lineStyle: {
-                        color: "#7382a1",
-                    }
-                },
-                splitNumber: 20,
-                min: 'dataMin',
-                max: 'dataMax',
-                axisPointer: {
-                    z: 100
-                }
-            },
-            {
-                type: 'category',
-                gridIndex: 1,
-                data:  data.categoryData,
-                scale: true,
-                boundaryGap : false,
-                axisLine: {onZero: false},
-                axisTick: {show: false},
-                splitLine: {show: false},
-                axisLabel: {show: false},
-                splitNumber: 20,
-                min: 'dataMin',
-                max: 'dataMax'
-                // axisPointer: {
-                //     label: {
-                //         formatter: function (params) {
-                //             var seriesValue = (params.seriesData[0] || {}).value;
-                //             return params.value
-                //             + (seriesValue != null
-                //                 ? '\n' + echarts.format.addCommas(seriesValue)
-                //                 : ''
-                //             );
-                //         }
-                //     }
-                // }
-            }
-        ],
-        yAxis: [
-            {
-                scale: true,
-                splitArea: {
-                    show: false
-                },
-                axisLabel: {
-                    show: true,
-                    color: "#7382a1",
-                    fontSize: 8,
-                },
-                axisLine: {
-                    show: true,
-                    lineStyle: {
-                        color: "#7382a1",
-                    }
-                },
-                axisTick: {
-                    show: true,
-                    lineStyle: {
-                        color: "#7382a1",
-                    }                },
-                splitLine: {
-                    show: false,
-                    lineStyle: {
-                        color: "#7382a1",
-                    }
-                }
-            },
-            {
-                scale: true,
-                gridIndex: 1,
-                splitNumber: 2,
-                axisLabel: {show: false},
-                axisLine: {show: false},
-                axisTick: {show: false},
-                splitLine: {show: false}
-            }
-        ],
-        dataZoom: [
-            {
-                type: 'inside',
-                xAxisIndex: [0, 1],
-                start: 50,
-                end: 100
-            },
-            {
-                show: true,
-                xAxisIndex: [0, 1],
-                type: 'inside',
-                top: '85%',
-                start: 50,
-                end: 100
-            }
-        ],
-        series: [
-            {
-                name: '日K',
-                type: 'candlestick',
-                data: data.values ,
-                itemStyle: {
-                    normal: {
-                        color: upColor,
-                        color0: downColor,
-                        borderColor: null,
-                        borderColor0: null
-                    }
-                },
-                tooltip: {
-                    formatter: function (param) {
-                        return [
-                            // '日期:' + param.name + '<hr size=1 style="margin: 3px 0">',
-                            // '开盘:' + param.data[0] + '<br/>',
-                            // '收盘:' + param.data[1] + '<br/>',
-                            // '最低:' + param.data[2] + '<br/>',
-                            // '最高:' + param.data[3] + '<br/>'
-                        ].join('');
-    
-                    }
-                },
-            },
-            {
-                name: 'Volume',
-                type: 'bar',
-                xAxisIndex: 1,
-                yAxisIndex: 1,
-                data: data.volumes,
-            },
-            {
-                name: 'MA5',
-                type: 'line',
-                data: calculateMA(data, 5),
-                smooth: true,
-                lineStyle: {
-                    normal: {
-                        opacity: 1,
-                        color: "#6e6e46",
-                        width: 1,
-                    }
-                }
-            },
-            {
-                name: 'MA10',
-                type: 'line',
-                data: calculateMA(data, 10),
-                smooth: true,
-                lineStyle: {
-                    normal: {
-                        opacity: 1,
-                        color: "#835098",
-                        width: 1,
-                    }
-                }
-            },
-            {
-                name: 'MA20',
-                type: 'line',
-                data: calculateMA(data, 20),
-                smooth: true,
-                lineStyle: {
-                    normal: {
-                        opacity: 1,
-                        color: "#4b9373",
-                        width: 1,
-                    }
-                }
-            },
-            {
-                name: 'MA30',
-                type: 'line',
-                data: calculateMA(data, 30),
-                smooth: true,
-                lineStyle: {
-                    normal: {
-                        opacity: 1,
-                        color: "#4b7793",
-                        width: 1,
-                    }                
-                }
-            },
-        ]
-        
-    };
-}
-
 @connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
 class Transaction extends BaseComponent {
 
@@ -368,6 +37,14 @@ class Transaction extends BaseComponent {
         return {
           title: '交易',
           header:null,  //隐藏顶部导航栏
+         //铃铛small_bell/small_bell_h
+          headerRight: (
+            <Button name="share" onPress={() => this._rightTopClick()} >
+              <View style={{ padding: 15 }}>
+              <Image source={UImage.small_bell} style={{ width: 22, height: 22 }}></Image>
+              </View>
+            </Button>
+          )
         };
       };
 
@@ -375,7 +52,7 @@ class Transaction extends BaseComponent {
     super(props);
     this.state = {
         
-      selectedSegment:"时分",
+      selectedSegment:"5分",
       selectedTrackSegment: trackOption[0],
       selectedTransactionRecord: transactionOption[1],
       isBuy: true,
@@ -429,8 +106,10 @@ class Transaction extends BaseComponent {
         }});
     
         // 默认获取ETB的时分图
-        this.fetchETLine(24,'24小时');
-       
+        // this.fetchETLine(24,'24小时');
+        // 获取曲线
+        this.onClickTimeType(this.state.selectedSegment);
+
         // 获取钱包信息和余额
         this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }, callback: () => {
             this.getAccountInfo();
@@ -2328,5 +2007,336 @@ const styles = StyleSheet.create({
         marginBottom:6
       },
 });
+
+var upColor = '#f44961';
+var downColor = '#3fcfb4';
+
+function splitData(rawData) {
+    var categoryData = [];
+    var values = [];
+    var volumes = [];
+    for (var i = 0; i < rawData.length; i++) {
+        categoryData.push(rawData[i].splice(0, 1)[0]);
+        values.push(rawData[i]);
+        volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]);
+    }
+
+    return {
+        categoryData: categoryData,
+        values: values,
+        volumes: volumes
+    };
+}
+
+function calculateMA(data, dayCount) {
+    var result = [];
+    for (var i = 0, len = data.values.length; i < len; i++) {
+        if (i < dayCount) {
+            result.push('-');
+            continue;
+        }
+        var sum = 0;
+        for (var j = 0; j < dayCount; j++) {
+            sum += data.values[i - j][1];
+        }
+        result.push(sum / dayCount);
+    }
+    return result;
+}
+
+
+function combineETKLine(data) {
+    return {
+        backgroundColor: "#2f3b50",
+        animation: false,
+        // legend: {
+        //     bottom: 10,
+        //     left: 'center',
+        //     data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
+        // },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            backgroundColor: 'rgba(245, 245, 245, 0.8)',
+            borderWidth: 1,
+            borderColor: '#ccc',
+            padding: 10,
+            textStyle: {
+                color: '#000'
+            },
+            position: function (pos, params, el, elRect, size) {
+                var obj = {top: 10};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                return obj;
+            }
+            // extraCssText: 'width: 170px'
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
+            }
+        },
+        // toolbox: {
+        //     feature: {
+        //         dataZoom: {
+        //             yAxisIndex: false
+        //         },
+        //         brush: {
+        //             type: ['lineX', 'clear']
+        //         }
+        //     }
+        // },
+        // brush: {
+        //     xAxisIndex: 'all',
+        //     brushLink: 'all',
+        //     outOfBrush: {
+        //         colorAlpha: 0.1
+        //     }
+        // },
+        visualMap: {
+            show: false,
+            seriesIndex: 1,
+            dimension: 2,
+            pieces: [{
+                value: 1,
+                color: downColor
+            }, {
+                value: -1,
+                color: upColor
+            }]
+        },
+        legend: {
+            data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
+            left: '20%',
+            textStyle:{
+                color: "#7382a1",
+                fontSize: 6,
+            }
+        },
+        grid: [
+            {
+                top: '8%',
+                left: '12%',
+                right: '4%',
+                height: '60%'
+            },
+            {
+                left: '12%',
+                right: '4%',
+                top: '70%',
+                height: '30%',
+                // bottom: '0',
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data:  data.categoryData,
+                scale: true,
+                boundaryGap : true,
+                axisLabel: {
+                    show: true,
+                    color: "#7382a1",
+                    fontSize: 8,
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    },
+                    onZero: false,
+                },
+                axisTick: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }
+                },
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
+                axisPointer: {
+                    z: 100
+                }
+            },
+            {
+                type: 'category',
+                gridIndex: 1,
+                data:  data.categoryData,
+                scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},
+                axisTick: {show: false},
+                splitLine: {show: false},
+                axisLabel: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax'
+                // axisPointer: {
+                //     label: {
+                //         formatter: function (params) {
+                //             var seriesValue = (params.seriesData[0] || {}).value;
+                //             return params.value
+                //             + (seriesValue != null
+                //                 ? '\n' + echarts.format.addCommas(seriesValue)
+                //                 : ''
+                //             );
+                //         }
+                //     }
+                // }
+            }
+        ],
+        yAxis: [
+            {
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                axisLabel: {
+                    show: true,
+                    color: "#7382a1",
+                    fontSize: 8,
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }
+                },
+                axisTick: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }
+                }
+            },
+            {
+                scale: true,
+                gridIndex: 1,
+                splitNumber: 2,
+                axisLabel: {show: false},
+                axisLine: {show: false},
+                axisTick: {show: false},
+                splitLine: {show: false}
+            }
+        ],
+        dataZoom: [
+            {
+                type: 'inside',
+                xAxisIndex: [0, 1],
+                start: 50,
+                end: 100
+            },
+            {
+                show: true,
+                xAxisIndex: [0, 1],
+                type: 'inside',
+                top: '85%',
+                start: 50,
+                end: 100
+            }
+        ],
+        series: [
+            {
+                name: '日K',
+                type: 'candlestick',
+                data: data.values ,
+                itemStyle: {
+                    normal: {
+                        color: upColor,
+                        color0: downColor,
+                        borderColor: null,
+                        borderColor0: null
+                    }
+                },
+                tooltip: {
+                    formatter: function (param) {
+                        return [
+                            // '日期:' + param.name + '<hr size=1 style="margin: 3px 0">',
+                            // '开盘:' + param.data[0] + '<br/>',
+                            // '收盘:' + param.data[1] + '<br/>',
+                            // '最低:' + param.data[2] + '<br/>',
+                            // '最高:' + param.data[3] + '<br/>'
+                        ].join('');
+    
+                    }
+                },
+            },
+            {
+                name: 'Volume',
+                type: 'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                data: data.volumes,
+            },
+            {
+                name: 'MA5',
+                type: 'line',
+                data: calculateMA(data, 5),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#6e6e46",
+                        width: 1,
+                    }
+                }
+            },
+            {
+                name: 'MA10',
+                type: 'line',
+                data: calculateMA(data, 10),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#835098",
+                        width: 1,
+                    }
+                }
+            },
+            {
+                name: 'MA20',
+                type: 'line',
+                data: calculateMA(data, 20),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#4b9373",
+                        width: 1,
+                    }
+                }
+            },
+            {
+                name: 'MA30',
+                type: 'line',
+                data: calculateMA(data, 30),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#4b7793",
+                        width: 1,
+                    }                
+                }
+            },
+        ]
+        
+    };
+}
 
 export default Transaction;
