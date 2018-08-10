@@ -102,13 +102,12 @@ class addressManage extends BaseComponent {
         return (
             <View style={styles.selectout}>
                {this.state.isEdit ? 
-               <TouchableOpacity style={{ width: width, height: 60, backgroundColor: UColor.secdColor, marginTop: 5, marginBottom: 5, alignItems: "center", justifyContent: 'center', paddingLeft: this.state.isEdit ? 54 : 0}} onPress={() => this.selectItem(parseInt(rowID), rowData.labelName, isChecked)}>
+               <TouchableOpacity style={styles.touchSelect} onPress={() => this.selectItem(parseInt(rowID), rowData.labelName, isChecked)}>
                     <Image source={isChecked ? UImage.aab1:UImage.aab2} style={styles.selectoutimg}/>
-                </TouchableOpacity> : null
-                }
-               <View style={styles.selout}>
-                    <Text style={styles.outlabelname}>{rowData.labelName}</Text>
-                    <Text style={styles.outaddress}>{rowData.address}</Text>
+                </TouchableOpacity> : null}
+                <View style={styles.selout}>
+                    <Text style={styles.outlabelname}>{"标签:"+rowData.labelName}</Text>
+                    <Text style={styles.outaddress}>{"账号:"+rowData.address}</Text>
                </View>
            </View>
         )
@@ -122,23 +121,27 @@ class addressManage extends BaseComponent {
         return (
             <View style={styles.container}>
                 
-                <ListView renderRow={this.renderRow}  enableEmptySections = {true}  dataSource={this.state.dataSource.cloneWithRows((this.props.addressBook == null ? [] : this.props.addressBook))}></ListView> 
+                <ListView renderRow={this.renderRow}  
+                enableEmptySections = {true}  
+                dataSource={this.state.dataSource.cloneWithRows((this.props.addressBook == null ? [] : this.props.addressBook))}> 
+                </ListView> 
+
                 { this.state.isShowBottom == false ? 
                 <View style={styles.replace}>
                     <TouchableOpacity onPress={this.newlyAddedClick.bind(this)} style={styles.added}>
                         <Text style={styles.address}>新增地址</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.editClick()} style={styles.editClickout}>
+                    <TouchableOpacity onPress={() => this.editClick(this)} style={styles.editClickout}>
                         <Text style={styles.address}>管理地址</Text>
                     </TouchableOpacity>                 
                 </View> : null
                 }             
                 { this.state.isShowBottom == true ? 
                 <View style={styles.alternate}>                         
-                    <TouchableOpacity onPress={() => this.deleteItem()} style={styles.deleteItemout}>
+                    <TouchableOpacity onPress={() => this.deleteItem(this)} style={styles.deleteItemout}>
                         <Text style={styles.address}>删除地址</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.editClick()} style={styles.completeout}>                              
+                    <TouchableOpacity onPress={() => this.editClick(this)} style={styles.completeout}>                              
                         <Text style={styles.address}>完成</Text>
                     </TouchableOpacity>
                 </View> : null
@@ -236,7 +239,9 @@ class addressManage extends BaseComponent {
 
 const styles = StyleSheet.create({
     selectout: {
-       
+        flex: 1,
+        flexDirection: "row",
+        // alignItems: 'flex-start', 
     },
     selectouttou: {
         position:'absolute',
@@ -246,14 +251,31 @@ const styles = StyleSheet.create({
         width:30,
         height:30,
     },
+    touchSelect:{ 
+        width: 60, 
+        height: 60, 
+        backgroundColor: UColor.secdColor, 
+        marginTop: 5, 
+        marginBottom: 5, 
+        alignItems: "center", 
+        justifyContent: 'center', 
+       //  paddingLeft: this.state.isEdit ? 54 : 0
+   },
+
     selout: {
-        width: width - 20,
-        height: 84,
+        flex: 1, 
+        width: width - 60,
+        height: 60,
         backgroundColor: UColor.mainColor,
         marginBottom: 10,
+        marginLeft:10,
+        marginRight:10,
         paddingLeft: 10,
         alignItems: "flex-start",
         justifyContent: 'center',
+        borderColor: UColor.mainColor,
+        borderWidth: 1,
+        borderRadius: 5,
     },
     outlabelname:{
         color:'#EFEFEF',
@@ -396,7 +418,7 @@ const styles = StyleSheet.create({
         color: UColor.fontColor
       },
     
-     
+
   
 })
 

@@ -20,7 +20,7 @@ export default {
                     yield put({ type: 'updateAction', payload: { data: addressBook, ...payload } });
 
             } catch (error) {
-                EasyToast.show('网络繁忙,请稍后!');
+                EasyToast.show('刷新失败!');
             }
         },
         *saveAddress({ payload,callback}, { call, put }) {
