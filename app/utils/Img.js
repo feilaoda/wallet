@@ -99,6 +99,7 @@ export default {
   tag:require('../img/tag.png'),
   Tick_h:require('../img/Tick_h.png'),
   Tick:require('../img/Tick.png'),
+  tokenissue:require('../img/tokenissue.png'),
   transfer:require('../img/transfer.png'),
   turn_out:require('../img/turn_out.png'),
   turnin_head:require('../img/turninhead.png'),
