@@ -68,7 +68,7 @@ function calculateMA(data, dayCount) {
 
 function combineETKLine(data) {
     return {
-        backgroundColor: UColor.secdColor,
+        backgroundColor: "#2f3b50",
         animation: false,
         // legend: {
         //     bottom: 10,
@@ -100,23 +100,23 @@ function combineETKLine(data) {
                 backgroundColor: '#777'
             }
         },
-        toolbox: {
-            feature: {
-                dataZoom: {
-                    yAxisIndex: false
-                },
-                brush: {
-                    type: ['lineX', 'clear']
-                }
-            }
-        },
-        brush: {
-            xAxisIndex: 'all',
-            brushLink: 'all',
-            outOfBrush: {
-                colorAlpha: 0.1
-            }
-        },
+        // toolbox: {
+        //     feature: {
+        //         dataZoom: {
+        //             yAxisIndex: false
+        //         },
+        //         brush: {
+        //             type: ['lineX', 'clear']
+        //         }
+        //     }
+        // },
+        // brush: {
+        //     xAxisIndex: 'all',
+        //     brushLink: 'all',
+        //     outOfBrush: {
+        //         colorAlpha: 0.1
+        //     }
+        // },
         visualMap: {
             show: false,
             seriesIndex: 1,
@@ -129,19 +129,27 @@ function combineETKLine(data) {
                 color: upColor
             }]
         },
+        legend: {
+            data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
+            left: '20%',
+            textStyle:{
+                color: "#7382a1",
+                fontSize: 6,
+            }
+        },
         grid: [
             {
                 top: '8%',
                 left: '12%',
                 right: '4%',
-                height: '50%'
+                height: '60%'
             },
             {
                 left: '12%',
                 right: '4%',
-                top: '65%',
-                height: '16%',
-                bottom: '0',
+                top: '70%',
+                height: '30%',
+                // bottom: '0',
             }
         ],
         xAxis: [
@@ -150,8 +158,29 @@ function combineETKLine(data) {
                 data:  data.categoryData,
                 scale: true,
                 boundaryGap : true,
-                axisLine: {onZero: false},
-                splitLine: {show: false},
+                axisLabel: {
+                    show: true,
+                    color: "#7382a1",
+                    fontSize: 8,
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    },
+                    onZero: false,
+                },
+                axisTick: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }
+                },
                 splitNumber: 20,
                 min: 'dataMin',
                 max: 'dataMax',
@@ -194,16 +223,26 @@ function combineETKLine(data) {
                 },
                 axisLabel: {
                     show: true,
-                    // formatter: '{value}',
-                    formatter: function(value, index) {
-                        if(value == null || value == ''){
-                            return '0';
-                        }
-                        return value.toFixed(8);
-                    },
-                    color: "#93B5EE",
-                    // interval: '0'
+                    color: "#7382a1",
+                    fontSize: 8,
                 },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }
+                },
+                axisTick: {
+                    show: true,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: "#7382a1",
+                    }
+                }
             },
             {
                 scale: true,
@@ -213,8 +252,7 @@ function combineETKLine(data) {
                 axisLine: {show: false},
                 axisTick: {show: false},
                 splitLine: {show: false}
-            },
-            
+            }
         ],
         dataZoom: [
             {
@@ -226,7 +264,7 @@ function combineETKLine(data) {
             {
                 show: true,
                 xAxisIndex: [0, 1],
-                type: 'slider',
+                type: 'inside',
                 top: '85%',
                 start: 50,
                 end: 100
@@ -234,7 +272,7 @@ function combineETKLine(data) {
         ],
         series: [
             {
-                name: 'Dow-Jones index',
+                name: '日K',
                 type: 'candlestick',
                 data: data.values ,
                 itemStyle: {
@@ -248,15 +286,15 @@ function combineETKLine(data) {
                 tooltip: {
                     formatter: function (param) {
                         return [
-                            '日期:' + param.name + '<hr size=1 style="margin: 3px 0">',
-                            '开盘:' + param.data[0] + '<br/>',
-                            '收盘:' + param.data[1] + '<br/>',
-                            '最低:' + param.data[2] + '<br/>',
-                            '最高:' + param.data[3] + '<br/>'
+                            // '日期:' + param.name + '<hr size=1 style="margin: 3px 0">',
+                            // '开盘:' + param.data[0] + '<br/>',
+                            // '收盘:' + param.data[1] + '<br/>',
+                            // '最低:' + param.data[2] + '<br/>',
+                            // '最高:' + param.data[3] + '<br/>'
                         ].join('');
     
                     }
-                }
+                },
             },
             {
                 name: 'Volume',
@@ -264,7 +302,59 @@ function combineETKLine(data) {
                 xAxisIndex: 1,
                 yAxisIndex: 1,
                 data: data.volumes,
-            }
+            },
+            {
+                name: 'MA5',
+                type: 'line',
+                data: calculateMA(data, 5),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#6e6e46",
+                        width: 1,
+                    }
+                }
+            },
+            {
+                name: 'MA10',
+                type: 'line',
+                data: calculateMA(data, 10),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#835098",
+                        width: 1,
+                    }
+                }
+            },
+            {
+                name: 'MA20',
+                type: 'line',
+                data: calculateMA(data, 20),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#4b9373",
+                        width: 1,
+                    }
+                }
+            },
+            {
+                name: 'MA30',
+                type: 'line',
+                data: calculateMA(data, 30),
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 1,
+                        color: "#4b7793",
+                        width: 1,
+                    }                
+                }
+            },
         ]
         
     };
