@@ -1183,45 +1183,6 @@ class Ram extends BaseComponent {
       dismissKeyboard();
   }
 
-  getTextPromp(){
-    var info = "大单>2000 中单500-200 小单<500";
-    return info;
-  }
-
-  //输入卖掉的字节数占总字节的比例
-  getSellRamRadio()
-  {
-     var ratio = 0;             //进度条比例值
-     try {
-         if(this.state.sellRamBytes)
-         {
-             if(this.state.myRamAvailable){
-                //可用字节数存在且大于0
-                var tmpsellRamBytes = 0;
-                var tmpram_available = 0; 
-                try {
-                    tmpsellRamBytes = parseFloat(this.state.sellRamBytes);
-                    tmpram_available = parseFloat(this.state.myRamAvailable);
-                  } catch (error) {
-                    tmpsellRamBytes = 0;
-                    tmpram_available = 0;
-                  }
-                if(tmpsellRamBytes > tmpram_available)  
-                {
-                    //余额不足
-                    this.setState({sellRamBytes:""});   
-                    EasyToast.show("您的余额不足,请重输");        
-                }else if(tmpram_available > 0){
-                    ratio = tmpsellRamBytes / tmpram_available;
-                } 
-             }
-         }
-     } catch (error) {
-        ratio = 0;
-     }
-     return ratio;
-  }
-
   eosToKB(eos, currentPrice) {
     if(eos == null || eos == '' || currentPrice == null || currentPrice == ''){
         return '0';

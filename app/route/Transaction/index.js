@@ -38,13 +38,13 @@ class Transaction extends BaseComponent {
           title: '交易',
           header:null,  //隐藏顶部导航栏
          //铃铛small_bell/small_bell_h
-          headerRight: (
-            <Button name="share" onPress={() => this._rightTopClick()} >
-              <View style={{ padding: 15 }}>
-              <Image source={UImage.small_bell} style={{ width: 22, height: 22 }}></Image>
-              </View>
-            </Button>
-          )
+        //   headerRight: (
+        //     <Button name="share" onPress={() => this._rightTopClick()} >
+        //       <View style={{ padding: 15 }}>
+        //       <Image source={UImage.small_bell} style={{ width: 22, height: 22 }}></Image>
+        //       </View>
+        //     </Button>
+        //   )
         };
       };
 
@@ -59,19 +59,19 @@ class Transaction extends BaseComponent {
       isSell: false,
       isTxRecord: true,
       isTrackRecord: false,
-      balance: '0.0000',   
+      balance: '0.0000',      //EOS余额
       slideCompletionValue: 0,
       buyETAmount: "0",    //输入购买的额度
-      eosToKB: '0.0000',
-      kbToEos: '0.0000',
-      sellRamBytes: "0",    //输入出售的字节数
-      myRamAvailable: '0', // 我的可用字节
+      eosToET: '0.0000',
+      etToEos: '0.0000',
+      sellET: "0",    //输入出售的ET
+      myETAvailable: '0', // 我的可用 ET余额
       dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }),
       logRefreshing: false,
       newetTradeLog: [],
       logId: "-1",
       modal: false,
-      contractAccount:"", //ET合约账户名称
+      contractAccount:"issuemytoken", //ET合约账户名称
       tradename:"TEST",  //ET交易币种的名称
       selectcode:"TEST_EOS_issuemytoken",    //ET交易币种的唯一code
       showMore:false,  
@@ -189,17 +189,16 @@ class Transaction extends BaseComponent {
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
         return;
       }
-    this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.defaultWallet.account},callback: (data) => {
-      try {
-        this.setState({ myRamAvailable:((data.total_resources.ram_bytes - data.ram_usage)).toFixed(0)});
-      } catch (error) {
+    // this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.defaultWallet.account},callback: (data) => {
+    //   try {
+    //     this.setState({ myETAvailable:((data.total_resources.ram_bytes - data.ram_usage)).toFixed(0)});
+    //   } catch (error) {
           
-      }
+    //   }
+    // } });
 
-    } });
-
-    this.getBalance();
-
+    this.getBalance();  //取eos余额
+    this.getETBalance(); //取ET余额
   } 
 
   //获取时分图
@@ -326,7 +325,7 @@ class Transaction extends BaseComponent {
             this.setState({logRefreshing: false});
         }});    
     }else{
-        // EasyToast.show('开发中，查询区块持仓大户前10名记录');   
+        EasyToast.show('暂未开放');   
         // if(!onRefreshing){
         //     this.setState({logRefreshing: true});
         // }
@@ -408,7 +407,7 @@ class Transaction extends BaseComponent {
     if (balance == null || balance == "") {
         this.setState({balance: '0.0000'});
       } else {
-          this.setState({ balance: balance.replace(this.state.tradename, "") });
+          this.setState({ balance: balance.replace("EOS", "") });
       }
   }
 
@@ -417,9 +416,29 @@ class Transaction extends BaseComponent {
       return;
     }
     this.props.dispatch({
-        type: 'transaction/getETBalance', payload: { contract: this.state.contractAccount, account: this.props.defaultWallet.account, symbol: this.state.tradename }, callback: (data) => {
+        type: 'wallet/getBalance', payload: { contract: "eosio.token", account: this.props.defaultWallet.account, symbol: 'EOS' }, callback: (data) => {
           if (data.code == '0') {
             this.setEosBalance(data.data);
+          }
+        }
+      })
+}
+
+  setETBalance(balance){
+    if (balance == null || balance == "") {
+        this.setState({myETAvailable: '0.0000'});
+      } else {
+          this.setState({ myETAvailable: balance.replace(this.state.tradename, "") });
+      }
+  }
+  getETBalance() {
+    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+      return;
+    }
+    this.props.dispatch({
+        type: 'transaction/getETBalance', payload: { contract: this.state.contractAccount, account: this.props.defaultWallet.account, symbol: this.state.tradename }, callback: (data) => {
+          if (data.code == '0') {
+            this.setETBalance(data.data);
           }
         }
       })
@@ -526,7 +545,7 @@ class Transaction extends BaseComponent {
     }
       return obj;
   }
-  chkInputSellRamBytes(obj) {
+  chkInputSellET(obj) {
     obj = obj.replace(/[^\d.]/g, "");  //清除 "数字"以外的字符
     obj = obj.replace(/^\./g, "");  //验证第一个字符是否为数字
     obj = obj.replace(/\.{2,}/g, "."); //只保留第一个小数点，清除多余的
@@ -538,7 +557,7 @@ class Transaction extends BaseComponent {
     var ram_bytes = 0;
     try {
       value = parseFloat(obj);
-      ram_bytes = parseFloat(this.state.myRamAvailable);
+      ram_bytes = parseFloat(this.state.myETAvailable);
     } catch (error) {
       value = 0.0000;
       ram_bytes = 0.0000;
@@ -547,8 +566,8 @@ class Transaction extends BaseComponent {
       EasyToast.show("输入错误");
       obj = "";
     }
-    if (value * 1024 > ram_bytes) {
-      EasyToast.show('可卖KB不足,请重输');
+    if (value * 1 > ram_bytes) {
+      EasyToast.show('可卖数量不足,请重输');
       obj = "";
   }
     return obj;
@@ -569,152 +588,6 @@ class Transaction extends BaseComponent {
       }
       return false;
   }
-
-  // 购买内存
-  buyram = (rowData) => { 
-    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-        //EasyToast.show('请先创建并激活钱包');
-        this.setState({ error: true,errortext: '请先创建并激活钱包' });
-        setTimeout(() => {
-            this.setState({ error: false,errortext: '' });
-        }, 2000);
-        return;
-    }
-
-    if(this.state.buyETAmount == ""||this.state.buyETAmount == '0'){
-        //EasyToast.show('请输入购买金额');
-        this.setState({ error: true,errortext: '请输入购买金额' });
-        setTimeout(() => {
-            this.setState({ error: false,errortext: '' });
-        }, 2000);
-        return;
-    }
-    if(this.chkAmountIsZero(this.state.buyETAmount,'请输入购买金额')){
-        this.setState({ buyETAmount: "" })
-        return ;
-    }
-    this.setState({ business: false});
-    this. dismissKeyboardClick();
-        const view =
-        <View style={styles.passoutsource}>
-            <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
-                selectionColor={UColor.tintColor} secureTextEntry={true} keyboardType="ascii-capable" style={styles.inptpass} maxLength={Constants.PWD_MAX_LENGTH}
-                placeholderTextColor={UColor.arrow} placeholder="请输入密码" underlineColorAndroid="transparent" />
-            <Text style={styles.inptpasstext}></Text>  
-        </View>
-        EasyShowLD.dialogShow("请输入密码", view, "确认", "取消", () => {
-        if (this.state.password == "" || this.state.password.length < Constants.PWD_MIN_LENGTH) {
-            EasyToast.show('密码长度至少4位,请重输');
-            return;
-        }
-        var privateKey = this.props.defaultWallet.activePrivate;
-        try {
-            var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.defaultWallet.salt);
-            var plaintext_privateKey = bytes_privateKey.toString(CryptoJS.enc.Utf8);
-            if (plaintext_privateKey.indexOf('eostoken') != -1) {
-                plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
-                EasyShowLD.loadingShow();
-                Eos.buyram(plaintext_privateKey, this.props.defaultWallet.account, this.props.defaultWallet.account, formatEosQua(this.state.buyETAmount + " EOS"), (r) => {
-                    EasyShowLD.loadingClose();
-                    if(r.isSuccess){
-                        this.getAccountInfo();
-                        EasyToast.show("购买成功");
-                    }else{
-                        if(r.data){
-                            if(r.data.msg){
-                                EasyToast.show(r.data.msg);
-                            }else{
-                                EasyToast.show("购买失败");
-                            }
-                        }else{
-                            EasyToast.show("购买失败");
-                        }
-                    }
-                });
-            } else {
-                EasyShowLD.loadingClose();
-                EasyToast.show('密码错误');
-            }
-        } catch (e) {
-            EasyShowLD.loadingClose();
-            EasyToast.show('未知异常');
-        }
-        // EasyShowLD.dialogClose();
-    }, () => { EasyShowLD.dialogClose() });
-  };
-
-  // 出售内存
-  sellram = (rowData) => {
-    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-        //EasyToast.show('请先创建并激活钱包');
-        this.setState({ error: true,errortext: '请先创建并激活钱包' });
-        setTimeout(() => {
-            this.setState({ error: false,errortext: '' });
-        }, 2000);
-        return;
-    }
-    if(this.state.sellRamBytes == ""||this.state.sellRamBytes == '0'){
-        //EasyToast.show('请输入出售内存KB数量');
-        this.setState({ error: true,errortext: '请输入出售内存KB数量' });
-        setTimeout(() => {
-            this.setState({ error: false,errortext: '' });
-        }, 2000);
-        return;
-    }
-    if(this.chkAmountIsZero(this.state.sellRamBytes,'请输入出售内存KB数量')){
-        this.setState({ sellRamBytes: "" })
-        return ;
-    }
-    this.setState({ business: false});
-    this. dismissKeyboardClick();
-        const view =
-        <View style={styles.passoutsource}>
-            <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
-                selectionColor={UColor.tintColor} secureTextEntry={true}  keyboardType="ascii-capable" style={styles.inptpass} maxLength={Constants.PWD_MAX_LENGTH}
-                placeholderTextColor={UColor.arrow} placeholder="请输入密码" underlineColorAndroid="transparent" />
-            <Text style={styles.inptpasstext}></Text>  
-        </View>
-        EasyShowLD.dialogShow("请输入密码", view, "确认", "取消", () => {
-        if (this.state.password == "" || this.state.password.length < Constants.PWD_MIN_LENGTH) {
-            EasyToast.show('密码长度至少4位,请重输');
-            return;
-        }
-        var privateKey = this.props.defaultWallet.activePrivate;
-        try {
-            var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.defaultWallet.salt);
-            var plaintext_privateKey = bytes_privateKey.toString(CryptoJS.enc.Utf8);
-            if (plaintext_privateKey.indexOf('eostoken') != -1) {
-                plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
-                EasyShowLD.loadingShow();
-                Eos.sellram(plaintext_privateKey, this.props.defaultWallet.account, (this.state.sellRamBytes * 1024).toFixed(0), (r) => {
-                    EasyShowLD.loadingClose();
-                    if(r.isSuccess){
-                        this.getAccountInfo();
-                        EasyToast.show("出售成功");
-                    }else{
-                        if(r.data){
-                            if(r.data.msg){
-                                EasyToast.show(r.data.msg);
-                            }else{
-                                EasyToast.show("出售失败");
-                            }
-                        }else{
-                            EasyToast.show("出售失败");
-                        }
-                    }
-                });
-                
-            } else {
-                EasyShowLD.loadingClose();
-                EasyToast.show('密码错误');
-            }
-        } catch (e) {
-            EasyShowLD.loadingClose();
-            EasyToast.show('未知异常');
-        }
-        // EasyShowLD.dialogClose();
-    }, () => { EasyShowLD.dialogClose() });
-  };
 
   // 购买
   buy = (rowData) => { 
@@ -875,59 +748,38 @@ class Transaction extends BaseComponent {
       dismissKeyboard();
   }
 
-  getTextPromp(){
-    var info = "大单>2000 中单500-200 小单<500";
-    return info;
-  }
-
-  //输入卖掉的字节数占总字节的比例
-  getSellRamRadio()
-  {
-     var ratio = 0;             //进度条比例值
-     try {
-         if(this.state.sellRamBytes)
-         {
-             if(this.state.myRamAvailable){
-                //可用字节数存在且大于0
-                var tmpsellRamBytes = 0;
-                var tmpram_available = 0; 
-                try {
-                    tmpsellRamBytes = parseFloat(this.state.sellRamBytes);
-                    tmpram_available = parseFloat(this.state.myRamAvailable);
-                  } catch (error) {
-                    tmpsellRamBytes = 0;
-                    tmpram_available = 0;
-                  }
-                if(tmpsellRamBytes > tmpram_available)  
-                {
-                    //余额不足
-                    this.setState({sellRamBytes:""});   
-                    EasyToast.show("您的余额不足,请重输");        
-                }else if(tmpram_available > 0){
-                    ratio = tmpsellRamBytes / tmpram_available;
-                } 
-             }
-         }
-     } catch (error) {
-        ratio = 0;
-     }
-     return ratio;
-  }
-
-  eosToKB(eos, currentPrice) {
+  eosToET(eos, currentPrice) {
     if(eos == null || eos == '' || currentPrice == null || currentPrice == ''){
         return '0';
     }
     return (eos/currentPrice).toFixed(4); 
   }
 
-  kbToEos(kb, currentPrice){
-    if(kb == null || kb == '' || currentPrice == null || currentPrice == ''){
+  etToEos(et, currentPrice){
+    if(et == null || et == '' || currentPrice == null || currentPrice == ''){
         return '0.0000';
     }
-    return (kb * currentPrice).toFixed(4);
+    return (et * currentPrice).toFixed(4);
   }
-
+  //小数点位数大于指定位数,强制显示指定位数,少于则按实际位数显示
+  precisionTransfer(data,pos){
+    // try {
+    //     // var str = String.valueOf(data);
+        //  var point = str.lastIndexOf(".");
+        //  if(point < 0){
+        //      return data; //无小数位
+        //  }
+        // var pointnum = str.length - point - 1;
+        // var precisionData = str;
+        // if(pointnum > pos){
+        //     precisionData = str.substring(0,point + 1 + pos);
+        // }
+    //     return precisionData;
+    // } catch (error) {
+    //     return data;
+    // }
+   return data;
+  }
   openQuery =(payer) => {
       if(payer == 'busines'){
         if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
@@ -965,7 +817,7 @@ class Transaction extends BaseComponent {
     this.setState({  
         business:!business,
         buyETAmount: '0',
-        sellRamBytes: '0',  
+        sellET: '0',  
       });  
   }  
 
@@ -1010,7 +862,7 @@ class Transaction extends BaseComponent {
           </View>     
         <TouchableOpacity onPress={this._rightTopClick.bind()}>
         <View style={styles.Rightout} >
-            <Image source={UImage.reveal_wallet } style={styles.imgTeOy}/>
+            <Image source={UImage.tx_ram } style={styles.imgTeOy}/>
         </View>
         </TouchableOpacity>
       </View> 
@@ -1033,13 +885,13 @@ class Transaction extends BaseComponent {
                 <Text style={styles.nametext}>交易量</Text>
               </View>
               <View style={styles.recordout}>
-                <Text style={styles.recordtext}>{this.props.etinfo ? this.props.etinfo.open.toFixed(8) : '0'} EOS</Text>
-                <Text style={styles.recordtext}>{this.props.etinfo ? this.props.etinfo.today_volum.toFixed(8) : '0'} EOS</Text>
+                <Text style={styles.recordtext}>{this.props.etinfo ? this.precisionTransfer(this.props.etinfo.open,8) : '0'} EOS</Text>
+                <Text style={styles.recordtext}>{this.props.etinfo ? this.precisionTransfer(this.props.etinfo.today_volum,8) : '0'} EOS</Text>
               </View>
             </View>
             <View style={styles.rightout}>
                 <View style={styles.presentprice}>
-                    <Text style={styles.present}> {this.props.etinfo ? this.props.etinfo.price.toFixed(8) : '0'}</Text>
+                    <Text style={styles.present}> {this.props.etinfo ? this.props.etinfo.price : '0'}</Text>
                     <Text style={styles.toptext}>价格</Text>
                 </View>
                 <View style={styles.titleout}>
@@ -1372,27 +1224,27 @@ class Transaction extends BaseComponent {
                 {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
                 {this.state.isBuy?<View>
                     <View style={styles.greeninptout}>
-                        <Text style={styles.greenText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
-                        <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0.0000" :this.state.balance} EOS</Text>
+                        <Text style={styles.greenText}>单价: {this.props.etinfo ? this.props.etinfo.price : '0'} EOS</Text>
+                        <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0" : this.state.balance}</Text>
                     </View>
                     <View style={styles.inputout}>
                         <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyETAmount + ''} returnKeyType="go" 
                         selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow} 
                         placeholder="输入购买的额度" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
                         onChangeText={(buyETAmount) => this.setState({ buyETAmount: this.chkBuyEosQuantity(buyETAmount), 
-                            eosToKB: this.eosToKB(buyETAmount, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                            eosToET: this.eosToET(buyETAmount, this.props.etinfo?this.props.etinfo.price:'')})}
                         />
                         <Text style={styles.unittext}>EOS</Text>
                     </View>
                     <View style={styles.inputout}>
-                        <Text style={styles.conversion}>≈{this.state.eosToKB}</Text>
-                        <Text style={styles.unittext}>KB</Text>
+                        <Text style={styles.conversion}>≈{this.state.eosToET}</Text>
+                        <Text style={styles.unittext}>{this.state.tradename}</Text>
                     </View>
                     <View style={styles.inptoutsource}>
                         <View style={styles.outsource}>
                             <View style={styles.progressbar}>
                                 <Slider maximumValue={this.state.balance*1} minimumValue={0} step={0.0001} value={this.state.buyETAmount*1}
-                                onSlidingComplete={(value)=>this.setState({ buyETAmount: value.toFixed(4), eosToKB: this.eosToKB(value.toFixed(4), this.props.ramInfo?this.props.ramInfo.price:'')})}
+                                onSlidingComplete={(value)=>this.setState({ buyETAmount: value.toFixed(4), eosToET: this.eosToET(value.toFixed(4), this.props.etinfo?this.props.etinfo.price:'')})}
                                 maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
                                 />
                                 <View style={styles.paragraph}>
@@ -1402,7 +1254,7 @@ class Transaction extends BaseComponent {
                                     <Text style={styles.subsection}>ALL</Text>                                
                                 </View>    
                             </View>
-                            <Button onPress={this.buyram.bind(this)}>
+                            <Button onPress={this.buy.bind(this)}>
                                 <View style={styles.botn} backgroundColor={'#42B324'}>
                                     <Text style={styles.botText}>买入</Text>
                                 </View>
@@ -1413,26 +1265,26 @@ class Transaction extends BaseComponent {
                 :
                 <View>
                     <View style={styles.greeninptout}>
-                        <Text style={styles.redText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
-                        <Text style={styles.inptTitle}>可卖: {(this.state.myRamAvailable == null || this.state.myRamAvailable == '') ? '0' : (this.state.myRamAvailable/1024).toFixed(4)} KB</Text>
+                        <Text style={styles.redText}>单价: {this.props.etinfo ? this.props.etinfo.price : '0.0000'} EOS</Text>
+                        <Text style={styles.inptTitle}>可卖: {(this.state.myETAvailable == null || this.state.myETAvailable == '') ? '0' : (this.state.myETAvailable/1).toFixed(4)} {this.state.tradename}</Text>
                     </View>
                   <View style={styles.inputout}>
-                      <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellRamBytes + ''} returnKeyType="go" 
+                      <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellET + ''} returnKeyType="go" 
                       selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
                       placeholder="输入出售数量" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
-                      onChangeText={(sellRamBytes) => this.setState({ sellRamBytes: this.chkInputSellRamBytes(sellRamBytes), kbToEos: this.kbToEos(sellRamBytes, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                      onChangeText={(sellET) => this.setState({ sellET: this.chkInputSellET(sellET), etToEos: this.etToEos(sellET, this.props.etinfo?this.props.etinfo.price:'')})}
                       />
-                      <Text style={styles.unittext}>KB</Text>
+                      <Text style={styles.unittext}>{this.state.tradename}</Text>
                   </View>
                   <View style={styles.inputout}>
-                      <Text style={styles.conversion}>≈{(this.state.kbToEos == null || this.state.kbToEos == '') ? '0' : this.state.kbToEos}</Text>
+                      <Text style={styles.conversion}>≈{(this.state.etToEos == null || this.state.etToEos == '') ? '0' : this.state.etToEos}</Text>
                       <Text style={styles.unittext}>EOS</Text>
                   </View>
                   <View style={styles.inptoutsource}>
                         <View style={styles.outsource}>
                             <View style={styles.progressbar}>
-                                <Slider maximumValue={this.state.myRamAvailable*1} minimumValue={0} step={0.0001} value={this.state.sellRamBytes*1024}
-                                    onSlidingComplete={(value)=>this.setState({ sellRamBytes: (value/1024).toFixed(4), kbToEos: this.kbToEos(value/1024, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                                <Slider maximumValue={this.state.myETAvailable*1} minimumValue={0} step={0.0001} value={this.state.sellET*1}
+                                    onSlidingComplete={(value)=>this.setState({ sellET: (value/1).toFixed(4), etToEos: this.etToEos(value/1, this.props.etinfo?this.props.etinfo.price:'')})}
                                     maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
                                     />
                                 <View style={styles.paragraph}>
@@ -1442,7 +1294,7 @@ class Transaction extends BaseComponent {
                                     <Text style={styles.subsection}>ALL</Text>                                
                                 </View> 
                             </View>
-                            <Button onPress={this.sellram.bind(this)}>
+                            <Button onPress={this.sell.bind(this)}>
                                 <View style={styles.botn} backgroundColor={UColor.showy}>
                                     <Text style={styles.botText}>卖出</Text>
                                 </View>
@@ -1480,7 +1332,7 @@ const styles = StyleSheet.create({
         marginHorizontal:1,
     },
     Rightout: {
-        paddingLeft: 15
+        paddingRight: 15
       },
     imgTeOy: {
         width: 25,
