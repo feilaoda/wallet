@@ -13,7 +13,6 @@ var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
 import {formatterNumber,formatterUnit} from '../../utils/FormatUtil'
 import { EasyToast } from '../../components/Toast';
-
 import { EasyShowLD } from '../../components/EasyShow'
 import BaseComponent from "../../components/BaseComponent";
 import ProgressBar from '../../components/ProgressBar';
@@ -25,8 +24,7 @@ import Constants from '../../utils/Constants';
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
-const trackOption = ['最近大单','持仓大户'];
-const transactionOption = ['我的交易','最新交易'];
+const transactionOption = ['最新交易','我的交易','最近大单','持仓大户'];
 
 @connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
 class Transaction extends BaseComponent {
@@ -52,12 +50,10 @@ class Transaction extends BaseComponent {
     this.state = {
         
       selectedSegment:"5分",
-      selectedTrackSegment: trackOption[0],
-      selectedTransactionRecord: transactionOption[1],
+      //selectedTrackSegment: trackOption[0],
+      selectedTransactionRecord: transactionOption[0],
       isBuy: true,
       isSell: false,
-      isTxRecord: true,
-      isTrackRecord: false,
       balance: '0.0000',      //EOS余额
       slideCompletionValue: 0,
       buyETAmount: "0",    //输入购买的额度
@@ -128,12 +124,7 @@ class Transaction extends BaseComponent {
   onRefreshing() {
     this.getETInfo();
     this.getAccountInfo();
-    if(this.state.isTxRecord){
-        this.setSelectedTransactionRecord(this.state.selectedTransactionRecord, true);
-    }else if(this.state.isTrackRecord){
-        this.setSelectedTrackOption(this.state.selectedTrackSegment, true);
-    }
-
+    this.setSelectedTransactionRecord(this.state.selectedTransactionRecord, true);
   }
 
   componentWillUnmount(){
@@ -301,21 +292,29 @@ class Transaction extends BaseComponent {
   onClickMore(){
     this.setState({ showMore: !this.state.showMore });
   }
-
-  selectedTrackOption(opt){
-    this.setSelectedTrackOption(opt, false);
+  
+  selectedTransactionRecord(opt){
+    this.setSelectedTransactionRecord(opt, false);
   }
 
-  //最近交易，持仓大户
-  setSelectedTrackOption(opt, onRefreshing = false){
-    if(opt== trackOption[0]){
-      this.fetchTrackLine(0,opt,onRefreshing);
-    }else {
-      this.fetchTrackLine(1,opt,onRefreshing);
+  //我的交易，大盘交易
+  setSelectedTransactionRecord(opt, onRefreshing = false){
+    if(opt== transactionOption[0]){
+      this.selectionTransaction(1,opt,onRefreshing);
+    }else if(opt== transactionOption[1]){
+      this.selectionTransaction(0,opt,onRefreshing);
+    }else if(opt== transactionOption[2]){
+       this.fetchTrackLine(0,opt,onRefreshing);
+    }else if(opt== transactionOption[3]){
+       this.fetchTrackLine(1,opt,onRefreshing);
+    }else{
+
     }
   }
+
+
   fetchTrackLine(type,opt, onRefreshing = false){
-    this.setState({selectedTrackSegment:opt});
+    this.setState({selectedTransactionRecord:opt});
     if(type == 0){
         if(!onRefreshing){
             this.setState({logRefreshing: true});
@@ -331,19 +330,6 @@ class Transaction extends BaseComponent {
         // this.props.dispatch({type: 'transaction/getBigRamRank',payload: {}, callback: () => {
         //     this.setState({logRefreshing: false});
         // }});
-    }
-  }
-
-  selectedTransactionRecord(opt){
-    this.setSelectedTransactionRecord(opt, false);
-  }
-
-  //我的交易，大盘交易
-  setSelectedTransactionRecord(opt, onRefreshing = false){
-    if(opt== transactionOption[0]){
-      this.selectionTransaction(0,opt,onRefreshing);
-    }else {
-      this.selectionTransaction(1,opt,onRefreshing);
     }
   }
 
@@ -441,17 +427,8 @@ class Transaction extends BaseComponent {
           }
         }
       })
-}
+  }
 
-  goPage(current) {
-    if (current == 'isTxRecord'){
-        this.setSelectedTransactionRecord(this.state.selectedTransactionRecord);
-    }
-    else if (current == 'isTrackRecord'){
-        this.setSelectedTrackOption(this.state.selectedTrackSegment);   
-    } 
-    // EasyShowLD.loadingClose(); 
- }
    // 更新"买，卖，交易记录，大单追踪"按钮的状态  
    _updateBtnState(currentPressed, array) { 
     if (currentPressed === 'undefined' || currentPressed === null || array === 'undefined' || array === null ) {  
@@ -467,17 +444,8 @@ class Transaction extends BaseComponent {
             this.setState(newState);  
         }  
     } 
-    this.goPage(currentPressed);
+    this.setSelectedTransactionRecord(this.state.selectedTransactionRecord);
   }  
-
-  funcButton(style, selectedSate, stateType, buttonTitle) {  
-    let BTN_SELECTED_STATE_ARRAY = ['isTxRecord', 'isTrackRecord'];  
-    return(  
-        <TouchableOpacity style={[style, selectedSate ? {backgroundColor:UColor.tintColor} : {backgroundColor: UColor.secdColor}]}  onPress={ () => {this._updateBtnState(stateType, BTN_SELECTED_STATE_ARRAY)}}>  
-            <Text style={[styles.tabText, selectedSate ? {color: UColor.fontColor} : {color: UColor.tintColor}]}>{buttonTitle}</Text>  
-        </TouchableOpacity>  
-    );  
-  } 
 
   businesButton(style, selectedSate, stateType, buttonTitle) {  
     let BTN_SELECTED_STATE_ARRAY = ['isBuy', 'isSell'];  
@@ -591,18 +559,26 @@ class Transaction extends BaseComponent {
   // 购买
   buy = (rowData) => { 
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-        EasyToast.show('请先创建并激活钱包');
+        //EasyToast.show('请先创建并激活钱包');
+        this.setState({ error: true,errortext: '请先创建并激活钱包' });
+        setTimeout(() => {
+            this.setState({ error: false,errortext: '' });
+        }, 2000);
         return;
-    }
-
-    if(this.state.buyETAmount == ""){
-        EasyToast.show('请输入购买金额');
+    };
+    if(this.state.buyETAmount == ""||this.state.buyETAmount == '0'){
+        //EasyToast.show('请输入购买金额');
+        this.setState({ error: true,errortext: '请输入购买金额' });
+        setTimeout(() => {
+            this.setState({ error: false,errortext: '' });
+        }, 2000);
         return;
-    }
+    };
     if(this.chkAmountIsZero(this.state.buyETAmount,'请输入购买金额')){
         this.setState({ buyETAmount: "" })
         return ;
-    }
+    };
+    this.setState({ business: false});
     this. dismissKeyboardClick();
         const view =
         <View style={styles.passoutsource}>
@@ -672,10 +648,26 @@ class Transaction extends BaseComponent {
   // 出售
   sell = (rowData) => {
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-        EasyToast.show('请先创建并激活钱包');
+       //EasyToast.show('请先创建并激活钱包');
+       this.setState({ error: true,errortext: '请先创建并激活钱包' });
+       setTimeout(() => {
+           this.setState({ error: false,errortext: '' });
+       }, 2000);
+       return;
+    }; 
+    if(this.state.sellET == ""||this.state.sellET == '0'){
+        //EasyToast.show('请输入出售内存KB数量');
+        this.setState({ error: true,errortext: '请输入出售内存KB数量' });
+        setTimeout(() => {
+            this.setState({ error: false,errortext: '' });
+        }, 2000);
         return;
-    }
-
+    };
+    if(this.chkAmountIsZero(this.state.sellET,'请输入出售内存KB数量')){
+        this.setState({ sellET: "" })
+        return ;
+    };
+    this.setState({ business: false});
     this. dismissKeyboardClick();
     const view =
     <View style={styles.passoutsource}>
@@ -1017,18 +1009,12 @@ class Transaction extends BaseComponent {
             }
             </View>
         }
-        <View style={styles.tablayout}>  
-            {/* {this.funcButton(styles.buytab, this.state.isBuy, 'isBuy', '买')}  
-            {this.funcButton(styles.selltab, this.state.isSell, 'isSell', '卖')}   */}
-            {this.funcButton(styles.txRecordtab, this.state.isTxRecord, 'isTxRecord', '交易记录')}  
-            {this.funcButton(styles.trackRecordtab, this.state.isTrackRecord, 'isTrackRecord', '大单追踪')}  
-        </View> 
-        {this.state.isTxRecord ? 
+        <View style={styles.toptabout}>
+            <SegmentedControls tint= {UColor.tintColor} selectedTint= {UColor.fontColor} onSelection={this.selectedTransactionRecord.bind(this) }
+                selectedOption={ this.state.selectedTransactionRecord } backTint= {UColor.secdColor} options={transactionOption} />
+        </View>
+        {this.state.selectedTransactionRecord == transactionOption[0] || this.state.selectedTransactionRecord == transactionOption[1] ? 
                     <View>
-                        <View style={styles.toptabout}>
-                            <SegmentedControls tint= {UColor.mainColor} selectedTint= {UColor.fontColor} onSelection={this.selectedTransactionRecord.bind(this) }
-                                selectedOption={ this.state.selectedTransactionRecord } backTint= {UColor.secdColor} options={transactionOption} />
-                        </View>
                         {(this.props.etTradeLog  != null &&  this.props.etTradeLog .length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                         <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                                 renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
@@ -1064,11 +1050,8 @@ class Transaction extends BaseComponent {
                         }
                     </View>: 
             <View>
-                <View style={styles.toptabout}>
-                    <SegmentedControls tint= {UColor.mainColor} selectedTint= {UColor.fontColor} onSelection={this.selectedTrackOption.bind(this) }
-                        selectedOption={ this.state.selectedTrackSegment } backTint= {UColor.secdColor} options={trackOption} />
-                </View>
-                {this.state.selectedTrackSegment == trackOption[0] ? 
+                
+                {this.state.selectedTransactionRecord == transactionOption[2] ? 
                   <View>
                     {(this.props.etBigTradeLog != null &&  this.props.etBigTradeLog.length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                     <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
@@ -1261,7 +1244,6 @@ class Transaction extends BaseComponent {
                     </View>
                 </View>
                 {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
-                
                 {this.state.isBuy?<View>
                     <View style={styles.greeninptout}>
                         <Text style={styles.greenText}>单价: {this.props.etinfo ? this.precisionTransfer(this.props.etinfo.price,8) : '0'} EOS</Text>
@@ -1555,31 +1537,29 @@ const styles = StyleSheet.create({
         color: UColor.arrow
     },
     greeninptout: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 10,
+      height: 50,
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      paddingHorizontal: 20,
     },
     greenText: {
-      flex:3,
+      flex: 1,
       fontSize: 14, 
       color: "#42B324", 
-      lineHeight: 35,
       textAlign: "left"
     },
 
     redText: {
-      flex:3,
+      flex: 1,
       fontSize: 14, 
       color: UColor.showy, 
-      lineHeight: 35,
       textAlign: "left"
     },
 
     inptTitle: {
-      flex: 2,
+      flex: 1,
       fontSize: 14, 
       color: UColor.fontColor, 
-      lineHeight: 35,
       textAlign: "right"
     },
 
@@ -1814,7 +1794,7 @@ const styles = StyleSheet.create({
     },
     busines: {
         width: ScreenWidth , 
-        height: Platform.OS == 'ios' ? 290:270,
+        height: Platform.OS == 'ios' ? 310:295,
         paddingBottom:Platform.OS == 'ios' ? 49:49.5,
     },
     businesout: {
