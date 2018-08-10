@@ -14,50 +14,69 @@ export default {
         totalOpt: {}
     },
     effects: {
-        *info({ payload }, { call, put }) {
+        *addressInfo({ payload }, { call, put }) {
             try {
-               
                     let addressBook = yield call(store.get, 'addressBook');
                     yield put({ type: 'updateAction', payload: { data: addressBook, ...payload } });
-                    // yield put({ type: 'update', payload: { addressBook : addressBook } });
+
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
             }
         },
-        *saveAddress({ payload }, { call, put }) {
+        *saveAddress({ payload,callback}, { call, put }) {
             var addressBook = yield call(store.get, 'addressBook');        
             if (addressBook == null) {
                 addressBook = [];              
             }
 
-            // wallet = JSON.parse(wallet);
+            for (var i = 0; i < addressBook.length; i++) {
+                if (addressBook[i].labelName == payload.labelName) {
+                    EasyToast.show('标签名称已存在！');
+                    return;
+                }
+            }
 
-            // var _account = "account" + addressBook.length;
-            // alert(4);
-        
             var _address = {
-                labelname: payload.labelname,
+                labelName: payload.labelName,
                 address: payload.address,               
             }         
             addressBook[addressBook.length] = _address;
             yield call(store.save, 'addressBook', addressBook);
             yield put({ type: 'updateAction', payload: { data: addressBook, ...payload } });
+            if(callback) callback(addressBook);
         },
-        *walletList({ payload }, { call, put }) {
-            const walletArr = yield call(store.get, 'walletArr');
-            // alert('walletArr'+JSON.stringify(walletArr));
-            yield put({ type: 'updateAction', payload: { data: walletArr, ...payload } });
-
-        }, 
-        *delWallet({ payload }, { call, put }) {          
-            var walletArr = yield call(store.get, 'addressBook');
+        // *addressList({ payload }, { call, put }) {
+        //     const walletArr = yield call(store.get, 'walletArr');
+        //     // alert('walletArr'+JSON.stringify(walletArr));
+        //     yield put({ type: 'updateAction', payload: { data: walletArr, ...payload } });
+        // }, 
+        *delAddress({ payload }, { call, put }) {          
+            var addressBook = yield call(store.get, 'addressBook');
             for (var i = payload.keyArr.length; i > 0 ; i--) {
-                walletArr.splice(payload.keyArr[i-1], 1);
-                yield call(store.save, 'addressBook', walletArr);
-                yield put({ type: 'update', payload: { data: walletArr, ...payload } });
+                addressBook.splice(payload.keyArr[i-1], 1);
+                yield call(store.save, 'addressBook', addressBook);
+                yield put({ type: 'update', payload: { data: addressBook, ...payload } });
                 EasyToast.show('删除成功，点击完成刷新');
             }
+
+            // var myAddressBook = yield call(store.get, 'addressBook');        
+            // if (myAddressBook == null) {
+            //     return;
+            // }
+            // for (var i = 0; i < myAddressBook.length; i++) {
+            //     if (myAddressBook[i].labelName == payload.labelName) {
+            //         myAddressBook.splice(i, 1);
+            //         yield call(store.save, 'addressBook', myAddressBook);
+            //         yield put({ type: 'updateAction', payload: { data: myAddressBook, ...payload } });
+            //         if(callback) callback(myAddressBook);
+            //         return;
+            //     }
+            // }
+            return;
         }
+
+
+
     },
     reducers: {
         update(state, action) {

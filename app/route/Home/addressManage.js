@@ -37,7 +37,7 @@ class addressManage extends BaseComponent {
             isAllSelect: false,
             isShowBottom: false,
             selectMap: new Map(),
-            labelname:'',
+            labelName:'',
             address:''
             // preIndex: 0 // 声明点击上一个按钮的索引  **** 单选逻辑 ****
         };
@@ -50,7 +50,7 @@ class addressManage extends BaseComponent {
     
        // 显示/隐藏 modal  
     _setModalVisible() { 
-        this.state.labelname = ''; 
+        this.state.labelName = ''; 
         this.state.address = '';
         let isShow = this.state.show;  
         this.setState({  
@@ -64,7 +64,7 @@ class addressManage extends BaseComponent {
         //     dataSource: this.state.dataSource.cloneWithRows(collectionArray)
         // })
         const { dispatch } = this.props;
-        this.props.dispatch({ type: 'addressBook/info'});
+        this.props.dispatch({ type: 'addressBook/addressInfo'});
     }
 
     componentWillUnmount(){
@@ -73,7 +73,7 @@ class addressManage extends BaseComponent {
         
       }
     confirm() {
-        if (this.state.labelname == "") {
+        if (this.state.labelName == "") {
             EasyToast.show('请输入标签名称');
             return;
           }
@@ -81,25 +81,16 @@ class addressManage extends BaseComponent {
             EasyToast.show('请输入收款人地址');
             return;
         }
-        // const { dispatch } = this.props;
 
         try {
             EasyShowLD.loadingShow();
-
-            this.props.dispatch({ type: 'addressBook/saveAddress', payload: { address: this.state.address, labelname: this.state.labelname }, callback: (data) => {
-              EasyShowLD.loadingClose();
+            this.props.dispatch({ type: 'addressBook/saveAddress', payload: { address: this.state.address, labelName: this.state.labelName }, callback: (data) => {
+                EasyShowLD.loadingClose();
+                this._setModalVisible();
             } });
           } catch (error) {
             EasyShowLD.loadingClose();
           }
-
-
-        // this.props.dispatch({ type: 'addressBook/saveWallet', payload: { address: this.state.address, labelname: this.state.labelname }});
-       
-        // this._setModalVisible();
-
-        // this.componentDidMount();
-
     }
     renderRow = (rowData, sectionID, rowID) => { // cell样式
 
@@ -111,12 +102,12 @@ class addressManage extends BaseComponent {
         return (
             <View style={styles.selectout}>
                {this.state.isEdit ? 
-               <TouchableOpacity style={{ width: width, height: 60, backgroundColor: UColor.secdColor, marginTop: 5, marginBottom: 5, alignItems: "center", justifyContent: 'center', paddingLeft: this.state.isEdit ? 54 : 0}} onPress={() => this.selectItem(parseInt(rowID), rowData.labelname, isChecked)}>
+               <TouchableOpacity style={{ width: width, height: 60, backgroundColor: UColor.secdColor, marginTop: 5, marginBottom: 5, alignItems: "center", justifyContent: 'center', paddingLeft: this.state.isEdit ? 54 : 0}} onPress={() => this.selectItem(parseInt(rowID), rowData.labelName, isChecked)}>
                     <Image source={isChecked ? UImage.aab1:UImage.aab2} style={styles.selectoutimg}/>
                 </TouchableOpacity> : null
                 }
                <View style={styles.selout}>
-                    <Text style={styles.outlabelname}>{rowData.labelname}</Text>
+                    <Text style={styles.outlabelname}>{rowData.labelName}</Text>
                     <Text style={styles.outaddress}>{rowData.address}</Text>
                </View>
            </View>
@@ -161,9 +152,9 @@ class addressManage extends BaseComponent {
                                 </Button>  
                                 <Text style={styles.titleText}>添加地址</Text> 
                                 <View style={styles.inptout} >
-                                    <TextInput onChangeText={(labelname) => this.setState({ labelname })} returnKeyType="next" maxLength = {20}
+                                    <TextInput onChangeText={(labelName) => this.setState({ labelName })} returnKeyType="next" maxLength = {20}
                                       selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}  
-                                      placeholder="输入标签名称" underlineColorAndroid="transparent" value={this.state.labelname} />
+                                      placeholder="输入标签名称" underlineColorAndroid="transparent" value={this.state.labelName} />
                                 </View>    
                                 <View style={styles.inptout} >
                                     <TextInput onChangeText={(address) => this.setState({ address })} returnKeyType="next" maxLength = {12}
@@ -196,7 +187,7 @@ class addressManage extends BaseComponent {
             })
         })    
         const { dispatch } = this.props;
-        this.props.dispatch({ type: 'addressBook/info'});   
+        this.props.dispatch({ type: 'addressBook/addressInfo'});   
     };
 
     deleteItem = () => { // 删除地址
@@ -204,7 +195,7 @@ class addressManage extends BaseComponent {
         // let valueArr = [...selectMap.values()];
         let keyArr = [...selectMap.keys()];
         const { dispatch } = this.props;
-        this.props.dispatch({ type: 'addressBook/delWallet', payload: { keyArr: keyArr}});
+        this.props.dispatch({ type: 'addressBook/delAddress', payload: { keyArr: keyArr}});
        
     };
 
