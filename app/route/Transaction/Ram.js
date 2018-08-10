@@ -13,7 +13,6 @@ var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
 import {formatterNumber,formatterUnit} from '../../utils/FormatUtil'
 import { EasyToast } from '../../components/Toast';
-
 import { EasyShowLD } from '../../components/EasyShow'
 import BaseComponent from "../../components/BaseComponent";
 import ProgressBar from '../../components/ProgressBar';
@@ -25,7 +24,6 @@ import Constants from '../../utils/Constants';
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
-
 const trackOption = ['最近大单','持仓大户'];
 const transactionOption = ['我的交易','最新交易'];
 
@@ -934,7 +932,7 @@ class Ram extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 20 : 30, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
+    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 30 : 50, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
         <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
             <Text style={{fontSize: 12, color: '#fff'}}>交易面板</Text>
         </View>
@@ -1118,7 +1116,7 @@ class Ram extends BaseComponent {
                                 renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
                                 <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
                                 <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                                <Text style={{ flex: 3,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
+                                <Text style={{ flex: 3.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
                                 <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>时间</Text>
                                 </View>
                             }
@@ -1159,7 +1157,7 @@ class Ram extends BaseComponent {
                     renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
                         <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
                         <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                        <Text style={{ flex: 3,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
+                        <Text style={{ flex: 3.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
                         <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>时间</Text>
                         </View>
                     }
@@ -1226,6 +1224,7 @@ class Ram extends BaseComponent {
 
     <Modal style={styles.businesmodal} animationType={'slide'} transparent={true} onRequestClose={() => {this.setState({business: false}) }} visible={this.state.business}>
     <TouchableOpacity onPress={() => this.setState({ business: false })} style={styles.businestouchable} activeOpacity={1.0}> 
+      <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
         <TouchableOpacity style={styles.busines} activeOpacity={1.0}>
             <View style={styles.businesout}>
                 <View style={styles.headbusines}>
@@ -1326,6 +1325,7 @@ class Ram extends BaseComponent {
                 </View>}
             </View>
         </TouchableOpacity>
+       </KeyboardAvoidingView>
       </TouchableOpacity>
     </Modal>
   </View>
@@ -1377,7 +1377,6 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         flexGrow:1,
         alignItems:"flex-end",
-        marginRight:10
     },
     titleout: {
         flex: 1,
@@ -1509,7 +1508,7 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
     },
     greenText: {
-      flex:1,
+      flex:3,
       fontSize: 14, 
       color: "#42B324", 
       lineHeight: 35,
@@ -1517,7 +1516,7 @@ const styles = StyleSheet.create({
     },
 
     redText: {
-      flex:1,
+      flex:4,
       fontSize: 14, 
       color: UColor.showy, 
       lineHeight: 35,
@@ -1525,7 +1524,7 @@ const styles = StyleSheet.create({
     },
 
     inptTitle: {
-      flex: 1,
+      flex: 3,
       fontSize: 14, 
       color: UColor.fontColor, 
       lineHeight: 35,
@@ -1583,14 +1582,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     sellpricetext: {
-        flex: 3,
+        flex: 3.5,
         fontSize: 14,
         color: '#F25C49',
         textAlign: 'left',
         paddingLeft: 8,
     },
     buypricetext: {
-        flex: 3,
+        flex: 3.5,
         fontSize: 14,
         color: "#4ed694",
         textAlign: 'left',
@@ -1687,8 +1686,8 @@ const styles = StyleSheet.create({
     },
     busines: {
         width: ScreenWidth , 
-        height: Platform.OS == 'ios' ? 290:270,
-        paddingBottom:Platform.OS == 'ios' ? 49:49.5,
+        height: Platform.OS == 'ios' ? 240:220.5,
+        // paddingBottom:Platform.OS == 'ios' ? 49:49.5,
     },
     businesout: {
         flex: 1,
