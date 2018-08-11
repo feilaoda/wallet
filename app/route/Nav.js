@@ -74,9 +74,7 @@ import ViewShot from "react-native-view-shot";
 import QRCode from 'react-native-qrcode-svg';
 import Constants from '../utils/Constants'
 import RecordQuery from './Transaction/RecordQuery'
-import RecordQueryET from './Transaction/RecordQueryET'
 import Warning from './Transaction/Warning'
-import Ram from './Transaction/Ram'
 
 
 require('moment/locale/zh-cn');
@@ -302,14 +300,8 @@ const Nav = StackNavigator(
     RecordQuery: {
       screen: RecordQuery
     },
-    RecordQueryET: {
-      screen: RecordQueryET
-    },
     Warning: {
       screen: Warning
-    },
-    Ram: {
-      screen: Ram
     },
     TurnInAsset: {
       screen: TurnInAsset
