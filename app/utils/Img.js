@@ -8,6 +8,7 @@ export default {
   AgentInfo_bg: require('../img/AgentInfo_bg.png'),
   al:require('../img/al.png'),
   b:require('../img/b.png'),
+  bottom_log:require('../img/bottom_log.png'),
   c:require('../img/c.png'),
   Calculation:require('../img/Calculation.png'),
   candy:require('../img/candy.png'),

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,StatusBar,TextInput,TouchableOpacity} from 'react-native';
+import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,Clipboard,TextInput,TouchableOpacity} from 'react-native';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import QRCode from 'react-native-qrcode-svg';
 import UColor from '../../utils/Colors'
@@ -9,12 +9,10 @@ import Item from '../../components/Item'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
-
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 import moment from 'moment';
 let {width, height} = Dimensions.get('window');
-
 var dismissKeyboard = require('dismissKeyboard');
 @connect(({login}) => ({...login}))
 class TradeDetails extends BaseComponent {
@@ -27,15 +25,25 @@ class TradeDetails extends BaseComponent {
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
+            headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
+            <View style={{ padding: 15 }}>
+            <Image source={UImage.share_i} style={{ width: 22, height: 22 }}></Image>
+            </View>
+          </Button>),   
         };
     };
 
   constructor(props) {
     super(props);
+    this.props.navigation.setParams({ onPress: this._rightTopClick });
     this.state = {
       
     };
   }
+  _rightTopClick = () =>{
+    //DeviceEventEmitter.emit('ReturnActivation',)
+  }
+
 
   componentDidMount() {
         //alert('trade: '+JSON.stringify(this.props.navigation.state.params.trade));
@@ -60,17 +68,12 @@ class TradeDetails extends BaseComponent {
     navigate('Web', { title: "区块高度", url:'https://eospark.com/MainNet/block/' + this.props.navigation.state.params.trade.blockNum});
     }
   }
-  
-  transferTimeZone(blockTime){
-    var timezone;
-    try {
-        timezone = moment(blockTime).add(8,'hours').format('YYYY/MM/DD HH:mm');
-    } catch (error) {
-        timezone = blockTime;
-    }
-    return timezone;
-}
 
+  copy = (trade) => {
+    Clipboard.setString('https://eospark.com/MainNet/tx/' + trade.transactionId);
+    EasyToast.show("复制成功");
+  }
+  
   render() {
     const c = this.props.navigation.state.params.trade;
     return <View style={styles.container}>
@@ -83,45 +86,57 @@ class TradeDetails extends BaseComponent {
             </View>
             <Text style={styles.description}>({c.description}{c.bytes? c.bytes + " bytes":""})</Text>
         </View>
-        <View style={styles.conout}>
-          <View style={styles.conouttext}>
-            <Text style={styles.context}>发  送  方：</Text> 
-            <Text style={styles.tintext} onPress={this.prot.bind(this, 'from')}>{c.from}</Text>
-          </View>
-          <View style={styles.conouttext}>
-            <Text style={styles.context}>接  受  方：</Text>
-            <Text style={styles.tintext} onPress={this.prot.bind(this, 'to')}>{c.to}</Text>
-          </View>
-          <View style={styles.conouttext}> 
-            <Text style={styles.context}>区块高度：</Text>
-            {(c.blockNum == null || c.blockNum == "") ? 
-            <Text style={styles.showytext}>未确认</Text>:
-            <Text style={styles.tintext} onPress={this.prot.bind(this, 'blockNum')}>{c.blockNum}</Text>
-            }
-          </View>
-          <View style={styles.conouttext}>
-            <Text style={styles.context}> 备     注 ：</Text>
-            <Text style={styles.blocktext} >{c.memo}</Text>
-          </View>
-        </View>
-        <View style={styles.codeout}>
-            <View style={styles.qrcode}>
-               <QRCode size={105} value={'https://eospark.com/MainNet/tx/' + c.transactionId } />
+        <View style={{flexDirection: "row", borderBottomColor: UColor.mainColor, borderBottomWidth: 0.5,paddingHorizontal: 10,paddingVertical: 20,}}>
+          <View style={styles.conout}>
+            <View style={styles.conouttext}>
+              <Text style={styles.context}>发  送  方：</Text> 
+              <Text style={styles.tintext} onPress={this.prot.bind(this, 'from')}>{c.from}</Text>
             </View>
-        </View>
-        <View style={styles.tradehint}>
-          <View style={styles.conouttext}>
-            <Text style={styles.context}> 提     示 ：</Text>
-            <Text style={styles.blocktext}>扫码可获取区块交易状态</Text>
+            <View style={styles.conouttext}>
+              <Text style={styles.context}>接  受  方：</Text>
+              <Text style={styles.tintext} onPress={this.prot.bind(this, 'to')}>{c.to}</Text>
+            </View>
+            <View style={styles.conouttext}> 
+              <Text style={styles.context}>区块高度：</Text>
+              {(c.blockNum == null || c.blockNum == "") ? 
+              <Text style={styles.showytext}>未确认</Text>:
+              <Text style={styles.tintext} onPress={this.prot.bind(this, 'blockNum')}>{c.blockNum}</Text>
+              }
+            </View>
+            <View style={styles.conouttext}>
+              <Text style={styles.context}> 备     注 ：</Text>
+              <Text style={styles.blocktext} >{c.memo}</Text>
+            </View>
           </View>
+          <View style={styles.codeout}>
+            <View style={styles.qrcode}>
+               <QRCode size={70} value={'https://eospark.com/MainNet/tx/' + c.transactionId } />
+            </View>
+            <Button onPress={this.copy.bind(this,c)}>
+               <View style={{backgroundColor: UColor.mainColor,borderRadius: 25,}}>
+                 <Text style={{ fontSize: 12,color: UColor.arrow,paddingHorizontal: 10,paddingVertical: 2,}}>复制URL</Text>
+               </View>
+            </Button>
+          </View>
+        </View>
+           
+        <View style={styles.tradehint}>
           <View style={styles.conouttext}>
             <Text style={styles.context}>交  易  号：</Text>
             <Text style={styles.tintext} onPress={this.prot.bind(this, 'transactionId')}>{c.transactionId.substring(0, 15) +"..."+ c.transactionId.substr(c.transactionId.length-15) }</Text>
           </View>
           <View style={styles.conouttext}>
-            <Text style={styles.context}>交易时间：</Text>
-            <Text style={styles.blocktext}>{this.transferTimeZone(c.blockTime)}</Text>
+            <Text style={styles.context}> 提     示 ：</Text>
+            <Text style={styles.blocktext}>扫码可获取区块交易状态</Text>
           </View>
+          <View style={styles.conouttext}>
+            <Text style={styles.context}>交易时间：</Text>
+            <Text style={styles.blocktext}>{moment(c.blockTime).add(8,'hours').format('YYYY/MM/DD HH:mm')}</Text>
+          </View>
+        </View>
+        <View style={{flex: 1,alignItems: 'center',justifyContent: 'flex-end',paddingBottom: 20,}}>
+          <Image source={UImage.bottom_log} style={{width:50,height:50}}/>
+          <Text style={{ fontSize: 14,color: UColor.arrow,}}>EosToken 专注柚子生态</Text>
         </View>
       </ScrollView>
     </View>
@@ -163,29 +178,25 @@ const styles = StyleSheet.create({
     color: UColor.tintColor,
   },
   conout: {
+    flex: 2,
     flexDirection: "column",
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    borderBottomColor: UColor.mainColor,
-    borderBottomWidth: 0.5,
-    
   },
   conouttext: {
     flexDirection: "row",
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 10,
+    paddingBottom: 10,
   },
   context: {
     textAlign: 'justify',
     fontSize: 14,
     color: UColor.arrow,
-    width: 90,
   },
 
   tradehint: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
+    marginTop: 40,
   },
   blocktext: {
     color: UColor.arrow, 
@@ -203,16 +214,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   codeout: {
-    marginBottom: 20,
-    marginTop: 40,
+    flex:1,
+    // marginBottom: 20,
+    // marginTop: 40,
     alignItems: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: "row",
+    flexDirection: "column",
   },
   qrcode: {
     backgroundColor: UColor.fontColor,
     padding: 5,
+    marginBottom: 10,
   },
 });
 
