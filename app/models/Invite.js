@@ -1,7 +1,7 @@
 import Request from '../utils/RequestUtil';
 import {inviteInfo,getbind,bindCode} from '../utils/Api';
 import { EasyToast } from '../components/Toast';
-
+import Constants from '../utils/Constants'
 export default {
     namespace : 'invite',
     state : {
@@ -16,6 +16,7 @@ export default {
                 //解析数据
                 if (resp.code == "0") {
                     yield put({type:'update',payload:{invite:resp.data}});
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }

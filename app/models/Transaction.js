@@ -3,6 +3,7 @@ import {getRamInfo, getRamPriceLine, getRamTradeLog, getRamBigTradeLog, getRamTr
     getRamKLines,getETList,getETInfo,getETPriceLine,getETKLine,getETTradeLog,getETBigTradeLog,getETTradeLogByAccount,getBalance} from '../utils/Api';
 import store from 'react-native-simple-store';
 import { EasyToast } from '../components/Toast';
+import Constants from '../utils/Constants'
 let newarr = new Array();
 
 export default {
@@ -16,6 +17,7 @@ export default {
                 const resp = yield call(Request.request, getRamInfo, 'post', payload);
                 if(resp.code=='0'){               
                     yield put({ type: 'updateInfo', payload: { ramInfo:resp.data } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -31,6 +33,7 @@ export default {
                 // alert("getRamPriceLine : " + JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateRamPriceLine', payload: { data: resp.data, ...payload } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -53,6 +56,7 @@ export default {
                 // alert('getRamTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateTradeLog', payload: { ramTradeLog:resp.data } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -68,6 +72,7 @@ export default {
                 // alert('getRamBigTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateBigTradeLog', payload: { ramBigTradeLog:resp.data } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -84,6 +89,7 @@ export default {
                 // alert('getRamTradeLogByAccount: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateTradeLog', payload: { ramTradeLog:resp.data } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -99,6 +105,7 @@ export default {
                 // alert('getBigRamRank: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateBigRamRank', payload: { bigRamRank:resp.data } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -133,6 +140,7 @@ export default {
                 //  alert('getETList: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETList', payload: { etlist:resp.data } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -149,6 +157,7 @@ export default {
                 // alert('getETInfo: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETInfo', payload: { etinfo:resp.data } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -165,6 +174,7 @@ export default {
                 // alert("getETPriceLine : " + JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETPriceLine', payload: { data: resp.data, ...payload } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -196,6 +206,7 @@ export default {
                 // alert('getETTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETTradeLog', payload: { etTradeLog:resp.data } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -212,6 +223,7 @@ export default {
                 //  alert('getETBigTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETBigTradeLog', payload: { etBigTradeLog:resp.data } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -228,6 +240,7 @@ export default {
                 // alert('getETTradeLogByAccount: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETTradeLog', payload: { etTradeLog:resp.data } });
+                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }

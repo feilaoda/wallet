@@ -8,7 +8,7 @@ import { DeviceEventEmitter } from 'react-native';
 import { createAccount, pushTransaction, getBalance, getInfo } from '../utils/Api';
 import { pay } from 'react-native-wechat';
 import JPushModule from 'jpush-react-native';
-
+import Constants from '../utils/Constants'
 export default {
     namespace: 'wallet',
     state: {
@@ -416,7 +416,7 @@ export default {
                 }
                 yield call(store.save, 'walletArr', walletArr);
                 yield put({ type: 'updateAction', payload: { data: walletArr, ...payload } });
-
+                Constants.netTimeoutFlag=false;
             } catch (error) {
                 if (callback) callback({ code: 500, msg: "网络异常" });
             }
