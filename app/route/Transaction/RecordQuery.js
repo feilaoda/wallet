@@ -179,6 +179,11 @@ class RecordQuery extends React.Component {
     }}); 
   }
 
+  _openDetails =(ramtransaction) => {
+    const { navigate } = this.props.navigation;
+    navigate('TradeDetails', {ramtransaction});
+  }
+
   render() {
     return (<View style={styles.container}>
       <View style={styles.header}>  
@@ -210,21 +215,23 @@ class RecordQuery extends React.Component {
           />
         }
         dataSource={this.state.dataSource.cloneWithRows(this.state.newramTradeLog == null ? [] : this.state.newramTradeLog)} 
-        renderRow={(rowData, sectionID, rowID) => (   
-          <View style={styles.package}>
-            <View style={styles.leftout}>
-              <Text style={styles.payertext}>{rowData.payer}</Text>
-              <Text style={styles.timetext}>{moment(rowData.record_date).add(8,'hours').format('MM-DD HH:mm:ss')}</Text>
+        renderRow={(rowData, sectionID, rowID) => ( 
+          <Button onPress={this._openDetails.bind(this,rowData)}>  
+            <View style={styles.package}>
+              <View style={styles.leftout}>
+                <Text style={styles.payertext}>{rowData.payer}</Text>
+                <Text style={styles.timetext}>{moment(rowData.record_date).add(8,'hours').format('MM-DD HH:mm:ss')}</Text>
+              </View>
+              <View style={styles.rightout}>
+                {rowData.action_name == 'sellram' ? 
+                <Text style={styles.selltext}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.ram_qty : rowData.eos_qty}</Text>
+                :
+                <Text style={styles.buytext}>买 {rowData.eos_qty}</Text>
+                }
+                <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : rowData.price}{(rowData.price == null || rowData.price == '0') ? '' :  ' EOS/KB'}</Text>
+              </View>
             </View>
-            <View style={styles.rightout}>
-              {rowData.action_name == 'sellram' ? 
-              <Text style={styles.selltext}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.ram_qty : rowData.eos_qty}</Text>
-              :
-              <Text style={styles.buytext}>买 {rowData.eos_qty}</Text>
-              }
-              <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : rowData.price}{(rowData.price == null || rowData.price == '0') ? '' :  ' EOS/KB'}</Text>
-            </View>
-          </View>
+          </Button>
         )}                   
       />  
     </View>

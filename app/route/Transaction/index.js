@@ -1017,11 +1017,11 @@ class Transaction extends BaseComponent {
                     <View style={{flex: 1,}}>
                         {(this.props.etTradeLog  != null &&  this.props.etTradeLog .length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                         <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                                renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
+                                renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 5,marginHorizontal: 5,}}>
                                 <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
-                                <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                                <Text style={{ flex: 3.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(EOS)</Text>
-                                <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                                <Text style={{ flex: 4,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
+                                <Text style={{ flex: 3.5,textAlign: 'left',color: '#7382a1'}}>价格(EOS)</Text>
+                                <Text style={{ flex: 2.5,textAlign: 'left',color: '#7382a1'}}>时间</Text>
                                 </View>
                             }
                             dataSource={this.state.dataSource.cloneWithRows(this.state.newetTradeLog == null ? [] : this.state.newetTradeLog)} 
@@ -1057,9 +1057,9 @@ class Transaction extends BaseComponent {
                     <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                     renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
                         <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
-                        <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                        <Text style={{ flex: 3.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(EOS)</Text>
-                        <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                        <Text style={{ flex: 4,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
+                        <Text style={{ flex: 3.5,textAlign: 'left',color: '#7382a1'}}>价格(EOS)</Text>
+                        <Text style={{ flex: 2.5,textAlign: 'left',color: '#7382a1'}}>时间</Text>
                         </View>
                     }
                       dataSource={this.state.dataSource.cloneWithRows(this.props.etBigTradeLog == null ? [] : this.props.etBigTradeLog)} 
@@ -1465,11 +1465,9 @@ const styles = StyleSheet.create({
       textAlign:'center',
     },
     toptabout: {
-        padding: 10,
-        paddingTop: 5
-    },
-    echartsout: {
-        // flex: 1,
+        paddingHorizontal: 10,
+        paddingTop:10,
+        paddingBottom: 5,
     },
     tablayout: {   
         flex: 1,

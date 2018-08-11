@@ -1381,11 +1381,9 @@ const styles = StyleSheet.create({
       textAlign:'center',
     },
     toptabout: {
-        padding: 10,
-        paddingTop: 5
-    },
-    echartsout: {
-        // flex: 1,
+        paddingHorizontal: 10,
+        paddingTop:10,
+        paddingBottom: 5,
     },
     tablayout: {   
         flex: 1,

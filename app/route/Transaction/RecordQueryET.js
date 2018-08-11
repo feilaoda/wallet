@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {  ListView, StyleSheet, Image, View, Text, Platform,  TouchableOpacity, TextInput, KeyboardAvoidingView, ImageBackground, ScrollView, RefreshControl } from 'react-native';
 import UColor from '../../utils/Colors'
 import UImage from '../../utils/Img'
+import Button from '../../components/Button'
 import { EasyToast } from "../../components/Toast"
 import moment from 'moment';
 var dismissKeyboard = require('dismissKeyboard');
@@ -190,6 +191,11 @@ class RecordQueryET extends React.Component {
     }}); 
   }
 
+  _openDetails =(transaction) => {
+     const { navigate } = this.props.navigation;
+     navigate('TradeDetails', {transaction});
+  }
+
   render() {
     return (<View style={styles.container}>
       <View style={styles.header}>  
@@ -221,21 +227,23 @@ class RecordQueryET extends React.Component {
           />
         }
         dataSource={this.state.dataSource.cloneWithRows(this.state.newetTradeLog == null ? [] : this.state.newetTradeLog)} 
-        renderRow={(rowData, sectionID, rowID) => (   
-          <View style={styles.package}>
-            <View style={styles.leftout}>
-              <Text style={styles.payertext}>{rowData.account}</Text>
-              <Text style={styles.timetext}>{moment(rowData.record_date).add(8,'hours').format('MM-DD HH:mm:ss')}</Text>
+        renderRow={(rowData, sectionID, rowID) => (  
+          <Button onPress={this._openDetails.bind(this,rowData)}>   
+            <View style={styles.package}>
+              <View style={styles.leftout}>
+                <Text style={styles.payertext}>{rowData.account}</Text>
+                <Text style={styles.timetext}>{moment(rowData.record_date).add(8,'hours').format('MM-DD HH:mm:ss')}</Text>
+              </View>
+              <View style={styles.rightout}>
+                {rowData.action_name == 'selltoken' ? 
+                <Text style={styles.selltext}>卖 {(rowData.price == null || rowData.price == '0') ? this.precisionTransfer(rowData.token_qty,8) : rowData.eos_qty}</Text>
+                :
+                <Text style={styles.buytext}>买 {rowData.eos_qty}</Text>
+                }
+                <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : this.precisionTransfer(rowData.price,8)}{(rowData.price == null || rowData.price == '0') ? '' :  ' ' + this.state.tradename}</Text>
+              </View>
             </View>
-            <View style={styles.rightout}>
-              {rowData.action_name == 'selltoken' ? 
-              <Text style={styles.selltext}>卖 {(rowData.price == null || rowData.price == '0') ? this.precisionTransfer(rowData.token_qty,8) : rowData.eos_qty}</Text>
-              :
-              <Text style={styles.buytext}>买 {rowData.eos_qty}</Text>
-              }
-              <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : this.precisionTransfer(rowData.price,8)}{(rowData.price == null || rowData.price == '0') ? '' :  ' ' + this.state.tradename}</Text>
-            </View>
-          </View>
+          </Button>
         )}                   
       />  
     </View>
