@@ -926,17 +926,17 @@ class Ram extends BaseComponent {
                     <Text style={styles.nametext}>总资金</Text>
                 </View>
                 <View style={styles.recordout}>
-                    <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.open.toFixed(4) : '0'} EOS/KB</Text>
+                    <Text style={styles.recordtext}>{this.props.ramInfo ? (this.props.ramInfo.open * 1).toFixed(4) : '0'} EOS/KB</Text>
                     <View style={styles.rowout}>
                         <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.usage_ram : 0} GB/{this.props.ramInfo ? this.props.ramInfo.total_ram : 0} GB</Text>
                         <Text style={styles.ashtext}> ({((this.props.ramInfo ? this.props.ramInfo.usage_ram_percent : '0') * 100).toFixed(2)}%)</Text>
                     </View>
-                    <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.total_eos.toFixed(4) : '0'} EOS</Text>
+                    <Text style={styles.recordtext}>{this.props.ramInfo ? (this.props.ramInfo.total_eos * 1).toFixed(4) : '0'} EOS</Text>
                 </View>
                 </View>
                 <View style={styles.rightout}>
                     <View style={styles.presentprice}>
-                        <Text style={styles.present}> {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'}</Text>
+                        <Text style={styles.present}> {this.props.ramInfo ? (this.props.ramInfo.price * 1).toFixed(4) : '0.0000'}</Text>
                         <Text style={styles.toptext}>价格</Text>
                     </View>
                     <View style={styles.titleout}>
@@ -1195,7 +1195,7 @@ class Ram extends BaseComponent {
                         {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
                         {this.state.isBuy?<View>
                             <View style={styles.greeninptout}>
-                                <Text style={styles.greenText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
+                                <Text style={styles.greenText}>单价: {this.props.ramInfo ? (this.props.ramInfo.price * 1).toFixed(4) : '0.0000'} EOS/KB</Text>
                                 <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0.0000" :this.state.balance} EOS</Text>
                             </View>
                             <View style={styles.inputout}>
@@ -1236,7 +1236,7 @@ class Ram extends BaseComponent {
                         :
                         <View>
                             <View style={styles.greeninptout}>
-                                <Text style={styles.redText}>单价: {this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'} EOS/KB</Text>
+                                <Text style={styles.redText}>单价: {this.props.ramInfo ? (this.props.ramInfo.price * 1).toFixed(4) : '0.0000'} EOS/KB</Text>
                                 <Text style={styles.inptTitle}>可卖: {(this.state.myRamAvailable == null || this.state.myRamAvailable == '') ? '0' : (this.state.myRamAvailable/1024).toFixed(4)} KB</Text>
                             </View>
                         <View style={styles.inputout}>
@@ -1384,6 +1384,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingTop:10,
         paddingBottom: 5,
+    },
+    echartsout: {
+        // flex: 1,
     },
     tablayout: {   
         flex: 1,
