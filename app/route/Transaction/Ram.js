@@ -948,8 +948,8 @@ class Ram extends BaseComponent {
                 </View>
             </View>
           
-            <View style={{flex:1,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
-                <View style={{flexDirection:"column",flexGrow:1,}}>
+            <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
+                <View style={{flexDirection:"column",flex:1,}}>
                     <Button onPress={this.onClickTimeType.bind(this,"时分")}>
                         <View style={{ marginLeft: 2,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             {this.state.selectedSegment == "时分" ? 
@@ -958,7 +958,7 @@ class Ram extends BaseComponent {
                         </View>
                     </Button>   
                 </View>
-                <View style={{flexDirection:"column",flexGrow:1,}}>
+                <View style={{flexDirection:"column",flex:1,}}>
                     <Button onPress={this.onClickTimeType.bind(this,"5分")}>
                         <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             {this.state.selectedSegment == "5分" ? 
@@ -967,7 +967,7 @@ class Ram extends BaseComponent {
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flexGrow:1}}>
+                <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickTimeType.bind(this,"15分")}>
                         <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             {this.state.selectedSegment == "15分" ? 
@@ -976,7 +976,7 @@ class Ram extends BaseComponent {
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flexGrow:1}}>
+                <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickTimeType.bind(this,"30分")}>
                         <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                         {this.state.selectedSegment == "30分" ? 
@@ -985,7 +985,7 @@ class Ram extends BaseComponent {
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flexGrow:1}}>
+                <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickMore.bind(this)}>
                         <View style={{ flexDirection:"row",marginLeft: 0,width: 50, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             {(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
@@ -996,7 +996,7 @@ class Ram extends BaseComponent {
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flexGrow:1}}>
+                <View style={{flexDirection:"column",flex:1}}>
                     <Button disabled={true}>
                         <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
@@ -1005,44 +1005,44 @@ class Ram extends BaseComponent {
                 </View>
             </View> 
 
-            {this.state.showMore ?       
-            <View style={{flex:1,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
-                <View style={{flexDirection:"column",flexGrow:1,}}>
+            {this.state.showMore &&       
+            <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
+                <View style={{flexDirection:"column",flex:1,}}>
                     <Button disabled={true}>
                         <View style={{ marginLeft: 2,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flexGrow:1,}}>
+                <View style={{flexDirection:"column",flex:1,}}>
                     <Button onPress={this.onClickTimeType.bind(this,"1小时")}>
                         <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             <Text style={{fontSize: 15,color: UColor.fontColor,}}>1小时</Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flexGrow:1}}>
+                <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickTimeType.bind(this,"1天")}>
                         <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             <Text style={{fontSize: 15,color: UColor.fontColor,}}>1天</Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flexGrow:1}}>
+                <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickTimeType.bind(this,"1周")}>
                         <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             <Text style={{fontSize: 15,color: UColor.fontColor,}}>1周</Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flexGrow:1}}>
+                <View style={{flexDirection:"column",flex:1}}>
                 <Button onPress={this.onClickTimeType.bind(this,"1月")}>
                         <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             <Text style={{fontSize: 15,color: UColor.fontColor,}}>1月</Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flexGrow:1}}>
+                <View style={{flexDirection:"column",flex:1}}>
                 <Button disabled={true}>
                         <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
@@ -1050,7 +1050,7 @@ class Ram extends BaseComponent {
                     </Button> 
                 </View>
             </View> 
-            : <View></View>}  
+            }  
             {this.state.isKLine ? 
                 <View style={styles.echartsout} onStartShouldSetResponderCapture={this.onMoveLineView.bind(this)} onResponderRelease={this.onMoveLineViewEnd.bind(this)}>
                     {<Echarts option={this.getDataKLine()} width={ScreenWidth} height={300} />}
@@ -1065,7 +1065,7 @@ class Ram extends BaseComponent {
                     selectedOption={ this.state.selectedTransactionRecord } backTint= {UColor.secdColor} options={transactionOption} />
             </View>
             {this.state.selectedTransactionRecord == transactionOption[0] || this.state.selectedTransactionRecord == transactionOption[1] ? 
-                <View>
+                <View style={{flex: 1,}}>
                     {(this.props.ramTradeLog  != null &&  this.props.ramTradeLog .length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                     <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                             renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
@@ -1099,11 +1099,11 @@ class Ram extends BaseComponent {
                         )}                
                     /> 
                     }
-                </View>
-            : 
-                <View>
+                </View>: 
+                <View style={{flex: 1,}}>
+
                 {this.state.selectedTransactionRecord == transactionOption[2] ?  
-                    <View>
+                    <View style={{flex: 1,}}>
                         {(this.props.ramBigTradeLog != null &&  this.props.ramBigTradeLog.length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                             <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                                 renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
@@ -1137,9 +1137,8 @@ class Ram extends BaseComponent {
                                 )}                
                             /> 
                         }
-                    </View> 
-                    :
-                    <View>
+                    </View> :
+                    <View style={{flex: 1,}}>
                         <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                             dataSource={this.state.dataSource.cloneWithRows(this.props.bigRamRank == null ? [] : this.props.bigRamRank)} 
                             renderRow={(rowData, sectionID, rowID) => (                 
@@ -1386,7 +1385,7 @@ const styles = StyleSheet.create({
         paddingTop: 5
     },
     echartsout: {
-        flex: 1,
+        // flex: 1,
     },
     tablayout: {   
         flex: 1,
