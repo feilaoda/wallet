@@ -1769,7 +1769,7 @@ function combineRamKLine(data) {
         //     data: ['Dow-Jones index', 'MA5', 'MA10', 'MA20', 'MA30']
         // },
         tooltip: {
-            trigger: 'axis',
+            trigger: 'none',
             axisPointer: {
                 type: 'cross'
             },
@@ -1833,12 +1833,12 @@ function combineRamKLine(data) {
         grid: [
             {
                 top: '8%',
-                left: '12%',
+                left: '15%',
                 right: '4%',
                 height: '60%'
             },
             {
-                left: '12%',
+                left: '15%',
                 right: '4%',
                 top: '70%',
                 height: '30%',
@@ -1917,7 +1917,7 @@ function combineRamKLine(data) {
                 axisLabel: {
                     show: true,
                     color: "#7382a1",
-                    fontSize: 8,
+                    fontSize: 2,
                 },
                 axisLine: {
                     show: true,

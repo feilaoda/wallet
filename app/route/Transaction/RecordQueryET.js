@@ -68,7 +68,7 @@ class RecordQueryET extends React.Component {
   precisionTransfer(data,pos){
     try {
         var point = data.lastIndexOf(".");
-        if(point < 0){
+        if(point <= 0){
             return data; //无小数位
         }
         var pointnum = data.length - point - 1;

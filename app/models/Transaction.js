@@ -449,11 +449,17 @@ function combineET(data) {
                 axisLabel: {
                     show: true,
                     // formatter: '{value}',
+                    // formatter: function(value, index) {
+                    //     if(value == null || value == ''){
+                    //         return '0.000';
+                    //     }
+                    //     return value.toFixed(8);
+                    // },
                     formatter: function(value, index) {
                         if(value == null || value == ''){
-                            return '0.000';
+                            return parseFloat('0').toExponential(2);
                         }
-                        return value.toFixed(8);
+                        return parseFloat(value).toExponential(2);
                     },
                     color: "#93B5EE",
                     // interval: '0'

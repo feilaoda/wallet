@@ -756,7 +756,7 @@ class Transaction extends BaseComponent {
   precisionTransfer(data,pos){
     try {
          var point = data.lastIndexOf(".");
-         if(point < 0){
+         if(point <= 0){
              return data; //无小数位
          }
         var pointnum = data.length - point - 1;
@@ -1003,7 +1003,7 @@ class Transaction extends BaseComponent {
             }
             </View>
             : 
-            <View style={styles.echartsout}>
+            <View style={styles.echartsout} onStartShouldSetResponderCapture={this.onMoveLineView.bind(this)} onResponderRelease={this.onMoveLineViewEnd.bind(this)}>
             {
                 <Echarts option={this.getDataLine()} width={ScreenWidth} height={160} />
             }
