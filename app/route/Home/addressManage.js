@@ -14,6 +14,7 @@ const {width, height} = Dimensions.get('window');
 import { EasyShowLD } from '../../components/EasyShow'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
+import Assets from '../../models/Assets';
 
 @connect(({addressBook}) => ({...addressBook}))
 class addressManage extends BaseComponent {
@@ -38,7 +39,9 @@ class addressManage extends BaseComponent {
             isShowBottom: false,
             selectMap: new Map(),
             labelName:'',
-            address:''
+            address:'',
+            isTurnOut: this.props.navigation.state.params.isTurnOut == null ? false : this.props.navigation.state.params.isTurnOut,
+            coinType: (this.props.navigation.state.params.coinType == null || this.props.navigation.state.params.coinType == "") ? "eos" : this.props.navigation.state.params.coinType,
             // preIndex: 0 // 声明点击上一个按钮的索引  **** 单选逻辑 ****
         };
     }
@@ -92,6 +95,22 @@ class addressManage extends BaseComponent {
             EasyShowLD.loadingClose();
           }
     }
+
+
+    selectAddress(selectAccount){
+        var jsoncode = '{"toaccount":"' + selectAccount + '","symbol":"' + this.state.coinType + '"}';
+        var coins = JSON.parse(jsoncode);
+        this.props.navigation.goBack();  //正常返回上一个页面
+
+        if(this.state.isTurnOut){
+            DeviceEventEmitter.emit('scan_result',coins);
+        }else{
+            const { navigate } = this.props.navigation;
+            navigate('TurnOut', { coins: coins });
+        }
+        console.log("selectAddress:%s",selectAccount);
+    }
+
     renderRow = (rowData, sectionID, rowID) => { // cell样式
 
         let map = this.state.selectMap;
@@ -105,10 +124,12 @@ class addressManage extends BaseComponent {
                <TouchableOpacity style={styles.touchSelect} onPress={() => this.selectItem(parseInt(rowID), rowData.labelName, isChecked)}>
                     <Image source={isChecked ? UImage.aab1:UImage.aab2} style={styles.selectoutimg}/>
                 </TouchableOpacity> : null}
-                <View style={styles.selout}>
-                    <Text style={styles.outlabelname}>{"标签:"+rowData.labelName}</Text>
-                    <Text style={styles.outaddress}>{"账号:"+rowData.address}</Text>
-               </View>
+                <Button  onPress={this.state.isEdit ?null:this.selectAddress.bind(this,rowData.address)}>
+                    <View style={styles.selout}>
+                        <Text style={styles.outlabelname}>{"标签:"+rowData.labelName}</Text>
+                        <Text style={styles.outaddress}>{"账号:"+rowData.address}</Text>
+                    </View>
+                </Button>    
            </View>
         )
     }
@@ -264,13 +285,14 @@ const styles = StyleSheet.create({
 
     selout: {
         flex: 1, 
-        width: width - 60,
+        width: width-20,
         height: 60,
         backgroundColor: UColor.mainColor,
         marginBottom: 10,
         marginLeft:10,
         marginRight:10,
         paddingLeft: 10,
+        paddingRight: 10,
         alignItems: "flex-start",
         justifyContent: 'center',
         borderColor: UColor.mainColor,
