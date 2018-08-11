@@ -885,8 +885,8 @@ class Transaction extends BaseComponent {
                 </View>
                 <View style={styles.titleout}>
                     <Text style={(this.props.etinfo && this.props.etinfo.increase>=0)?styles.incdo:styles.incup}> 
-                        {this.props.etinfo ? (this.props.etinfo.increase > 0 ? '+' + this.props.etinfo.increase : 
-                              this.props.etinfo.increase): '0.00%'}</Text>
+                        {this.props.etinfo ? (this.props.etinfo.increase > 0 ? '+' + (this.props.etinfo.increase * 100).toFixed(2) : 
+                        (this.props.etinfo.increase * 100).toFixed(2)): '0.00'}%</Text>
                     <Text style={{color:'#8696B0',fontSize:13,marginTop:2,textAlign:'center', marginLeft:5}}>涨幅</Text>
                 </View>
             </View>
@@ -1167,7 +1167,7 @@ class Transaction extends BaseComponent {
                         <View style={{width:'35%'}}>
                             <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
                                 <Text style={{ fontSize:15, color:UColor.fontColor, 
-                                    textAlign:'center', marginRight:5}}>{this.props.ramInfo ? this.props.ramInfo.price.toFixed(4) : '0.0000'}</Text>
+                                    textAlign:'center', marginRight:5}}>{this.props.ramInfo ? (this.props.ramInfo.price * 1).toFixed(4) : '0.0000'}</Text>
                             </View>
                         </View>
                       </View>
