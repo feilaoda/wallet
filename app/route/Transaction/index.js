@@ -1833,12 +1833,12 @@ function combineRamKLine(data) {
         grid: [
             {
                 top: '8%',
-                left: '15%',
+                left: '12%',
                 right: '4%',
                 height: '60%'
             },
             {
-                left: '15%',
+                left: '12%',
                 right: '4%',
                 top: '70%',
                 height: '30%',
