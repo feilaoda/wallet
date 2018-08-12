@@ -22,7 +22,7 @@ class TradeDetails extends BaseComponent {
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
-            headerTitle: '转账详情',
+            headerTitle: '交易详情',
             headerStyle: {
                 paddingTop:Platform.OS == 'ios' ? 30 : 20,
                 backgroundColor: UColor.mainColor,
@@ -38,12 +38,62 @@ class TradeDetails extends BaseComponent {
 
   constructor(props) {
     super(props);
+    var paramtrade = new Object();
+
+    if(this.props.navigation.state.params.trade){
+      paramtrade = this.props.navigation.state.params.trade;
+      paramtrade.disptype = 0;
+    }else if(this.props.navigation.state.params.transaction){
+      paramtrade.disptype = 1;
+      paramtrade.type = this.props.navigation.state.params.transaction.action_name;
+      paramtrade.quantity = this.props.navigation.state.params.transaction.eos_qty;
+      paramtrade.code = "";
+      paramtrade.description = "";
+      paramtrade.bytes = "";
+      paramtrade.memo = "";
+      paramtrade.blockTime = this.props.navigation.state.params.transaction.record_date;
+      paramtrade.transactionId = this.props.navigation.state.params.transaction.trx_id;
+      paramtrade.from = this.props.navigation.state.params.transaction.account;
+      paramtrade.to = "";
+      paramtrade.blockNum = this.props.navigation.state.params.transaction.block_num;
+
+    }else if(this.props.navigation.state.params.ramtransaction){
+      paramtrade.disptype = 2;
+      paramtrade.type = this.props.navigation.state.params.ramtransaction.action_name;
+      paramtrade.quantity = this.props.navigation.state.params.ramtransaction.eos_qty;
+      paramtrade.code = "";
+      paramtrade.description = "";
+      paramtrade.bytes = "";
+      paramtrade.memo = "";
+      paramtrade.blockTime = this.props.navigation.state.params.ramtransaction.record_date;
+      paramtrade.transactionId = this.props.navigation.state.params.ramtransaction.trx_id;
+      paramtrade.from = this.props.navigation.state.params.ramtransaction.payer;
+      paramtrade.to = this.props.navigation.state.params.ramtransaction.receiver;
+      paramtrade.blockNum = this.props.navigation.state.params.ramtransaction.block_num;  
+    }
+    else{
+      //防止出错，正常情况，不应该到这里
+      paramtrade.disptype = 0;
+      paramtrade.type = "";
+      paramtrade.quantity = "";
+      paramtrade.code = "";
+      paramtrade.description = "";
+      paramtrade.bytes = "";
+      paramtrade.memo = "";
+      paramtrade.blockTime = "";
+      paramtrade.transactionId = "";
+      paramtrade.from = "";
+      paramtrade.to = "";
+      paramtrade.blockNum = 0;  
+    }
+
     WeChat.registerApp('wxc5eefa670a40cc46');
     this.props.navigation.setParams({ onPress: this._rightTopClick });
     this.state = {
-      
+       trade: paramtrade,
     };
   }
+
   _rightTopClick = () =>{
     this.refs.viewShot.capture().then(uri => {
       WeChat.isWXAppInstalled().then((isInstalled) => {
@@ -72,235 +122,88 @@ class TradeDetails extends BaseComponent {
   prot(key, data = {}) {
     const { navigate } = this.props.navigation;
     if (key == 'transactionId') {
-    navigate('Web', { title: "交易查询", url:'https://eospark.com/MainNet/tx/' + this.props.navigation.state.params.trade.transactionId});
+    navigate('Web', { title: "交易查询", url:'https://eospark.com/MainNet/tx/' + this.state.trade.transactionId});
     }else  if (key == 'from') {
-    navigate('Web', { title: "发送方", url:'https://eospark.com/MainNet/account/' + this.props.navigation.state.params.trade.from});
+    navigate('Web', { title: "发送方", url:'https://eospark.com/MainNet/account/' + this.state.trade.from});
     }else  if (key == 'to') {
-    navigate('Web', { title: "接受方", url:'https://eospark.com/MainNet/account/' + this.props.navigation.state.params.trade.to});
+    navigate('Web', { title: "接受方", url:'https://eospark.com/MainNet/account/' + this.state.trade.to});
     }else  if (key == 'blockNum') {
-    if(this.props.navigation.state.params.trade.blockNum == null || this.props.navigation.state.params.trade.blockNum == ""){
+    if(this.state.trade.blockNum == null || this.state.trade.blockNum == ""){
       return;
     }
-    navigate('Web', { title: "区块高度", url:'https://eospark.com/MainNet/block/' + this.props.navigation.state.params.trade.blockNum});
+    navigate('Web', { title: "区块高度", url:'https://eospark.com/MainNet/block/' + this.state.trade.blockNum});
     }
   }
 
-  protBusiness(key, data = {}) {
-    const { navigate } = this.props.navigation;
-    if (key == 'transactionId') {
-    navigate('Web', { title: "交易查询", url:'https://eospark.com/MainNet/tx/' + this.props.navigation.state.params.transaction.trx_id});
-    }else  if (key == 'from') {
-    navigate('Web', { title: "发送方", url:'https://eospark.com/MainNet/account/' + this.props.navigation.state.params.transaction.account});
-    }else  if (key == 'to') {
-    navigate('Web', { title: "接受方", url:'https://eospark.com/MainNet/account/' + this.props.navigation.state.params.trade.to});
-    }else  if (key == 'blockNum') {
-    if(this.props.navigation.state.params.transaction.block_num == null || this.props.navigation.state.params.transaction.block_num == ""){
-      return;
-    }
-    navigate('Web', { title: "区块高度", url:'https://eospark.com/MainNet/block/' + this.props.navigation.state.params.transaction.block_num});
-    }
-  }
 
-  protRam(key, data = {}) {
-    const { navigate } = this.props.navigation;
-    if (key == 'transactionId') {
-    navigate('Web', { title: "交易查询", url:'https://eospark.com/MainNet/tx/' + this.props.navigation.state.params.ramtransaction.trx_id});
-    }else  if (key == 'from') {
-    navigate('Web', { title: "发送方", url:'https://eospark.com/MainNet/account/' + this.props.navigation.state.params.ramtransaction.payer});
-    }else  if (key == 'to') {
-    navigate('Web', { title: "接受方", url:'https://eospark.com/MainNet/account/' + this.props.navigation.state.params.trade.to});
-    }else  if (key == 'blockNum') {
-    if(this.props.navigation.state.params.transaction.block_num == null || this.props.navigation.state.params.ramtransaction.block_num == ""){
-      return;
-    }
-    navigate('Web', { title: "区块高度", url:'https://eospark.com/MainNet/block/' + this.props.navigation.state.params.ramtransaction.block_num});
-    }
-  }
+
 
   copy = (trade) => {
     Clipboard.setString('https://eospark.com/MainNet/tx/' + trade.transactionId);
     EasyToast.show("复制成功");
   }
-
-  copyBusiness = (transaction) => {
-    Clipboard.setString('https://eospark.com/MainNet/tx/' + transaction.trx_id);
-    EasyToast.show("复制成功");
-  }
-
-  copyRam = (ramtransaction) => {
-    Clipboard.setString('https://eospark.com/MainNet/tx/' + ramtransaction.trx_id);
-    EasyToast.show("复制成功");
-  }
   
   render() {
-    const c = this.props.navigation.state.params.trade;
-    const transaction =this.props.navigation.state.params.transaction
-    const ramtransaction =this.props.navigation.state.params.ramtransaction
+    // const c = this.props.navigation.state.params.trade;
     return <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
       <ViewShot ref="viewShot"> 
-      {this.props.navigation.state.params.trade&&
+     
       <View style={{flex: 1}}>
-        <View style={styles.header}>
+        {this.state.trade.disptype == 0 && <View style={styles.header}>
             <View style={styles.headout}>
-                <Text style={styles.quantitytext}>{c.type=='转出'?'-':'+'} </Text>
-                <Text style={styles.quantitytext}>{c.quantity.replace(c.code, "")} </Text>
-                <Text style={styles.headtext}> {c.code}</Text>
+                <Text style={styles.quantitytext}>{this.state.trade.type=='转出'?'-':'+'} </Text>
+                <Text style={styles.quantitytext}>{this.state.trade.quantity.replace(this.state.trade.code, "")} </Text>
+                <Text style={styles.headtext}> {this.state.trade.code}</Text>
             </View>
-            <Text style={styles.description}>({c.description}{c.bytes? c.bytes + " bytes":""})</Text>
-        </View>
-        <View style={{flexDirection: "row", borderBottomColor: UColor.mainColor, borderBottomWidth: 0.5,paddingHorizontal: 10,paddingVertical: 20,}}>
-          <View style={styles.conout}>
-            <View style={styles.conouttext}>
-              <Text style={styles.context}>发  送  方：</Text> 
-              <Text style={styles.tintext} onPress={this.prot.bind(this, 'from')}>{c.from}</Text>
-            </View>
-            <View style={styles.conouttext}>
-              <Text style={styles.context}>接  受  方：</Text>
-              <Text style={styles.tintext} onPress={this.prot.bind(this, 'to')}>{c.to}</Text>
-            </View>
-            <View style={styles.conouttext}> 
-              <Text style={styles.context}>区块高度：</Text>
-              {(c.blockNum == null || c.blockNum == "") ? 
-              <Text style={styles.showytext}>未确认</Text>:
-              <Text style={styles.tintext} onPress={this.prot.bind(this, 'blockNum')}>{c.blockNum}</Text>
-              }
-            </View>
-            <View style={styles.conouttext}>
-              <Text style={styles.context}> 备     注 ：</Text>
-              <Text style={styles.blocktext} >{c.memo}</Text>
-            </View>
+            <Text style={styles.description}>({this.state.trade.description}{this.state.trade.bytes? this.state.trade.bytes + " bytes":""})</Text>
           </View>
-          <View style={styles.codeout}>
-            <View style={styles.qrcode}>
-               <QRCode size={70} value={'https://eospark.com/MainNet/tx/' + c.transactionId } />
-            </View>
-            <Button onPress={this.copy.bind(this,c)}>
-               <View style={{backgroundColor: UColor.mainColor,borderRadius: 25,}}>
-                 <Text style={{ fontSize: 12,color: UColor.arrow,paddingHorizontal: 10,paddingVertical: 2,}}>复制URL</Text>
-               </View>
-            </Button>
-          </View>
-        </View>
-        <View style={styles.tradehint}>
-          <View style={styles.conouttext}>
-            <Text style={styles.context}>交  易  号：</Text>
-            <Text style={styles.tintext} onPress={this.prot.bind(this, 'transactionId')}>{c.transactionId.substring(0, 10) +"..."+ c.transactionId.substr(c.transactionId.length-10) }</Text>
-          </View>
-          <View style={styles.conouttext}>
-            <Text style={styles.context}> 提     示 ：</Text>
-            <Text style={styles.blocktext}>扫码可获取区块交易状态</Text>
-          </View>
-          <View style={styles.conouttext}>
-            <Text style={styles.context}>交易时间：</Text>
-            <Text style={styles.blocktext}>{moment(c.blockTime).add(8,'hours').format('YYYY/MM/DD HH:mm')}</Text>
-          </View>
-        </View>
-        <View style={{flex: 1,alignItems: 'center',justifyContent: 'flex-end',paddingBottom: 20,}}>
-          <Image source={UImage.bottom_log} style={{width:50,height:50}}/>
-          <Text style={{ fontSize: 14,color: UColor.arrow,}}>EosToken 专注柚子生态</Text>
-        </View>
-        </View>}
-        {this.props.navigation.state.params.transaction&&
-      <View style={{flex: 1}}>
-        <View style={styles.header}>
+        }
+        {this.state.trade.disptype == 1 && <View style={styles.header}>
             <View style={styles.headout}>
                 {/* <Text style={styles.quantitytext}>{transaction.action_name == 'selltoken'?'+':'-'} </Text> */}
-                <Text style={styles.quantitytext}>{transaction.eos_qty}</Text>
+                <Text style={styles.quantitytext}>{this.state.trade.quantity}</Text>
                 {/* <Text style={styles.headtext}> {transaction.eos_qty}</Text> */}
             </View>
-            <Text style={styles.description}>{transaction.action_name == 'selltoken'?'(卖)':'(买)'}</Text>
-        </View>
-        <View style={{flexDirection: "row", borderBottomColor: UColor.mainColor, borderBottomWidth: 0.5,paddingHorizontal: 10,paddingVertical: 20,}}>
-          <View style={styles.conout}>
-            <View style={styles.conouttext}>
-              <Text style={styles.context}>发  送  方：</Text> 
-              <Text style={styles.tintext} onPress={this.protBusiness.bind(this, 'from')}>{transaction.account}</Text>
-            </View>
-            <View style={styles.conouttext}>
-              <Text style={styles.context}>接  受  方：</Text>
-              <Text style={styles.tintext} ></Text>
-            </View>
-            <View style={styles.conouttext}> 
-              <Text style={styles.context}>区块高度：</Text>
-              {(transaction.block_num == null || transaction.block_num == "") ? 
-              <Text style={styles.showytext}>未确认</Text>:
-              <Text style={styles.tintext} onPress={this.protBusiness.bind(this, 'blockNum')}>{transaction.block_num}</Text>
-              }
-            </View>
-            <View style={styles.conouttext}>
-              <Text style={styles.context}> 备     注 ：</Text>
-              <Text style={styles.blocktext} ></Text>
-            </View>
+            <Text style={styles.description}>{this.state.trade.type == 'selltoken'?'(卖)':'(买)'}</Text>
           </View>
-          <View style={styles.codeout}>
-            <View style={styles.qrcode}>
-               <QRCode size={70} value={'https://eospark.com/MainNet/tx/' + transaction.trx_id } />
-            </View>
-            <Button onPress={this.copy.bind(this,transaction)}>
-               <View style={{backgroundColor: UColor.mainColor,borderRadius: 25,}}>
-                 <Text style={{ fontSize: 12,color: UColor.arrow,paddingHorizontal: 10,paddingVertical: 2,}}>复制URL</Text>
-               </View>
-            </Button>
-          </View>
-        </View>
-        <View style={styles.tradehint}>
-          <View style={styles.conouttext}>
-            <Text style={styles.context}>交  易  号：</Text>
-            <Text style={styles.tintext} onPress={this.protBusiness.bind(this, 'transactionId')}>{transaction.trx_id.substring(0, 10) +"..."+ transaction.trx_id.substr(transaction.trx_id.length-10) }</Text>
-          </View>
-          <View style={styles.conouttext}>
-            <Text style={styles.context}> 提     示 ：</Text>
-            <Text style={styles.blocktext}>扫码可获取区块交易状态</Text>
-          </View>
-          <View style={styles.conouttext}>
-            <Text style={styles.context}>交易时间：</Text>
-            <Text style={styles.blocktext}>{moment(transaction.record_data).add(8,'hours').format('YYYY/MM/DD HH:mm')}</Text>
-          </View>
-        </View>
-        <View style={{flex: 1,alignItems: 'center',justifyContent: 'flex-end',paddingBottom: 20,}}>
-          <Image source={UImage.bottom_log} style={{width:50,height:50}}/>
-          <Text style={{ fontSize: 14,color: UColor.arrow,}}>EosToken 专注柚子生态</Text>
-        </View>
-        </View>}
-
-        {this.props.navigation.state.params.ramtransaction&&
-        <View style={{flex: 1}}>
-        <View style={styles.header}>
+        }
+        {this.state.trade.disptype == 2 && <View style={styles.header}>
             <View style={styles.headout}>
                 {/* <Text style={styles.quantitytext}>{c.type=='转出'?'-':'+'} </Text> */}
-                <Text style={styles.quantitytext}>{ramtransaction.eos_qty} </Text>
+                <Text style={styles.quantitytext}>{this.state.trade.quantity} </Text>
                 {/* <Text style={styles.headtext}> {c.code}</Text> */}
             </View>
-            <Text style={styles.description}>{ramtransaction.action_name == 'buyram'?'(买)':'(卖)'}</Text>
-        </View>
+            <Text style={styles.description}>{this.state.trade.type == 'buyram'?'(买)':'(卖)'}</Text>
+          </View>
+        }
         <View style={{flexDirection: "row", borderBottomColor: UColor.mainColor, borderBottomWidth: 0.5,paddingHorizontal: 10,paddingVertical: 20,}}>
           <View style={styles.conout}>
             <View style={styles.conouttext}>
               <Text style={styles.context}>发  送  方：</Text> 
-              <Text style={styles.tintext} onPress={this.protRam.bind(this, 'from')}>{ramtransaction.payer}</Text>
+              <Text style={styles.tintext} onPress={this.prot.bind(this, 'from')}>{this.state.trade.from}</Text>
             </View>
             <View style={styles.conouttext}>
               <Text style={styles.context}>接  受  方：</Text>
-              <Text style={styles.tintext}>{ramtransaction.receiver}</Text>
+              <Text style={styles.tintext} onPress={this.prot.bind(this, 'to')}>{this.state.trade.to}</Text>
             </View>
             <View style={styles.conouttext}> 
               <Text style={styles.context}>区块高度：</Text>
-              {(ramtransaction.block_num == null || ramtransaction.block_num == "") ? 
+              {(this.state.trade.blockNum == null || this.state.trade.blockNum == "") ? 
               <Text style={styles.showytext}>未确认</Text>:
-              <Text style={styles.tintext} onPress={this.protRam.bind(this, 'blockNum')}>{ramtransaction.block_num}</Text>
+              <Text style={styles.tintext} onPress={this.prot.bind(this, 'blockNum')}>{this.state.trade.blockNum}</Text>
               }
             </View>
             <View style={styles.conouttext}>
               <Text style={styles.context}> 备     注 ：</Text>
-              <Text style={styles.blocktext} ></Text>
+              <Text style={styles.blocktext} >{this.state.trade.memo}</Text>
             </View>
           </View>
           <View style={styles.codeout}>
             <View style={styles.qrcode}>
-               <QRCode size={70} value={'https://eospark.com/MainNet/tx/' + ramtransaction.trx_id } />
+               <QRCode size={70} value={'https://eospark.com/MainNet/tx/' + this.state.trade.transactionId } />
             </View>
-            <Button onPress={this.copyRam.bind(this,ramtransaction)}>
+            <Button onPress={this.copy.bind(this,this.state.trade)}>
                <View style={{backgroundColor: UColor.mainColor,borderRadius: 25,}}>
                  <Text style={{ fontSize: 12,color: UColor.arrow,paddingHorizontal: 10,paddingVertical: 2,}}>复制URL</Text>
                </View>
@@ -310,7 +213,7 @@ class TradeDetails extends BaseComponent {
         <View style={styles.tradehint}>
           <View style={styles.conouttext}>
             <Text style={styles.context}>交  易  号：</Text>
-            <Text style={styles.tintext} onPress={this.prot.bind(this, 'transactionId')}>{ramtransaction.trx_id.substring(0, 10) +"..."+ ramtransaction.trx_id.substr(ramtransaction.trx_id.length-10) }</Text>
+            <Text style={styles.tintext} onPress={this.prot.bind(this, 'transactionId')}>{this.state.trade.transactionId.substring(0, 10) +"..."+ this.state.trade.transactionId.substr(this.state.trade.transactionId.length-10) }</Text>
           </View>
           <View style={styles.conouttext}>
             <Text style={styles.context}> 提     示 ：</Text>
@@ -318,7 +221,7 @@ class TradeDetails extends BaseComponent {
           </View>
           <View style={styles.conouttext}>
             <Text style={styles.context}>交易时间：</Text>
-            <Text style={styles.blocktext}>{moment(ramtransaction.record_data).add(8,'hours').format('YYYY/MM/DD HH:mm')}</Text>
+            <Text style={styles.blocktext}>{moment(this.state.trade.blockTime).add(8,'hours').format('YYYY/MM/DD HH:mm')}</Text>
           </View>
         </View>
         <View style={{flex: 1,alignItems: 'center',justifyContent: 'flex-end',paddingBottom: 20,}}>
@@ -326,7 +229,6 @@ class TradeDetails extends BaseComponent {
           <Text style={{ fontSize: 14,color: UColor.arrow,}}>EosToken 专注柚子生态</Text>
         </View>
         </View>
-        }
          </ViewShot>
       </ScrollView>
     </View>
