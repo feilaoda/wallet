@@ -1826,6 +1826,7 @@ function combineRamKLine(data) {
                 color: upColor
             }]
         },
+        color:['#ec0000','#6e6e46','#835098','#4b9373','#4b7793'],
         legend: {
             data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
             // left: '20%',
@@ -1833,6 +1834,7 @@ function combineRamKLine(data) {
                 color: "#7382a1",
                 fontSize: 10,
             },
+            // inactiveColor:upColor,
             itemHeight: 12,
         },
         grid: [
