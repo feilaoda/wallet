@@ -8,9 +8,8 @@ import Item from '../../components/Item'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
-
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from '../../components/Toast';
-
 import BaseComponent from "../../components/BaseComponent";
 const maxWidth = Dimensions.get('window').width;
 const maxHeight = Dimensions.get('window').height;
@@ -84,15 +83,15 @@ class Community extends BaseComponent {
   render() {
     return <View style={styles.container}>    
           <Image source={UImage.cmyhead} style={styles.headimg} />
-          <View style={{padding: 5,}} >
+          <View style={{padding: ScreenUtil.autoheight(5),}} >
             <View style={{flexDirection:'row',}}>
-              <TouchableHighlight onPress={this.prot.bind(this, 'wechat')} style={{flex: 1, marginRight: 2.5, }} underlayColor={UColor.secdColor}>
+              <TouchableHighlight onPress={this.prot.bind(this, 'wechat')} style={{flex: 1, marginRight: ScreenUtil.autoWidth(2.5), }} underlayColor={UColor.secdColor}>
                 <ImageBackground  style={styles.wechatqq} source={UImage.cmy_wx} resizeMode="stretch">                  
                   <Text style={styles.textname}>官方微信</Text>
                   <Text style={styles.textlinktwo} >{this.state.wechat}</Text>           
                 </ImageBackground>
               </TouchableHighlight>
-              <TouchableHighlight onPress={this.prot.bind(this, 'qq')} style={{flex: 1, marginLeft: 2.5,}} underlayColor={UColor.secdColor}>
+              <TouchableHighlight onPress={this.prot.bind(this, 'qq')} style={{flex: 1, marginLeft: ScreenUtil.autoWidth(2.5),}} underlayColor={UColor.secdColor}>
                 <ImageBackground style={styles.wechatqq} source={UImage.cmy_qq} resizeMode="stretch">          
                   <Text style={styles.textname}>官方QQ</Text>
                   <Text style={styles.textlinktwo} >{this.state.qq}</Text>           
@@ -136,11 +135,11 @@ const styles = StyleSheet.create({
   headimg: {
     width: maxWidth,
     height: maxWidth * 0.2213,
-    marginTop: 5,
+    marginTop: ScreenUtil.autoheight(5),
   },
   texts: {
-    height:35, 
-    paddingLeft:20, 
+    height: ScreenUtil.autoheight(35),
+    paddingLeft:ScreenUtil.autoWidth(20), 
     justifyContent:'center',
     alignItems:'center',  
     flexDirection:'row',
@@ -148,38 +147,38 @@ const styles = StyleSheet.create({
   wechatqq: {
     width: (maxWidth - 15) / 2,
     height: (maxWidth - 15) / 2 * 0.6572,
-    paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingHorizontal: ScreenUtil.autoWidth(10),
+    paddingTop: ScreenUtil.autoheight(10),
   },
   publicout: {
     justifyContent:'center',
     width: maxWidth - 10,
     height: (maxWidth - 10) * 0.3664,
-    marginTop: 5,
-    paddingHorizontal: 10,
-    paddingTop: 10,
+    marginTop: ScreenUtil.autoheight(5),
+    paddingHorizontal: ScreenUtil.autoWidth(10),
+    paddingTop: ScreenUtil.autoheight(10),
   },
   sourceout: {
     justifyContent: "space-between",
     alignItems: 'flex-start',
     width: maxWidth - 10,
     height: (maxWidth - 10) * 0.1444,
-    marginTop: 5,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    marginTop: ScreenUtil.autoheight(5),
+    paddingVertical: ScreenUtil.autoheight(5),
+    paddingHorizontal: ScreenUtil.autoWidth(10),
   },
   textname: {
-    fontSize:16,
+    fontSize: ScreenUtil.setSpText(16),
     color:'#FFFFFF',
   },
   textlinktwo: {
-    paddingTop: 5,
-    fontSize: 16, 
+    paddingTop: ScreenUtil.autoheight(5),
+    fontSize: ScreenUtil.setSpText(16),
     color: '#65CAFF',
     textAlign: 'left',
   },
   textlink: {
-    fontSize: 16, 
+    fontSize: ScreenUtil.setSpText(16),
     color: '#65CAFF',
     textAlign: 'left',
   }

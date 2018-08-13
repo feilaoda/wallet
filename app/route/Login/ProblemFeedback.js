@@ -7,6 +7,7 @@ import Button from  '../../components/Button'
 import Item from '../../components/Item'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import { EasyShowLD } from "../../components/EasyShow"
 import { EasyToast } from '../../components/Toast';
@@ -20,7 +21,7 @@ class ProblemFeedback extends BaseComponent {
   static navigationOptions = {
     title: '问题反馈',
     headerStyle: {
-        paddingTop:Platform.OS == 'ios' ? 30 : 20,
+        paddingTop:Platform.OS == 'ios' ? ScreenUtil.autoheight(30) : ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
         borderBottomWidth:0,
       },
@@ -63,18 +64,18 @@ class ProblemFeedback extends BaseComponent {
 
      <ScrollView style={styles.scrollView} keyboardShouldPersistTaps="always">
         <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
-            <View style={{paddingHorizontal: 10, paddingTop: 20,}}>
-                <View style={{padding: 20,}}>
+            <View style={{paddingHorizontal: ScreenUtil.autoWidth(10), paddingTop: ScreenUtil.autoheight(20),}}>
+                <View style={{paddingHorizontal: ScreenUtil.autoWidth(20),paddingVertical: ScreenUtil.autoheight(20),}}>
                 <TextInput ref={(ref) => this._rrpass = ref} value={this.state.delegatebw} 
                 selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor="#B3B3B3" 
                 onChangeText={(delegatebw) => this.setState({ delegatebw })} autoFocus={false} editable={true}
                 placeholder="请详细描述您的问题......" underlineColorAndroid="transparent"   
                 multiline={true}  maxLength={500}/>
                 </View>
-                <Text style={{fontSize: 14, color: '#8696B0', lineHeight: 25, paddingHorizontal: 5,}}>说明：如果您提交的问题或建议被官方采纳，我们将进行电话回访和颁发一定的奖励作为鼓励。</Text>
+                <Text style={{fontSize: ScreenUtil.setSpText(14), color: '#8696B0', lineHeight:  ScreenUtil.autoheight(25), paddingHorizontal:ScreenUtil.autoWidth(5),}}>说明：如果您提交的问题或建议被官方采纳，我们将进行电话回访和颁发一定的奖励作为鼓励。</Text>
                 <Button onPress={() => this.logout()}>
-                    <View style={{height:47, marginTop: 30, backgroundColor:  UColor.tintColor,justifyContent:'center',alignItems:'center',borderRadius:5}}>
-                    <Text style={{fontSize:15,color:'#fff'}}>提交</Text>
+                    <View style={{height:ScreenUtil.autoheight(47), marginTop: ScreenUtil.autoheight(30), backgroundColor:  UColor.tintColor,justifyContent:'center',alignItems:'center',borderRadius:5}}>
+                    <Text style={{fontSize:ScreenUtil.setSpText(15),color:'#fff'}}>提交</Text>
                     </View>
                 </Button>
             </View>
@@ -96,11 +97,11 @@ const styles = StyleSheet.create({
   inpt: {
     flex: 1, 
     color: '#8696B0', 
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
     textAlignVertical: 'top', 
-    height: 266, 
-    lineHeight: 25,
-    paddingLeft: 10, 
+    height: ScreenUtil.autoheight(266), 
+    lineHeight: ScreenUtil.autoheight(25),
+    paddingLeft: ScreenUtil.autoWidth(10), 
     backgroundColor: '#FFFFFF', 
 },
 });
