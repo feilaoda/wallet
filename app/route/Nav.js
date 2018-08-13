@@ -73,6 +73,7 @@ import Button from '../components/Button'
 import ViewShot from "react-native-view-shot";
 import QRCode from 'react-native-qrcode-svg';
 import Constants from '../utils/Constants'
+import ScreenUtil from '../utils/ScreenUtil'
 import RecordQueryRam from './Transaction/RecordQueryRam'
 import Warning from './Transaction/Warning'
 
@@ -861,21 +862,21 @@ class Route extends React.Component {
                 <ViewShot ref="viewShot" style={{ left: 20, width: ScreenWidth - 40 }} options={{ format: "jpg", quality: 0.9 }}>
                   <View style={{ backgroundColor: "#fff", flex: 1}}>
                     <Image source={UImage.share_banner} resizeMode="stretch" style={{ width: ScreenWidth - 40, height: (ScreenWidth - 40) * 0.3386 }} />
-                   <View style={{ backgroundColor: UColor.fontColor,flexDirection: "row",marginTop: 10,paddingHorizontal: 20,paddingVertical: 5, justifyContent: "flex-start",}}>
+                   <View style={{ backgroundColor: UColor.fontColor,flexDirection: "row",marginTop: 10,paddingHorizontal: 20,paddingVertical: 5, justifyContent: "flex-start", alignItems:'center', }}>
                       <Image source={UImage.share_time} style={{width: 25,height: 25}} />
-                      <Text style={{marginLeft: 5,fontSize: 15,color: '#808080'}}> {this.getTime(this.state.news.createdate)}</Text>
+                      <Text style={{marginLeft: 5,fontSize: ScreenUtil.setSpText(15),color: '#808080'}}> {this.getTime(this.state.news.createdate)}</Text>
                   </View>
-                  <View style={{ marginTop:10,paddingHorizontal: 20, paddingBottom: 5,marginBottom:20 }}>
-                    <Text style={{ color: '#000', fontSize: 24,}}>{this.state.news.title}</Text>
-                    <Text style={{ color: '#000', fontSize: 15, marginTop: 15 ,lineHeight:25}}>{this.state.news.content}......</Text>
+                  <View style={{marginTop: ScreenUtil.autoheight(10), paddingHorizontal: ScreenUtil.autoWidth(20), paddingBottom: ScreenUtil.autoheight(5), marginBottom: ScreenUtil.autoheight(20) }}>
+                    <Text style={{ color: '#2e2e2e', fontSize: ScreenUtil.setSpText(24),}} >{this.state.news.title}</Text>
+                    <Text style={{ color: '#666d8d', fontSize: ScreenUtil.setSpText(15), marginTop: ScreenUtil.autoheight(15) ,lineHeight: ScreenUtil.autoheight(25)}} numberOfLines={12} ellipsizeMode='tail'>{this.state.news.content}</Text>
                   </View>
                   <View style={{borderBottomWidth: 1,borderBottomColor: '#e5e5e5' ,justifyContent: 'center',}} >
                   </View>
                   <View style={{ backgroundColor: '#FFFFFF', width: '100%', paddingVertical: 5, flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center' }}>
                       <View style={{ width: ScreenWidth - 40 - (ScreenWidth - 40) * 0.319, justifyContent: 'center', alignSelf: 'center' }}>
-                        <Text style={{ color: '#85a7cd', fontSize: 16, textAlign: 'center', width: '100%', marginTop: 5 }}>ET钱包</Text>
-                        <Text style={{ color: '#85a7cd', fontSize: 16, textAlign: 'center', width: '100%', marginTop: 3 }}>专注于柚子生态</Text>
-                        <Text style={{ color: '#fff', fontSize: 13, textAlign: 'center', padding: 5, backgroundColor: '#47546e', margin: 15,}}>更多精彩 长按识别二维码</Text>
+                        <Text style={{ color: '#12b9ff', fontSize: ScreenUtil.setSpText(16), textAlign: 'center', width: '100%', marginTop: 5 }}>ET钱包</Text>
+                        <Text style={{ color: '#12b9ff', fontSize: ScreenUtil.setSpText(16), textAlign: 'center', width: '100%', marginTop: 3 }}>专注于柚子生态</Text>
+                        <Text style={{ color: '#fff', fontSize: ScreenUtil.setSpText(13), textAlign: 'center', padding: 5, backgroundColor: '#3baaff', margin: 15,}}>更多精彩 长按识别二维码</Text>
                       </View>
                       <View style={{ width: (ScreenWidth - 40) * 0.319, justifyContent: 'center', alignSelf: 'center' }}>
                         <QRCode size={(ScreenWidth - 40) * 0.319 - 20} value={Constants.rootaddr+redirect + (Constants.loginUser ? Constants.loginUser.uid : "nuid") + "/" + (Constants.token ? Constants.token.substr(0, 4) : "ntk") + "/" + this.state.news.id} />
