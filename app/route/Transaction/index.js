@@ -1083,14 +1083,14 @@ class Transaction extends BaseComponent {
                                 <View style={styles.liststrip}>
                                     <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
                                     <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.ram_qty : rowData.eos_qty.replace("EOS", "")}</Text>
-                                    <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
+                                    <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0?(rowData.price * 1).toFixed(4):''}</Text>
                                     <Text style={styles.selltime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                 </View>
                                 :
                                 <View style={styles.liststrip}>
                                     <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
                                     <Text style={styles.buytext} numberOfLines={1}>买 {rowData.eos_qty.replace("EOS", "")}</Text>
-                                    <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
+                                    <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0?(rowData.price * 1).toFixed(4):''}</Text>
                                     <Text style={styles.buytime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                 </View>
                                 }
@@ -1121,14 +1121,14 @@ class Transaction extends BaseComponent {
                                             <View style={styles.liststrip}>
                                                 <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
                                                 <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.ram_qty : rowData.eos_qty.replace("EOS", "")}</Text>
-                                                <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
+                                                <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0?(rowData.price * 1).toFixed(4):''}</Text>
                                                 <Text style={styles.selltime} numberOfLines={1} >{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                             </View>
                                             :
                                             <View style={styles.liststrip}>
                                                 <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
                                                 <Text style={styles.buytext} numberOfLines={1}>买 {rowData.eos_qty.replace("EOS", "")}</Text>
-                                                <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0?rowData.price:''}</Text>
+                                                <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0?(rowData.price * 1).toFixed(4):''}</Text>
                                                 <Text style={styles.buytime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                             </View>
                                             }

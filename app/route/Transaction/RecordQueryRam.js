@@ -228,7 +228,7 @@ class RecordQueryRam extends React.Component {
                 :
                 <Text style={styles.buytext}>买 {rowData.eos_qty}</Text>
                 }
-                <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : rowData.price}{(rowData.price == null || rowData.price == '0') ? '' :  ' EOS/KB'}</Text>
+                <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : (rowData.price * 1).toFixed(4)}{(rowData.price == null || rowData.price == '0') ? '' :  ' EOS/KB'}</Text>
               </View>
             </View>
           </Button>
