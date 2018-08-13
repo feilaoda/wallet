@@ -183,7 +183,7 @@ class addressManage extends BaseComponent {
                                 <View style={styles.inptout} >
                                     <TextInput onChangeText={(address) => this.setState({ address })} returnKeyType="next" maxLength = {12}
                                       selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}
-                                      placeholder="粘贴收款人地址" underlineColorAndroid="transparent"  value={this.state.address} />
+                                      placeholder="输入账户名称" underlineColorAndroid="transparent"  value={this.state.address} />
                                 </View>                               
                                                                                                         
                                 <Button onPress={() => this.confirm(this) }>
