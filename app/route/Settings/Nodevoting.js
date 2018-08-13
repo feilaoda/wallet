@@ -107,7 +107,7 @@ class Nodevoting extends BaseComponent {
         </View>
 
         EasyShowLD.dialogShow("请输入密码", view, "确认", "取消", () => {
-            if (this.state.password == "" || this.state.password.length < Constants.PWD_MIN_LENGTH) {
+            if (!this.state.password || this.state.password == "" || this.state.password.length < Constants.PWD_MIN_LENGTH) {
                 EasyToast.show('密码长度至少4位,请重输');
                 return;
             }
