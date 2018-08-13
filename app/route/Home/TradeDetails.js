@@ -147,7 +147,7 @@ class TradeDetails extends BaseComponent {
   render() {
     // const c = this.props.navigation.state.params.trade;
     return <View style={styles.container}>
-      <ViewShot ref="viewShot" style={{flex: 1}}> 
+      <ViewShot ref="viewShot" style={{flex: 1,backgroundColor:UColor.secdColor}}> 
         {this.state.trade.disptype == 0 && <View style={styles.header}>
             <View style={styles.headout}>
                 <Text style={styles.quantitytext}>{this.state.trade.type=='转出'?'-':'+'} </Text>
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   context: {
-    textAlign: 'justify',
+    textAlign: 'right',
     fontSize: ScreenUtil.setSpText(14),
     color: UColor.arrow,
   },
