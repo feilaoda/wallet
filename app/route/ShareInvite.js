@@ -2,17 +2,14 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { StyleSheet, Dimensions, Modal, Animated, View, Image, ScrollView, Text, Clipboard, ImageBackground, Linking, TextInput } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
-import NavigationUtil from '../utils/NavigationUtil';
+import ScreenUtil from '../utils/ScreenUtil'
+import UColor from '../utils/Colors'
 import UImage from '../utils/Img'
-import AnalyticsUtil from '../utils/AnalyticsUtil';
 import Button from '../components/Button'
 const maxHeight = Dimensions.get('window').height;
 const maxWidth = Dimensions.get('window').width;
 import { EasyToast } from '../components/Toast';
 import { EasyShowLD } from "../components/EasyShow"
-
-import QRCode from 'react-native-qrcode-svg';
 import Constants from '../utils/Constants'
 import ViewShot from "react-native-view-shot";
 var WeChat = require('react-native-wechat');
@@ -102,16 +99,16 @@ class ShareInvite extends React.Component {
   render() {
     return (
       <View style={styles.container}>   
-        <ScrollView> 
-          <ViewShot ref="viewShot"> 
-              <Image style={{width: maxWidth, height: maxWidth*1.775,}} source={UImage.sharebg} resizeMode="cover"/>  
-          </ViewShot>
-          <Button onPress={() => { this.invitation() }}>
-            <View style={{ height: 50, backgroundColor: '#65CAFF', justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ fontSize: 16, color: '#fff' }}>复制专属邀请链接</Text>
+          <ScrollView> 
+            <ViewShot ref="viewShot"> 
+                <Image style={{width: maxWidth, height: maxWidth*1.775,}} source={UImage.sharebg} resizeMode="cover"/>  
+            </ViewShot>
+          </ScrollView>
+          <Button onPress={() => { this.invitation() }} >
+            <View style={styles.btnout}>
+              <Text style={styles.btntext}>复制专属邀请链接</Text>
             </View>
           </Button>
-        </ScrollView>
       </View>
     );
   }
@@ -121,8 +118,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fff',
-  }
+    backgroundColor: UColor.secdColor,
+  },
+  btnout: {
+    height: ScreenUtil.autoheight(50), 
+    backgroundColor: UColor.tintColor, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  btntext: { 
+    fontSize: ScreenUtil.setSpText(16), 
+    color: UColor.fontColor, 
+  },
 });
 
 export default ShareInvite;
