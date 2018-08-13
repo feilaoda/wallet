@@ -1771,7 +1771,11 @@ function combineRamKLine(data) {
         tooltip: {
             trigger: 'none',
             axisPointer: {
-                type: 'cross'
+                type: 'cross',
+                crossStyle: {
+                    color: "#fff",
+                    width: 0.5,
+                },
             },
             backgroundColor: 'rgba(245, 245, 245, 0.8)',
             borderWidth: 1,
@@ -1784,7 +1788,7 @@ function combineRamKLine(data) {
                 var obj = {top: 10};
                 obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
                 return obj;
-            }
+            },
             // extraCssText: 'width: 170px'
         },
         axisPointer: {
