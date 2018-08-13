@@ -97,6 +97,10 @@ class Nodevoting extends BaseComponent {
             }
         });
 
+        if(selectArr && selectArr.length == 0){
+            EasyToast.show('请先选择投票节点!');
+            return;
+        }
         selectArr.sort();
         const view =
         <View style={styles.passoutsource}>
