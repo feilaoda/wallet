@@ -15,7 +15,7 @@ import { EasyShowLD } from '../../components/EasyShow'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 import Assets from '../../models/Assets';
-
+var dismissKeyboard = require('dismissKeyboard');
 @connect(({addressBook}) => ({...addressBook}))
 class addressManage extends BaseComponent {
     static navigationOptions = {
@@ -111,6 +111,10 @@ class addressManage extends BaseComponent {
         console.log("selectAddress:%s",selectAccount);
     }
 
+    dismissKeyboardClick() {
+        dismissKeyboard();
+    }
+
     renderRow = (rowData, sectionID, rowID) => { // cell样式
 
         let map = this.state.selectMap;
@@ -167,33 +171,33 @@ class addressManage extends BaseComponent {
                     </TouchableOpacity>
                 </View> : null
                 }
-                 <View style={styles.pupuo}>  
+                <View style={styles.pupuo}>  
                     <Modal  animationType='slide'  transparent={true}  visible={this.state.show}  onShow={() => {}}  onRequestClose={() => {}} >  
-                        <View style={styles.modalStyle}>                           
-                            <View style={styles.subView} >  
-                                <Button style={styles.buttonView} onPress={this._setModalVisible.bind(this)}>  
-                                    <Text style={styles.buttoncols}>×</Text>                                          
-                                </Button>  
-                                <Text style={styles.titleText}>添加地址</Text> 
-                                <View style={styles.inptout} >
-                                    <TextInput onChangeText={(labelName) => this.setState({ labelName })} returnKeyType="next" maxLength = {20}
-                                      selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}  
-                                      placeholder="输入标签名称" underlineColorAndroid="transparent" value={this.state.labelName} />
-                                </View>    
-                                <View style={styles.inptout} >
-                                    <TextInput onChangeText={(address) => this.setState({ address })} returnKeyType="next" maxLength = {12}
-                                      selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}
-                                      placeholder="输入账户名称" underlineColorAndroid="transparent"  value={this.state.address} />
-                                </View>                               
-                                                                                                        
-                                <Button onPress={() => this.confirm(this) }>
-                                    <View style={styles.conout}>
-                                        <Text style={styles.context}>确认</Text>
-                                    </View>
-                                </Button>
-                            </View>  
-                        </View>  
-                    </Modal>  
+                        <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)} style={styles.modalStyle}>   
+                                <View style={styles.subView} >  
+                                    <Button style={styles.buttonView} onPress={this._setModalVisible.bind(this)}>  
+                                        <Text style={styles.buttoncols}>×</Text>                                          
+                                    </Button>  
+                                    <Text style={styles.titleText}>添加地址</Text> 
+                                    <View style={styles.inptout} >
+                                        <TextInput onChangeText={(labelName) => this.setState({ labelName })} returnKeyType="next" maxLength = {20}
+                                        selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}  
+                                        placeholder="输入标签名称" underlineColorAndroid="transparent" value={this.state.labelName} />
+                                    </View>    
+                                    <View style={styles.inptout} >
+                                        <TextInput onChangeText={(address) => this.setState({ address })} returnKeyType="next" maxLength = {12}
+                                        selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}
+                                        placeholder="输入账户名称" underlineColorAndroid="transparent"  value={this.state.address} />
+                                    </View>                               
+                                                                                                            
+                                    <Button onPress={() => this.confirm(this) }>
+                                        <View style={styles.conout}>
+                                            <Text style={styles.context}>确认</Text>
+                                        </View>
+                                    </Button>
+                                </View>  
+                            </TouchableOpacity>
+                        </Modal>  
                 </View>    
             </View>
         );
