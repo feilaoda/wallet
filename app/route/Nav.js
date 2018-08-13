@@ -73,7 +73,7 @@ import Button from '../components/Button'
 import ViewShot from "react-native-view-shot";
 import QRCode from 'react-native-qrcode-svg';
 import Constants from '../utils/Constants'
-import RecordQuery from './Transaction/RecordQuery'
+import RecordQueryRam from './Transaction/RecordQueryRam'
 import Warning from './Transaction/Warning'
 
 
@@ -297,8 +297,8 @@ const Nav = StackNavigator(
     TurnOut: {
       screen: TurnOut
     },
-    RecordQuery: {
-      screen: RecordQuery
+    RecordQueryRam: {
+      screen: RecordQueryRam
     },
     Warning: {
       screen: Warning

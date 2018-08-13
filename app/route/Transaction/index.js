@@ -845,11 +845,11 @@ class Transaction extends BaseComponent {
         }else{
             this.setState({ business: false});
             const { navigate } = this.props.navigation;
-            navigate('RecordQuery', {record:this.props.defaultWallet.account});
+            navigate('RecordQueryRam', {record:this.props.defaultWallet.account});
         }
       }else{
         const { navigate } = this.props.navigation;
-        navigate('RecordQuery', {record:payer});
+        navigate('RecordQueryRam', {record:payer});
       }
   }
 
