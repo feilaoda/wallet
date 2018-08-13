@@ -1828,11 +1828,12 @@ function combineRamKLine(data) {
         },
         legend: {
             data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
-            left: '20%',
+            // left: '20%',
             textStyle:{
                 color: "#7382a1",
-                fontSize: 6,
-            }
+                fontSize: 10,
+            },
+            itemHeight: 12,
         },
         grid: [
             {
