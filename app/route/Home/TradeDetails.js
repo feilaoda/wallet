@@ -9,6 +9,7 @@ import Item from '../../components/Item'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import ViewShot from "react-native-view-shot";
+import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from '../../components/EasyShow'
@@ -146,10 +147,7 @@ class TradeDetails extends BaseComponent {
   render() {
     // const c = this.props.navigation.state.params.trade;
     return <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-      <ViewShot ref="viewShot"> 
-     
-      <View style={{flex: 1}}>
+      <ViewShot ref="viewShot" style={{flex: 1}}> 
         {this.state.trade.disptype == 0 && <View style={styles.header}>
             <View style={styles.headout}>
                 <Text style={styles.quantitytext}>{this.state.trade.type=='转出'?'-':'+'} </Text>
@@ -228,9 +226,7 @@ class TradeDetails extends BaseComponent {
           <Image source={UImage.bottom_log} style={{width:50,height:50}}/>
           <Text style={{ fontSize: 14,color: UColor.arrow,}}>EosToken 专注柚子生态</Text>
         </View>
-        </View>
-         </ViewShot>
-      </ScrollView>
+      </ViewShot>
     </View>
   }
 }
@@ -260,13 +256,13 @@ const styles = StyleSheet.create({
     color: UColor.fontColor
   },
   headtext: {
-    fontSize: 15,
+    fontSize: ScreenUtil.setSpText(15),
     color: UColor.arrow,
     paddingTop: 10,
   },
   description: {
     height: 35,
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
     color: UColor.tintColor,
   },
   conout: {
@@ -281,7 +277,7 @@ const styles = StyleSheet.create({
   },
   context: {
     textAlign: 'justify',
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
     color: UColor.arrow,
   },
 
@@ -293,17 +289,17 @@ const styles = StyleSheet.create({
   blocktext: {
     color: UColor.arrow, 
     flex: 1,
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
   },
   showytext: {
     color: UColor.showy, 
     flex: 1,
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
   },
   tintext: {
     color: UColor.tintColor, 
     flex: 1,
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
   },
   codeout: {
     flex:1,
