@@ -1833,12 +1833,12 @@ function combineRamKLine(data) {
         grid: [
             {
                 top: '8%',
-                left: '12%',
+                left: '13%',
                 right: '4%',
                 height: '60%'
             },
             {
-                left: '12%',
+                left: '13%',
                 right: '4%',
                 top: '70%',
                 height: '30%',
@@ -1918,6 +1918,12 @@ function combineRamKLine(data) {
                     show: true,
                     color: "#7382a1",
                     fontSize: 2,
+                    formatter: function(value, index) {
+                        if(value == null || value == ''){
+                            return '0.0000';
+                        }
+                        return value.toFixed(4);
+                    },
                 },
                 axisLine: {
                     show: true,
