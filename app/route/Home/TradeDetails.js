@@ -175,26 +175,26 @@ class TradeDetails extends BaseComponent {
             <Text style={styles.description}>{this.state.trade.type == 'buyram'?'(买)':'(卖)'}</Text>
           </View>
         }
-        <View style={{flexDirection: "row", borderBottomColor: UColor.mainColor, borderBottomWidth: 0.5,paddingHorizontal: 10,paddingVertical: 20,}}>
+        <View style={{flexDirection: "row", borderBottomColor: UColor.mainColor, borderBottomWidth: 0.5,paddingHorizontal: ScreenUtil.autoWidth(10),paddingVertical: ScreenUtil.autoheight(20),}}>
           <View style={styles.conout}>
             <View style={styles.conouttext}>
-              <Text style={styles.context}>发  送  方：</Text> 
+              <Text style={styles.context}>发  送  方: </Text> 
               <Text style={styles.tintext} onPress={this.prot.bind(this, 'from')}>{this.state.trade.from}</Text>
             </View>
             <View style={styles.conouttext}>
-              <Text style={styles.context}>接  受  方：</Text>
+              <Text style={styles.context}>接  受  方: </Text>
               <Text style={styles.tintext} onPress={this.prot.bind(this, 'to')}>{this.state.trade.to}</Text>
             </View>
             <View style={styles.conouttext}> 
-              <Text style={styles.context}>区块高度：</Text>
+              <Text style={styles.context}>区块高度: </Text>
               {(this.state.trade.blockNum == null || this.state.trade.blockNum == "") ? 
               <Text style={styles.showytext}>未确认</Text>:
               <Text style={styles.tintext} onPress={this.prot.bind(this, 'blockNum')}>{this.state.trade.blockNum}</Text>
               }
             </View>
             <View style={styles.conouttext}>
-              <Text style={styles.context}> 备     注 ：</Text>
-              <Text style={styles.blocktext} >{this.state.trade.memo}</Text>
+              <Text style={styles.context}> 备     注  : </Text>
+              <Text style={styles.blocktext} numberOfLines={8} ellipsizeMode='tail'>{this.state.trade.memo}</Text>
             </View>
           </View>
           <View style={styles.codeout}>
@@ -203,28 +203,28 @@ class TradeDetails extends BaseComponent {
             </View>
             <Button onPress={this.copy.bind(this,this.state.trade)}>
                <View style={{backgroundColor: UColor.mainColor,borderRadius: 25,}}>
-                 <Text style={{ fontSize: 12,color: UColor.arrow,paddingHorizontal: 10,paddingVertical: 2,}}>复制URL</Text>
+                 <Text style={{ fontSize: ScreenUtil.setSpText(12),color: UColor.arrow,paddingHorizontal: ScreenUtil.autoWidth(10),paddingVertical: ScreenUtil.autoheight(2),}}>复制URL</Text>
                </View>
             </Button>
           </View>
         </View>
         <View style={styles.tradehint}>
           <View style={styles.conouttext}>
-            <Text style={styles.context}>交  易  号：</Text>
+            <Text style={styles.contwotext}>交  易  号: </Text>
             <Text style={styles.tintext} onPress={this.prot.bind(this, 'transactionId')}>{this.state.trade.transactionId.substring(0, 10) +"..."+ this.state.trade.transactionId.substr(this.state.trade.transactionId.length-10) }</Text>
           </View>
           <View style={styles.conouttext}>
-            <Text style={styles.context}> 提     示 ：</Text>
+            <Text style={styles.contwotext}> 提     示  : </Text>
             <Text style={styles.blocktext}>扫码可获取区块交易状态</Text>
           </View>
           <View style={styles.conouttext}>
-            <Text style={styles.context}>交易时间：</Text>
+            <Text style={styles.contwotext}>交易时间: </Text>
             <Text style={styles.blocktext}>{moment(this.state.trade.blockTime).add(8,'hours').format('YYYY/MM/DD HH:mm')}</Text>
           </View>
         </View>
-        <View style={{flex: 1,alignItems: 'center',justifyContent: 'flex-end',paddingBottom: 20,}}>
+        <View style={{flex: 1,alignItems: 'center',justifyContent: 'flex-end',paddingBottom: ScreenUtil.autoheight(20),}}>
           <Image source={UImage.bottom_log} style={{width:50,height:50}}/>
-          <Text style={{ fontSize: 14,color: UColor.arrow,}}>EosToken 专注柚子生态</Text>
+          <Text style={{ fontSize: ScreenUtil.setSpText(14),color: UColor.arrow,}}>EosToken 专注柚子生态</Text>
         </View>
       </ViewShot>
     </View>
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   },
  
   header: {
-    height: 100,
+    height: ScreenUtil.autoheight(100),
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomColor: UColor.mainColor,
@@ -252,16 +252,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   quantitytext: {
-    fontSize: 30,
+    fontSize: ScreenUtil.setSpText(30),
     color: UColor.fontColor
   },
   headtext: {
     fontSize: ScreenUtil.setSpText(15),
     color: UColor.arrow,
-    paddingTop: 10,
+    paddingTop: ScreenUtil.autoheight(10),
   },
   description: {
-    height: 35,
+    height: ScreenUtil.autoheight(35),
     fontSize: ScreenUtil.setSpText(14),
     color: UColor.tintColor,
   },
@@ -273,9 +273,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 10,
+    paddingBottom: ScreenUtil.autoheight(10),
   },
   context: {
+    flex: 2,
+    paddingRight: ScreenUtil.autoWidth(5),
+    textAlign: 'right',
+    fontSize: ScreenUtil.setSpText(14),
+    color: UColor.arrow,
+  },
+  contwotext: {
+    flex: 1,
+    paddingRight: ScreenUtil.autoWidth(5),
     textAlign: 'right',
     fontSize: ScreenUtil.setSpText(14),
     color: UColor.arrow,
@@ -283,12 +292,13 @@ const styles = StyleSheet.create({
 
   tradehint: {
     flex: 1,
-    paddingHorizontal: 10,
-    marginTop: 40,
+    paddingHorizontal: ScreenUtil.autoWidth(10),
+    marginTop: ScreenUtil.autoheight(40),
   },
   blocktext: {
     color: UColor.arrow, 
-    flex: 1,
+    flex: 4,
+    paddingLeft: ScreenUtil.autoWidth(5),
     fontSize: ScreenUtil.setSpText(14),
   },
   showytext: {
@@ -298,22 +308,21 @@ const styles = StyleSheet.create({
   },
   tintext: {
     color: UColor.tintColor, 
-    flex: 1,
+    flex: 4,
+    paddingLeft: ScreenUtil.autoWidth(5),
     fontSize: ScreenUtil.setSpText(14),
   },
   codeout: {
     flex:1,
-    // marginBottom: 20,
-    // marginTop: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center',
     flexDirection: "column",
   },
   qrcode: {
     backgroundColor: UColor.fontColor,
-    padding: 5,
-    marginBottom: 10,
+    paddingHorizontal:ScreenUtil.autoWidth(5),
+    paddingVertical: ScreenUtil.autoWidth(5),
+    marginBottom: ScreenUtil.autoheight(10),
   },
 });
 
