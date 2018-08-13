@@ -70,6 +70,21 @@ class RecordQueryRam extends React.Component {
     }
   }
 
+  //检测查询时，是否同一个账户重复查询
+  checkIsRepeatQueryByAccount(accountname)
+  {
+    try {
+      if(this.state.newramTradeLog && this.state.newramTradeLog.length > 0){
+        if(this.state.newramTradeLog[0].payer == accountname){
+           return true;  //重复查询
+        }
+      }
+    } catch (error) {
+      return false;
+    }
+    return false;
+  }
+
   // 根据账号查找交易记录
   query = (labelname) =>{
    
@@ -81,13 +96,34 @@ class RecordQueryRam extends React.Component {
         return;
       }
       this.setState({logRefreshing: true});
-      this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: labelname.toLowerCase(), last_id: this.state.logId}, callback: (resp) => {
+
+      var repeatquery = this.checkIsRepeatQueryByAccount(labelname);
+      var last_id;
+      if(repeatquery == false){
+        //新的账户名，清除原记录
+        this.setState({newramTradeLog: [],logId:-1});
+        last_id = -1;
+      }else{
+        last_id = this.state.logId;
+      }
+
+      this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: labelname.toLowerCase(), last_id: last_id}, callback: (resp) => {
         try {
-            if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+            if(resp.code != '0'){
               this.setState({
                 newramTradeLog: [],
                 show: true
               })
+            }else if((resp.code == '0') && (this.props.ramTradeLog.length == 0)){
+                 if(repeatquery){
+                   EasyToast.show("没有新交易记录");
+                 }else{
+                   //没有交易
+                  this.setState({
+                    newramTradeLog: [],
+                    show: true
+                  })
+                 }
             }else{
               this.setState({
                   newramTradeLog: resp.data,
@@ -117,6 +153,7 @@ class RecordQueryRam extends React.Component {
   }
 
   onRefresh(){
+    //能进来刷新，列表肯定有交易记录
     if(this.state.logRefreshing){
       return;
     }
@@ -125,45 +162,16 @@ class RecordQueryRam extends React.Component {
     if (this.state.labelname == ""||this.state.labelname == undefined||this.state.labelname==null) {
       accountName = this.props.navigation.state.params.record;
     }
-    this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: accountName.toLowerCase(), last_id: "-1"}, callback: (resp) => {
-      try {
-          if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
-            this.setState({
-              newramTradeLog: [],
-              show: true
-            })
-          }else{
-            this.setState({
-                newramTradeLog: resp.data,
-                show: false,
-            })
-          }
-        } catch (error) {
-
-        }
-        this.processLogId();
-        this.setState({logRefreshing: false});
-
-    }}); 
-  }
-
-  onEndReached(){
-    if(this.state.logRefreshing || this.state.logId == "-1"){
-      return;
-    }
-    this.setState({logRefreshing: true});
-    var accountName = this.state.labelname;
-    if (this.state.labelname == ""||this.state.labelname == undefined||this.state.labelname==null) {
-      accountName = this.props.navigation.state.params.record;
-    }
-
+    
     this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: accountName.toLowerCase(), last_id: this.state.logId}, callback: (resp) => {
       try {
-          if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+          if(resp.code != '0'){
             this.setState({
               newramTradeLog: [],
               show: true
             })
+          }else if((resp.code == '0') && (this.props.ramTradeLog.length == 0)){
+            EasyToast.show("没有新交易记录");
           }else{
             this.setState({
                 newramTradeLog: resp.data,
@@ -204,7 +212,6 @@ class RecordQueryRam extends React.Component {
       </View>   
       {this.state.show && <View style={styles.nothave}><Text style={styles.copytext}>还没有交易记录哟~</Text></View>}       
       <ListView style={styles.btn} renderRow={this.renderRow} enableEmptySections={true} 
-        // onEndReached={() => this.onEndReached()}
         refreshControl={
           <RefreshControl
             refreshing={this.state.logRefreshing}
