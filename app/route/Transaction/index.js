@@ -1052,7 +1052,7 @@ class Transaction extends BaseComponent {
             </View> 
             }  
             {this.state.isKLine ? 
-                <View style={styles.echartsout} onStartShouldSetResponderCapture={this.onMoveLineView.bind(this)} onResponderRelease={this.onMoveLineViewEnd.bind(this)}>
+                <View style={styles.echartsout} onStartShouldSetResponderCapture={this.onMoveLineView.bind(this)} onResponderRelease={this.onMoveLineViewEnd.bind(this)} onResponderEnd={this.onMoveLineViewEnd.bind(this)}>
                     {<Echarts option={this.getDataKLine()} width={ScreenWidth} height={300} />}
                 </View>
             : 
