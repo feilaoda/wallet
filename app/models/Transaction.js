@@ -399,7 +399,7 @@ function combineET(data) {
         color: ['#556E95','#6CDAFF'],
         grid: {
             top: '15%',
-            left: '0%',
+            left: '5%',
             right: '5%',
             bottom: '3%',
             containLabel: true

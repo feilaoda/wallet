@@ -832,7 +832,7 @@ class Transaction extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 20 : 30, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
+    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 30 : 50, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
         <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
             <Text style={{fontSize: 12, color: '#fff'}}>交易面板</Text>
         </View>
@@ -1793,8 +1793,8 @@ const styles = StyleSheet.create({
     },
     busines: {
         width: ScreenWidth , 
-        height: Platform.OS == 'ios' ? 310:295,
-        paddingBottom:Platform.OS == 'ios' ? 49:49.5,
+        height: Platform.OS == 'ios' ? 260:245.5,
+        // paddingBottom:Platform.OS == 'ios' ? 49:49.5,
     },
     businesout: {
         flex: 1,
@@ -1929,7 +1929,11 @@ function combineETKLine(data) {
         tooltip: {
             trigger: 'none',
             axisPointer: {
-                type: 'cross'
+                type: 'cross',
+                crossStyle: {
+                    color: "#fff",
+                    width: 0.5,
+                },
             },
             backgroundColor: 'rgba(245, 245, 245, 0.8)',
             borderWidth: 1,
@@ -1942,7 +1946,7 @@ function combineETKLine(data) {
                 var obj = {top: 10};
                 obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
                 return obj;
-            }
+            },
             // extraCssText: 'width: 170px'
         },
         axisPointer: {
@@ -1980,23 +1984,26 @@ function combineETKLine(data) {
                 color: upColor
             }]
         },
+        color:['#ec0000','#6e6e46','#835098','#4b9373','#4b7793'],
         legend: {
             data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
-            left: '20%',
+            // left: '20%',
             textStyle:{
                 color: "#7382a1",
-                fontSize: 6,
-            }
+                fontSize: 10,
+            },
+            // inactiveColor:upColor,
+            itemHeight: 12,
         },
         grid: [
             {
                 top: '8%',
-                left: '15%',
+                left: '13%',
                 right: '4%',
                 height: '60%'
             },
             {
-                left: '15%',
+                left: '13%',
                 right: '4%',
                 top: '70%',
                 height: '30%',
@@ -2012,7 +2019,7 @@ function combineETKLine(data) {
                 axisLabel: {
                     show: true,
                     color: "#7382a1",
-                    fontSize: 2,
+                    fontSize: 8,
                 },
                 axisLine: {
                     show: true,
