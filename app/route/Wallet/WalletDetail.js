@@ -134,7 +134,11 @@ class WalletDetail extends BaseComponent {
         EasyToast.show("该账号还没激活，激活之后才能查看详细信息")
       }
     }else if(key == 'AdminManage') {
-      navigate('AdminManage', { ownerPublicKey: this.props.navigation.state.params.data.ownerPublic, activePublicKey:this.props.navigation.state.params.data.activePublic});
+        if(this.props.navigation.state.params.data.isactived){     
+        navigate('AdminManage', { ownerPublicKey: this.props.navigation.state.params.data.ownerPublic, activePublicKey:this.props.navigation.state.params.data.activePublic});
+      }else{
+        EasyToast.show("该账号还没激活，激活之后才能查看详细信息")
+      }
     }
     else{
 
