@@ -604,15 +604,15 @@ class Transaction extends BaseComponent {
                         account: "etbexchanger",
                         name: "buytoken", 
                         authorization: [{
-                        actor: 'eostokenapp1',
+                        actor: this.props.defaultWallet.account,
                         permission: 'active'
                         }], 
                         data: {
-                            payer: "eostokenapp1",
+                            payer: this.props.defaultWallet.account,
                             eos_quant: formatEosQua(this.state.buyETAmount + " EOS"),
                             token_contract: "issuemytoken",
                             token_symbol: "4,TEST",
-                            fee_account: "eostokenapp1",
+                            fee_account: this.props.defaultWallet.account,
                             fee_rate: "1", 
                         }
                     }]
@@ -692,14 +692,14 @@ class Transaction extends BaseComponent {
                     account: "etbexchanger",
                     name: "selltoken", 
                     authorization: [{
-                    actor: 'eostokenapp1',
+                    actor: this.props.defaultWallet.account,
                     permission: 'active'
                     }], 
                     data: {
-                        receiver: "eostokenapp1",
+                        receiver: this.props.defaultWallet.account,
                         token_contract: "issuemytoken",
                         quant: formatEosQua(this.state.sellET + " TEST"),
-                        fee_account: "eostokenapp1",
+                        fee_account: this.props.defaultWallet.account,
                         fee_rate: "1", 
                     }
                 }]
