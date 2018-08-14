@@ -698,7 +698,7 @@ class Transaction extends BaseComponent {
                     data: {
                         receiver: "eostokenapp1",
                         token_contract: "issuemytoken",
-                        quant: formatEosQua("100.0000 TEST"),
+                        quant: formatEosQua(this.state.sellET + " TEST"),
                         fee_account: "eostokenapp1",
                         fee_rate: "1", 
                     }
