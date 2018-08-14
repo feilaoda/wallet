@@ -69,6 +69,7 @@ class Transaction extends BaseComponent {
       newramTradeLog: [],
       logId: "-1",
 
+      password:"",   //买卖交易时的密码
       showMore:false,     
       showMoreTitle:"更多",
       isKLine:true,  //是否K线
@@ -543,7 +544,7 @@ class Transaction extends BaseComponent {
     this. dismissKeyboardClick();
         const view =
         <View style={styles.passoutsource}>
-            <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
+            <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password : password })} returnKeyType="go" 
                 selectionColor={UColor.tintColor} secureTextEntry={true} keyboardType="ascii-capable" style={styles.inptpass} maxLength={Constants.PWD_MAX_LENGTH}
                 placeholderTextColor={UColor.arrow} placeholder="请输入密码" underlineColorAndroid="transparent" />
             <Text style={styles.inptpasstext}></Text>  
