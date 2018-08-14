@@ -60,7 +60,51 @@ class addressManage extends BaseComponent {
           show:!isShow,  
         });  
       }  
-   
+
+      verifyAccount(obj){
+        var ret = true;
+        var charmap = '.12345abcdefghijklmnopqrstuvwxyz';
+        if(obj == "" || obj.length > 12){
+            return false;
+        }
+        for(var i = 0 ; i < obj.length;i++){
+            var tmp = obj.charAt(i);
+            for(var j = 0;j < charmap.length; j++){
+                if(tmp == charmap.charAt(j)){
+                    break;
+                }
+            }
+
+            if(j >= charmap.length){
+                //非法字符
+                // obj = obj.replace(tmp, ""); 
+                ret = false;
+                break;
+            }
+        }
+        return ret;
+      }
+      chkAccount(obj) {
+        var charmap = '.12345abcdefghijklmnopqrstuvwxyz';
+        for(var i = 0 ; i < obj.length;i++){
+            var tmp = obj.charAt(i);
+            for(var j = 0;j < charmap.length; j++){
+                if(tmp == charmap.charAt(j)){
+                    break;
+                }
+            }
+            if(j >= charmap.length){
+                //非法字符
+                obj = obj.replace(tmp, ""); 
+                EasyToast.show('请输入正确的账号');
+            }
+        }
+        if (obj == this.props.defaultWallet.account) {
+            EasyToast.show('收款账户和转出账户不能相同，请重输');
+            obj = "";
+        }
+        return obj;
+    }
 
     componentDidMount() {
         // this.setState({
@@ -68,6 +112,17 @@ class addressManage extends BaseComponent {
         // })
         const { dispatch } = this.props;
         this.props.dispatch({ type: 'addressBook/addressInfo'});
+
+        DeviceEventEmitter.addListener('scan_result', (data) => {
+            if(data && data.toaccount){
+                if(this.verifyAccount(data.toaccount)){
+                    this.setState({address:data.toaccount,show:true});
+                }else{
+                    EasyToast.show('请输入正确的账号');
+                }
+            }
+        });
+
     }
 
     componentWillUnmount(){
@@ -138,6 +193,15 @@ class addressManage extends BaseComponent {
         )
     }
 
+    scan() {
+        if (this.state.labelName == "") {
+            EasyToast.show('请输入标签名称');
+            return;
+        }
+        this.setState({show:false});  
+        const { navigate } = this.props.navigation;
+        navigate('BarCode', {isTurnOut:true,coinType:this.state.coinType});
+    }
     render() {
         let temp = [...this.state.selectMap.values()];
         let isChecked = temp.length === this.state.dataSource._cachedRowCount;
@@ -184,12 +248,19 @@ class addressManage extends BaseComponent {
                                         selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}  
                                         placeholder="输入标签名称" underlineColorAndroid="transparent" value={this.state.labelName} />
                                     </View>    
-                                    <View style={styles.inptout} >
-                                        <TextInput onChangeText={(address) => this.setState({ address })} returnKeyType="next" maxLength = {12}
-                                        selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}
-                                        placeholder="输入账户名称" underlineColorAndroid="transparent"  value={this.state.address} />
-                                    </View>                               
-                                                                                                            
+                                    <View style={styles.inptoutsource}>
+                                        <View style={styles.accountoue} >
+                                            <TextInput onChangeText={(address) => this.setState({ address: this.chkAccount(address) })} returnKeyType="next" maxLength = {12}
+                                            selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}
+                                            placeholder="输入账户名称" underlineColorAndroid="transparent"  value={this.state.address}/>
+                                        </View>    
+                                        <View style={styles.scanning}>
+                                            <Button onPress={() => this.scan()}>                                  
+                                                <Image source={UImage.account_scan} style={styles.scanningimg} />                                 
+                                            </Button>
+                                        </View>                           
+                                    </View>  
+
                                     <Button onPress={() => this.confirm(this) }>
                                         <View style={styles.conout}>
                                             <Text style={styles.context}>确认</Text>
@@ -443,7 +514,36 @@ const styles = StyleSheet.create({
         fontSize: 16, 
         color: UColor.fontColor
       },
-    
+
+      inptoutsource: {
+        width:width-40,
+        height: 40,
+        paddingHorizontal: 10,
+        backgroundColor: '#F3F3F3',
+        marginBottom: 10,
+        marginHorizontal: 10,
+        // justifyContent: 'center',
+
+        flexDirection: 'row',
+        // marginBottom: 10,
+        // paddingLeft: 5,
+    },
+    accountoue: {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: "column",
+    },
+
+    scanning: {
+        width: 40,
+        flexDirection: "row",
+        alignSelf: 'center',
+        justifyContent: "center",
+    },
+    scanningimg: {
+        width:30,
+        height:30,
+    },
 
   
 })
