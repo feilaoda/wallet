@@ -601,22 +601,80 @@ class Transaction extends BaseComponent {
                 plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
                 EasyShowLD.loadingShow();
                 Eos.transaction({
-                    actions: [{
-                        account: "etbexchanger",
-                        name: "buytoken", 
-                        authorization: [{
-                        actor: this.props.defaultWallet.account,
-                        permission: 'active'
-                        }], 
-                        data: {
-                            payer: this.props.defaultWallet.account,
-                            eos_quant: formatEosQua(this.state.buyETAmount + " EOS"),
-                            token_contract: "issuemytoken",
-                            token_symbol: "4,TEST",
-                            fee_account: this.props.defaultWallet.account,
-                            fee_rate: "1", 
-                        }
-                    }]
+                    actions: [
+                        {
+                            account: "eosio",
+                            name: "updateauth", 
+                            authorization: [{
+                            actor: this.props.defaultWallet.account,
+                            permission: 'active'
+                            }], 
+                            data: {
+                                account: this.props.defaultWallet.account,
+                                permission: 'active',
+                                parent: "owner",
+                                auth: {
+                                    threshold: 1,
+                                    keys: [
+                                        {
+                                            key: this.props.defaultWallet.activePublic,
+                                            weight: 1,
+                                        }
+                                    ],
+                                    accounts: [
+                                        {
+                                            permission: {
+                                                actor: "etbexchanger",
+                                                permission: "eosio.code",
+                                            },
+                                            weight: 1,
+                                        }
+                                    ],
+                                },
+                            }
+                        },
+                        {
+                            account: "etbexchanger",
+                            name: "buytoken", 
+                            authorization: [{
+                            actor: this.props.defaultWallet.account,
+                            permission: 'active'
+                            }], 
+                            data: {
+                                payer: this.props.defaultWallet.account,
+                                eos_quant: formatEosQua(this.state.buyETAmount + " EOS"),
+                                token_contract: "issuemytoken",
+                                token_symbol: "4,TEST",
+                                fee_account: this.props.defaultWallet.account,
+                                fee_rate: "1", 
+                            }
+                        },
+                        {
+                            account: "eosio",
+                            name: "updateauth", 
+                            authorization: [{
+                            actor: this.props.defaultWallet.account,
+                            permission: 'active'
+                            }], 
+                            data: {
+                                account: this.props.defaultWallet.account,
+                                permission: 'active',
+                                parent: "owner",
+                                auth: {
+                                    threshold: 1,
+                                    keys: [
+                                        {
+                                            key: this.props.defaultWallet.activePublic,
+                                            weight: 1,
+                                        }
+                                    ],
+                                    accounts: [
+
+                                    ],
+                                },
+                            }
+                        },
+                    ]
                 }, plaintext_privateKey, (r) => {
                     EasyShowLD.loadingClose();
                     if(r.isSuccess){
@@ -689,21 +747,79 @@ class Transaction extends BaseComponent {
             EasyShowLD.loadingShow();
 
             Eos.transaction({
-                actions: [{
-                    account: "etbexchanger",
-                    name: "selltoken", 
-                    authorization: [{
-                    actor: this.props.defaultWallet.account,
-                    permission: 'active'
-                    }], 
-                    data: {
-                        receiver: this.props.defaultWallet.account,
-                        token_contract: "issuemytoken",
-                        quant: formatEosQua(this.state.sellET + " TEST"),
-                        fee_account: this.props.defaultWallet.account,
-                        fee_rate: "1", 
-                    }
-                }]
+                actions: [
+                    {
+                        account: "eosio",
+                        name: "updateauth", 
+                        authorization: [{
+                        actor: this.props.defaultWallet.account,
+                        permission: 'active'
+                        }], 
+                        data: {
+                            account: this.props.defaultWallet.account,
+                            permission: 'active',
+                            parent: "owner",
+                            auth: {
+                                threshold: 1,
+                                keys: [
+                                    {
+                                        key: this.props.defaultWallet.activePublic,
+                                        weight: 1,
+                                    }
+                                ],
+                                accounts: [
+                                    {
+                                        permission: {
+                                            actor: "etbexchanger",
+                                            permission: "eosio.code",
+                                        },
+                                        weight: 1,
+                                    }
+                                ],
+                            },
+                        }
+                    },
+                    {
+                        account: "etbexchanger",
+                        name: "selltoken", 
+                        authorization: [{
+                        actor: this.props.defaultWallet.account,
+                        permission: 'active'
+                        }], 
+                        data: {
+                            receiver: this.props.defaultWallet.account,
+                            token_contract: "issuemytoken",
+                            quant: formatEosQua(this.state.sellET + " TEST"),
+                            fee_account: this.props.defaultWallet.account,
+                            fee_rate: "1", 
+                        }
+                    },
+                    {
+                        account: "eosio",
+                        name: "updateauth", 
+                        authorization: [{
+                        actor: this.props.defaultWallet.account,
+                        permission: 'active'
+                        }], 
+                        data: {
+                            account: this.props.defaultWallet.account,
+                            permission: 'active',
+                            parent: "owner",
+                            auth: {
+                                threshold: 1,
+                                keys: [
+                                    {
+                                        key: this.props.defaultWallet.activePublic,
+                                        weight: 1,
+                                    }
+                                ],
+                                accounts: [
+
+                                ],
+                            },
+                        }
+                    },
+                ]
             }, plaintext_privateKey, (r) => {
                 EasyShowLD.loadingClose();
                 if(r.isSuccess){
