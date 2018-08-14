@@ -399,7 +399,7 @@ function combineET(data) {
         color: ['#556E95','#6CDAFF'],
         grid: {
             top: '15%',
-            left: '5%',
+            left: '0%',
             right: '5%',
             bottom: '3%',
             containLabel: true
@@ -430,8 +430,16 @@ function combineET(data) {
                 nameLocation: 'end',      
                 nameRotate: '0',
                 nameGap: '10', 
-                min: 'dataMin',
-                max: 'dataMax',
+                // min: 'dataMin',
+                // max: 'dataMax',
+                // minInterval: "0.00000001",
+                // min: function(value) {
+                //     return value.min - 20;
+                // },
+                // max: function(value) {
+                //     return value.max + 20;
+                // },
+                // scale: true,
                 show: true,
                 type: 'value',
                 splitLine: {
@@ -449,12 +457,6 @@ function combineET(data) {
                 axisLabel: {
                     show: true,
                     // formatter: '{value}',
-                    // formatter: function(value, index) {
-                    //     if(value == null || value == ''){
-                    //         return '0.000';
-                    //     }
-                    //     return value.toFixed(8);
-                    // },
                     formatter: function(value, index) {
                         if(value == null || value == ''){
                             return parseFloat('0').toExponential(2);
@@ -473,6 +475,11 @@ function combineET(data) {
                 type: 'line',
                 barWidth: '50%',
                 data: data.ps,
+                line: {
+                    label: {
+                        show: true,
+                    }
+                },
                 lineStyle: {
                     normal: {
                         width: 2,  //连线粗细
