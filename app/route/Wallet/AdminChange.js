@@ -12,23 +12,35 @@ import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 var dismissKeyboard = require('dismissKeyboard');
 @connect(({login}) => ({...login}))
-class AdminManage extends BaseComponent {
+class AdminChange extends BaseComponent {
 
-  static navigationOptions = {
-    headerTitle: '权限管理',
-    headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
-      backgroundColor: UColor.mainColor,
-      borderBottomWidth:0,
-    },
-  };
+    static navigationOptions = ({ navigation }) => {
+        const params = navigation.state.params || {};
+        return {
+            headerTitle: params.account_name,
+            headerStyle: {
+            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+            backgroundColor: UColor.mainColor,
+            borderBottomWidth:0,
+        },
+        headerRight: (<Button  onPress={navigation.state.params.onPress}>  
+            <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>提交</Text>
+        </Button>),    
+        };
+    }
+
+    submission = () =>{  
+        // const { navigate } = this.props.navigation;
+        // navigate('MortgageRecord', {account_name: this.props.navigation.state.params.account_name});
+        EasyToast.show("submission")
+    }  
 
   constructor(props) {
     super(props);
+    this.props.navigation.setParams({ onPress: this.submission});
     this.state = {
         ownerPk: '',
         activePk: '',
-        accountName:''
       }
   }
     //组件加载完成
@@ -36,7 +48,7 @@ class AdminManage extends BaseComponent {
         this.setState({
             ownerPk: this.props.navigation.state.params.ownerPublicKey,
             activePk: this.props.navigation.state.params.activePublicKey,
-            accountName:this.props.navigation.state.params.account_name
+            accountName:this.props.navigation.state.params.account_name,
         })
     }
   
@@ -52,8 +64,6 @@ class AdminManage extends BaseComponent {
 
   manageByActive() {
     // Clipboard.setString(this.state.activePk);
-    const { navigate } = this.props.navigation;
-    navigate('AdminChange', { ownerPublicKey:this.state.ownerPk,activePublicKey:this.state.activePk,account_name: this.state.accountName });
     EasyToast.show("这个跳转到管理")
   }
 
@@ -194,4 +204,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default AdminManage;
+export default AdminChange;

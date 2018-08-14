@@ -43,6 +43,7 @@ import ImportKey from './Wallet/ImportPrivateKey'
 import ImportEosKey from './Wallet/ImportEosKey'
 import WalletManage from './Wallet/WalletManage'
 import WalletDetail from './Wallet/WalletDetail'
+import AdminChange from './Wallet/AdminChange'
 import ModifyPassword from './Wallet/ModifyPassword'
 import ExportKeystore from './Wallet/ExportKeystore'
 import ExportPrivateKey from './Wallet/ExportPrivateKey' 
@@ -221,6 +222,9 @@ const Nav = StackNavigator(
     },
     AdminManage: {
       screen: AdminManage
+    },
+    AdminChange: {
+      screen: AdminChange
     },
     ModifyPassword: {
       screen: ModifyPassword
