@@ -27,20 +27,25 @@ var dismissKeyboard = require('dismissKeyboard');
 const transactionOption = ['最新交易','我的交易','最近大单','持仓大户'];
 
 @connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
-class Transaction extends BaseComponent {
+class Ram extends BaseComponent {
 
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
           title: '交易',
-          header:null,  //隐藏顶部导航栏
+          headerTitle: "内存交易",
+          headerStyle: {
+            paddingTop: Platform.OS == "ios" ? 30 : 20,
+            backgroundColor: UColor.mainColor,
+            borderBottomWidth:0,
+          },
          //铃铛small_bell/small_bell_h
         //   headerRight: (
-        //     <Button name="share" onPress={() => this._rightTopClick()} >
+        //     // <Button name="share" onPress={() => this._rightTopClick()} >
         //       <View style={{ padding: 15 }}>
         //       <Image source={UImage.small_bell} style={{ width: 22, height: 22 }}></Image>
         //       </View>
-        //     </Button>
+        //     // </Button>
         //   )
         };
       };
@@ -48,28 +53,23 @@ class Transaction extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-        
       selectedSegment:"5分",
-      //selectedTrackSegment: trackOption[0],
       selectedTransactionRecord: transactionOption[0],
       isBuy: true,
       isSell: false,
-      balance: '0.0000',      //EOS余额
+      balance: '0.0000',   
       slideCompletionValue: 0,
-      buyETAmount: "0",    //输入购买的额度
-      eosToET: '0.0000',
-      etToEos: '0.0000',
-      sellET: "0",    //输入出售的ET
-      myETAvailable: '0', // 我的可用 ET余额
+      buyRamAmount: "0",    //输入购买的额度
+      eosToKB: '0.0000',
+      kbToEos: '0.0000',
+      sellRamBytes: "0",    //输入出售的字节数
+      myRamAvailable: '0', // 我的可用字节
       dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }),
       logRefreshing: false,
-      newetTradeLog: [],
+      newramTradeLog: [],
       logId: "-1",
-      modal: false,
-      contractAccount:"issuemytoken", //ET合约账户名称
-      tradename:"TEST",  //ET交易币种的名称
-      selectcode:"TEST_EOS_issuemytoken",    //ET交易币种的唯一code
-      showMore:false,  
+
+      showMore:false,     
       showMoreTitle:"更多",
       isKLine:true,  //是否K线
       dataKLine: {},
@@ -78,11 +78,6 @@ class Transaction extends BaseComponent {
       errortext: '',
       scrollEnabled: true, 
    };
-  }
-
-  _rightTopClick = () =>{
-    const { navigate } = this.props.navigation;
-    navigate('Ram', {});
   }
 
   componentWillMount() {
@@ -95,22 +90,22 @@ class Transaction extends BaseComponent {
   componentDidMount(){
       try {
         this.setState({logRefreshing: true});
-        // 获取ETB行情相关信息
-        this.props.dispatch({type: 'transaction/getETInfo',payload: {code:this.state.selectcode}, callback: () => {
+        // 获取内存市场相关信息
+        this.props.dispatch({type: 'transaction/getRamInfo',payload: {}, callback: () => {
             this.setState({logRefreshing: false});
         }});
     
-        // 默认获取ETB的时分图
-        // this.fetchETLine(24,'24小时');
+        // 默认获取RAM的时分图
+        // this.fetchRAMLine(24,'24小时');
         // 获取曲线
         this.onClickTimeType(this.state.selectedSegment);
-
+       
         // 获取钱包信息和余额
         this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }, callback: () => {
             this.getAccountInfo();
         }});
         
-        this.getETTradeLog();
+        this.getRamTradeLog();
         
         DeviceEventEmitter.addListener('getRamInfoTimer', (data) => {
             this.onRefreshing();
@@ -119,10 +114,11 @@ class Transaction extends BaseComponent {
         this.setState({logRefreshing: false});
       }
 
+
   }
 
   onRefreshing() {
-    this.getETInfo();
+    this.getRamInfo();
     this.getAccountInfo();
     this.setSelectedTransactionRecord(this.state.selectedTransactionRecord, true);
   }
@@ -132,48 +128,24 @@ class Transaction extends BaseComponent {
     super.componentWillUnmount();
   }
 
-    _leftTopClick = () => {
-        this.setState({ modal: !this.state.modal });
-        this.props.dispatch({type:'transaction/getETList',payload:{}});
-
-        this.props.dispatch({type:'transaction/getRamInfo',payload: {}});
-    }
- 
-      //选择ram 交易
-    selectRamTx(){
-        this.setState({modal: false});
-        this._rightTopClick();
-    }
-    //选择ET交易
-    selectETtx(rowData){
-        this.setState({
-            modal: false,
-            contractAccount: rowData.quote_contract,
-            tradename:rowData.base_balance_uom,
-            selectcode:rowData.code,
-            });
-        InteractionManager.runAfterInteractions(() => {
-            this.getETInfo();
-        });
-    }
-
-  getETInfo(){
+  getRamInfo(){
     //取头部开盘等信息
-    this.props.dispatch({type:'transaction/getETInfo',payload:{code:this.state.selectcode}});
+    this.props.dispatch({type: 'transaction/getRamInfo',payload: {}});
+
     // 获取曲线
     this.onClickTimeType(this.state.selectedSegment);
   }
-
-   getETTradeLog(){
-    this.props.dispatch({type: 'transaction/getETTradeLog',payload: {code:this.state.selectcode}, callback: (resp) => {
+  
+  getRamTradeLog(){
+    this.props.dispatch({type: 'transaction/getRamTradeLog',payload: {}, callback: (resp) => {
         try {
-            if(resp.code != '0' || ((resp.code == '0') && (this.props.etTradeLog.length == 0))){
+            if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
                 this.setState({
-                  newetTradeLog: [],
+                  newramTradeLog: [],
                 });
               }else{
                 this.setState({
-                  newetTradeLog: resp.data,
+                  newramTradeLog: resp.data,
                 });
               }
         } catch (error) {
@@ -186,22 +158,29 @@ class Transaction extends BaseComponent {
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
         return;
       }
+    this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.defaultWallet.account},callback: (data) => {
+      try {
+        this.setState({ myRamAvailable:((data.total_resources.ram_bytes - data.ram_usage)).toFixed(0)});
+      } catch (error) {
+          
+      }
 
-    this.getBalance();  //取eos余额
-    this.getETBalance(); //取ET余额
+    } });
+
+    this.getBalance();
+
   } 
 
-  //获取时分图
-  fetchETLine(type,opt){
+   //获取时分图
+  fetchRAMLine(type,opt){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type:'transaction/getETPriceLine',payload:{code:this.state.selectcode,type:type}});
+        this.props.dispatch({type:'transaction/getRamPriceLine',payload:{type:type}});
     });
   }
-
   //获取K线
-  fetchETKLine(dateType,opt){
+  fetchRAMKLine(dateType,opt){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type: 'transaction/getETKLine',payload: {code:this.state.selectcode,pageSize: "180", dateType: dateType}, callback: (resp) => {
+        this.props.dispatch({type: 'transaction/getRamKLines',payload: {pageSize: "180", dateType: dateType}, callback: (resp) => {
             try {
                 if(resp.code == '0'){
                   if(resp.data && resp.data.length > 0){
@@ -215,7 +194,7 @@ class Transaction extends BaseComponent {
                         if(element.record_date){
                             var timezone;
                             try {
-                                timezone = moment(element.record_date).add(8,'hours').format('MM-DD HH:mm');
+                                timezone = moment(element.record_date).format('MM-DD HH:mm');
                             } catch (error) {
                                 timezone = "";
                             }
@@ -239,7 +218,7 @@ class Transaction extends BaseComponent {
                         arrayObj[i] = elementArray;
                     }
                     var constructdata = splitData(arrayObj);
-                    var echartsoption = combineETKLine(constructdata);
+                    var echartsoption = combineRamKLine(constructdata);
                     this.setState({ dataKLine : echartsoption});
                   }else{
                     this.setState({ dataKLine : {}});
@@ -251,48 +230,49 @@ class Transaction extends BaseComponent {
         }});
     
     });
- }
+    
+  }
 
   onClickTimeType(opt){
     if(opt == "时分"){
         this.setState({isKLine:false, showMore: false,selectedSegment:opt});
-        this.fetchETLine(24,'24小时');
+        this.fetchRAMLine(24,'24小时');
         return ;
     }
     
     this.setState({isKLine:true, showMore: false,selectedSegment:opt});
     if(opt == "5分"){
-        this.fetchETKLine("5m",opt);
+        this.fetchRAMKLine("5m",opt);
     }else if(opt == "15分"){
-        this.fetchETKLine("15m",opt);
+        this.fetchRAMKLine("15m",opt);
     }else if(opt == "30分"){
-        this.fetchETKLine("30m",opt);
+        this.fetchRAMKLine("30m",opt);
     }else if(opt == "1小时"){
         this.setState({showMoreTitle:opt});
-        this.fetchETKLine("1h",opt);
+        this.fetchRAMKLine("1h",opt);
     }else if(opt == "1天"){
         this.setState({showMoreTitle:opt});
-        this.fetchETKLine("1d",opt);
+        this.fetchRAMKLine("1d",opt);
     }else if(opt == "1周"){
         this.setState({showMoreTitle:opt});
-        this.fetchETKLine("1w",opt);
+        this.fetchRAMKLine("1w",opt);
     }else if(opt == "1月"){
         this.setState({showMoreTitle:opt});
-        this.fetchETKLine("1M",opt);
+        this.fetchRAMKLine("1M",opt);
     }
   }
   
    getDataLine()
    {
-        return this.props.etLineDatas ? this.props.etLineDatas : {};
+        return this.props.ramLineDatas ? this.props.ramLineDatas : {};
    }
    getDataKLine(){
-        return this.state.dataKLine ? this.state.dataKLine : {};
+        return this.state.dataKLine?this.state.dataKLine:{};
    }
   onClickMore(){
     this.setState({ showMore: !this.state.showMore });
   }
-  
+
   selectedTransactionRecord(opt){
     this.setSelectedTransactionRecord(opt, false);
   }
@@ -312,24 +292,23 @@ class Transaction extends BaseComponent {
     }
   }
 
-
   fetchTrackLine(type,opt, onRefreshing = false){
     this.setState({selectedTransactionRecord:opt});
     if(type == 0){
         if(!onRefreshing){
             this.setState({logRefreshing: true});
         }
-        this.props.dispatch({type: 'transaction/getETBigTradeLog',payload: {code:this.state.selectcode}, callback: () => {
+        this.props.dispatch({type: 'transaction/getRamBigTradeLog',payload: {}, callback: () => {
             this.setState({logRefreshing: false});
         }});    
     }else{
-        EasyToast.show('暂未开放');   
-        // if(!onRefreshing){
-        //     this.setState({logRefreshing: true});
-        // }
-        // this.props.dispatch({type: 'transaction/getBigRamRank',payload: {}, callback: () => {
-        //     this.setState({logRefreshing: false});
-        // }});
+        // EasyToast.show('开发中，查询区块持仓大户前10名记录');   
+        if(!onRefreshing){
+            this.setState({logRefreshing: true});
+        }
+        this.props.dispatch({type: 'transaction/getBigRamRank',payload: {}, callback: () => {
+            this.setState({logRefreshing: false});
+        }});
     }
   }
 
@@ -342,16 +321,16 @@ class Transaction extends BaseComponent {
             if(!onRefreshing){
                 this.setState({logRefreshing: true});
             }
-            this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: this.props.defaultWallet.account,"pageCount":"2", last_id: this.state.logId}, callback: (resp) => {
+            this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: this.props.defaultWallet.account, last_id: this.state.logId}, callback: (resp) => {
                 try {
-                    if(resp.code != '0' || ((resp.code == '0') && (this.props.etTradeLog.length == 0))){
+                    if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
                         this.setState({
-                          newetTradeLog: [],
+                          newramTradeLog: [],
                           logRefreshing: false,
                         });
                       }else{
                         this.setState({
-                          newetTradeLog: resp.data,
+                          newramTradeLog: resp.data,
                           logRefreshing: false
                         });
                       }
@@ -366,16 +345,16 @@ class Transaction extends BaseComponent {
         if(!onRefreshing){
             this.setState({logRefreshing: true});
         }
-        this.props.dispatch({type: 'transaction/getETTradeLog',payload: {code:this.state.selectcode}, callback: (resp) => {
+        this.props.dispatch({type: 'transaction/getRamTradeLog',payload: {}, callback: (resp) => {
             try {
-                if(resp.code != '0' || ((resp.code == '0') && (this.props.etTradeLog.length == 0))){
+                if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
                     this.setState({
-                      newetTradeLog: [],
+                      newramTradeLog: [],
                       logRefreshing: false,
                     });
                   }else{
                     this.setState({
-                      newetTradeLog: resp.data,
+                      newramTradeLog: resp.data,
                       logRefreshing: false
                     });
                   }
@@ -409,26 +388,7 @@ class Transaction extends BaseComponent {
       })
 }
 
-  setETBalance(balance){
-    if (balance == null || balance == "") {
-        this.setState({myETAvailable: '0.0000'});
-      } else {
-          this.setState({ myETAvailable: balance.replace(this.state.tradename, "") });
-      }
-  }
-  getETBalance() {
-    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-      return;
-    }
-    this.props.dispatch({
-        type: 'transaction/getETBalance', payload: { contract: this.state.contractAccount, account: this.props.defaultWallet.account, symbol: this.state.tradename }, callback: (data) => {
-          if (data.code == '0') {
-            this.setETBalance(data.data);
-          }
-        }
-      })
-  }
-
+  
    // 更新"买，卖，交易记录，大单追踪"按钮的状态  
    _updateBtnState(currentPressed, array) { 
     if (currentPressed === 'undefined' || currentPressed === null || array === 'undefined' || array === null ) {  
@@ -512,7 +472,7 @@ class Transaction extends BaseComponent {
     }
       return obj;
   }
-  chkInputSellET(obj) {
+  chkInputSellRamBytes(obj) {
     obj = obj.replace(/[^\d.]/g, "");  //清除 "数字"以外的字符
     obj = obj.replace(/^\./g, "");  //验证第一个字符是否为数字
     obj = obj.replace(/\.{2,}/g, "."); //只保留第一个小数点，清除多余的
@@ -521,20 +481,20 @@ class Transaction extends BaseComponent {
     var max = 9999999999.9999;  // 100亿 -1
     var min = 0.0000;
     var value = 0.0000;
-    var tmp_et = 0;
+    var ram_bytes = 0;
     try {
       value = parseFloat(obj);
-      tmp_et = parseFloat(this.state.myETAvailable);
+      ram_bytes = parseFloat(this.state.myRamAvailable);
     } catch (error) {
       value = 0.0000;
-      tmp_et = 0.0000;
+      ram_bytes = 0.0000;
     }
     if(value < min|| value > max){
       EasyToast.show("输入错误");
       obj = "";
     }
-    if (value * 1 > tmp_et) {
-      EasyToast.show('可卖数量不足,请重输');
+    if (value * 1024 > ram_bytes) {
+      EasyToast.show('可卖KB不足,请重输');
       obj = "";
   }
     return obj;
@@ -556,8 +516,8 @@ class Transaction extends BaseComponent {
       return false;
   }
 
-  // 购买
-  buy = (rowData) => { 
+  // 购买内存
+  buyram = (rowData) => { 
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
         //EasyToast.show('请先创建并激活钱包');
         this.setState({ error: true,errortext: '请先创建并激活钱包' });
@@ -565,20 +525,158 @@ class Transaction extends BaseComponent {
             this.setState({ error: false,errortext: '' });
         }, 2000);
         return;
-    };
-    if(this.state.buyETAmount == ""||this.state.buyETAmount == '0'){
+    }
+
+    if(this.state.buyRamAmount == ""||this.state.buyRamAmount == '0'){
         //EasyToast.show('请输入购买金额');
         this.setState({ error: true,errortext: '请输入购买金额' });
         setTimeout(() => {
             this.setState({ error: false,errortext: '' });
         }, 2000);
         return;
-    };
-    if(this.chkAmountIsZero(this.state.buyETAmount,'请输入购买金额')){
-        this.setState({ buyETAmount: "" })
+    }
+    if(this.chkAmountIsZero(this.state.buyRamAmount,'请输入购买金额')){
+        this.setState({ buyRamAmount: "" })
         return ;
-    };
+    }
     this.setState({ business: false});
+    this. dismissKeyboardClick();
+        const view =
+        <View style={styles.passoutsource}>
+            <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
+                selectionColor={UColor.tintColor} secureTextEntry={true} keyboardType="ascii-capable" style={styles.inptpass} maxLength={Constants.PWD_MAX_LENGTH}
+                placeholderTextColor={UColor.arrow} placeholder="请输入密码" underlineColorAndroid="transparent" />
+            <Text style={styles.inptpasstext}></Text>  
+        </View>
+        EasyShowLD.dialogShow("请输入密码", view, "确认", "取消", () => {
+        if (this.state.password == "" || this.state.password.length < Constants.PWD_MIN_LENGTH) {
+            EasyToast.show('密码长度至少4位,请重输');
+            return;
+        }
+        var privateKey = this.props.defaultWallet.activePrivate;
+        try {
+            var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.defaultWallet.salt);
+            var plaintext_privateKey = bytes_privateKey.toString(CryptoJS.enc.Utf8);
+            if (plaintext_privateKey.indexOf('eostoken') != -1) {
+                plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
+                EasyShowLD.loadingShow();
+                Eos.buyram(plaintext_privateKey, this.props.defaultWallet.account, this.props.defaultWallet.account, formatEosQua(this.state.buyRamAmount + " EOS"), (r) => {
+                    EasyShowLD.loadingClose();
+                    if(r.isSuccess){
+                        this.getAccountInfo();
+                        EasyToast.show("购买成功");
+                    }else{
+                        if(r.data){
+                            if(r.data.msg){
+                                EasyToast.show(r.data.msg);
+                            }else{
+                                EasyToast.show("购买失败");
+                            }
+                        }else{
+                            EasyToast.show("购买失败");
+                        }
+                    }
+                });
+            } else {
+                EasyShowLD.loadingClose();
+                EasyToast.show('密码错误');
+            }
+        } catch (e) {
+            EasyShowLD.loadingClose();
+            EasyToast.show('未知异常');
+        }
+        // EasyShowLD.dialogClose();
+    }, () => { EasyShowLD.dialogClose() });
+  };
+
+  // 出售内存
+  sellram = (rowData) => {
+    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+        //EasyToast.show('请先创建并激活钱包');
+        this.setState({ error: true,errortext: '请先创建并激活钱包' });
+        setTimeout(() => {
+            this.setState({ error: false,errortext: '' });
+        }, 2000);
+        return;
+    }
+    if(this.state.sellRamBytes == ""||this.state.sellRamBytes == '0'){
+        //EasyToast.show('请输入出售内存KB数量');
+        this.setState({ error: true,errortext: '请输入出售内存KB数量' });
+        setTimeout(() => {
+            this.setState({ error: false,errortext: '' });
+        }, 2000);
+        return;
+    }
+    if(this.chkAmountIsZero(this.state.sellRamBytes,'请输入出售内存KB数量')){
+        this.setState({ sellRamBytes: "" })
+        return ;
+    }
+    this.setState({ business: false});
+    this. dismissKeyboardClick();
+        const view =
+        <View style={styles.passoutsource}>
+            <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
+                selectionColor={UColor.tintColor} secureTextEntry={true}  keyboardType="ascii-capable" style={styles.inptpass} maxLength={Constants.PWD_MAX_LENGTH}
+                placeholderTextColor={UColor.arrow} placeholder="请输入密码" underlineColorAndroid="transparent" />
+            <Text style={styles.inptpasstext}></Text>  
+        </View>
+        EasyShowLD.dialogShow("请输入密码", view, "确认", "取消", () => {
+        if (this.state.password == "" || this.state.password.length < Constants.PWD_MIN_LENGTH) {
+            EasyToast.show('密码长度至少4位,请重输');
+            return;
+        }
+        var privateKey = this.props.defaultWallet.activePrivate;
+        try {
+            var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.defaultWallet.salt);
+            var plaintext_privateKey = bytes_privateKey.toString(CryptoJS.enc.Utf8);
+            if (plaintext_privateKey.indexOf('eostoken') != -1) {
+                plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
+                EasyShowLD.loadingShow();
+                Eos.sellram(plaintext_privateKey, this.props.defaultWallet.account, (this.state.sellRamBytes * 1024).toFixed(0), (r) => {
+                    EasyShowLD.loadingClose();
+                    if(r.isSuccess){
+                        this.getAccountInfo();
+                        EasyToast.show("出售成功");
+                    }else{
+                        if(r.data){
+                            if(r.data.msg){
+                                EasyToast.show(r.data.msg);
+                            }else{
+                                EasyToast.show("出售失败");
+                            }
+                        }else{
+                            EasyToast.show("出售失败");
+                        }
+                    }
+                });
+                
+            } else {
+                EasyShowLD.loadingClose();
+                EasyToast.show('密码错误');
+            }
+        } catch (e) {
+            EasyShowLD.loadingClose();
+            EasyToast.show('未知异常');
+        }
+        // EasyShowLD.dialogClose();
+    }, () => { EasyShowLD.dialogClose() });
+  };
+
+  // 购买
+  buy = (rowData) => { 
+    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+        EasyToast.show('请先创建并激活钱包');
+        return;
+    }
+
+    if(this.state.buyRamAmount == ""){
+        EasyToast.show('请输入购买金额');
+        return;
+    }
+    if(this.chkAmountIsZero(this.state.buyRamAmount,'请输入购买金额')){
+        this.setState({ buyRamAmount: "" })
+        return ;
+    }
     this. dismissKeyboardClick();
         const view =
         <View style={styles.passoutsource}>
@@ -609,7 +707,7 @@ class Transaction extends BaseComponent {
                         }], 
                         data: {
                             payer: "eostokenapp1",
-                            eos_quant: formatEosQua(this.state.buyETAmount + " EOS"),
+                            eos_quant: formatEosQua(this.state.buyRamAmount + " EOS"),
                             token_contract: "issuemytoken",
                             token_symbol: "4,TEST",
                             fee_account: "eostokenapp1",
@@ -648,24 +746,10 @@ class Transaction extends BaseComponent {
   // 出售
   sell = (rowData) => {
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-       this.setState({ error: true,errortext: '请先创建并激活钱包' });
-       setTimeout(() => {
-           this.setState({ error: false,errortext: '' });
-       }, 2000);
-       return;
-    }; 
-    if(this.state.sellET == ""||this.state.sellET == '0'){
-        this.setState({ error: true,errortext: '请输入出售数量' });
-        setTimeout(() => {
-            this.setState({ error: false,errortext: '' });
-        }, 2000);
+        EasyToast.show('请先创建并激活钱包');
         return;
-    };
-    if(this.chkAmountIsZero(this.state.sellET,'请输入出售数量')){
-        this.setState({ sellET: "" })
-        return ;
-    };
-    this.setState({ business: false});
+    }
+
     this. dismissKeyboardClick();
     const view =
     <View style={styles.passoutsource}>
@@ -737,36 +821,20 @@ class Transaction extends BaseComponent {
       dismissKeyboard();
   }
 
-  eosToET(eos, currentPrice) {
+  eosToKB(eos, currentPrice) {
     if(eos == null || eos == '' || currentPrice == null || currentPrice == ''){
         return '0';
     }
-    return (eos/currentPrice).toFixed(8); 
+    return (eos/currentPrice).toFixed(4); 
   }
 
-  etToEos(et, currentPrice){
-    if(et == null || et == '' || currentPrice == null || currentPrice == ''){
+  kbToEos(kb, currentPrice){
+    if(kb == null || kb == '' || currentPrice == null || currentPrice == ''){
         return '0.0000';
     }
-    return (et * currentPrice).toFixed(4);
+    return (kb * currentPrice).toFixed(4);
   }
-  //小数点位数大于指定位数,强制显示指定位数,少于则按实际位数显示
-  precisionTransfer(data,pos){
-    try {
-         var point = data.lastIndexOf(".");
-         if(point <= 0){
-             return data; //无小数位
-         }
-        var pointnum = data.length - point - 1;
-        var precisionData = data;
-        if(pointnum > pos){
-            precisionData = data.substring(0,point + 1 + pos);
-        }
-        return precisionData;
-    } catch (error) {
-        return data;
-    }
-  }
+
   openQuery =(payer) => {
       if(payer == 'busines'){
         if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
@@ -777,11 +845,11 @@ class Transaction extends BaseComponent {
         }else{
             this.setState({ business: false});
             const { navigate } = this.props.navigation;
-            navigate('RecordQueryET', {code:this.state.selectcode,tradename:this.state.tradename,record:this.props.defaultWallet.account});
+            navigate('RecordQueryRam', {record:this.props.defaultWallet.account});
         }
       }else{
         const { navigate } = this.props.navigation;
-        navigate('RecordQueryET', {code:this.state.selectcode,tradename:this.state.tradename,record:payer});
+        navigate('RecordQueryRam', {record:payer});
       }
   }
 
@@ -803,8 +871,8 @@ class Transaction extends BaseComponent {
     let business = this.state.business;  
     this.setState({  
         business:!business,
-        buyETAmount: '0',
-        sellET: '0',  
+        buyRamAmount: '0',
+        sellRamBytes: '0',  
       });  
   }  
 
@@ -819,7 +887,7 @@ class Transaction extends BaseComponent {
       })
     }
   }
-
+  
   onMoveLineView() {
     this.setState({scrollEnabled: false});
     return true;
@@ -832,501 +900,383 @@ class Transaction extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 20 : 30, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
+    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 30 : 50, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
         <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
             <Text style={{fontSize: 12, color: '#fff'}}>交易面板</Text>
         </View>
     </TouchableOpacity>
-    <View style={styles.headerTitle}>  
-        <TouchableOpacity onPress={this._leftTopClick.bind()} activeOpacity={0.8}>
-            <View style={styles.leftoutTitle} >
-                <Image source={this.state.modal ? UImage.tx_slide0 : UImage.tx_slide1} style={styles.HeadImg}/>
-            </View>
-        </TouchableOpacity>
-          <View style={styles.HeadTitle} >
-              <Text style={{ fontSize: 18,color: UColor.fontColor, justifyContent: 'center',alignItems: 'center',}} 
-                       numberOfLines={1} ellipsizeMode='middle'>{this.state.tradename + "/EOS"}</Text>
-          </View>     
-        {/* <TouchableOpacity onPress={this._rightTopClick.bind()}>
-        <View style={styles.Rightout} >
-            <Image source={UImage.tx_ram } style={styles.imgTeOy}/>
-        </View>
-        </TouchableOpacity> */}
-      </View> 
-      {Constants.netTimeoutFlag==true &&
+    {Constants.netTimeoutFlag==true &&
         <Button onPress={this.openSystemSetting.bind(this)}>
-          <View style={styles.systemSettingTip}>
-              <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
-              <Text style={styles.systemSettingArrow}>></Text>
-          </View>
-        </Button>}
+            <View style={styles.systemSettingTip}>
+                <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
+                <Text style={styles.systemSettingArrow}>></Text>
+            </View>
+        </Button>
+    }
     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
       <ScrollView scrollEnabled={this.state.scrollEnabled} keyboardShouldPersistTaps="always"refreshControl={
             <RefreshControl refreshing={this.state.logRefreshing} onRefresh={() => this.onRefreshing()}
             tintColor={UColor.fontColor} colors={['#ddd', UColor.tintColor]} progressBackgroundColor={UColor.fontColor}/>}
             >
-          <View style={styles.header}>
-            <View style={styles.leftout}>
-              <View style={styles.nameout}>
-                <Text style={styles.nametext}>开盘</Text>
-                <Text style={styles.nametext}>交易量</Text>
-              </View>
-              <View style={styles.recordout}>
-                <Text style={styles.recordtext}>{this.props.etinfo ? this.precisionTransfer(this.props.etinfo.open,8) : '0'} EOS</Text>
-                <Text style={styles.recordtext}>{this.props.etinfo ? this.precisionTransfer(this.props.etinfo.today_volum,8) : '0'} {this.state.tradename}</Text>
-              </View>
-            </View>
-            <View style={styles.rightout}>
-                <View style={styles.presentprice}>
-                    <Text style={styles.present}> {this.props.etinfo ? this.precisionTransfer(this.props.etinfo.price,8) : '0'}</Text>
-                    <Text style={styles.toptext}>价格</Text>
+            <View style={styles.header}>
+                <View style={styles.leftout}>
+                <View style={styles.nameout}>
+                    <Text style={styles.nametext}>开盘</Text>
+                    <Text style={styles.nametext}>内存占比</Text>
+                    <Text style={styles.nametext}>总资金</Text>
                 </View>
-                <View style={styles.titleout}>
-                    <Text style={(this.props.etinfo && this.props.etinfo.increase>=0)?styles.incdo:styles.incup}> 
-                        {this.props.etinfo ? (this.props.etinfo.increase > 0 ? '+' + (this.props.etinfo.increase * 100).toFixed(2) : 
-                        (this.props.etinfo.increase * 100).toFixed(2)): '0.00'}%</Text>
-                    <Text style={{color:'#8696B0',fontSize:13,marginTop:2,textAlign:'center', marginLeft:5}}>涨幅</Text>
+                <View style={styles.recordout}>
+                    <Text style={styles.recordtext}>{this.props.ramInfo ? (this.props.ramInfo.open * 1).toFixed(4) : '0'} EOS/KB</Text>
+                    <View style={styles.rowout}>
+                        <Text style={styles.recordtext}>{this.props.ramInfo ? this.props.ramInfo.usage_ram : 0} GB/{this.props.ramInfo ? this.props.ramInfo.total_ram : 0} GB</Text>
+                        <Text style={styles.ashtext}> ({((this.props.ramInfo ? this.props.ramInfo.usage_ram_percent : '0') * 100).toFixed(2)}%)</Text>
+                    </View>
+                    <Text style={styles.recordtext}>{this.props.ramInfo ? (this.props.ramInfo.total_eos * 1).toFixed(4) : '0'} EOS</Text>
+                </View>
+                </View>
+                <View style={styles.rightout}>
+                    <View style={styles.presentprice}>
+                        <Text style={styles.present}> {this.props.ramInfo ? (this.props.ramInfo.price * 1).toFixed(4) : '0.0000'}</Text>
+                        <Text style={styles.toptext}>价格</Text>
+                    </View>
+                    <View style={styles.titleout}>
+                        <Text style={(this.props.ramInfo && this.props.ramInfo.increase>=0)?styles.incdo:styles.incup}> 
+                            {this.props.ramInfo ? (this.props.ramInfo.increase > 0 ? '+' + (this.props.ramInfo.increase * 100).toFixed(2) : 
+                                (this.props.ramInfo.increase * 100).toFixed(2)): '0.00'}%</Text>
+                        <Text style={{color:'#8696B0',fontSize:13,marginTop:2,textAlign:'center', marginLeft:5}}>涨幅</Text>
+                    </View>
                 </View>
             </View>
-          </View>
-          <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
-            <View style={{flexDirection:"column",flex:1,}}>
-                <Button onPress={this.onClickTimeType.bind(this,"时分")}>
-                    <View style={{ marginLeft: 2,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        {this.state.selectedSegment == "时分" ? 
-                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>时分</Text> : 
-                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>时分</Text>}
-                    </View>
-                </Button>   
-            </View>
-            <View style={{flexDirection:"column",flex:1,}}>
-                <Button onPress={this.onClickTimeType.bind(this,"5分")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        {this.state.selectedSegment == "5分" ? 
-                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>5分</Text> : 
-                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>5分</Text>}
-                    </View>
-                </Button> 
-            </View>
-            <View style={{flexDirection:"column",flex:1}}>
-                <Button onPress={this.onClickTimeType.bind(this,"15分")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        {this.state.selectedSegment == "15分" ? 
-                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>15分</Text> : 
-                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>15分</Text>}
-                    </View>
-                </Button> 
-            </View>
-            <View style={{flexDirection:"column",flex:1}}>
-                <Button onPress={this.onClickTimeType.bind(this,"30分")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                       {this.state.selectedSegment == "30分" ? 
-                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>30分</Text> : 
-                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>30分</Text>}
-                    </View>
-                </Button> 
-            </View>
-            <View style={{flexDirection:"column",flex:1}}>
-                <Button onPress={this.onClickMore.bind(this)}>
-                    <View style={{ flexDirection:"row",marginLeft: 0,width: 50, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        {(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
-                           || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? 
-                         <Text style={{fontSize: 15,color: UColor.tintColor,}}>{this.state.showMoreTitle}</Text> : 
-                          <Text style={{fontSize: 15,color: UColor.fontColor,}}>{this.state.showMoreTitle}</Text>}
-                         <Image source={ UImage.txbtn_more } style={ {flex:0,width: 10, height:5,resizeMode:'contain'}}/>
-                    </View>
-                </Button> 
-
-            </View>
-            <View style={{flexDirection:"column",flex:1}}>
-                <Button disabled={true}>
-                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
-                    </View>
-                </Button> 
-            </View>
-         </View> 
-        {this.state.showMore &&       
+          
             <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
-            <View style={{flexDirection:"column",flex:1,}}>
-                <Button disabled={true}>
-                    <View style={{ marginLeft: 2,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
-                    </View>
-                </Button> 
-            </View>
-            <View style={{flexDirection:"column",flex:1,}}>
-                <Button onPress={this.onClickTimeType.bind(this,"1小时")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1小时</Text>
-                    </View>
-                </Button> 
-            </View>
-            <View style={{flexDirection:"column",flex:1}}>
-                <Button onPress={this.onClickTimeType.bind(this,"1天")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1天</Text>
-                    </View>
-                </Button> 
-            </View>
-            <View style={{flexDirection:"column",flex:1}}>
-                <Button onPress={this.onClickTimeType.bind(this,"1周")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1周</Text>
-                    </View>
-                </Button> 
-            </View>
-            <View style={{flexDirection:"column",flex:1}}>
-               <Button onPress={this.onClickTimeType.bind(this,"1月")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1月</Text>
-                    </View>
-                </Button> 
-            </View>
-            <View style={{flexDirection:"column",flex:1}}>
-               <Button disabled={true}>
-                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
-                    </View>
-                </Button> 
-            </View>
-         </View> 
-         
-        }  
-        {
-            this.state.isKLine ? 
-            <View style={styles.echartsout} onStartShouldSetResponderCapture={this.onMoveLineView.bind(this)} onResponderRelease={this.onMoveLineViewEnd.bind(this)}>
-            {
-                <Echarts option={this.getDataKLine()} width={ScreenWidth} height={300} />
-            }
-            </View>
-            : 
-            <View style={styles.echartsout} onStartShouldSetResponderCapture={this.onMoveLineView.bind(this)} onResponderRelease={this.onMoveLineViewEnd.bind(this)}>
-            {
-                <Echarts option={this.getDataLine()} width={ScreenWidth} height={160} />
-            }
-            </View>
-        }
-        <View style={styles.toptabout}>
-            <SegmentedControls tint= {UColor.tintColor} selectedTint= {UColor.fontColor} onSelection={this.selectedTransactionRecord.bind(this) }
-                selectedOption={ this.state.selectedTransactionRecord } backTint= {UColor.secdColor} options={transactionOption} />
-        </View>
-        {this.state.selectedTransactionRecord == transactionOption[0] || this.state.selectedTransactionRecord == transactionOption[1] ? 
-                    <View style={{flex: 1,}}>
-                        {(this.props.etTradeLog  != null &&  this.props.etTradeLog .length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
-                        <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                                renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 5,marginHorizontal: 5,}}>
-                                <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
-                                <Text style={{ flex: 4,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                                <Text style={{ flex: 3.5,textAlign: 'left',color: '#7382a1'}}>价格(EOS)</Text>
-                                <Text style={{ flex: 2.5,textAlign: 'left',color: '#7382a1'}}>时间</Text>
-                                </View>
-                            }
-                            dataSource={this.state.dataSource.cloneWithRows(this.state.newetTradeLog == null ? [] : this.state.newetTradeLog)} 
-                            renderRow={(rowData, sectionID, rowID) => (                 
-                            <Button onPress={this.openQuery.bind(this,rowData.account)}>
-                                <View style={styles.businessout}>
-                                    {rowData.action_name == 'selltoken' ? 
-                                    <View style={styles.liststrip}>
-                                        <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
-                                        <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? this.precisionTransfer(rowData.token_qty,8) : rowData.eos_qty.replace("EOS", "")}</Text>
-                                        <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0? this.precisionTransfer(rowData.price,8):''}</Text>
-                                        <Text style={styles.selltime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
-                                    </View>
-                                    :
-                                    <View style={styles.liststrip}>
-                                        <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
-                                        <Text style={styles.buytext} numberOfLines={1}>买 {rowData.eos_qty.replace("EOS", "")}</Text>
-                                        <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0? this.precisionTransfer(rowData.price,8):''}</Text>
-                                        <Text style={styles.buytime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
-                                    </View>
-                                    }
-                                </View>
-                            </Button>         
-                            )}                
-                        /> 
-                        }
-                    </View>: 
-            <View style={{flex: 1,}}>
-                
-                {this.state.selectedTransactionRecord == transactionOption[2] ? 
-                  <View style={{flex: 1,}}>
-                    {(this.props.etBigTradeLog != null &&  this.props.etBigTradeLog.length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
-                    <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                    renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
-                        <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
-                        <Text style={{ flex: 4,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                        <Text style={{ flex: 3.5,textAlign: 'left',color: '#7382a1'}}>价格(EOS)</Text>
-                        <Text style={{ flex: 2.5,textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                <View style={{flexDirection:"column",flex:1,}}>
+                    <Button onPress={this.onClickTimeType.bind(this,"时分")}>
+                        <View style={{ marginLeft: 2,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            {this.state.selectedSegment == "时分" ? 
+                                    <Text style={{fontSize: 15, color: UColor.tintColor,}}>时分</Text> : 
+                                            <Text style={{fontSize: 15, color: UColor.fontColor,}}>时分</Text>}
                         </View>
-                    }
-                      dataSource={this.state.dataSource.cloneWithRows(this.props.etBigTradeLog == null ? [] : this.props.etBigTradeLog)} 
-                      renderRow={(rowData, sectionID, rowID) => (                 
-                        <Button onPress={this.openQuery.bind(this,rowData.account)}>
+                    </Button>   
+                </View>
+                <View style={{flexDirection:"column",flex:1,}}>
+                    <Button onPress={this.onClickTimeType.bind(this,"5分")}>
+                        <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            {this.state.selectedSegment == "5分" ? 
+                                    <Text style={{fontSize: 15, color: UColor.tintColor,}}>5分</Text> : 
+                                            <Text style={{fontSize: 15, color: UColor.fontColor,}}>5分</Text>}
+                        </View>
+                    </Button> 
+                </View>
+                <View style={{flexDirection:"column",flex:1}}>
+                    <Button onPress={this.onClickTimeType.bind(this,"15分")}>
+                        <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            {this.state.selectedSegment == "15分" ? 
+                                    <Text style={{fontSize: 15, color: UColor.tintColor,}}>15分</Text> : 
+                                            <Text style={{fontSize: 15, color: UColor.fontColor,}}>15分</Text>}
+                        </View>
+                    </Button> 
+                </View>
+                <View style={{flexDirection:"column",flex:1}}>
+                    <Button onPress={this.onClickTimeType.bind(this,"30分")}>
+                        <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        {this.state.selectedSegment == "30分" ? 
+                                    <Text style={{fontSize: 15, color: UColor.tintColor,}}>30分</Text> : 
+                                            <Text style={{fontSize: 15, color: UColor.fontColor,}}>30分</Text>}
+                        </View>
+                    </Button> 
+                </View>
+                <View style={{flexDirection:"column",flex:1}}>
+                    <Button onPress={this.onClickMore.bind(this)}>
+                        <View style={{ flexDirection:"row",marginLeft: 0,width: 50, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            {(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
+                            || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? 
+                            <Text style={{fontSize: 15,color: UColor.tintColor,}}>{this.state.showMoreTitle}</Text> : 
+                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>{this.state.showMoreTitle}</Text>}
+                            <Image source={ UImage.txbtn_more } style={ {flex:0,width: 10, height:5,resizeMode:'contain'}}/>
+                        </View>
+                    </Button> 
+                </View>
+                <View style={{flexDirection:"column",flex:1}}>
+                    <Button disabled={true}>
+                        <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                        </View>
+                    </Button> 
+                </View>
+            </View> 
+
+            {this.state.showMore &&       
+            <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
+                <View style={{flexDirection:"column",flex:1,}}>
+                    <Button disabled={true}>
+                        <View style={{ marginLeft: 2,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                        </View>
+                    </Button> 
+                </View>
+                <View style={{flexDirection:"column",flex:1,}}>
+                    <Button onPress={this.onClickTimeType.bind(this,"1小时")}>
+                        <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>1小时</Text>
+                        </View>
+                    </Button> 
+                </View>
+                <View style={{flexDirection:"column",flex:1}}>
+                    <Button onPress={this.onClickTimeType.bind(this,"1天")}>
+                        <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>1天</Text>
+                        </View>
+                    </Button> 
+                </View>
+                <View style={{flexDirection:"column",flex:1}}>
+                    <Button onPress={this.onClickTimeType.bind(this,"1周")}>
+                        <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>1周</Text>
+                        </View>
+                    </Button> 
+                </View>
+                <View style={{flexDirection:"column",flex:1}}>
+                <Button onPress={this.onClickTimeType.bind(this,"1月")}>
+                        <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>1月</Text>
+                        </View>
+                    </Button> 
+                </View>
+                <View style={{flexDirection:"column",flex:1}}>
+                <Button disabled={true}>
+                        <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                        </View>
+                    </Button> 
+                </View>
+            </View> 
+            }  
+            {this.state.isKLine ? 
+                <View style={styles.echartsout} onStartShouldSetResponderCapture={this.onMoveLineView.bind(this)} onResponderRelease={this.onMoveLineViewEnd.bind(this)} onResponderEnd={this.onMoveLineViewEnd.bind(this)}>
+                    {<Echarts option={this.getDataKLine()} width={ScreenWidth} height={300} />}
+                </View>
+            : 
+                <View style={styles.echartsout}>
+                    {<Echarts option={this.getDataLine()} width={ScreenWidth} height={160} />}
+                </View>
+            }
+            <View style={styles.toptabout}>
+                <SegmentedControls tint= {UColor.tintColor} selectedTint= {UColor.fontColor} onSelection={this.selectedTransactionRecord.bind(this) }
+                    selectedOption={ this.state.selectedTransactionRecord } backTint= {UColor.secdColor} options={transactionOption} />
+            </View>
+            {this.state.selectedTransactionRecord == transactionOption[0] || this.state.selectedTransactionRecord == transactionOption[1] ? 
+                <View style={{flex: 1,}}>
+                    {(this.props.ramTradeLog  != null &&  this.props.ramTradeLog .length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
+                    <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
+                            renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
+                            <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
+                            <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
+                            <Text style={{ flex: 3.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
+                            <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                            </View>
+                        }
+                        dataSource={this.state.dataSource.cloneWithRows(this.state.newramTradeLog == null ? [] : this.state.newramTradeLog)} 
+                        renderRow={(rowData, sectionID, rowID) => (                 
+                        <Button onPress={this.openQuery.bind(this,rowData.payer)}>
                             <View style={styles.businessout}>
-                                {rowData.action_name == 'selltoken' ? 
+                                {rowData.action_name == 'sellram' ? 
                                 <View style={styles.liststrip}>
-                                    <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
-                                    <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? this.precisionTransfer(rowData.token_qty,8) : rowData.eos_qty.replace("EOS", "")}</Text>
-                                    <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0 ? this.precisionTransfer(rowData.price,8):''}</Text>
-                                    <Text style={styles.selltime} numberOfLines={1} >{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
+                                    <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
+                                    <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.ram_qty : rowData.eos_qty.replace("EOS", "")}</Text>
+                                    <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0?(rowData.price * 1).toFixed(4):''}</Text>
+                                    <Text style={styles.selltime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                 </View>
                                 :
                                 <View style={styles.liststrip}>
-                                    <Text style={styles.payertext} numberOfLines={1}>{rowData.account}</Text>
+                                    <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
                                     <Text style={styles.buytext} numberOfLines={1}>买 {rowData.eos_qty.replace("EOS", "")}</Text>
-                                    <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0 ? this.precisionTransfer(rowData.price,8):''}</Text>
+                                    <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0?(rowData.price * 1).toFixed(4):''}</Text>
                                     <Text style={styles.buytime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
                                 </View>
                                 }
                             </View>
-                        </Button>      
-                      )}                
-                    /> 
-                    }
-                  </View> :
-                  <View style={{flex: 1,}}>
-                      <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                        dataSource={this.state.dataSource.cloneWithRows(this.props.bigRamRank == null ? [] : this.props.bigRamRank)} 
-                        renderRow={(rowData, sectionID, rowID) => (                 
-                            <Button onPress={this.openQuery.bind(this,rowData.account)}>
-                                <View style={styles.businessRan}>
-                                    <View style={styles.Rankleftout}>
-                                        <Text style={styles.accounttext} numberOfLines={1}>{rowData.account}</Text>
-                                        <Text style={styles.numtext}>排名 {rowData.num}</Text>
-                                    </View>
-                                    <View style={styles.Rankcenterout}>
-                                        <Text style={{fontSize: 12,color: UColor.arrow,}}>盈亏 
-                                        {rowData.profit.indexOf('-') != -1 ?
-                                        <Text style={{fontSize: 12, color: '#FF4C4C',}}> {rowData.profit}</Text>
-                                        :
-                                        <Text style={{fontSize: 12, color: '#5BD91E',}}> {rowData.profit}</Text>
-                                        }
-                                        </Text>
-                                        <Text style={{fontSize: 12,color: UColor.arrow,}}>成本价<Text style={{ fontSize: 12,color: UColor.fontColor,}}> {rowData.historyAverageCost}</Text></Text>
-                                    </View>
-                                    <View style={styles.Rankrightout}>
-                                        <Text style={styles.pertext}>{rowData.per}</Text>
-                                        <Text style={styles.quotatext}>{rowData.ramQuota}</Text>
-                                    </View>
-                                </View>
-                            </Button>
+                        </Button>         
                         )}                
                     /> 
-                  </View>
+                    }
+                </View>: 
+                <View style={{flex: 1,}}>
+
+                {this.state.selectedTransactionRecord == transactionOption[2] ?  
+                    <View style={{flex: 1,}}>
+                        {(this.props.ramBigTradeLog != null &&  this.props.ramBigTradeLog.length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
+                            <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
+                                renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
+                                    <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
+                                    <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
+                                    <Text style={{ flex: 3.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
+                                    <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                                    </View>
+                                }
+                                dataSource={this.state.dataSource.cloneWithRows(this.props.ramBigTradeLog == null ? [] : this.props.ramBigTradeLog)} 
+                                renderRow={(rowData, sectionID, rowID) => (                 
+                                    <Button onPress={this.openQuery.bind(this,rowData.payer)}>
+                                        <View style={styles.businessout}>
+                                            {rowData.action_name == 'sellram' ? 
+                                            <View style={styles.liststrip}>
+                                                <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
+                                                <Text style={styles.selltext} numberOfLines={1}>卖 {(rowData.price == null || rowData.price == '0') ? rowData.ram_qty : rowData.eos_qty.replace("EOS", "")}</Text>
+                                                <Text style={styles.sellpricetext} numberOfLines={1}>{rowData.price != 0?(rowData.price * 1).toFixed(4):''}</Text>
+                                                <Text style={styles.selltime} numberOfLines={1} >{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
+                                            </View>
+                                            :
+                                            <View style={styles.liststrip}>
+                                                <Text style={styles.payertext} numberOfLines={1}>{rowData.payer}</Text>
+                                                <Text style={styles.buytext} numberOfLines={1}>买 {rowData.eos_qty.replace("EOS", "")}</Text>
+                                                <Text style={styles.buypricetext} numberOfLines={1}>{rowData.price != 0?(rowData.price * 1).toFixed(4):''}</Text>
+                                                <Text style={styles.buytime} numberOfLines={1}>{moment(rowData.record_date).add(8,'hours').fromNow()}</Text>
+                                            </View>
+                                            }
+                                        </View>
+                                    </Button>      
+                                )}                
+                            /> 
+                        }
+                    </View> :
+                    <View style={{flex: 1,}}>
+                        <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
+                            dataSource={this.state.dataSource.cloneWithRows(this.props.bigRamRank == null ? [] : this.props.bigRamRank)} 
+                            renderRow={(rowData, sectionID, rowID) => (                 
+                                <Button onPress={this.openQuery.bind(this,rowData.account)}>
+                                    <View style={styles.businessRan}>
+                                        <View style={styles.Rankleftout}>
+                                            <Text style={styles.accounttext} numberOfLines={1}>{rowData.account}</Text>
+                                            <Text style={styles.numtext}>排名 {rowData.num}</Text>
+                                        </View>
+                                        <View style={styles.Rankcenterout}>
+                                            <Text style={{fontSize: 12,color: UColor.arrow,}}>盈亏 
+                                            {rowData.profit.indexOf('-') != -1 ?
+                                            <Text style={{fontSize: 12, color: '#FF4C4C',}}> {rowData.profit}</Text>
+                                            :
+                                            <Text style={{fontSize: 12, color: '#5BD91E',}}> {rowData.profit}</Text>
+                                            }
+                                            </Text>
+                                            <Text style={{fontSize: 12,color: UColor.arrow,}}>成本价<Text style={{ fontSize: 12,color: UColor.fontColor,}}> {rowData.historyAverageCost}</Text></Text>
+                                        </View>
+                                        <View style={styles.Rankrightout}>
+                                            <Text style={styles.pertext}>{rowData.per}</Text>
+                                            <Text style={styles.quotatext}>{rowData.ramQuota}</Text>
+                                        </View>
+                                    </View>
+                                </Button>
+                            )}                
+                        /> 
+                    </View>
                 }
             </View>}
-        
-      </ScrollView>  
+        </ScrollView>  
     </KeyboardAvoidingView> 
 
-    <Modal style={styles.touchableouts} animationType={'none'} transparent={true} onRequestClose={() => {this.setState({modal: false}); }} visible={this.state.modal}>
-          <TouchableOpacity onPress={() => this.setState({ modal: false })} style={styles.touchable} activeOpacity={1.0}>
-            <TouchableOpacity style={styles.touchable} activeOpacity={1.0}>
-
-              <View style={styles.touchableout}>
-               {/* <TouchableOpacity onPress={this._leftTopClick.bind()}> 
-                <View style={{ paddingRight: 0,alignItems: 'flex-end', }} >
-                    <Image source={UImage.tx_slide0} style={styles.HeadImg}/>
-                </View>
-                </TouchableOpacity> */}
-                <View style={styles.ebhbtnout}>
-                    <View style={{width:'37%'}}>
-                        <View style={{ flex:1,flexDirection:"row",alignItems: 'center', }}>
-                            <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>内存</Text>
-                        </View>
-                    </View>
-                    <View style={{width:'28%'}}>
-                        <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start", }}>
-                            <Text style={{fontSize:15,marginLeft:0,color:UColor.fontColor}}>涨幅</Text>
-                        </View>
-                    </View>
-                    <View style={{width:'35%'}}>
-                        <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end", }}>
-                            <Text style={{ fontSize:15, color:UColor.fontColor, 
-                                textAlign:'center', marginRight:5}}>单价(EOS)</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={styles.ebhbtnout2}>
-                  <Button onPress={this.selectRamTx.bind(this)}>
-                      <View style={styles.sliderow}>
-                        <View style={{width:'34%'}}>
-                            <View style={{ flex:1,flexDirection:"row",alignItems: 'center'}}>
-                                <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>RAM</Text>
-                            </View>
-                        </View>
-                        <View style={{width:'31%'}}>
-                            <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start"}}>
-                            <Text style={(this.props.ramInfo && this.props.ramInfo.increase>=0)?styles.greenincup:styles.redincdo}> {this.props.ramInfo ? (this.props.ramInfo.increase > 0 ? '+' + (this.props.ramInfo.increase * 100).toFixed(2) : (this.props.ramInfo.increase * 100).toFixed(2)): '0.00'}%</Text>
-                            </View>
-                        </View>
-                        <View style={{width:'35%'}}>
-                            <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
-                                <Text style={{ fontSize:15, color:UColor.fontColor, 
-                                    textAlign:'center', marginRight:5}}>{this.props.ramInfo ? (this.props.ramInfo.price * 1).toFixed(4) : '0.0000'}</Text>
-                            </View>
-                        </View>
-                      </View>
-                  </Button>
-                </View>
-
-                <View style={styles.ebhbtnout}>
-                    <View style={{width:'37%'}}>
-                        <View style={{ flex:1,flexDirection:"row",alignItems: 'center', }}>
-                            <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>币种</Text>
-                        </View>
-                    </View>
-                    <View style={{width:'28%'}}>
-                        <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start", }}>
-                            <Text style={{fontSize:15,marginLeft:0,color:UColor.fontColor}}>涨幅</Text>
-                        </View>
-                    </View>
-                    <View style={{width:'35%'}}>
-                        <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end", }}>
-                            <Text style={{ fontSize:15, color:UColor.fontColor,textAlign:'center', marginRight:5}}>单价(EOS)</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <ListView initialListSize={5} 
-                  renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={{ height: 0.5, backgroundColor: UColor.secdColor ,}} />}
-                  enableEmptySections={true} dataSource={this.state.dataSource.cloneWithRows(this.props.etlist==null?[]:this.props.etlist)}
-                  renderRow={(rowData) => (
-                    <Button onPress={this.selectETtx.bind(this, rowData)}>
-                      <View style={styles.sliderow}>
-                        <View style={{width:'35%'}}>
-                            <View style={{ flex:1,flexDirection:"row",alignItems: 'center'}}>
-                                <Text style={{marginLeft:10,fontSize:15,color:UColor.fontColor}}>{rowData.base_balance_uom == null ? "" : rowData.base_balance_uom}</Text>
-                            </View>
-                        </View>
-                        <View style={{width:'30%'}}>
-                            <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-start"}}>
-                                <Text style={rowData.increase>0?styles.greenincup:styles.redincdo}>{rowData.increase>0?'+'+rowData.increase:rowData.increase}</Text>
-                            </View>
-                        </View>
-                        <View style={{width:'35%'}}>
-                            <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
-                                <Text style={{ fontSize:15, color:UColor.fontColor, 
-                                    textAlign:'center', marginRight:5}}>{(rowData.price == null || rowData.price == "") ? "0" : this.precisionTransfer(rowData.price,8)}</Text>
-                            </View>
-                        </View>
-                      </View>
-                    </Button> 
-                  )}
-                />
-           </View>
-          </TouchableOpacity>
-      </TouchableOpacity>
-    </Modal>
-
     <Modal style={styles.businesmodal} animationType={'slide'} transparent={true} onRequestClose={() => {this.setState({business: false}) }} visible={this.state.business}>
-    <TouchableOpacity onPress={() => this.setState({ business: false })} style={styles.businestouchable} activeOpacity={1.0}> 
-      <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
-        <TouchableOpacity style={styles.busines} activeOpacity={1.0} >
-            <View style={styles.businesout}>
-                <View style={styles.headbusines}>
-                    <View style={styles.businestab}>  
-                        {this.businesButton(styles.buytab, this.state.isBuy, 'isBuy', '买')}  
-                        {this.businesButton(styles.selltab, this.state.isSell, 'isSell', '卖')}  
-                    </View>
-                    <View style={{flex: 1,flexDirection: 'row',}}> 
-                        <TouchableOpacity onPress={this.openQuery.bind(this,'busines')} style={styles.busrecord} activeOpacity={0.8}>
-                            <Image source={ UImage.record } style={styles.busrecordimg} resizeMode= 'contain'/>
-                            <Text style={styles.busrecordtext}> 我的记录</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.setState({ business: false })} activeOpacity={0.8}>
-                            <Image source={ UImage.redclose } style={styles.redclose}  resizeMode='contain'/>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
-                {this.state.isBuy?<View>
-                    <View style={styles.greeninptout}>
-                        <Text style={styles.greenText}>单价: {this.props.etinfo ? this.precisionTransfer(this.props.etinfo.price,8) : '0'} EOS</Text>
-                        <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0" : this.state.balance}</Text>
-                    </View>
-                    <View style={styles.inputout}>
-                        <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyETAmount + ''} returnKeyType="go" 
-                        selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow} 
-                        placeholder="输入购买的额度" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
-                        onChangeText={(buyETAmount) => this.setState({ buyETAmount: this.chkBuyEosQuantity(buyETAmount), 
-                            eosToET: this.eosToET(buyETAmount, this.props.etinfo?this.props.etinfo.price:'')})}
-                        />
-                        <Text style={styles.unittext}>EOS</Text>
-                    </View>
-                    <View style={styles.inputout}>
-                        <Text style={styles.conversion}>≈{this.precisionTransfer(this.state.eosToET,8)}</Text>
-                        <Text style={styles.unittext}>{this.state.tradename}</Text>
-                    </View>
-                    <View style={styles.inptoutsource}>
-                        <View style={styles.outsource}>
-                            <View style={styles.progressbar}>
-                                <Slider maximumValue={this.state.balance*1} minimumValue={0} step={0.0001} value={this.state.buyETAmount*1}
-                                onSlidingComplete={(value)=>this.setState({ buyETAmount: value.toFixed(4), eosToET: this.eosToET(value.toFixed(4), this.props.etinfo?this.props.etinfo.price:'')})}
-                                maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
+        <TouchableOpacity onPress={() => this.setState({ business: false })} style={styles.businestouchable} activeOpacity={1.0}> 
+            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
+                <TouchableOpacity style={styles.busines} activeOpacity={1.0}>
+                    <View style={styles.businesout}>
+                        <View style={styles.headbusines}>
+                            <View style={styles.businestab}>  
+                                {this.businesButton(styles.buytab, this.state.isBuy, 'isBuy', '买')}  
+                                {this.businesButton(styles.selltab, this.state.isSell, 'isSell', '卖')}  
+                            </View>
+                            <View style={{flex: 1,flexDirection: 'row',}}> 
+                                <TouchableOpacity onPress={this.openQuery.bind(this,'busines')} style={styles.busrecord} activeOpacity={0.8}>
+                                    <Image source={ UImage.record } style={styles.busrecordimg} resizeMode= 'contain'/>
+                                    <Text style={styles.busrecordtext}> 我的记录</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.setState({ business: false })} activeOpacity={0.8}>
+                                    <Image source={ UImage.redclose } style={styles.redclose}  resizeMode='contain'/>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
+                        {this.state.isBuy?<View>
+                            <View style={styles.greeninptout}>
+                                <Text style={styles.greenText}>单价: {this.props.ramInfo ? (this.props.ramInfo.price * 1).toFixed(4) : '0.0000'} EOS/KB</Text>
+                                <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0.0000" :this.state.balance} EOS</Text>
+                            </View>
+                            <View style={styles.inputout}>
+                                <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyRamAmount + ''} returnKeyType="go" 
+                                selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow} 
+                                placeholder="输入购买的额度" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
+                                onChangeText={(buyRamAmount) => this.setState({ buyRamAmount: this.chkBuyEosQuantity(buyRamAmount), 
+                                    eosToKB: this.eosToKB(buyRamAmount, this.props.ramInfo?this.props.ramInfo.price:'')})}
                                 />
-                                <View style={styles.paragraph}>
-                                    <Text style={styles.subsection}>0</Text>
-                                    <Text style={styles.subsection}>1/3</Text>     
-                                    <Text style={styles.subsection}>2/3</Text>
-                                    <Text style={styles.subsection}>ALL</Text>                                
-                                </View>    
+                                <Text style={styles.unittext}>EOS</Text>
                             </View>
-                            <Button onPress={this.buy.bind(this)}>
-                                <View style={styles.botn} backgroundColor={'#42B324'}>
-                                    <Text style={styles.botText}>买入</Text>
-                                </View>
-                            </Button> 
-                        </View>
-                    </View>
-                </View>
-                
-                :
-                <View>
-                    <View style={styles.greeninptout}>
-                        <Text style={styles.redText}>单价: {this.props.etinfo ? this.precisionTransfer(this.props.etinfo.price,8) : '0.0000'} EOS</Text>
-                        <Text style={styles.inptTitle}>可卖: {(this.state.myETAvailable == null || this.state.myETAvailable == '') ? '0' : this.precisionTransfer(this.state.myETAvailable,8)} {this.state.tradename}</Text>
-                    </View>
-                  <View style={styles.inputout}>
-                      <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellET + ''} returnKeyType="go" 
-                      selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                      placeholder="输入出售数量" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
-                      onChangeText={(sellET) => this.setState({ sellET: this.chkInputSellET(sellET), etToEos: this.etToEos(sellET, this.props.etinfo?this.props.etinfo.price:'')})}
-                      />
-                      <Text style={styles.unittext}>{this.state.tradename}</Text>
-                  </View>
-                  <View style={styles.inputout}>
-                      <Text style={styles.conversion}>≈{(this.state.etToEos == null || this.state.etToEos == '') ? '0' : this.state.etToEos}</Text>
-                      <Text style={styles.unittext}>EOS</Text>
-                  </View>
-                  <View style={styles.inptoutsource}>
-                        <View style={styles.outsource}>
-                            <View style={styles.progressbar}>
-                                <Slider maximumValue={this.state.myETAvailable*1} minimumValue={0} step={0.0001} value={this.state.sellET*1}
-                                    onSlidingComplete={(value)=>this.setState({ sellET: (value/1).toFixed(4), etToEos: this.etToEos(value/1, this.props.etinfo?this.props.etinfo.price:'')})}
-                                    maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
-                                    />
-                                <View style={styles.paragraph}>
-                                    <Text style={styles.subsection}>0</Text>
-                                    <Text style={styles.subsection}>1/3</Text>     
-                                    <Text style={styles.subsection}>2/3</Text>
-                                    <Text style={styles.subsection}>ALL</Text>                                
-                                </View> 
+                            <View style={styles.inputout}>
+                                <Text style={styles.conversion}>≈{this.state.eosToKB}</Text>
+                                <Text style={styles.unittext}>KB</Text>
                             </View>
-                            <Button onPress={this.sell.bind(this)}>
-                                <View style={styles.botn} backgroundColor={UColor.showy}>
-                                    <Text style={styles.botText}>卖出</Text>
+                            <View style={styles.inptoutsource}>
+                                <View style={styles.outsource}>
+                                    <View style={styles.progressbar}>
+                                        <Slider maximumValue={this.state.balance*1} minimumValue={0} step={0.0001} value={this.state.buyRamAmount*1}
+                                        onSlidingComplete={(value)=>this.setState({ buyRamAmount: value.toFixed(4), eosToKB: this.eosToKB(value.toFixed(4), this.props.ramInfo?this.props.ramInfo.price:'')})}
+                                        maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
+                                        />
+                                        <View style={styles.paragraph}>
+                                            <Text style={styles.subsection}>0</Text>
+                                            <Text style={styles.subsection}>1/3</Text>     
+                                            <Text style={styles.subsection}>2/3</Text>
+                                            <Text style={styles.subsection}>ALL</Text>                                
+                                        </View>    
+                                    </View>
+                                    <Button onPress={this.buyram.bind(this)}>
+                                        <View style={styles.botn} backgroundColor={'#42B324'}>
+                                            <Text style={styles.botText}>买入</Text>
+                                        </View>
+                                    </Button> 
                                 </View>
-                            </Button> 
+                            </View>
                         </View>
-                  </View>
-                </View>}
-            </View>
+                        :
+                        <View>
+                            <View style={styles.greeninptout}>
+                                <Text style={styles.redText}>单价: {this.props.ramInfo ? (this.props.ramInfo.price * 1).toFixed(4) : '0.0000'} EOS/KB</Text>
+                                <Text style={styles.inptTitle}>可卖: {(this.state.myRamAvailable == null || this.state.myRamAvailable == '') ? '0' : (this.state.myRamAvailable/1024).toFixed(4)} KB</Text>
+                            </View>
+                        <View style={styles.inputout}>
+                            <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellRamBytes + ''} returnKeyType="go" 
+                            selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
+                            placeholder="输入出售数量" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
+                            onChangeText={(sellRamBytes) => this.setState({ sellRamBytes: this.chkInputSellRamBytes(sellRamBytes), kbToEos: this.kbToEos(sellRamBytes, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                            />
+                            <Text style={styles.unittext}>KB</Text>
+                        </View>
+                        <View style={styles.inputout}>
+                            <Text style={styles.conversion}>≈{(this.state.kbToEos == null || this.state.kbToEos == '') ? '0' : this.state.kbToEos}</Text>
+                            <Text style={styles.unittext}>EOS</Text>
+                        </View>
+                        <View style={styles.inptoutsource}>
+                                <View style={styles.outsource}>
+                                    <View style={styles.progressbar}>
+                                        <Slider maximumValue={this.state.myRamAvailable*1} minimumValue={0} step={0.0001} value={this.state.sellRamBytes*1024}
+                                            onSlidingComplete={(value)=>this.setState({ sellRamBytes: (value/1024).toFixed(4), kbToEos: this.kbToEos(value/1024, this.props.ramInfo?this.props.ramInfo.price:'')})}
+                                            maximumTrackTintColor={UColor.tintColor} minimumTrackTintColor={UColor.tintColor} thumbTintColor={UColor.tintColor}
+                                            />
+                                        <View style={styles.paragraph}>
+                                            <Text style={styles.subsection}>0</Text>
+                                            <Text style={styles.subsection}>1/3</Text>     
+                                            <Text style={styles.subsection}>2/3</Text>
+                                            <Text style={styles.subsection}>ALL</Text>                                
+                                        </View> 
+                                    </View>
+                                    <Button onPress={this.sellram.bind(this)}>
+                                        <View style={styles.botn} backgroundColor={UColor.showy}>
+                                            <Text style={styles.botText}>卖出</Text>
+                                        </View>
+                                    </Button> 
+                                </View>
+                        </View>
+                        </View>}
+                    </View>
+                </TouchableOpacity>
+            </KeyboardAvoidingView>
         </TouchableOpacity>
-        </KeyboardAvoidingView>
-      </TouchableOpacity>
     </Modal>
   </View>
   }
@@ -1337,38 +1287,6 @@ const styles = StyleSheet.create({
       flexDirection:'column',
       backgroundColor: UColor.secdColor,
     },
-    headerTitle: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop:Platform.OS == 'ios' ? 30 : 20,
-        paddingBottom: 5,
-        backgroundColor: UColor.mainColor,
-      },
-    leftoutTitle: {
-        paddingLeft: 15
-      },
-    HeadImg: {
-        width: 25,
-        height:15,
-        marginHorizontal:1,
-    },
-    Rightout: {
-        paddingRight: 15
-      },
-    imgTeOy: {
-        width: 25,
-        height: 15,
-        marginHorizontal:5,
-      },
-
-    HeadTitle: {
-    flex: 1,
-    paddingLeft: 60,
-    paddingHorizontal: 20,
-    justifyContent: 'center', 
-    },
-    
     header: {
       width: ScreenWidth,
       flexDirection: 'row',
@@ -1377,7 +1295,7 @@ const styles = StyleSheet.create({
     },
     leftout: {
         flexDirection: "row",
-        flex: 9,
+        flex: 6,
         height: 50,
     },
     nameout: {
@@ -1407,7 +1325,7 @@ const styles = StyleSheet.create({
     },
     rightout: {
         flexDirection:'column',
-        flex:7,
+        flexGrow:1,
         alignItems:"flex-end",
     },
     titleout: {
@@ -1430,7 +1348,7 @@ const styles = StyleSheet.create({
     },
     present: {
         color: '#fff',
-        fontSize: 18,
+        fontSize: 20,
         textAlign:'center'
     },
 
@@ -1453,12 +1371,12 @@ const styles = StyleSheet.create({
       flexDirection:"column"
     },
     incup:{
-      fontSize:18,
+      fontSize:20,
       color:'#F25C49',
       textAlign:'center',
     },
     incdo:{
-      fontSize:18,
+      fontSize:20,
       color:'#25B36B',
       textAlign:'center',
     },
@@ -1536,30 +1454,30 @@ const styles = StyleSheet.create({
         color: UColor.arrow
     },
     greeninptout: {
-      height: 50,
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      paddingHorizontal: 20,
+        height: 50,
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        paddingHorizontal: 20,
     },
     greenText: {
-      flex: 1,
-      fontSize: 14, 
-      color: "#42B324", 
-      textAlign: "left"
+        flex: 1,
+        fontSize: 14,
+        color: "#42B324",
+        textAlign: "left"
     },
 
     redText: {
-      flex: 1,
-      fontSize: 14, 
-      color: UColor.showy, 
-      textAlign: "left"
+        flex: 1,
+        fontSize: 14,
+        color: UColor.showy,
+        textAlign: "left"
     },
 
     inptTitle: {
-      flex: 1,
-      fontSize: 14, 
-      color: UColor.fontColor, 
-      textAlign: "right"
+        flex: 1,
+        fontSize: 14,
+        color: UColor.fontColor,
+        textAlign: "right"
     },
 
     inputout: {
@@ -1704,82 +1622,6 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
 
-    sliderow:{
-        flex:1,
-        flexDirection:"row",
-        borderBottomColor: '#4D607E',
-        borderBottomWidth: 0.6,
-        height: 40, 
-      },
-    touchableouts: {
-        flex: 1,
-        flexDirection: "column",
-      },
-    touchable: {
-        flex: 1, 
-        justifyContent: 'center', 
-        alignItems: 'flex-start', 
-        backgroundColor: UColor.mask,
-    },
-    touchableout: {
-        width: (ScreenWidth * 2)/ 3, 
-        height: ScreenHeight, 
-        backgroundColor: '#4D607E', 
-        alignItems: 'center', 
-        paddingTop: 40,
-    },
-    touchablelist: {
-        width: '100%', 
-        borderBottomWidth: 1, 
-        borderBottomColor: '#4D607E', 
-    },
-
-  imgBtn: {
-    width: 30,
-    height: 30,
-    margin:5,
-  },
-  
-  ebhbtnout: {
-    width: '100%', 
-    height: 30, 
-    flexDirection: "row", 
-    alignItems: 'flex-start', 
-    borderTopWidth: 1, 
-    borderTopColor: UColor.mainColor, 
-    backgroundColor:'#586888',
-   },
-   ebhbtnout2: {
-    width: '100%', 
-    height: 40, 
-    flexDirection: "column", 
-    alignItems: 'flex-start', 
-    borderTopWidth: 1, 
-    borderTopColor: UColor.mainColor, 
-    backgroundColor:'#4D607E',
-   },
-    establishout: {
-      flex: 1, 
-      flexDirection: "row",
-      alignItems: 'center', 
-      height: 30, 
-    },
-    establishimg:{
-      width: 25, 
-      height: 25, 
-    },
-
-    greenincup:{
-        fontSize:15,
-        color:'#25B36B',
-      },
-    redincdo:{
-        fontSize:15,
-        color:'#F25C49',
-    },
-
-
-
     businesmodal: {
         flex: 1,
         flexDirection:'column',
@@ -1793,8 +1635,8 @@ const styles = StyleSheet.create({
     },
     busines: {
         width: ScreenWidth , 
-        height: Platform.OS == 'ios' ? 310:295,
-        paddingBottom:Platform.OS == 'ios' ? 49:49.5,
+        height: Platform.OS == 'ios' ? 260:245.5,
+        // paddingBottom:Platform.OS == 'ios' ? 49:49.5,
     },
     businesout: {
         flex: 1,
@@ -1880,6 +1722,7 @@ const styles = StyleSheet.create({
       },
 });
 
+
 var upColor = '#f44961';
 var downColor = '#3fcfb4';
 
@@ -1916,8 +1759,7 @@ function calculateMA(data, dayCount) {
     return result;
 }
 
-
-function combineETKLine(data) {
+function combineRamKLine(data) {
     return {
         backgroundColor: "#2f3b50",
         animation: false,
@@ -1929,7 +1771,11 @@ function combineETKLine(data) {
         tooltip: {
             trigger: 'none',
             axisPointer: {
-                type: 'cross'
+                type: 'cross',
+                crossStyle: {
+                    color: "#fff",
+                    width: 0.5,
+                },
             },
             backgroundColor: 'rgba(245, 245, 245, 0.8)',
             borderWidth: 1,
@@ -1942,7 +1788,7 @@ function combineETKLine(data) {
                 var obj = {top: 10};
                 obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
                 return obj;
-            }
+            },
             // extraCssText: 'width: 170px'
         },
         axisPointer: {
@@ -1980,23 +1826,26 @@ function combineETKLine(data) {
                 color: upColor
             }]
         },
+        color:['#ec0000','#6e6e46','#835098','#4b9373','#4b7793'],
         legend: {
             data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
-            left: '20%',
+            // left: '20%',
             textStyle:{
                 color: "#7382a1",
-                fontSize: 6,
-            }
+                fontSize: 10,
+            },
+            // inactiveColor:upColor,
+            itemHeight: 12,
         },
         grid: [
             {
                 top: '8%',
-                left: '15%',
+                left: '13%',
                 right: '4%',
                 height: '60%'
             },
             {
-                left: '15%',
+                left: '13%',
                 right: '4%',
                 top: '70%',
                 height: '30%',
@@ -2012,7 +1861,7 @@ function combineETKLine(data) {
                 axisLabel: {
                     show: true,
                     color: "#7382a1",
-                    fontSize: 2,
+                    fontSize: 8,
                 },
                 axisLine: {
                     show: true,
@@ -2078,9 +1927,9 @@ function combineETKLine(data) {
                     fontSize: 2,
                     formatter: function(value, index) {
                         if(value == null || value == ''){
-                            return parseFloat('0').toExponential(2);
+                            return '0.0000';
                         }
-                        return parseFloat(value).toExponential(2);
+                        return value.toFixed(4);
                     },
                 },
                 axisLine: {
@@ -2217,4 +2066,4 @@ function combineETKLine(data) {
     };
 }
 
-export default Transaction;
+export default Ram;
