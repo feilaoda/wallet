@@ -41,6 +41,8 @@ class AdminChange extends BaseComponent {
     this.state = {
         ownerPk: '',
         activePk: '',
+        accountName:'',
+        threshold:'1',//权阀值
       }
   }
     //组件加载完成
@@ -76,50 +78,45 @@ class AdminChange extends BaseComponent {
         
 
       <ScrollView keyboardShouldPersistTaps="always">
-        <View style={styles.header}>
-            <View style={styles.inptoutbg}>
+        {/* <View style={styles.header}> */}
+            {/* <View style={styles.inptoutbg}> */}
+
+                {this.state.activePk != '' && 
+                <View style={styles.inptoutgo} >
+                    <View style={{flexDirection:'row',flex:1}}>
+                            <Text style={styles.inptitle}>Active关联公钥（管理者）</Text>
+                            <View style={styles.buttonView}>
+                                <Text style={styles.weightText}>权阀总值  </Text>
+                                <Text style={styles.buttonText}>{this.state.threshold}</Text>
+                            </View>
+                    </View>
+                    <View style={{flexDirection:'row',flex:1}}>
+                        <Text style={styles.pktext}>{this.state.activePk}</Text>
+                    </View>
+                </View>
+                }
+
 
                 {this.state.activePk != '' && <View style={styles.inptoutgo} >
                     <View style={{flexDirection:'row',flex:1}}>
-                        <Text style={styles.inptitle}>Active关联公钥（管理者）</Text>
-                        <TouchableHighlight onPress={() => { this.manageByActive() }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
+                            <Text style={styles.inptitle}>Active关联公钥（管理者）</Text>
+
                             <View style={styles.buttonView}>
-                                <Image source={UImage.adminAddB} style={styles.imgBtn} />
-                                <Text style={styles.buttonText}>添加用户</Text>
+                                <Text style={styles.weightText}>权阀总值  </Text>
+                                <Text style={styles.buttonText}>{this.state.weightValue}</Text>
                             </View>
-                        </TouchableHighlight>
+
                     </View>
-                    <View style={styles.inptgo}>
-                        <Text style={styles.inptext}>{this.state.activePk}</Text>
+                    <View style={{flexDirection:'row',flex:1}}>
+                        <Text style={styles.pktext}>{this.state.activePk}</Text>
                     </View>
                 </View>
                 }
 
-                {this.state.ownerPk != '' && <View style={styles.inptoutgo} >
-                    <View style={{flexDirection:'row',}}>
-                        <Text style={styles.inptitle}>Owner关联公钥（拥有者）</Text>
-                        <TouchableHighlight onPress={() => { this.transferByOwner() }} style={{flex: 1,}} activeOpacity={1} underlayColor={UColor.mainColor}>
-                            <View style={styles.buttonView}>
-                                <Image source={UImage.adminB} style={styles.imgBtn} />
-                                <Text style={styles.buttonText}>过户操作</Text>
-                            </View>
-                        </TouchableHighlight>
-                    </View>
-                    <View style={styles.inptgo}>
-                        <Text style={styles.inptext}>{this.state.ownerPk}</Text>
-                    </View>
-                </View>
-                }
-            </View>
-            <View style={styles.textout}>
-                <Text style={styles.titletext}>什么是拥有者权限？</Text>
-                <Text style={styles.explaintext}>Owner 代表了对账户的所有权，用于账号过户操作。</Text>
-                <Text style={styles.titletext}>什么是管理者权限？</Text>
-                <Text style={styles.explaintext}>Active 用于日常使用，比如转账，投票等。</Text>
-                <Text style={styles.titletext}>什么是权重阈值？</Text>
-                <Text style={styles.explaintext}>权重阈值是使用该权限的最低权重要求。</Text>
-            </View>
-        </View>
+
+              
+            {/* </View>
+        </View> */}
       </ScrollView>
     </View>
   }
@@ -135,7 +132,7 @@ const styles = StyleSheet.create({
 
     },
     header: {
-        marginTop: 10,
+        marginTop: 50,
         backgroundColor: UColor.secdColor,
     },
     inptoutbg: {
@@ -143,10 +140,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingTop: 20,
         paddingBottom: 30,
+
+
     },
     inptoutgo: {
+        marginTop: 10,
+        marginBottom: 10,
         paddingBottom: 20,
         backgroundColor: UColor.mainColor,
+        marginLeft:10,
+        marginRight:10,
+        
     },
     inptitle: {
         // flex: 1,
@@ -156,6 +160,7 @@ const styles = StyleSheet.create({
     },
      // 按钮  
     buttonView: {
+        flex: 1,
         flexDirection: "row",
         // paddingHorizontal: 5,
         justifyContent: 'flex-end',
@@ -202,6 +207,18 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginHorizontal:5,
       },
+
+    pktext: {
+        fontSize: 14,
+        lineHeight: 25,
+        color: UColor.arrow,
+    },
+    weightText: {
+        fontSize: 12,
+        lineHeight: 30,
+        color:  UColor.arrow,
+    },
+
 });
 
 export default AdminChange;
