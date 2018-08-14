@@ -1,14 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux'
-import {StyleSheet, View, Text, Image,Platform, Clipboard,} from 'react-native';
+import {StyleSheet, View, Text, Image, Platform, Clipboard,} from 'react-native';
+import UImage from '../../utils/Img';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
 import QRCode from "react-native-qrcode-svg";
-import { EasyShowLD } from '../../components/EasyShow'
-
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
-
+import ScreenUtil from '../../utils/ScreenUtil'
 
 class AssistantQrcode extends BaseComponent {
   static navigationOptions = {
@@ -29,11 +27,12 @@ class AssistantQrcode extends BaseComponent {
 
   componentDidMount() {
   }
+
   componentWillUnmount(){
     //结束页面前，资源释放操作
     super.componentWillUnmount();
-    
   }
+
   copy() {
     Clipboard.setString(this.state.WeChat);
     EasyToast.show("复制成功")
@@ -41,14 +40,12 @@ class AssistantQrcode extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-            
-
         <View style={styles.outsource}>
             <Text style={styles.accountText}>微信号：{this.state.WeChat}</Text>
         </View>
         <View style={styles.codeout}>
             <View style={styles.qrcode}>
-                <QRCode size={170} style={{ width: 170 }}  value={"https://u.wechat.com/IFNmi5QiQirtoO-MrzB55EE"}/>
+                <QRCode size={170} value={"https://u.wechat.com/IFNmi5QiQirtoO-MrzB55EE"}/>
             </View>
         </View>
         <Text style={styles.prompttext}>微信扫一扫，添加好友</Text>
@@ -57,6 +54,10 @@ class AssistantQrcode extends BaseComponent {
               <Text style={styles.btntext}>复制微信号</Text>
           </View>
         </Button>
+        <View style={styles.logout}>
+            <Image source={UImage.bottom_log} style={styles.logimg}/>
+            <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
+        </View>
   </View>
   }
 }
@@ -69,52 +70,66 @@ const styles = StyleSheet.create({
   },
 
   outsource: {
-    height: 50,
-    marginVertical: 20,
-    paddingHorizontal: 25,
+    height:  ScreenUtil.autoheight(50), 
+    marginVertical:  ScreenUtil.autoheight(20), 
+    paddingHorizontal: ScreenUtil.autowidth(25),
     backgroundColor: UColor.mainColor,
     justifyContent: "center",
     
   },  
   accountText: {
     color: UColor.arrow,
-    fontSize: 15,
-    paddingLeft: 2,
+    fontSize: ScreenUtil.setSpText(15),
+    paddingLeft: ScreenUtil.autowidth(2),
     textAlign: "left",
   },
 
   codeout: {
-    marginTop: 80,
+    marginTop: ScreenUtil.autoheight(25),
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row"
   },
   qrcode: {
     backgroundColor: UColor.fontColor,
-    padding: 5
+    padding: ScreenUtil.autowidth(5),
   },
 
   prompttext: {
-    marginTop: 20,
-    marginBottom: 50,
+    marginVertical: ScreenUtil.autoheight(15),
     color: UColor.fontColor,
-    fontSize: 15,
+    fontSize: ScreenUtil.setSpText(15),
     textAlign: "center"
   },
 
-
   btnloginUser: {
-    height: 45,
+    height: ScreenUtil.autoheight(45),
     backgroundColor:  UColor.tintColor,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 20,
+    margin: ScreenUtil.autowidth(20),
     borderRadius: 5
   },
   btntext: {
-    fontSize:17,
+    fontSize:ScreenUtil.setSpText(17),
     color: UColor.fontColor,
   },
+
+  logout:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: ScreenUtil.autoheight(20),
+  },
+  logimg: {
+    width: ScreenUtil.autowidth(50), 
+    height: ScreenUtil.autowidth(50)
+  },
+  logtext: {
+    fontSize: ScreenUtil.setSpText(14),
+    color: UColor.arrow,
+    lineHeight: ScreenUtil.autoheight(30),
+  }
   
 });
 

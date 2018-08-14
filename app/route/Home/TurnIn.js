@@ -1,32 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  NativeModules,
-  StatusBar,
-  BackHandler,
-  DeviceEventEmitter,
-  InteractionManager,
-  Clipboard,
-  ListView,
-  StyleSheet,
-  Image,
-  ScrollView,
-  View,
-  RefreshControl,
-  Text,
-  TextInput,
-  Platform,
-  Dimensions,
-  Modal,
-  TouchableHighlight,
-  TouchableOpacity
-} from "react-native";
-import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
-import store from "react-native-simple-store";
+import {DeviceEventEmitter,Clipboard,StyleSheet,Image,ScrollView,View,Text,TextInput,Platform,Dimensions,Modal,TouchableHighlight,TouchableOpacity} from "react-native";
 import UColor from "../../utils/Colors";
 import Button from "../../components/Button";
 import UImage from "../../utils/Img";
 import AnalyticsUtil from "../../utils/AnalyticsUtil";
+import ScreenUtil from '../../utils/ScreenUtil'
 import QRCode from "react-native-qrcode-svg";
 const maxHeight = Dimensions.get("window").height;
 import { EasyToast } from "../../components/Toast";
@@ -136,68 +115,39 @@ class TurnIn extends BaseComponent {
   }
 
   render() {
-    // const c = this.props.navigation.state.params.coins;
     return (
-      <View style={styles.container}>
-              
-
-        <ScrollView keyboardShouldPersistTaps="always">
-          <TouchableOpacity
-            activeOpacity={1.0}
-            onPress={this.dismissKeyboardClick.bind(this)}
-          >
-            <View style={styles.taboutsource}>
-              <View style={styles.outsource}>
-                <Text style={styles.accountText}>
-                  账户：{this.props.defaultWallet == null
-                    ? ""
-                    : this.props.defaultWallet.account}
-                </Text>
-                <View style={styles.codeout}>
-                  <View style={styles.qrcode}>
-                    <QRCode
-                      size={170}
-                      style={{ width: 170 }}
-                      value={
-                        'eos:' +
-                        this.props.defaultWallet.account +
-                        '?amount=' +
-                        ((this.state.amount == "")?'0':this.state.amount) +
-                        '&token=EOS'
-                      }
-                    />
-                  </View>
+      <View style={styles.container}>     
+        <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)} style={{flex: 1,}}>
+          <View style={styles.taboutsource}>
+            <View style={styles.outsource}>
+              <Text style={styles.accountText}>账户：{this.props.defaultWallet == null ? "" : this.props.defaultWallet.account}</Text>
+              <View style={styles.codeout}>
+                <View style={styles.qrcode}>
+                  <QRCode size={170} style={{ width: 170 }} value={'eos:' + this.props.defaultWallet.account + '?amount=' + ((this.state.amount == "")?'0':this.state.amount) + '&token=EOS'}/>
                 </View>
-                <Text style={styles.prompttext}>扫一扫，向我转账</Text>
-                <View style={styles.inptoutsource}>
-                <Text style={styles.tokenText} />
-                  <TextInput
-                    autoFocus={false}
-                    onChangeText={amount =>
-                      this.setState({ amount: this.chkPrice(amount) })
-                    }
-                    value = {this.state.amount}
-                    maxLength = {15}
-                    returnKeyType="go"
-                    selectionColor={UColor.tintColor}
-                    style={styles.inpt}
-                    placeholderTextColor={UColor.tintColor}
-                    placeholder="请输入金额(可不填)"
-                    underlineColorAndroid="transparent"
-                    secureTextEntry={false}
-                    keyboardType="numeric"
-                  />
-                  <Text style={styles.tokenText}>EOS</Text>
-                </View>
-                <Button onPress={this.copy.bind()} style={styles.btnnextstep}>
-                  <View style={styles.nextstep}>
-                    <Text style={styles.nextsteptext}>复制账户</Text>
-                  </View>
-                </Button>
               </View>
-            </View>
-          </TouchableOpacity>
-        </ScrollView>
+              <Text style={styles.prompttext}>扫一扫，向我转账</Text>
+              <View style={styles.inptoutsource}>
+                <Text style={styles.tokenText} />
+                <TextInput autoFocus={false} secureTextEntry={false} keyboardType="numeric" maxLength = {15} 
+                    onChangeText={amount =>this.setState({ amount: this.chkPrice(amount) })} returnKeyType="go"
+                    placeholder="请输入金额(可不填)" value = {this.state.amount} underlineColorAndroid="transparent"
+                    selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.tintColor}
+                  />
+                <Text style={styles.tokenText}>EOS</Text>
+              </View>
+              <Button onPress={this.copy.bind()} style={styles.btnnextstep}>
+                <View style={styles.nextstep}>
+                  <Text style={styles.nextsteptext}>复制账户</Text>
+                </View>
+              </Button>
+              <View style={styles.logout}>
+                  <Image source={UImage.bottom_log} style={styles.logimg}/>
+                  <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
+              </View>
+            </View>   
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -208,13 +158,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1,
     borderBottomColor: UColor.mainColor,
-    marginBottom: 10,
-    paddingLeft: 10,
+    marginBottom: ScreenUtil.autoheight(10),
+    paddingLeft: ScreenUtil.autowidth(10),
     justifyContent: "center",
     alignItems: "center"
   },
   accountoue: {
-    height: 40,
+    height: ScreenUtil.autoheight(40),
     flex: 1,
     justifyContent: "center",
     flexDirection: "row"
@@ -226,10 +176,10 @@ const styles = StyleSheet.create({
   },
   inptpass: {
     color: UColor.tintColor,
-    height: 45,
+    height: ScreenUtil.autoheight(45),
     width: "100%",
-    paddingBottom: 5,
-    fontSize: 16,
+    paddingBottom: ScreenUtil.autoheight(5),
+    fontSize: ScreenUtil.setSpText(16),
     backgroundColor: UColor.fontColor,
     borderBottomColor: UColor.baseline,
     borderBottomWidth: 1
@@ -239,17 +189,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     backgroundColor: UColor.secdColor,
-    paddingTop: 5
+    paddingTop: ScreenUtil.autoheight(5)
   },
 
   row: {
-    height: 90,
+    height: ScreenUtil.autoheight(90),
     backgroundColor: UColor.mainColor,
     flexDirection: "column",
-    padding: 10,
+    padding: ScreenUtil.autowidth(10),
     justifyContent: "space-between",
     borderRadius: 5,
-    margin: 5
+    margin: ScreenUtil.autowidth(5),
   },
   top: {
     flex: 1,
@@ -257,7 +207,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   footer: {
-    height: 50,
+    height: ScreenUtil.autoheight(50),
     flexDirection: "row",
     position: "absolute",
     backgroundColor: UColor.secdColor,
@@ -268,8 +218,8 @@ const styles = StyleSheet.create({
 
   // 标题
   titleText: {
-    marginBottom: 10,
-    fontSize: 18,
+    marginBottom: ScreenUtil.autoheight(10),
+    fontSize: ScreenUtil.setSpText(18),
     fontWeight: "bold",
     textAlign: "center"
   },
@@ -281,30 +231,30 @@ const styles = StyleSheet.create({
   outsource: {
     backgroundColor: UColor.secdColor,
     flexDirection: "column",
-    padding: 20,
+    padding: ScreenUtil.autowidth(20),
     flex: 1
   },
 
   // 内容
   accountText: {
     color: UColor.arrow,
-    fontSize: 15,
-    height: 40,
-    paddingLeft: 2,
+    fontSize: ScreenUtil.setSpText(15),
+    height: ScreenUtil.autoheight(40),
+    paddingLeft: ScreenUtil.autowidth(2),
     textAlign: "left",
-    lineHeight: 40
+    lineHeight: ScreenUtil.autoheight(40),
   },
   tokenText: {
     color: UColor.arrow,
-    fontSize: 15,
-    width: 60,
-    height: 40,
-    paddingLeft: 2,
+    fontSize: ScreenUtil.setSpText(15),
+    width: ScreenUtil.autowidth(60),
+    height: ScreenUtil.autoheight(40),
+    paddingLeft: ScreenUtil.autowidth(2),
     textAlign: "left",
-    lineHeight: 40
+    lineHeight: ScreenUtil.autoheight(40),
   },
   codeout: {
-    margin: 10,
+    margin: ScreenUtil.autowidth(10),
     alignItems: "center",
     justifyContent: "center",
     alignItems: "center",
@@ -312,26 +262,25 @@ const styles = StyleSheet.create({
   },
   qrcode: {
     backgroundColor: UColor.fontColor,
-    padding: 5
+    padding: ScreenUtil.autowidth(5),
   },
   tab: {
     flex: 1
   },
   prompttext: {
-    marginTop: 5,
-    flex: 1,
+    marginTop: ScreenUtil.autoheight(5),
     color: UColor.fontColor,
-    fontSize: 15,
-    height: 30,
-    paddingLeft: 2,
+    fontSize: ScreenUtil.setSpText(15),
+    height: ScreenUtil.autoheight(30),
+    paddingLeft: ScreenUtil.autowidth(2),
     textAlign: "center"
   },
   btnamount: {
-    height: 45,
-    marginTop: 5
+    height: ScreenUtil.autoheight(45),
+    marginTop: ScreenUtil.autoheight(5),
   },
   amountstep: {
-    height: 25,
+    height: ScreenUtil.autoheight(25),
     // backgroundColor: UColor.tintColor,
     justifyContent: "center",
     alignItems: "center",
@@ -339,32 +288,46 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   amountsteptext: {
-    fontSize: 15,
+    fontSize: ScreenUtil.setSpText(15),
     color: UColor.tintColor
   },
   inpt: {
     flex: 1,
     color: UColor.arrow,
-    fontSize: 15,
-    height: 40,
-    paddingLeft: 2,
+    fontSize: ScreenUtil.setSpText(15),
+    height: ScreenUtil.autoheight(40),
+    paddingLeft: ScreenUtil.autowidth(2),
     textAlign: "center"
   },
   btnnextstep: {
-    height: 85,
-    marginTop: 30
+    height: ScreenUtil.autoheight(85),
   },
   nextstep: {
-    height: 45,
+    height: ScreenUtil.autoheight(45),
     backgroundColor: UColor.tintColor,
     justifyContent: "center",
     alignItems: "center",
-    margin: 20,
+    margin: ScreenUtil.autowidth(20),
     borderRadius: 5
   },
   nextsteptext: {
-    fontSize: 15,
+    fontSize: ScreenUtil.setSpText(15),
     color: UColor.fontColor
+  },
+  logout:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: ScreenUtil.autoheight(20),
+  },
+  logimg: {
+    width: ScreenUtil.autowidth(50), 
+    height: ScreenUtil.autowidth(50)
+  },
+  logtext: {
+    fontSize: ScreenUtil.setSpText(14),
+    color: UColor.arrow,
+    lineHeight: ScreenUtil.autoheight(30),
   }
 });
 export default TurnIn;

@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, Image, ScrollView, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Dimensions, Image, ScrollView, KeyboardAvoidingView, Platform, ListView, StyleSheet, View, RefreshControl, Text, TextInput, TouchableOpacity } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import Swiper from 'react-native-swiper';
+import ScreenUtil from '../../utils/ScreenUtil'
 import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
@@ -84,7 +85,7 @@ class Login extends BaseComponent {
 
     const view = <View style={{ flexDirection: 'row' }}>
       <Button onPress={() => { this.refreshLcode() }}>
-        <Image onError={(e) => { this.loaderror() }} style={{ width: 100, height: 45 }} source={{ uri: img }} />
+        <Image onError={(e) => { this.loaderror() }} style={{ width: ScreenUtil.autowidth(100), height: ScreenUtil.autoheight(45) }} source={{ uri: img }} />
       </Button>
       <TextInput autoFocus={true} onChangeText={(lcode) => this.setState({ lcode })} returnKeyType="go" 
         selectionColor={UColor.tintColor} style={styles.inp} placeholderTextColor={UColor.arrow}
@@ -297,41 +298,45 @@ class Login extends BaseComponent {
   //渲染页面
   renderScene = ({ route }) => {
     if (route.key == '1') {
-      return (<ScrollView keyboardShouldPersistTaps="always">
-        <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
-          <View style={styles.outsource}>
-            <View style={styles.inptout} >
-              <Text style={styles.inptitle}> 手机号</Text>
-              <TextInput ref={(ref) => this._lphone = ref} autoFocus={false} editable={true} 
-                value={this.state.loginPhone} returnKeyType="next" 
-                selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                placeholder="输入手机号" underlineColorAndroid="transparent" keyboardType="phone-pad" maxLength={11}
-                onChangeText={(loginPhone) => this.setState({ loginPhone })} />
+      return (<ScrollView  keyboardShouldPersistTaps="always">
+        <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)} style={{flex: 1,}}>
+            <View style={styles.outsource}>
+              <View style={styles.inptout} >
+                <Text style={styles.inptitle}> 手机号</Text>
+                <TextInput ref={(ref) => this._lphone = ref} autoFocus={false} editable={true} 
+                  value={this.state.loginPhone} returnKeyType="next" 
+                  selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
+                  placeholder="输入手机号" underlineColorAndroid="transparent" keyboardType="phone-pad" maxLength={11}
+                  onChangeText={(loginPhone) => this.setState({ loginPhone })} />
+              </View>
+              <View style={styles.separate}></View>
+              <View style={styles.inptout} >
+                <Text style={styles.inptitle}> 密码</Text>
+                <TextInput ref={(ref) => this._lpass = ref}  
+                  value={this.state.loginPwd} returnKeyType="go" autoFocus={false} editable={true}
+                  selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
+                  placeholder="输入密码" underlineColorAndroid="transparent" secureTextEntry={true} maxLength={20}
+                  onSubmitEditing={() => this.loginKcaptrue()} onChangeText={(loginPwd) => this.setState({ loginPwd })}
+                />
+              </View>
             </View>
-            <View style={styles.separate}></View>
-            <View style={styles.inptout} >
-              <Text style={styles.inptitle}> 密码</Text>
-              <TextInput ref={(ref) => this._lpass = ref}  
-                value={this.state.loginPwd} returnKeyType="go" autoFocus={false} editable={true}
-                selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                placeholder="输入密码" underlineColorAndroid="transparent" secureTextEntry={true} maxLength={20}
-                onSubmitEditing={() => this.loginKcaptrue()} onChangeText={(loginPwd) => this.setState({ loginPwd })}
-              />
+            <View style={styles.forgetpass}>
+              <Text style={styles.forgettext} onPress={() => this.forget()}>忘记密码</Text>
             </View>
-          </View>
-          <View style={styles.forgetpass}>
-            <Text style={styles.forgettext} onPress={() => this.forget()}>忘记密码</Text>
-          </View>
-          <Button onPress={() => this.loginKcaptrue()}>
-            <View style={styles.butout}>
-              <Text style={styles.buttext}>登陆</Text>
+            <Button onPress={() => this.loginKcaptrue()}>
+              <View style={styles.butout}>
+                <Text style={styles.buttext}>登陆</Text>
+              </View>
+            </Button>
+            <View style={styles.logoutone}>
+              <Image source={UImage.bottom_log} style={styles.logimg}/>
+              <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
             </View>
-          </Button>
         </TouchableOpacity>
       </ScrollView>)
     } else {
-      return (<ScrollView keyboardShouldPersistTaps="always">
-        <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
+      return (<ScrollView  keyboardShouldPersistTaps="always">
+      <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)} style={{flex: 1,}}>
           <View style={styles.outsource}>
             <View style={styles.inptout} >
               <Text style={styles.inptitle}> 手机号</Text>
@@ -375,33 +380,36 @@ class Login extends BaseComponent {
               />
             </View>
           </View>
+          <View style={styles.readout}>
+            <Text style={styles.readtext}>注册即表示同意</Text>
+            <Text onPress={() => this.prot()} style={styles.servicetext}>EosToken用户协议</Text>
+          </View>
           <Button onPress={() => this.regSubmit()}>
             <View style={styles.butout}>
               <Text style={styles.buttext}>注册</Text>
             </View>
           </Button>
-          <View style={styles.readout}>
-            <Text style={styles.readtext}>注册即表示同意</Text>
-            <Text onPress={() => this.prot()} style={styles.servicetext}>EosToken用户协议</Text>
+          <View style={styles.logouttow}>
+            <Image source={UImage.bottom_log} style={styles.logimg}/>
+            <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
           </View>
-        </TouchableOpacity>
-      </ScrollView>)
+      </TouchableOpacity>
+    </ScrollView>)
     }
   }
 
   render() {
     return (
       <View style={styles.container}>
-        
-        <View style={{ backgroundColor: '#586888', height: 0 }}></View>
+        <View style={{ backgroundColor: UColor.mainColor, height: 0 }}></View>
         <TabViewAnimated
           lazy={true}
           navigationState={this.state}
           renderScene={this.renderScene.bind(this)}
           renderHeader={(props) => <TabBar onTabPress={this._handleTabItemPress} 
-          labelStyle={{ fontSize: 15, margin: 0, marginBottom: 15, paddingTop: 15, color: '#8696B0' }} 
+          labelStyle={{ fontSize: ScreenUtil.setSpText(15), margin: 0, marginVertical: ScreenUtil.autowidth(15), color: UColor.arrow, }} 
           indicatorStyle={{ backgroundColor: UColor.tintColor, width: ScreenWidth / 2 }} 
-          style={{ backgroundColor: "#586888" }} tabStyle={{ width: ScreenWidth / 2, padding: 0, margin: 0 }} 
+          style={{ backgroundColor: UColor.mainColor, }} tabStyle={{ width: ScreenWidth / 2, padding: 0, margin: 0 }} 
           scrollEnabled={true} {...props} />}
           onIndexChange={this._handleIndexChange}
           initialLayout={{ height: 0, width: Dimensions.get('window').width }}
@@ -413,42 +421,42 @@ class Login extends BaseComponent {
 
 const styles = StyleSheet.create({
   butimg: { 
-    width: 100, 
-    height: 45 },
+    width: ScreenUtil.autowidth(100), 
+    height: ScreenUtil.autoheight(45), 
+  },
   inp: {
     color: UColor.tintColor,
-    marginLeft: 10,
-    width: 120,
-    height: 45,
-    fontSize: 15,
+    marginLeft: ScreenUtil.autowidth(10),
+    width: ScreenUtil.autowidth(120),
+    height: ScreenUtil.autoheight(45),
+    fontSize: ScreenUtil.setSpText(15),
     backgroundColor: '#EFEFEF'
   },
 
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: "#43536D"
+    backgroundColor: UColor.secdColor,
   },
   
   outsource: {
-    backgroundColor: '#43536D',
-    flex: 1,
+    backgroundColor: UColor.secdColor,
     flexDirection: 'column',
   },
 
   inptout: {
-    padding: 20, 
-    height: 80, 
-    backgroundColor: '#586888'
+    padding: ScreenUtil.autowidth(20), 
+    height: ScreenUtil.autoheight(80), 
+    backgroundColor: UColor.mainColor,
   },
   inpt: {
-    color: '#8696B0',
-    fontSize: 15,
-    height: 40,
-    paddingLeft: 2
+    color: UColor.arrow,
+    fontSize: ScreenUtil.setSpText(15),
+    height: ScreenUtil.autoheight(40),
+    paddingLeft: ScreenUtil.autowidth(2),
   },
   inptitle: {
-    fontSize: 14, 
+    fontSize: ScreenUtil.setSpText(14), 
     color: UColor.fontColor
   },
   separate: {
@@ -457,76 +465,97 @@ const styles = StyleSheet.create({
   },
 
   forgetpass: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: 'flex-end',
-    padding: 20
+    padding: ScreenUtil.autowidth(20),
   },
   forgettext: {
-    fontSize: 15,
+    fontSize: ScreenUtil.setSpText(15),
     color: UColor.tintColor
   },
  
 
   vfanout: {
       flexDirection: 'row',
-      backgroundColor: '#586888'
+      backgroundColor: UColor.mainColor,
     },
     vfantext: {
-      padding: 20,
-      height: 80,
-      width: 200
+      padding: ScreenUtil.autowidth(20),
+      height: ScreenUtil.autoheight(80),
+      width: ScreenUtil.autowidth(200),
     },
   verificationout: {
     flex: 1,
     flexDirection: "row",
     alignSelf: 'center',
     justifyContent: "flex-end",
-    marginRight: 10
+    marginRight: ScreenUtil.autowidth(10),
   },
   verification: {
     backgroundColor: UColor.tintColor,
     borderRadius: 5,
-    width: 100,
-    height: 40,
+    width: ScreenUtil.autowidth(100),
+    height: ScreenUtil.autoheight(40),
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15
+    marginTop: ScreenUtil.autoheight(15),
   },
   verificationtext: {
-    fontSize: 15,
-    color: '#fff'
+    fontSize: ScreenUtil.setSpText(15),
+    color: UColor.fontColor,
   },
 
   butout: {
-    height: 45,
+    height: ScreenUtil.autoheight(45),
     backgroundColor: UColor.tintColor,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
-    marginHorizontal: 20,
+    marginVertical: ScreenUtil.autoheight(20),
+    marginHorizontal: ScreenUtil.autowidth(20),
     borderRadius: 5
   },
   buttext: {
-    fontSize: 15,
-    color: '#fff'
+    fontSize: ScreenUtil.setSpText(15),
+    color: UColor.fontColor,
   },
 
   readout: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: ScreenUtil.autoheight(20),
   },
   readtext: {
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
     color: UColor.arrow,
   },
   servicetext: {
-    fontSize: 14, 
+    fontSize: ScreenUtil.setSpText(14), 
     color: UColor.tintColor,  
-    paddingLeft: 5,
+    paddingLeft: ScreenUtil.autowidth(5),
   },
+
+  logoutone:{
+    height: ScreenUtil.autoheight(320),
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: ScreenUtil.autoheight(100),
+  },
+  logouttow:{
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: ScreenUtil.autoheight(100),
+  },
+
+  logimg: {
+    width: ScreenUtil.autowidth(50), 
+    height: ScreenUtil.autowidth(50)
+  },
+  logtext: {
+    fontSize: ScreenUtil.setSpText(14),
+    color: UColor.arrow,
+    lineHeight: ScreenUtil.autoheight(30),
+  }
 });
 
 export default Login;

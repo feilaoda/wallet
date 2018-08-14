@@ -1,23 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar, Switch, TouchableHighlight } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import { StyleSheet, View, Text, Image, Platform, TouchableHighlight } from 'react-native';
+import UImage from "../../utils/Img";
 import UColor from '../../utils/Colors'
-import Button from '../../components/Button'
 import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import UImage from '../../utils/Img'
-
-import { EasyToast } from '../../components/Toast';
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyShowLD } from "../../components/EasyShow"
 import BaseComponent from "../../components/BaseComponent";
-var DeviceInfo = require('react-native-device-info');
-const Font = {
-  Ionicons,
-  FontAwesome
-}
+
 class Helpcenter extends BaseComponent {
 
   static navigationOptions = {
@@ -28,39 +17,27 @@ class Helpcenter extends BaseComponent {
       borderBottomWidth:0,
     },
   };
-  
 
   constructor(props) {
     super(props);
-    this.state = {
-      value: false,
-      disabled: false,
-    }
-    
     this.config = [
-      //{ first: true, name: "EOS常见问题？", onPress: this.goPage.bind(this, "commonproblem") },
       { first: true, name: "什么是钱包？", onPress: this.goPage.bind(this, "wallet") },
       { name: "什么是私钥？", onPress: this.goPage.bind(this, "ks") },
-      //{ name: "什么是助记词？", onPress: this.goPage.bind(this, "mw") },
       { name: "如何导入EOS钱包？", onPress: this.goPage.bind(this, "iw") },
       { name: "如何添加钱包？", onPress: this.goPage.bind(this, "atw") },
-      //{ name: "如何备份私钥？", onPress: this.goPage.bind(this, "bw") },
       { name: "如何转账？", onPress: this.goPage.bind(this, "ta") },
-      //{ name: "EOS超级代理投票说明", onPress: this.goPage.bind(this, "vote") },
     ];
-
-    
   }
 
-    //组件加载完成
-    componentDidMount() {
-      // super.componentDidMount();
-    }
-    componentWillUnmount(){
-      //结束页面前，资源释放操作
-      super.componentWillUnmount();
-      
-    }
+  //组件加载完成
+  componentDidMount() {
+    // super.componentDidMount();
+  }
+
+  componentWillUnmount(){
+    //结束页面前，资源释放操作
+    super.componentWillUnmount();
+  }
 
   goPage(key, data = {}) {
     const { navigate } = this.props.navigation;
@@ -92,6 +69,7 @@ class Helpcenter extends BaseComponent {
       EasyShowLD.dialogShow("温馨提示", "该功能正在紧急开发中，敬请期待！", "知道了", null, () => { EasyShowLD.dialogClose() });
     }
   }
+
   _renderListItem() {
     return this.config.map((item, i) => {
       return (<Item key={i} {...item} />)
@@ -100,37 +78,37 @@ class Helpcenter extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-            
-
-      <ScrollView>
-          <View style={styles.touchableout}>
-            <TouchableHighlight onPress={this.goPage.bind(this, 'commonproblem')} style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
-              <View style={styles.listItem} borderColor={UColor.arrow}>
-                <Text style={styles.fontColortext}>EOS常见问题？</Text>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={this.goPage.bind(this, 'NoviceMustRead')} style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
-              <View style={styles.listItem} borderColor={UColor.arrow}>
-                <Text style={styles.fontColortext}>新手必读？</Text>
-              </View>
-            </TouchableHighlight>
-          </View>
-          <View style={styles.touchableout}>
-            <TouchableHighlight onPress={this.goPage.bind(this, 'Troubleshooting')}  style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
-              <View style={styles.listItem} borderColor={UColor.arrow}>
-                <Text style={styles.fontColortext} >疑难解答？</Text>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={this.goPage.bind(this, 'pf')} style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
-              <View style={styles.listItem} borderColor={UColor.tintColor}>
-                <Text style={styles.tintColortext}  >问题反馈</Text>
-              </View>
-            </TouchableHighlight>
-          </View>
-          <View>
-            {this._renderListItem()}
-          </View>
-        </ScrollView>
+        <View style={styles.touchableout}>
+          <TouchableHighlight onPress={this.goPage.bind(this, 'commonproblem')} style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
+            <View style={styles.listItem} borderColor={UColor.arrow}>
+              <Text style={styles.fontColortext}>EOS常见问题？</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={this.goPage.bind(this, 'NoviceMustRead')} style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
+            <View style={styles.listItem} borderColor={UColor.arrow}>
+              <Text style={styles.fontColortext}>新手必读？</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+        <View style={styles.touchableout}>
+          <TouchableHighlight onPress={this.goPage.bind(this, 'Troubleshooting')}  style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
+            <View style={styles.listItem} borderColor={UColor.arrow}>
+              <Text style={styles.fontColortext} >疑难解答？</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={this.goPage.bind(this, 'pf')} style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
+            <View style={styles.listItem} borderColor={UColor.tintColor}>
+              <Text style={styles.tintColortext}  >问题反馈</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+        <View>
+          {this._renderListItem()}
+        </View>
+        <View style={styles.logout}>
+            <Image source={UImage.bottom_log} style={styles.logimg}/>
+            <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
+        </View>
     </View>
   }
 }
@@ -142,24 +120,24 @@ const styles = StyleSheet.create({
       backgroundColor: UColor.secdColor,
     },
     touchableout: {
-      flex: 1, 
       flexDirection: "row",
-      paddingTop: 10,
+      paddingTop: ScreenUtil.autoheight(15),
+      paddingHorizontal: ScreenUtil.autowidth(5),
     },
     touchable:{
       flex: 1, 
-      marginHorizontal: 3, 
+      marginHorizontal: ScreenUtil.autowidth(3), 
     },
     fontColortext: {
-      fontSize:15,
+      fontSize: ScreenUtil.setSpText(15),
       color:UColor.fontColor,
     },
     tintColortext: {
-      fontSize:15,
+      fontSize: ScreenUtil.setSpText(15),
       color:UColor.tintColor
     },
     listItem: {
-      height: 76,
+      height: ScreenUtil.autoheight(70),
       backgroundColor: UColor.mainColor,
       flexDirection: "row",
       justifyContent: "center",
@@ -167,7 +145,21 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderRadius: 5, 
     },
-  
+    logout:{
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      paddingBottom: ScreenUtil.autoheight(20),
+    },
+    logimg: {
+      width: ScreenUtil.autowidth(50), 
+      height: ScreenUtil.autowidth(50)
+    },
+    logtext: {
+      fontSize: ScreenUtil.setSpText(14),
+      color: UColor.arrow,
+      lineHeight: ScreenUtil.autoheight(30),
+    }
 });
 
 export default Helpcenter;
