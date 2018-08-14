@@ -878,7 +878,7 @@ class Route extends React.Component {
                       <Image source={UImage.share_time} style={{width: 25,height: 25}} />
                       <Text style={{marginLeft: 5,fontSize: ScreenUtil.setSpText(15),color: '#808080'}}> {this.getTime(this.state.news.createdate)}</Text>
                   </View>
-                  <View style={{marginTop: ScreenUtil.autoheight(10), paddingHorizontal: ScreenUtil.autowidth(20), paddingBottom: ScreenUtil.autoheight(5), marginBottom: ScreenUtil.autoheight(20) }}>
+                  <View style={{height: ScreenUtil.autoheight(400), marginVertical: ScreenUtil.autoheight(10), paddingHorizontal: ScreenUtil.autowidth(20), paddingBottom: ScreenUtil.autoheight(5),}}>
                     <Text style={{ color: '#2e2e2e', fontSize: ScreenUtil.setSpText(24),}} >{this.state.news.title}</Text>
                     <Text style={{ color: '#666d8d', fontSize: ScreenUtil.setSpText(15), marginTop: ScreenUtil.autoheight(15) ,lineHeight: ScreenUtil.autoheight(25)}} numberOfLines={12} ellipsizeMode='tail'>{this.state.news.content}</Text>
                   </View>
