@@ -85,13 +85,13 @@ class Community extends BaseComponent {
           <Image source={UImage.cmyhead} style={styles.headimg} />
           <View style={{padding: ScreenUtil.autoheight(5),}} >
             <View style={{flexDirection:'row',}}>
-              <TouchableHighlight onPress={this.prot.bind(this, 'wechat')} style={{flex: 1, marginRight: ScreenUtil.autoWidth(2.5), }} underlayColor={UColor.secdColor}>
+              <TouchableHighlight onPress={this.prot.bind(this, 'wechat')} style={{flex: 1, marginRight: ScreenUtil.autowidth(2.5), }} underlayColor={UColor.secdColor}>
                 <ImageBackground  style={styles.wechatqq} source={UImage.cmy_wx} resizeMode="stretch">                  
                   <Text style={styles.textname}>官方微信</Text>
                   <Text style={styles.textlinktwo} >{this.state.wechat}</Text>           
                 </ImageBackground>
               </TouchableHighlight>
-              <TouchableHighlight onPress={this.prot.bind(this, 'qq')} style={{flex: 1, marginLeft: ScreenUtil.autoWidth(2.5),}} underlayColor={UColor.secdColor}>
+              <TouchableHighlight onPress={this.prot.bind(this, 'qq')} style={{flex: 1, marginLeft: ScreenUtil.autowidth(2.5),}} underlayColor={UColor.secdColor}>
                 <ImageBackground style={styles.wechatqq} source={UImage.cmy_qq} resizeMode="stretch">          
                   <Text style={styles.textname}>官方QQ</Text>
                   <Text style={styles.textlinktwo} >{this.state.qq}</Text>           
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   texts: {
     height: ScreenUtil.autoheight(35),
-    paddingLeft:ScreenUtil.autoWidth(20), 
+    paddingLeft:ScreenUtil.autowidth(20), 
     justifyContent:'center',
     alignItems:'center',  
     flexDirection:'row',
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   wechatqq: {
     width: (maxWidth - 15) / 2,
     height: (maxWidth - 15) / 2 * 0.6572,
-    paddingHorizontal: ScreenUtil.autoWidth(10),
+    paddingHorizontal: ScreenUtil.autowidth(10),
     paddingTop: ScreenUtil.autoheight(10),
   },
   publicout: {
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     width: maxWidth - 10,
     height: (maxWidth - 10) * 0.3664,
     marginTop: ScreenUtil.autoheight(5),
-    paddingHorizontal: ScreenUtil.autoWidth(10),
+    paddingHorizontal: ScreenUtil.autowidth(10),
     paddingTop: ScreenUtil.autoheight(10),
   },
   sourceout: {
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     height: (maxWidth - 10) * 0.1444,
     marginTop: ScreenUtil.autoheight(5),
     paddingVertical: ScreenUtil.autoheight(5),
-    paddingHorizontal: ScreenUtil.autoWidth(10),
+    paddingHorizontal: ScreenUtil.autowidth(10),
   },
   textname: {
     fontSize: ScreenUtil.setSpText(16),

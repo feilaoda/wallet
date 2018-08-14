@@ -12,8 +12,8 @@ var ScreenUtil = {
     fontScale: PixelRatio.getFontScale(),
     scale: Math.min(Dimensions.get('window').height / 667, Dimensions.get('window').width / 375),
 
-    /*宽度适配，例如我的设计稿某个样式宽度是50pt，那么使用就是：ScreenUtil.autoWidth(50)*/
-    autoWidth: function (value) {
+    /*宽度适配，例如我的设计稿某个样式宽度是50pt，那么使用就是：ScreenUtil.autowidth(50)*/
+    autowidth: function (value) {
         return Dimensions.get('window').width * value / this.uiWidth;
     },
     /*高度适配，例如我的设计稿某个样式高度是50pt，那么使用就是：ScreenUtil.autoheight(50)*/

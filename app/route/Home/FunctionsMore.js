@@ -8,7 +8,7 @@ import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { EasyToast } from "../../components/Toast"
 import { EasyShowLD } from '../../components/EasyShow'
-
+import ScreenUtil from '../../utils/ScreenUtil'
 var Dimensions = require('Dimensions')
 const maxWidth = Dimensions.get('window').width;
 const maxHeight = Dimensions.get('window').height;
@@ -51,6 +51,8 @@ class FunctionsMore extends React.Component {
       navigate('Bvote', {});
     }else if(key == 'Tokenissue'){
       this. _setModalVisible();
+    }else if(key == 'FreeMortgage'){
+        navigate('FreeMortgage', {});
     }else{
       EasyShowLD.dialogShow("温馨提示", "该功能正在紧急开发中，敬请期待！", "知道了", null, () => { EasyShowLD.dialogClose() });
     }
@@ -111,6 +113,12 @@ class FunctionsMore extends React.Component {
                     <Text style={styles.headbtntext}>糖果信息</Text>
                 </View>
             </Button>
+            <Button onPress={this.onPress.bind(this, 'FreeMortgage')} style={styles.headbtn}>
+                <View style={styles.headbtnout}>
+                    <Image source={UImage.free_mortgage} style={styles.imgBtn} />
+                    <Text style={styles.headbtntext}>免费抵押</Text>
+                </View>
+            </Button>
         </View>
         <Modal style={styles.touchableouts} animationType={'none'} transparent={true}  visible={this.state.Tokenissue} onRequestClose={()=>{}}>
             <TouchableOpacity style={styles.pupuoBackup} activeOpacity={1.0}>
@@ -125,7 +133,7 @@ class FunctionsMore extends React.Component {
                     <Image source={UImage.warning_h} style={styles.imgBtnBackup} />
                     <Text style={styles.headtitle}>免责声明：本功能由第三方平台提供，不属于EosToken官方出品，《用户协议》和《应用风险》由该平台单独向您承担责任！</Text>
                 </View>
-                <View style={{ width: maxWidth-70,marginHorizontal: 20, marginVertical: 10,}}>
+                <View style={{ width: maxWidth-70,marginHorizontal: ScreenUtil.autowidth(20), marginVertical: ScreenUtil.autoheight(10),}}>
                     <Text style={styles.centertext}>3分钟，3EOS！最方便，最便宜的EOS自助发币DAPP。</Text>
                     <Text style={styles.centertext}>开发：清华大学计算机专业博士生莫与独立编写。</Text>
                     <Text style={styles.centertext}>功能：帮助大家自助地发行基于EOS代币。价格比大家自己发币便宜了13倍！</Text>
@@ -153,11 +161,11 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         backgroundColor: UColor.secdColor,
-        paddingTop: 10,
+        paddingTop: ScreenUtil.autoheight(10),
     },
     head: {
-        height: 70, 
-        paddingBottom: 10,
+        height: ScreenUtil.autoheight(70), 
+        paddingBottom: ScreenUtil.autoheight(10),
         flexDirection: "row",
         backgroundColor: "#3B4F6A", 
     },
@@ -172,13 +180,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     imgBtn: {
-        width: 30,
-        height: 30,
-        margin:5,
+        width: ScreenUtil.autowidth(30),
+        height: ScreenUtil.autoheight(30),
+        margin: ScreenUtil.autowidth(5),
     },
     headbtntext: {
         color: UColor.arrow,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
     },
 
     touchableouts: {
@@ -197,38 +205,38 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'center',
         width: maxWidth - 30,
-        height: 30,
+        height: ScreenUtil.autoheight(30),
     },
     buttonView2: {
-        width: 30,
+        width: ScreenUtil.autowidth(30),
         alignItems: 'center',
         justifyContent: 'center',
     },
     contentText: {
-        fontSize: 18,
+        fontSize: ScreenUtil.setSpText(18),
         fontWeight: 'bold',
         textAlign: 'center',
-        paddingBottom: 5,
+        paddingBottom: ScreenUtil.autoheight(5),
     },
     imgBtnBackup: {
-        width: 30,
-        height: 30,
-        margin: 5,
+        width: ScreenUtil.autowidth(30),
+        height: ScreenUtil.autoheight(30),
+        margin: ScreenUtil.autowidth(5),
     },
     headtitle: {
         flex: 1,
         color: UColor.showy,
-        fontSize: 14,
-        lineHeight: 20,
-        paddingLeft: 10,
+        fontSize: ScreenUtil.setSpText(14),
+        lineHeight: ScreenUtil.autoheight(20),
+        paddingLeft: ScreenUtil.autowidth(10),
     },
     headout: {
-        paddingTop: 20,
-        paddingBottom: 15,
+        paddingTop: ScreenUtil.autoheight(20),
+        paddingBottom: ScreenUtil.autoheight(15),
     },
     warningout: {
         width: maxWidth - 60,
-        marginHorizontal: 15,
+        marginHorizontal: ScreenUtil.autowidth(15),
         flexDirection: "row",
         alignItems: 'center',
         borderColor: UColor.showy,
@@ -236,21 +244,21 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     centertext: {
-        fontSize: 12,
-        lineHeight: 20,
+        fontSize: ScreenUtil.setSpText(12),
+        lineHeight: ScreenUtil.autoheight(20),
         color: '#666666',
     },
     deleteout: {
-        height: 40,
-        marginHorizontal: 120,
-        marginVertical: 15,
+        height: ScreenUtil.autoheight(40),
+        marginHorizontal: ScreenUtil.autowidth(100),
+        marginVertical: ScreenUtil.autoheight(15),
         borderRadius: 3,
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     deletetext: {
-        fontSize: 16,
+        fontSize: ScreenUtil.setSpText(16),
         color: UColor.fontColor
     },
       

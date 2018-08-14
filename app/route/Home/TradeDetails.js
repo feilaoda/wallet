@@ -175,7 +175,7 @@ class TradeDetails extends BaseComponent {
             <Text style={styles.description}>{this.state.trade.type == 'buyram'?'(买)':'(卖)'}</Text>
           </View>
         }
-        <View style={{flexDirection: "row", borderBottomColor: UColor.mainColor, borderBottomWidth: 0.5,paddingHorizontal: ScreenUtil.autoWidth(10),paddingVertical: ScreenUtil.autoheight(20),}}>
+        <View style={{flexDirection: "row", borderBottomColor: UColor.mainColor, borderBottomWidth: 0.5,paddingHorizontal: ScreenUtil.autowidth(10),paddingVertical: ScreenUtil.autoheight(20),}}>
           <View style={styles.conout}>
             <View style={styles.conouttext}>
               <Text style={styles.context}>发  送  方: </Text> 
@@ -203,7 +203,7 @@ class TradeDetails extends BaseComponent {
             </View>
             <Button onPress={this.copy.bind(this,this.state.trade)}>
                <View style={{backgroundColor: UColor.mainColor,borderRadius: 25,}}>
-                 <Text style={{ fontSize: ScreenUtil.setSpText(12),color: UColor.arrow,paddingHorizontal: ScreenUtil.autoWidth(10),paddingVertical: ScreenUtil.autoheight(2),}}>复制URL</Text>
+                 <Text style={{ fontSize: ScreenUtil.setSpText(12),color: UColor.arrow,paddingHorizontal: ScreenUtil.autowidth(10),paddingVertical: ScreenUtil.autoheight(2),}}>复制URL</Text>
                </View>
             </Button>
           </View>
@@ -277,14 +277,14 @@ const styles = StyleSheet.create({
   },
   context: {
     flex: 2,
-    paddingRight: ScreenUtil.autoWidth(5),
+    paddingRight: ScreenUtil.autowidth(5),
     textAlign: 'right',
     fontSize: ScreenUtil.setSpText(14),
     color: UColor.arrow,
   },
   contwotext: {
     flex: 1,
-    paddingRight: ScreenUtil.autoWidth(5),
+    paddingRight: ScreenUtil.autowidth(5),
     textAlign: 'right',
     fontSize: ScreenUtil.setSpText(14),
     color: UColor.arrow,
@@ -292,13 +292,13 @@ const styles = StyleSheet.create({
 
   tradehint: {
     flex: 1,
-    paddingHorizontal: ScreenUtil.autoWidth(10),
+    paddingHorizontal: ScreenUtil.autowidth(10),
     marginTop: ScreenUtil.autoheight(40),
   },
   blocktext: {
     color: UColor.arrow, 
     flex: 4,
-    paddingLeft: ScreenUtil.autoWidth(5),
+    paddingLeft: ScreenUtil.autowidth(5),
     fontSize: ScreenUtil.setSpText(14),
   },
   showytext: {
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
   tintext: {
     color: UColor.tintColor, 
     flex: 4,
-    paddingLeft: ScreenUtil.autoWidth(5),
+    paddingLeft: ScreenUtil.autowidth(5),
     fontSize: ScreenUtil.setSpText(14),
   },
   codeout: {
@@ -320,8 +320,8 @@ const styles = StyleSheet.create({
   },
   qrcode: {
     backgroundColor: UColor.fontColor,
-    paddingHorizontal:ScreenUtil.autoWidth(5),
-    paddingVertical: ScreenUtil.autoWidth(5),
+    paddingHorizontal:ScreenUtil.autowidth(5),
+    paddingVertical: ScreenUtil.autowidth(5),
     marginBottom: ScreenUtil.autoheight(10),
   },
 });
