@@ -83,7 +83,7 @@ class WalletDetail extends BaseComponent {
 
   goPage(key, data) {
     const { navigate } = this.props.navigation;
-    if (key == 'ExportPrivateKey') {
+    if (key == 'ExportPrivateKey' || key == 'AdminManage') {
       const view =
         <View style={styles.passoutsource}>
           <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
@@ -112,7 +112,15 @@ class WalletDetail extends BaseComponent {
             // this._setModalVisible();
             // alert('解锁成功' + plaintext_words);
             // this.toBackup(wordsArr);
-            navigate('BackupsPkey', { wallet: this.props.navigation.state.params.data, password:this.state.password, entry: "walletDetails"});
+            if(key == 'AdminManage'){
+              if(this.props.navigation.state.params.data.isactived){     
+                navigate('AdminManage', { ownerPublicKey: this.props.navigation.state.params.data.ownerPublic, activePublicKey:this.props.navigation.state.params.data.activePublic});
+              }else{
+                EasyToast.show("该账号还没激活，激活之后才能进入权限管理")
+              }
+            }else{
+              navigate('BackupsPkey', { wallet: this.props.navigation.state.params.data, password:this.state.password, entry: "walletDetails"});
+            }
           } else {
             EasyToast.show('您输入的密码不正确');
           }
@@ -133,14 +141,7 @@ class WalletDetail extends BaseComponent {
       }else{
         EasyToast.show("该账号还没激活，激活之后才能查看详细信息")
       }
-    }else if(key == 'AdminManage') {
-        if(this.props.navigation.state.params.data.isactived){     
-        navigate('AdminManage', { ownerPublicKey: this.props.navigation.state.params.data.ownerPublic, activePublicKey:this.props.navigation.state.params.data.activePublic});
-      }else{
-        EasyToast.show("该账号还没激活，激活之后才能查看详细信息")
-      }
-    }
-    else{
+    }else{
 
     }
   }
