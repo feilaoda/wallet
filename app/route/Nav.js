@@ -46,6 +46,7 @@ import ModifyPassword from './Wallet/ModifyPassword'
 import ExportKeystore from './Wallet/ExportKeystore'
 import ExportPrivateKey from './Wallet/ExportPrivateKey' 
 import ExportPublicKey from './Wallet/ExportPublicKey'
+import AdminManage from './Wallet/AdminManage'
 import BarCode from './Wallet/BarcodeTest'
 // import AddressQr from './Wallet/AddressQr'
 import { EasyToast } from "../components/Toast"
@@ -216,6 +217,9 @@ const Nav = StackNavigator(
     },
     ExportPublicKey: {
       screen: ExportPublicKey
+    },
+    AdminManage: {
+      screen: AdminManage
     },
     ModifyPassword: {
       screen: ModifyPassword

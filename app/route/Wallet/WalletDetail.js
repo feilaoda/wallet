@@ -42,6 +42,7 @@ class WalletDetail extends BaseComponent {
       { avatar:UImage.publickey, name: "导出公钥", onPress: this.goPage.bind(this, "ExportPublicKey") },
       { avatar:UImage.resources_f, name: "资源管理", onPress: this.goPage.bind(this, "Resources") },
       { avatar:UImage.details, first: true, name: "账户详细信息", onPress: this.goPage.bind(this, "SeeBlockBrowser") },
+      { avatar:UImage.adminA, name: "权限更改及过户", onPress: this.goPage.bind(this, "AdminManage") },
     ];
     this.state = {
       password: '',
@@ -132,7 +133,10 @@ class WalletDetail extends BaseComponent {
       }else{
         EasyToast.show("该账号还没激活，激活之后才能查看详细信息")
       }
-    }else{
+    }else if(key == 'AdminManage') {
+      navigate('AdminManage', { ownerPublicKey: this.props.navigation.state.params.data.ownerPublic, activePublicKey:this.props.navigation.state.params.data.activePublic});
+    }
+    else{
 
     }
   }
@@ -497,7 +501,7 @@ class WalletDetail extends BaseComponent {
               {(!c.isactived || !c.hasOwnProperty('isactived')) ? <View style={styles.notactivedout}><Text style={styles.notactived}>未激活</Text></View>:(c.isBackups ? null : <View style={styles.stopoutBackupsout}><Text style={styles.stopoutBackups}>未备份</Text></View>) }   
             </View>
           </View>
-          <View style={{ marginBottom: 50 }}>{this._renderListItem()}</View>
+          <View style={{ marginBottom: 30 }}>{this._renderListItem()}</View>
           {/* <Button onPress={() => this.backupWords()} style={{ flex: 1 }}>
             <View style={{ height: 45, backgroundColor: '#65CAFF', justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
               <Text style={{ fontSize: 15, color: '#fff' }}>备份助记词</Text>b
