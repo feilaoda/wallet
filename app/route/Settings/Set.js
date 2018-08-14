@@ -50,7 +50,7 @@ class Set extends BaseComponent {
         if (e.code === '0000') { // 开始下载
           EasyShowLD.startProgress();
         } else if (e.code === '0001') {
-          EasyDialog.progress(e.fileSize, e.downSize);
+          EasyShowLD.progress(e.fileSize, e.downSize);
         } else if (e.code === '0002') {
           EasyShowLD.endProgress();
         }
