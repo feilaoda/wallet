@@ -579,6 +579,11 @@ class Transaction extends BaseComponent {
         this.setState({ buyETAmount: "" })
         return ;
     };
+
+    if(parseFloat(this.state.buyETAmount) > 1){
+        this.setState({ error: true,errortext: '测试版本每次购买上限为１EOS.' });
+        return;
+    }
     this.setState({ business: false});
     this. dismissKeyboardClick();
         const view =
@@ -1369,7 +1374,7 @@ class Transaction extends BaseComponent {
                         selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow} 
                         placeholder="输入购买的额度" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
                         onChangeText={(buyETAmount) => this.setState({ buyETAmount: this.chkBuyEosQuantity(buyETAmount), 
-                            eosToET: this.eosToET(buyETAmount, this.props.etinfo?this.props.etinfo.price:'')})}
+                            eosToET: this.eosToET(buyETAmount, this.props.etinfo?this.props.etinfo.price:''), error: false,errortext: '' })}
                         />
                         <Text style={styles.unittext}>EOS</Text>
                     </View>
