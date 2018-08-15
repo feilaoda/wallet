@@ -12,7 +12,7 @@ import ScreenUtil from '../../utils/ScreenUtil'
 var Dimensions = require('Dimensions')
 const maxWidth = Dimensions.get('window').width;
 const maxHeight = Dimensions.get('window').height;
-@connect(({ vote }) => ({ ...vote}))
+@connect(({ vote, }) => ({ ...vote,}))
 class FreeMortgage extends React.Component {
 
   static navigationOptions = {
@@ -26,18 +26,29 @@ class FreeMortgage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-        ApplyButton: UColor.tintColor,
-        //UColor.tintColor;
-    }
   }
 
   //加载地址数据
   componentDidMount() {
-  
+   
   }
 
   mortgageApply() {
+    try {
+        EasyShowLD.loadingShow('正在申请');
+        this.props.dispatch({type: "vote/delegatebw", payload: {username:this.props.navigation.state.params.account_name}, callback:(mortgage) =>{
+            EasyShowLD.dialogClose()
+                // alert(JSON.stringify(mortgage));
+                if(mortgage.data){
+                    EasyToast.show("恭喜您！已经获得免费抵押，请到资源管理中查看")
+                }else{
+                    EasyToast.show("抱歉，您的账号已经有足够的资源")
+                }
+            }
+        })           
+    }catch (error) {
+
+    }
 
   }
 
@@ -53,7 +64,7 @@ class FreeMortgage extends React.Component {
         </View>
         <View style={styles.btnout}>
             <Button onPress={() => this.mortgageApply()}>
-                <View style={styles.Applyout} backgroundColor = {this.state.ApplyButton}>
+                <View style={styles.Applyout}>
                     <Text style={styles.Applytext}>立即申请</Text>
                 </View>
             </Button>
@@ -101,12 +112,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     Applyout: {
-        height: ScreenUtil.autoheight(45),
-        justifyContent: 'center',
+        borderRadius: 5,
         alignItems: 'center',
+        justifyContent: 'center',
+        height: ScreenUtil.autoheight(45),
+        backgroundColor: UColor.tintColor,
         marginHorizontal: ScreenUtil.autowidth(20),
         marginTop: ScreenUtil.autoheight(20),
-        borderRadius: 5
+       
     },
     Applytext: {
         fontSize: ScreenUtil.setSpText(15),
