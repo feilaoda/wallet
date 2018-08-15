@@ -47,7 +47,7 @@ class Set extends BaseComponent {
           <Text style={styles.welcome} style={{ color: '#FFFFFF', fontSize: 15, marginTop: 15, marginLeft: 10 }}>抄写下您的钱包助记词</Text>
           <Text style={styles.welcome} style={{ color: '#8696B0', marginTop: 5, marginLeft: 10, marginBottom: 25 }}>助记词用于恢复钱包或重置钱包密码，将它准确的抄写到纸上，并存放在只有您知道的安全地方。</Text>
           <View style={{ backgroundColor: '#43536D' }} style={{ marginBottom: 20 }}>
-            <View style={{ padding: 20, height: 100, backgroundColor: '#586888' }} >
+            <View style={{ padding: 20, height: 100, backgroundColor: '#4e5e7d' }} >
               <Text style={{ fontSize: 15, color: '#8696B0', height: 100 }}>{
                 this.props.navigation.state.params.words_owner[0] + ' , ' + this.props.navigation.state.params.words_owner[1] + ' , ' + this.props.navigation.state.params.words_owner[2] + ' , '
                 + this.props.navigation.state.params.words_owner[3] + ' , ' + this.props.navigation.state.params.words_owner[4] + ' , ' + this.props.navigation.state.params.words_owner[5] + ' , '
@@ -59,7 +59,7 @@ class Set extends BaseComponent {
           </View>
 
           <View style={{ backgroundColor: '#43536D' }} style={{ marginBottom: 20 }}>
-            <View style={{ padding: 20, height: 100, backgroundColor: '#586888' }} >
+            <View style={{ padding: 20, height: 100, backgroundColor: '#4e5e7d' }} >
               <Text style={{ fontSize: 15, color: '#8696B0', height: 100 }}>{
                 this.props.navigation.state.params.words_active[0] + ' , ' + this.props.navigation.state.params.words_active[1] + ' , ' + this.props.navigation.state.params.words_active[2] + ' , '
                 + this.props.navigation.state.params.words_active[3] + ' , ' + this.props.navigation.state.params.words_active[4] + ' , ' + this.props.navigation.state.params.words_active[5] + ' , '

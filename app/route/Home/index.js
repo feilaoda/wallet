@@ -673,7 +673,7 @@ class Home extends React.Component {
                   enableEmptySections={true} dataSource={this.state.dataSource.cloneWithRows(this.props.walletList == null ? [] : this.props.walletList)}
                   renderRow={(rowData) => (
                     <Button onPress={this.changeWallet.bind(this, rowData)}>
-                      <View style={styles.walletlist} backgroundColor={(this.props.defaultWallet == null || this.props.defaultWallet.name == rowData.account) ? '#586888' : '#4D607E'}>
+                      <View style={styles.walletlist} backgroundColor={(this.props.defaultWallet == null || this.props.defaultWallet.name == rowData.account) ? '#4D607E' : '#394963'}>
                         <View style={styles.topout}>
                           <Text style={styles.outname}>{rowData.name}</Text>
                           {(!rowData.isactived || !rowData.hasOwnProperty('isactived')) ? <View style={styles.notactivedout}><Text style={styles.notactived} onPress={this.WalletDetail.bind(this, rowData)}>未激活</Text></View>:(rowData.isBackups ? null :  <View style={styles.stopoutBackupsout}><Text style={styles.stopoutBackups} onPress={this.WalletDetail.bind(this, rowData)}>未备份</Text></View>)}  
@@ -876,7 +876,7 @@ const styles = StyleSheet.create({
   touchableout: {
     width: maxWidth / 2, 
     height: maxHeight, 
-    backgroundColor: '#4D607E', 
+    backgroundColor: '#394963', 
     alignItems: 'center', 
     paddingTop: 50,
   },

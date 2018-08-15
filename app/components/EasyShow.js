@@ -191,7 +191,7 @@ export class LoadingDialog extends React.Component {
                     <TouchableWithoutFeedback>
                       <View>
                         <View style={styles.titleContainer}>
-                            <Text style={[material.title,{color:'#586888'}]}>{this.state.title}</Text>
+                            <Text style={[material.title,{color:'#4e5e7d'}]}>{this.state.title}</Text>
                         </View>
                         <View style={[styles.contentContainer,styles.contentContainerPadding]}>
                           {

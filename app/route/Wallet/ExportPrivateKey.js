@@ -53,7 +53,7 @@ class Set extends BaseComponent {
               </View>
             </Button> */}
             <View style={{backgroundColor:'#43536D'}}>
-              <View style={{padding:20,height:80,backgroundColor:'#586888'}} >
+              <View style={{padding:20,height:80,backgroundColor:'#4e5e7d'}} >
                   {/* <Text style={{fontSize:12,color:'#8696B0'}}> 手机号</Text> */}
                   <TextInput ref={(ref) => this._lphone = ref} autoFocus={false} editable = {true} 
                   // value={this.state.loginPhone} 
@@ -62,7 +62,7 @@ class Set extends BaseComponent {
                   />
               </View>
               <View style={{height:0.5,backgroundColor:'#43536D',flex: 1,flexDirection: 'column',}}></View>
-              <View style={{padding:20,height:80,backgroundColor:'#586888'}} >
+              <View style={{padding:20,height:80,backgroundColor:'#4e5e7d'}} >
                   {/* <Text style={{fontSize:12,color:'#8696B0'}}> 密码</Text> */}
                   <TextInput ref={(ref) => this._lpass = ref} autoFocus={false} editable = {true} 
                   // value={this.state.loginPwd} 

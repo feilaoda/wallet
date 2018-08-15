@@ -169,8 +169,7 @@ class CoinDetail extends BaseComponent {
         
         <View style={{padding:20,paddingTop:30}}>
           <SegmentedControls 
-          tint= {'#586888'}
-          selectedTint= {'#43536D'}
+          tint= {UColor.tintColor} selectedTint= {UColor.fontColor}
           onSelection={this.setSelectedOption.bind(this) }
           selectedOption={ this.state.selectedSegment }
           backTint= {'#43536D'} options={['5分钟','1小时','6小时','24小时']} />
@@ -188,21 +187,21 @@ class CoinDetail extends BaseComponent {
         </View>
         <View>
            <Text style={{color:'#8696B0',fontSize:15,marginLeft:15,margin:10,marginTop:20}}>综合信息</Text>
-           <View style={{paddingLeft:15,paddingVertical:15,paddingRight:5,backgroundColor:"#586888"}}>
+           <View style={{paddingLeft:15,paddingVertical:15,paddingRight:5,backgroundColor:"#4e5e7d"}}>
               <Text style={{color:'#8696B0',fontSize:12}}>{this.props.info.intr}</Text>
            </View>
            <View style={{height:0.5,backgroundColor:"#43536D"}} />
-           <View style={{padding:15,backgroundColor:"#586888",flexDirection:'row',justifyContent:"space-between"}}>
+           <View style={{padding:15,backgroundColor:"#4e5e7d",flexDirection:'row',justifyContent:"space-between"}}>
               <Text style={{color:'#8696B0',fontSize:12,justifyContent:"flex-start"}}>市值</Text>
               <Text style={{color:'#8696B0',fontSize:12,justifyContent:"flex-end"}}>${formatterUnit(c.value)}</Text>
            </View>
            <View style={{height:0.5,backgroundColor:"#43536D"}} />
-           <View style={{padding:15,backgroundColor:"#586888",flexDirection:'row',justifyContent:"space-between"}}>
+           <View style={{padding:15,backgroundColor:"#4e5e7d",flexDirection:'row',justifyContent:"space-between"}}>
               <Text style={{color:'#8696B0',fontSize:12,justifyContent:"flex-start"}}>发行总量</Text>
               <Text style={{color:'#8696B0',fontSize:12,justifyContent:"flex-end"}}>{formatterNumber(this.props.info.total)}</Text>
            </View>
            <View style={{height:0.5,backgroundColor:"#43536D"}} />
-           <View style={{padding:15,backgroundColor:"#586888",flexDirection:'row',justifyContent:"space-between"}}>
+           <View style={{padding:15,backgroundColor:"#4e5e7d",flexDirection:'row',justifyContent:"space-between"}}>
               <Text style={{color:'#8696B0',fontSize:12}}>流通量</Text>
               <Text style={{color:'#8696B0',fontSize:12}}>{formatterNumber(this.props.info.marke)}</Text>
            </View>
