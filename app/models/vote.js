@@ -1,5 +1,5 @@
 import Request from '../utils/RequestUtil';
-import {listProducers, getAccountInfo, getUndelegatebwInfo, listAgent, getGlobalInfo, queryRamPrice, listDelegateLoglist} from '../utils/Api';
+import {listProducers, getAccountInfo, getUndelegatebwInfo, listAgent, getGlobalInfo, queryRamPrice, listDelegateLoglist, getAccountDelegatebwInfo, delegatebw} from '../utils/Api';
 import store from 'react-native-simple-store';
 import { EasyToast } from '../components/Toast';
 import Constants from '../utils/Constants'
@@ -123,6 +123,19 @@ export default {
             EasyToast.show('网络繁忙,请稍后!');
         }
      },
+     *delegatebw({payload,callback},{call,put}) {
+        try{
+            const resp = yield call(Request.request, delegatebw, 'post', payload);
+            if(resp && resp.code=='0' && resp.data){    
+            }else{
+                EasyToast.show(resp.msg);
+            }
+            if (callback) callback(resp);
+        } catch (error) {
+            EasyToast.show('网络繁忙,请稍后!');
+        }
+     },
+
     },
 
     reducers : {
