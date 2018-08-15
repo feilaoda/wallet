@@ -266,8 +266,8 @@ class Coins extends BaseComponent {
     if (route.key == '0') {
       const v = <View style={styles.container}>
           <View style={{ backgroundColor: '#43536D',}}>
-            <View style={{ backgroundColor: '#586888',paddingLeft: 15, paddingRight: 15,}}>
-              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#586888', borderBottomWidth:0.5,borderBottomColor: '#43536D',}}>
+            <View style={{ backgroundColor: '#4e5e7d',paddingLeft: 15, paddingRight: 15,}}>
+              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#4e5e7d', borderBottomWidth:0.5,borderBottomColor: '#43536D',}}>
                 <TextInput ref={(ref) => this._lphone = ref} autoFocus={false} editable={true}
                   value={this.state.words_owner}
                   onChangeText={(words_owner) => this.setState({ words_owner })}
@@ -275,7 +275,7 @@ class Coins extends BaseComponent {
                   placeholderTextColor="#8696B0" placeholder="助记词，按空格分隔" underlineColorAndroid="transparent" keyboardType="phone-pad" 
                 />
               </View>
-              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#586888', borderBottomWidth:0.5,borderBottomColor: '#43536D',}} >
+              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#4e5e7d', borderBottomWidth:0.5,borderBottomColor: '#43536D',}} >
                 <TextInput ref={(ref) => this._lphone = ref} autoFocus={false} editable={true}
                   value={this.state.words_active}
                   onChangeText={(words_active) => this.setState({ words_active })}
@@ -283,7 +283,7 @@ class Coins extends BaseComponent {
                   placeholderTextColor="#8696B0" placeholder="助记词，按空格分隔" underlineColorAndroid="transparent" keyboardType="phone-pad" 
                 />
               </View>
-              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#586888', borderBottomWidth:0.5,borderBottomColor: '#43536D',}}>
+              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#4e5e7d', borderBottomWidth:0.5,borderBottomColor: '#43536D',}}>
                 <TextInput ref={(ref) => this._lpass = ref} autoFocus={false} editable={true}
                   onChangeText={(walletName) => this.setState({ walletName })}
                   returnKeyType="go" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 10 }} placeholderTextColor="#8696B0"
@@ -292,7 +292,7 @@ class Coins extends BaseComponent {
                 />
               </View>
             
-              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#586888', borderBottomWidth:0.5,borderBottomColor: '#43536D',}}>
+              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#4e5e7d', borderBottomWidth:0.5,borderBottomColor: '#43536D',}}>
                 <TextInput ref={(ref) => this._lpass = ref} autoFocus={false} editable={true}
                   value={this.state.walletpwd}
                   onChangeText={(walletpwd) => this.setState({ walletpwd })}
@@ -300,7 +300,7 @@ class Coins extends BaseComponent {
                   placeholder="密码" underlineColorAndroid="transparent" secureTextEntry={true} maxLength={Constants.PWD_MAX_LENGTH}
                 />
               </View>
-              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#586888', borderBottomWidth:0.5,borderBottomColor: '#43536D',}} >
+              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#4e5e7d', borderBottomWidth:0.5,borderBottomColor: '#43536D',}} >
                 <TextInput ref={(ref) => this._lpass = ref} autoFocus={false} editable={true}
                   value={this.state.reWalletpwd}
                   onChangeText={(reWalletpwd) => this.setState({ reWalletpwd })}
@@ -329,7 +329,7 @@ class Coins extends BaseComponent {
     //       <View>
     //         <Text style={styles.welcome} style={{ color: '#8696B0', margin: 10, fontSize: 15 }}>直接复制粘贴以太坊官方钱包 Keystore 文件内 容至输入框。或者通过生成 Keystore 内容的二 维码，扫描录入。</Text>
     //         <View style={{ backgroundColor: '#43536D' }}>
-    //           <View style={{ padding: 20, height: 100, backgroundColor: '#586888', marginLeft: 10, marginRight: 10, marginTop: 20, marginBottom: 20 }} >
+    //           <View style={{ padding: 20, height: 100, backgroundColor: '#4e5e7d', marginLeft: 10, marginRight: 10, marginTop: 20, marginBottom: 20 }} >
     //             <TextInput ref={(ref) => this._lphone = ref} autoFocus={false} editable={true}
     //               // value={this.state.loginPhone} 
     //               returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }}
@@ -364,8 +364,8 @@ class Coins extends BaseComponent {
     if (route.key == '2') {
       const v = <View style={styles.container}>
           <View style={{ backgroundColor: '#43536D',}}>
-            <View style={{ backgroundColor: '#586888',paddingLeft: 15, paddingRight: 15,}}>
-              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#586888', borderBottomWidth:0.5,borderBottomColor: '#43536D',}} >
+            <View style={{ backgroundColor: '#4e5e7d',paddingLeft: 15, paddingRight: 15,}}>
+              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#4e5e7d', borderBottomWidth:0.5,borderBottomColor: '#43536D',}} >
                 <TextInput ref={(ref) => this._lphone = ref} autoFocus={false} editable={true}
                   value={this.state.ownerPk}
                   onChangeText={(ownerPk) => this.setState({ ownerPk })}
@@ -373,7 +373,7 @@ class Coins extends BaseComponent {
                   placeholderTextColor="#8696B0" placeholder="owner私钥明文" underlineColorAndroid="transparent" keyboardType="phone-pad" 
                 />
               </View>
-              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#586888', borderBottomWidth:0.5,borderBottomColor: '#43536D',}} >
+              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#4e5e7d', borderBottomWidth:0.5,borderBottomColor: '#43536D',}} >
                 <TextInput ref={(ref) => this._lphone = ref} autoFocus={false} editable={true}
                   value={this.state.activePk}
                   onChangeText={(activePk) => this.setState({ activePk })}
@@ -381,7 +381,7 @@ class Coins extends BaseComponent {
                   placeholderTextColor="#8696B0" placeholder="active私钥明文" underlineColorAndroid="transparent" keyboardType="phone-pad" 
                 />
               </View>
-              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#586888', borderBottomWidth:0.5,borderBottomColor: '#43536D',  }} >
+              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#4e5e7d', borderBottomWidth:0.5,borderBottomColor: '#43536D',  }} >
                 <TextInput ref={(ref) => this._lpass = ref} autoFocus={false} editable={true}
                   value={this.state.walletpwd}
                   onChangeText={(walletpwd) => this.setState({ walletpwd })}
@@ -389,7 +389,7 @@ class Coins extends BaseComponent {
                   placeholder="密码" underlineColorAndroid="transparent" secureTextEntry={true} maxLength={20}
                 />
               </View>
-              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#586888', borderBottomWidth:0.5,borderBottomColor: '#43536D',  }} >
+              <View style={{ paddingTop: 20, height: 60, backgroundColor: '#4e5e7d', borderBottomWidth:0.5,borderBottomColor: '#43536D',  }} >
                 <TextInput ref={(ref) => this._lpass = ref} autoFocus={false} editable={true}
                   value={this.state.reWalletpwd}
                   onChangeText={(reWalletpwd) => this.setState({ reWalletpwd })}
@@ -425,7 +425,7 @@ class Coins extends BaseComponent {
     //       <View>
     //         <Text style={styles.welcome} style={{ margin: 20, color: '#8696B0', fontSize: 15 }}>观察钱包不需要导入私钥，只导入钱包地址，进行日 常查看账户、交易和授受通知。大额资金的私钥建议 使用冷钱包或硬件钱包管理，避免泄露被盗。</Text>
     //         <View style={{ backgroundColor: '#43536D' }}>
-    //           <View style={{ padding: 20, height: 60, backgroundColor: '#586888' }} >
+    //           <View style={{ padding: 20, height: 60, backgroundColor: '#4e5e7d' }} >
     //             <TextInput ref={(ref) => this._lphone = ref} autoFocus={false} editable={true}
     //               // value={this.state.loginPhone} 
     //               returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }}
