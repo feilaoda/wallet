@@ -1,27 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Easing,Animated,NativeModules,StatusBar,BackHandler,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,Image,ScrollView,View,RefreshControl,Text, TextInput,Platform,Dimensions,Modal,TouchableOpacity,Switch,ImageBackground,ProgressViewIOS} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
-import store from 'react-native-simple-store';
+import { StyleSheet, Image, View, Text, TextInput, Platform, Dimensions, TouchableOpacity, } from 'react-native';
 import UColor from '../../utils/Colors'
-import Button from  '../../components/Button'
-import Item from '../../components/Item'
-import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
-import QRCode from 'react-native-qrcode-svg';
-const ScreenWidth = Dimensions.get('window').width;
-const ScreenHeight = Dimensions.get('window').height;
+import Button from  '../../components/Button'
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from "../../components/EasyShow"
-
-import ViewShot from "react-native-view-shot";
 import BaseComponent from "../../components/BaseComponent";
 import {NavigationActions} from 'react-navigation';
-import Constants from '../../utils/Constants'
-
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var dismissKeyboard = require('dismissKeyboard');
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
+
 @connect(({wallet, login}) => ({...wallet, ...login}))
 class BackupsAOkey extends BaseComponent {
       static navigationOptions = ({ navigation }) => {
@@ -111,7 +104,7 @@ class BackupsAOkey extends BaseComponent {
                 this.props.dispatch({type: 'wallet/activeWallet', wallet: wallet});
                 //msg:success,data:true, code:0 账号已存在
                 EasyShowLD.dialogShow("恭喜激活成功", (<View>
-                    <Text style={{fontSize: 20, color: UColor.showy, textAlign: 'center',}}>{name}</Text>
+                    <Text style={styles.passoutsource}>{name}</Text>
                     {/* <Text style={styles.inptpasstext}>您申请的账号已经被***激活成功</Text> */}
                 </View>), "知道了", null,  () => {EasyShowLD.dialogClose(), this.pop(3, true) });
             }else {
@@ -252,18 +245,14 @@ class BackupsAOkey extends BaseComponent {
     dismissKeyboard();
   }
 
-
     render() {
-        return (<View style={styles.container}>
-                
-
-        <ScrollView keyboardShouldPersistTaps="always">
-            <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
+        return (<View style={styles.container}>         
+            <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)} style={styles.scrollView}>
                 <View style={styles.header}>
                     <View style={styles.inptoutbg}>
                         <View style={styles.headout}>
                             <Text style={styles.inptitle}>确认您的钱包私钥</Text>
-                            <Text style={styles.headtitle}>请填入您所抄写的私钥，确保您填入无误后，按下一步.</Text>
+                            <Text style={styles.headtitle}>请填入您所抄写的私钥，确保您填入无误后，按下一步。</Text>
                         </View>  
                         {this.state.txt_active != ''&& 
                         <View style={styles.inptoutgo} >
@@ -294,146 +283,59 @@ class BackupsAOkey extends BaseComponent {
                             <Text style={styles.importPritext}>下一步</Text>
                         </View>
                     </Button>
+                    <View style={styles.logout}>
+                        <Image source={UImage.bottom_log} style={styles.logimg}/>
+                        <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
+                    </View>
                 </View>
             </TouchableOpacity>
-         </ScrollView> 
-     </View>)
+        </View>)
     }
 }
 const styles = StyleSheet.create({
+    passoutsource: {
+        fontSize: 20, 
+        color: UColor.showy, 
+        textAlign: 'center',
+    },
+    inptpass: {
+        color: UColor.tintColor,
+        height: ScreenUtil.autoheight(45),
+        width: ScreenWidth -100,
+        paddingBottom: ScreenUtil.autoheight(5),
+        fontSize: ScreenUtil.setSpText(16),
+        backgroundColor: UColor.fontColor,
+        borderBottomColor: UColor.baseline,
+        borderBottomWidth: 1,
+    },
     container: {
         flex: 1,
         flexDirection: 'column',
         backgroundColor: UColor.secdColor,
     },
     scrollView: {
-
+        flex: 1,
     },
-    weltitle: {
-        color: UColor.fontColor, 
-        fontSize: 15, 
-        marginTop: 15, 
-        marginLeft: 10
-    },
-    welcome: {
-        color: UColor.arrow,
-        marginTop: 5, 
-        marginLeft: 10, 
-        marginBottom: 25
-    },
-    backupsout: {
-        height: 45, 
-        backgroundColor: UColor.tintColor, 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        margin: 20, 
-        borderRadius: 5 
-    },
-    backups:{
-        fontSize: 15, 
-        color: UColor.fontColor,
-    },
-
-    passoutsource: {
-        flexDirection: 'column', 
-        alignItems: 'center'
-    },
-    inptpass: {
-        color: UColor.tintColor,
-        height: 45,
-        width: ScreenWidth -100,
-        paddingBottom: 5,
-        fontSize: 16,
-        backgroundColor: UColor.fontColor,
-        borderBottomColor: UColor.baseline,
-        borderBottomWidth: 1,
-    },
-
     header: {
-        marginTop: 10,
+        flex: 1,
+        marginTop: ScreenUtil.autoheight(10),
         backgroundColor: UColor.secdColor,
-    },
-    headout: {
-        paddingTop: 20,
-        paddingBottom: 15,
-    },
-    headtitle: {
-        color: UColor.arrow,
-        fontSize: 14,
-        lineHeight: 25,
     },
     inptoutbg: {
         backgroundColor: UColor.mainColor,
-        paddingHorizontal: 20,
+        paddingHorizontal: ScreenUtil.autowidth(20),
     },
-
-    row: {
-        flex: 1,
-        backgroundColor: UColor.mainColor,
-        flexDirection: "row",
-        padding: 20,
-        paddingTop: 10,
-        justifyContent: "space-between",
+    headout: {
+        paddingTop: ScreenUtil.autoheight(20),
+        paddingBottom: ScreenUtil.autoheight(15),
     },
-    left: {
-        flex: 1,
-        flexDirection: "column",
-        backgroundColor: 'red'
-    },
-    right: {
-        flex: 1,
-        flexDirection: "column",
-        backgroundColor: 'black'
-    },
-    incup: {
-        fontSize: 12,
-        color: UColor.fontColor,
-        backgroundColor: '#F25C49',
-        padding: 5,
-        textAlign: 'center',
-        marginLeft: 10,
-        borderRadius: 5,
-        minWidth: 60,
-        maxHeight: 25
-    },
-    incdo: {
-        fontSize: 12,
-        color: UColor.fontColor,
-        backgroundColor: '#25B36B',
-        padding: 5,
-        textAlign: 'center',
-        marginLeft: 10,
-        borderRadius: 5,
-        minWidth: 60,
-        maxHeight: 25
-    },
-
-    inptout: {
-        paddingHorizontal: 15,
-        borderBottomWidth: 1,
-        backgroundColor: UColor.mainColor,
-        borderBottomColor: UColor.secdColor,
-    },
-    inptitle: {
-        flex: 1,
-        fontSize: 15,
-        lineHeight: 30,
-        color: UColor.fontColor,
-    },
-    prompttext: {
-        flex: 1,
-        fontSize: 14,
-        lineHeight: 30,
-        textAlign: 'right',
-        color: UColor.showy,
-    },
-    inpt: {
-        height: 50,
-        fontSize: 16,
+    headtitle: {
         color: UColor.arrow,
+        fontSize: ScreenUtil.setSpText(14),
+        lineHeight: ScreenUtil.autoheight(25),
     },
     inptoutgo: {
-        paddingBottom: 15,
+        paddingBottom: ScreenUtil.autoheight(15),
         backgroundColor: UColor.mainColor,
     },
     ionicout: {
@@ -441,116 +343,55 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
+    inptitle: {
+        fontSize: ScreenUtil.setSpText(15),
+        lineHeight: ScreenUtil.autoheight(30),
+        color: UColor.fontColor,
+    },
+    prompttext: {
+        fontSize: ScreenUtil.setSpText(14),
+        lineHeight: ScreenUtil.autoheight(30),
+        textAlign: 'right',
+        color: UColor.showy,
+    },
     inptgo: {
-        flex: 1,
-        height: 60,
-        fontSize: 14,
-        lineHeight: 25,
+        height: ScreenUtil.autoheight(60),
+        fontSize: ScreenUtil.setSpText(14),
+        lineHeight: ScreenUtil.autoheight(25),
         color: UColor.arrow,
-        paddingHorizontal: 10,
+        paddingHorizontal: ScreenUtil.autowidth(10),
         textAlignVertical: 'top',
         backgroundColor: UColor.secdColor,
     },
 
-    readout: {
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-        paddingHorizontal: 10,
-        marginTop: 10,
-    },
-    readtext: {
-        fontSize: 15,
-        color: UColor.tintColor,
-    },
-
-
-
-    servicetext: {
-        fontSize: 14,
-        color: UColor.tintColor,
-    },
-
     importPriout: {
-        height: 45,
+        height: ScreenUtil.autoheight(45),
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: 20,
-        marginTop: 50,
+        marginHorizontal: ScreenUtil.autowidth(20),
+        marginTop: ScreenUtil.autoheight(50),
         borderRadius: 5,
         backgroundColor:  UColor.tintColor,
     },
     importPritext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.fontColor,
     },
 
-    privatekeytext: {
-        fontSize: 15,
-        color: UColor.tintColor,
-    },
-    pupuo: {
+    logout:{
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalStyle: {
-        width: ScreenWidth - 20,
-        backgroundColor: UColor.fontColor,
-        borderRadius: 5,
-        paddingHorizontal: 25,
-    },
-    subView: {
-        flexDirection: "row",
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 30,
-        marginVertical: 15,
-    },
-    buttonView: {
-        height: 50,
-        marginVertical: 10,
-        borderRadius: 6,
-        backgroundColor: UColor.showy,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    buttoncols: {
-        fontSize: 16,
-        color: UColor.fontColor
-    },
-    titleText: {
-        flex: 1,
-        fontSize: 18,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    titleout: {
-        width: 40,
-        color: '#CBCBCB',
-        fontSize: 28,
-        textAlign: 'center',
-    },
-    contentText: {
-        fontSize: 14,
-        color: UColor.showy,
-        textAlign: 'left',
-        marginVertical: 20,
-    },
-    // prompttext: {
-    //     fontSize: 14,
-    //     color: UColor.tintColor,
-    //     marginHorizontal: 5,
-    // },
-    codeout: {
-        flexDirection: "row",
         alignItems: 'center',
         justifyContent: 'flex-end',
+        paddingBottom: ScreenUtil.autoheight(20),
     },
-    copytext: {
-        fontSize: 14,
-        color: '#808080',
-        textAlign: 'left'
+    logimg: {
+        width: ScreenUtil.autowidth(50), 
+        height: ScreenUtil.autowidth(50)
     },
-
+    logtext: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.arrow,
+        lineHeight: ScreenUtil.autoheight(30),
+    }
 });
 export default BackupsAOkey;

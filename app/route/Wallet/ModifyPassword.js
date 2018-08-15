@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import ScreenUtil from '../../utils/ScreenUtil'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
-
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 import Constants from '../../utils/Constants'
@@ -186,11 +184,8 @@ class ModifyPassword extends BaseComponent {
 
     render() {
         return <View style={styles.container}>
-            
-
           <ScrollView keyboardShouldPersistTaps="always">
             <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
-                <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
                     <View style={styles.outsource}>
                         <View  style={styles.inptoutsource} >
                             <TextInput ref={(ref) => this._lphone = ref} value={this.state.password} returnKeyType="next"
@@ -205,10 +200,10 @@ class ModifyPassword extends BaseComponent {
                                 secureTextEntry={true}  placeholder="新密码" underlineColorAndroid="transparent"  autoFocus={false}  maxLength= {Constants.PWD_MAX_LENGTH}
                                 editable={true} onChangeText={(newPassword) => this.setState({ newPassword })}  onChange={this.intensity()} 
                             />
-                            <View style={{flexDirection: 'row', height: 50, alignItems: 'center', }}>
-                                <Text style={{color:this.state.weak, fontSize: 15, padding: 5,}}>弱</Text>
-                                <Text style={{color:this.state.medium, fontSize: 15, padding: 5,}}>中</Text>
-                                <Text style={{color:this.state.strong, fontSize: 15, padding: 5,}}>强</Text>
+                            <View style={{flexDirection: 'row', height: ScreenUtil.autoheight(50), alignItems: 'center', }}>
+                                <Text style={{color:this.state.weak, fontSize: ScreenUtil.setSpText(15), padding: ScreenUtil.autowidth(5),}}>弱</Text>
+                                <Text style={{color:this.state.medium, fontSize: ScreenUtil.setSpText(15), padding: ScreenUtil.autowidth(5),}}>中</Text>
+                                <Text style={{color:this.state.strong, fontSize: ScreenUtil.setSpText(15), padding: ScreenUtil.autowidth(5),}}>强</Text>
                             </View>
                         </View>
                         <View  style={styles.inptoutsource} >
@@ -225,8 +220,8 @@ class ModifyPassword extends BaseComponent {
                             />
                         </View>
                     </View>
-                    <View style={{paddingTop: 10, paddingHorizontal: 20,}}>
-                        <Text style={{fontSize: 14, color: UColor.arrow, textAlign: 'left',marginVertical: 10,}} >忘记密码? 导入助记词或私钥可重置密码。</Text>
+                    <View style={{padding: ScreenUtil.autowidth(20),}}>
+                        <Text style={{fontSize: ScreenUtil.setSpText(14), color: UColor.arrow, textAlign: 'left',paddingBottom: ScreenUtil.autoheight(10),}} >忘记密码? 导入助记词或私钥可重置密码。</Text>
                         <Text onPress={() => this.importEosKey()} style={styles.servicetext}>马上导入</Text>
                     </View>
                     <Button onPress={() => this.updatePassword()}>
@@ -234,7 +229,10 @@ class ModifyPassword extends BaseComponent {
                             <Text style={styles.buttext}>确认</Text>
                         </View>
                     </Button>
-                </KeyboardAvoidingView>
+                    <View style={styles.logout}>
+                        <Image source={UImage.bottom_log} style={styles.logimg}/>
+                        <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
+                    </View>
             </TouchableOpacity>
         </ScrollView>   
     </View>
@@ -250,45 +248,61 @@ const styles = StyleSheet.create({
 
     outsource: {
         backgroundColor: UColor.mainColor, 
-        marginTop: 30, 
+        marginTop: ScreenUtil.autoheight(30), 
     },
     inptoutsource: {
         flexDirection: 'row',
-        // paddingTop: 10, 
-        paddingHorizontal: 20, 
+        paddingHorizontal: ScreenUtil.autowidth(20), 
         borderBottomColor: UColor.secdColor, 
         borderBottomWidth: 1,
     },
     inpt: {
         flex: 1,
         color: UColor.arrow, 
-        fontSize: 15, 
-        height: 50,
+        fontSize: ScreenUtil.setSpText(15), 
+        height: ScreenUtil.autoheight(50),
     },
 
     welcome: {
         color: UColor.arrow, 
-        marginBottom: 10, 
-        marginLeft: 10
+        marginBottom: ScreenUtil.autoheight(10), 
+        marginLeft: ScreenUtil.autowidth(10),
     },
 
     btnout: {
-        height: 45, 
+        height: ScreenUtil.autoheight(45), 
         justifyContent: 'center', 
         alignItems: 'center', 
-        margin: 40, 
-        marginHorizontal:30,  
+        marginVertical: ScreenUtil.autoheight(40), 
+        marginHorizontal: ScreenUtil.autowidth(30),  
         borderRadius: 5
     },
     buttext: {
-        fontSize: 15, 
+        fontSize: ScreenUtil.setSpText(15), 
         color: UColor.fontColor
     },
     servicetext: {
-        fontSize: 14, 
+        paddingBottom: ScreenUtil.autoheight(20), 
+        fontSize: ScreenUtil.setSpText(14), 
         color: UColor.tintColor,  
         textAlign: 'right',
     },
+
+    logout:{
+        height: ScreenUtil.autoheight(130),
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingBottom: ScreenUtil.autoheight(20),
+      },
+      logimg: {
+        width: ScreenUtil.autowidth(50), 
+        height: ScreenUtil.autowidth(50)
+      },
+      logtext: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.arrow,
+        lineHeight: ScreenUtil.autoheight(30),
+      }
 });
 
 export default ModifyPassword;

@@ -1,13 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,Clipboard,TextInput,KeyboardAvoidingView,TouchableOpacity,TouchableHighlight} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import { StyleSheet, View, Text, Image, Platform, Clipboard, TouchableHighlight} from 'react-native';
 import UColor from '../../utils/Colors'
-import Button from  '../../components/Button'
-import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
-
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 var dismissKeyboard = require('dismissKeyboard');
@@ -59,15 +55,12 @@ class ExportPublicKey extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-        
-
-      <ScrollView keyboardShouldPersistTaps="always">
         <View style={styles.header}>
             <View style={styles.inptoutbg}>
                 {this.state.ownerPk != '' && <View style={styles.inptoutgo} >
                     <View style={{flexDirection:'row',}}>
                         <Text style={styles.inptitle}>Owner公钥（拥有者）</Text>
-                        <TouchableHighlight onPress={() => { this.copyOwnerPK() }} style={{flex: 1,}} activeOpacity={1} underlayColor={UColor.mainColor}>
+                        <TouchableHighlight onPress={() => { this.copyOwnerPK() }} activeOpacity={1} underlayColor={UColor.mainColor}>
                             <View style={styles.buttonView}>
                                 <Text style={styles.buttonText}>复制</Text>
                             </View>
@@ -79,9 +72,9 @@ class ExportPublicKey extends BaseComponent {
                 </View>
                 }
                 {this.state.activePk != '' && <View style={styles.inptoutgo} >
-                    <View style={{flexDirection:'row',flex:1}}>
+                    <View style={{flexDirection:'row',}}>
                         <Text style={styles.inptitle}>Active公钥（管理者）</Text>
-                        <TouchableHighlight onPress={() => { this.copyActivePK() }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
+                        <TouchableHighlight onPress={() => { this.copyActivePK() }} activeOpacity={0.5} underlayColor={UColor.mainColor}>
                             <View style={styles.buttonView}>
                                 <Text style={styles.buttonText}>复制</Text>
                             </View>
@@ -101,8 +94,11 @@ class ExportPublicKey extends BaseComponent {
                 <Text style={styles.titletext}>什么是权重阈值？</Text>
                 <Text style={styles.explaintext}>权重阈值是使用该权限的最低权重要求。</Text>
             </View>
+            <View style={styles.logout}>
+                <Image source={UImage.bottom_log} style={styles.logimg}/>
+                <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
+            </View>
         </View>
-      </ScrollView>
     </View>
   }
 }
@@ -113,68 +109,80 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         backgroundColor: UColor.secdColor,
     },
-    scrollView: {
-
-    },
     header: {
-        marginTop: 10,
+        flex: 1,
+        marginTop: ScreenUtil.autoheight(10),
         backgroundColor: UColor.secdColor,
     },
     inptoutbg: {
         backgroundColor: UColor.mainColor,
-        paddingHorizontal: 20,
-        paddingTop: 20,
-        paddingBottom: 30,
+        paddingHorizontal: ScreenUtil.autowidth(20),
+        paddingTop: ScreenUtil.autoheight(20),
+        paddingBottom: ScreenUtil.autoheight(10),
     },
     inptoutgo: {
-        paddingBottom: 20,
+        paddingBottom: ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
     },
     inptitle: {
         flex: 1,
-        fontSize: 15,
-        lineHeight: 30,
         color: UColor.fontColor,
+        fontSize: ScreenUtil.setSpText(15),
+        lineHeight: ScreenUtil.autoheight(35),
     },
      // 按钮  
     buttonView: {
-        paddingHorizontal: 5,
+        paddingHorizontal: ScreenUtil.autowidth(5),
         justifyContent: 'center',
         alignItems: 'flex-end',
     },
     buttonText: {
-        fontSize: 12,
-        lineHeight: 30,
         color:  UColor.tintColor,
+        fontSize: ScreenUtil.setSpText(14),
+        lineHeight: ScreenUtil.autoheight(35),
     },
 
     inptgo: {
-        flex: 1,
-        height: 60,
-        paddingHorizontal: 10,
         backgroundColor: UColor.secdColor,
+        height: ScreenUtil.autoheight(60),
+        paddingHorizontal: ScreenUtil.autowidth(10),
     },
     inptext: {
-        fontSize: 14,
-        lineHeight: 25,
         color: UColor.arrow,
+        fontSize: ScreenUtil.setSpText(14),
+        lineHeight: ScreenUtil.autoheight(25),
     },
     textout: {
-            paddingHorizontal: 16,
-            paddingVertical: 10,
+        paddingHorizontal: ScreenUtil.autowidth(16),
+        paddingVertical: ScreenUtil.autoheight(10),
     },
     titletext: {
-        fontSize: 15,
         color: UColor.fontColor,
-        paddingVertical: 8,
+        fontSize: ScreenUtil.setSpText(15),
+        paddingTop: ScreenUtil.autoheight(8),
     },
     explaintext: {
-        fontSize: 13,
         color: UColor.fontColor,
-        paddingLeft: 20,
-        paddingVertical: 5,
-        marginBottom: 10,
-        lineHeight: 25,
+        fontSize: ScreenUtil.setSpText(13),
+        paddingLeft: ScreenUtil.autowidth(20),
+        paddingVertical: ScreenUtil.autoheight(5),
+        lineHeight: ScreenUtil.autoheight(25),
+    },
+
+    logout:{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingBottom: ScreenUtil.autoheight(20),
+    },
+    logimg: {
+        width: ScreenUtil.autowidth(50), 
+        height: ScreenUtil.autowidth(50)
+    },
+    logtext: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.arrow,
+        lineHeight: ScreenUtil.autoheight(30),
     },
 });
 

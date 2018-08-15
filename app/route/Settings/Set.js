@@ -1,24 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,Linking,Switch} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import {DeviceEventEmitter,StyleSheet,View,Text,Dimensions,Image,Platform,Linking,Switch} from 'react-native';
 import Upgrade from 'react-native-upgrade-android';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
-import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import { EasyShowLD } from '../../components/EasyShow'
-
 import { EasyToast } from '../../components/Toast';
 import JPush from 'jpush-react-native';
 import JPushModule from 'jpush-react-native';
 import BaseComponent from "../../components/BaseComponent";
-
 var DeviceInfo = require('react-native-device-info');
-
+const ScreenWidth = Dimensions.get('window').width;
 const Font = { Ionicons }
 @connect(({login,jPush}) => ({...login,...JPush}))
 class Set extends BaseComponent {
@@ -145,13 +141,8 @@ class Set extends BaseComponent {
                   <Text style={styles.listInfoTitle}>手势密码</Text>
                 </View>
                 <View style={styles.listInfoRight}>
-                  <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor="#ffffff"
-                      value={this.state.gesture} onValueChange={(gesture)=>{
-                      this.setState({
-                        gesture:gesture,
-                      });
-                      this.gesturepass(gesture);
-                  }}/>
+                  <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor={UColor.fontColor}
+                  value={this.state.gesture} onValueChange={(gesture)=>{this.setState({gesture:gesture,});this.gesturepass(gesture);}}/>
                 </View>
               </View>
           </View>
@@ -161,10 +152,8 @@ class Set extends BaseComponent {
                   <Text style={styles.listInfoTitle}>消息推送</Text>
                 </View>
                 <View style={styles.listInfoRight}>
-                  <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor="#ffffff"
-                      value={this.state.value} onValueChange={(value)=>{ this.setState({ value:value, });
-                      this.changeJpush(value);
-                  }}/>
+                  <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor={UColor.fontColor}
+                  value={this.state.value} onValueChange={(value)=>{ this.setState({ value:value, });this.changeJpush(value);}}/>
                 </View>
               </View>
           </View>
@@ -181,12 +170,18 @@ class Set extends BaseComponent {
               </View>
           </Button>
       </View>
-      <View style={styles.btnout}>
-        <Button onPress={() => this.logout()}>
-          <View style={styles.btnloginUser}>
-            <Text style={styles.btntext}>{this.props.loginUser?"退出登陆":"登陆"}</Text>
-          </View>
-        </Button>
+      <View style={{flex: 1,}}>
+        <View style={styles.btnout}>
+          <Button onPress={() => this.logout()}>
+            <View style={styles.btnloginUser}>
+              <Text style={styles.btntext}>{this.props.loginUser?"退出登陆":"登陆"}</Text>
+            </View>
+          </Button>
+        </View>
+        <View style={styles.logout}>
+          <Image source={UImage.bottom_log} style={styles.logimg}/>
+          <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
+        </View>
       </View>
   </View>
   }
@@ -209,10 +204,9 @@ const styles = StyleSheet.create({
   },
  
   listInfo: {
-    height: 55,
-    flex: 1,
-    paddingLeft: 16,
-    paddingRight: 16,
+    width: ScreenWidth,
+    height:  ScreenUtil.autoheight(55),
+    paddingHorizontal: ScreenUtil.autowidth(16),
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -221,28 +215,44 @@ const styles = StyleSheet.create({
   },
   listInfoTitle: {
     color:UColor.fontColor, 
-    fontSize:16
+    fontSize: ScreenUtil.setSpText(16),
   },
   listInfoRight: {
     flexDirection: "row",
     alignItems: "center"
   },
   btnout: {
-    height: 80, 
-    marginBottom: 30,
+    height:  ScreenUtil.autoheight(80), 
+    marginBottom:  ScreenUtil.autoheight(30),
   },
   btnloginUser: {
-    height: 45,
+    height:  ScreenUtil.autoheight(45),
     backgroundColor: UColor.tintColor,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 20,
+    margin: ScreenUtil.autowidth(20),
     borderRadius: 5
   },
   btntext: {
-    fontSize:15,
+    fontSize: ScreenUtil.setSpText(15),
     color: UColor.fontColor,
   },
+
+  logout:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: ScreenUtil.autoheight(20),
+  },
+  logimg: {
+    width: ScreenUtil.autowidth(50), 
+    height: ScreenUtil.autowidth(50)
+  },
+  logtext: {
+    fontSize: ScreenUtil.setSpText(14),
+    color: UColor.arrow,
+    lineHeight: ScreenUtil.autoheight(30),
+  }
   
 });
 
