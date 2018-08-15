@@ -1363,11 +1363,11 @@ class Transaction extends BaseComponent {
                         </TouchableOpacity>
                     </View>
                 </View>
-                {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
                 {this.state.isBuy?<View>
                     <View style={styles.greeninptout}>
                         <Text style={styles.greenText}>单价: {this.props.etinfo ? this.precisionTransfer(this.props.etinfo.price,8) : '0'} EOS</Text>
                         <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0" : this.state.balance} EOS</Text>
+                        {this.state.error&&<Text style={{flex: 1, fontSize: 12, color: UColor.showy, textAlign: 'left', }}>{this.state.errortext}</Text>}
                     </View>
                     <View style={styles.inputout}>
                         <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyETAmount + ''} returnKeyType="go" 
