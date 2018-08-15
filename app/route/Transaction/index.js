@@ -32,7 +32,7 @@ class Transaction extends BaseComponent {
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
-          title: 'ET交易',
+          title: 'ET交易所',
           header:null,  //隐藏顶部导航栏
          //铃铛small_bell/small_bell_h
         //   headerRight: (
@@ -921,22 +921,20 @@ class Transaction extends BaseComponent {
     return timezone;
   }
 
-  openbusiness() {  
-//     <View style={styles.passoutsource}>
-//     <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password : password })} returnKeyType="go" 
-//         selectionColor={UColor.tintColor} secureTextEntry={true} keyboardType="ascii-capable" style={styles.inptpass} maxLength={Constants.PWD_MAX_LENGTH}
-//         placeholderTextColor={UColor.arrow} placeholder="请输入密码" underlineColorAndroid="transparent" />
-//     <Text style={styles.inptpasstext}></Text>  
-// </View>
-EasyShowLD.dialogShow("警示: TEST币仅用于测试,没有任何价值,测试完会下架,请不要大量购买!", null, "确认", "取消", () => {
-    EasyShowLD.dialogClose();
-    let business = this.state.business;  
-    this.setState({  
-        business:!business,
-        buyETAmount: '0',
-        sellET: '0',  
-      });
-}, () => { EasyShowLD.dialogClose() })
+  openbusiness() { 
+    const view = 
+    <View style={styles.passoutsource}>
+      <Text style={styles.inptpasstext}>TEST币仅用于测试,没有任何价值,测试完会下架,请不要大量购买!</Text>  
+    </View>
+    EasyShowLD.dialogShow("警示", view, "确认", "取消", () => {
+        EasyShowLD.dialogClose();
+        let business = this.state.business;  
+        this.setState({  
+            business:!business,
+            buyETAmount: '0',
+            sellET: '0',  
+        });
+    }, () => { EasyShowLD.dialogClose() })
   
   }  
 
