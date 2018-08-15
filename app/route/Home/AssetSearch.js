@@ -127,7 +127,7 @@ class AssetSearch extends BaseComponent {
       return;
     }
     // EasyShowLD.dialogShow();
-    this.props.dispatch({ type: 'assets/submitAssetInfoToServer', payload: { contractAccount: this.state.address.toUpperCase(), name: this.state.tokenname.toLowerCase() }, callback: (data) => {
+    this.props.dispatch({ type: 'assets/submitAssetInfoToServer', payload: { contractAccount: this.state.address.toLowerCase(), name: this.state.tokenname.toUpperCase() }, callback: (data) => {
       if(data && data.code=='0'){
         this.setState({
           show: false,
