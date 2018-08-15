@@ -592,7 +592,7 @@ class Home extends React.Component {
                     </Button>
                     <Text style={styles.addtotext}> 总资产</Text>
                     <TouchableOpacity onPress={this.onPressReveal.bind(this,this.state.isEye)}>
-                        <Image source={this.state.isEye ? UImage.reveal : UImage.reveal_h} style={styles.imgTeOy}/>
+                        <Image source={this.state.isEye ? UImage.reveal_wallet : UImage.reveal_h_wallet} style={styles.imgTeOy}/>
                     </TouchableOpacity>
                     {(this.props.defaultWallet != null && (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived'))) ? <View style={styles.notactivedout}><Text style={styles.notactived} onPress={this.WalletDetail.bind(this,this.props.defaultWallet)}>未激活</Text></View>:((this.props.defaultWallet == null || this.props.defaultWallet.name == null || (this.props.defaultWallet != null &&this.props.defaultWallet.isBackups)) ? null :  <View style={styles.stopoutBackupsout}><Text style={styles.stopoutBackups} onPress={this.WalletDetail.bind(this,this.props.defaultWallet)}>未备份</Text></View>) }   
                   </View>

@@ -493,6 +493,8 @@ export default {
             var reveal = yield call(store.get, 'reveal_wallet');
             if (reveal == null) {
                 reveal = false;              
+                //没有记录要保存         
+                yield call(store.save, 'reveal_wallet', reveal);
             }
             if (callback) callback({ reveal: reveal });
           },

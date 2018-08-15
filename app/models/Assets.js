@@ -295,7 +295,9 @@ export default {
       *getReveal({ payload,callback }, { call, put }) {
         var reveal = yield call(store.get, 'reveal');
         if (reveal == null) {
-            reveal = false;              
+            reveal = false;  
+            //没有记录要保存         
+            yield call(store.save, 'reveal', reveal);
         }
         if (callback) callback({ reveal: reveal });
       },
