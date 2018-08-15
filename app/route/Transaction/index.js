@@ -5,12 +5,10 @@ import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
-import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import { SegmentedControls } from 'react-native-radio-buttons'
 import Echarts from 'native-echarts'
-var ScreenWidth = Dimensions.get('window').width;
-var ScreenHeight = Dimensions.get('window').height;
 import {formatterNumber,formatterUnit} from '../../utils/FormatUtil'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from '../../components/EasyShow'
@@ -21,6 +19,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Eos } from "react-native-eosjs";
 import {formatEosQua} from '../../utils/FormatUtil';
 import Constants from '../../utils/Constants';
+var ScreenWidth = Dimensions.get('window').width;
+var ScreenHeight = Dimensions.get('window').height;
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
@@ -746,16 +746,16 @@ class Transaction extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 30 : 50, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
-        <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
-            <Text style={{fontSize: 12, color: '#fff'}}>交易面板</Text>
+    <TouchableOpacity style={{ position:'absolute', bottom: ScreenUtil.autoheight(45), right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
+        <View style={{height: ScreenUtil.autoheight(35),width: ScreenUtil.autowidth(90),backgroundColor: UColor.tintColor,justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
+            <Text style={{fontSize: ScreenUtil.setSpText(14), color: UColor.fontColor}}>交易面板</Text>
         </View>
     </TouchableOpacity>
     {Constants.netTimeoutFlag==true &&
         <Button onPress={this.openSystemSetting.bind(this)}>
             <View style={styles.systemSettingTip}>
                 <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
-                <Text style={styles.systemSettingArrow}>></Text>
+                <Ionicons style={styles.systemSettingArrow} name="ios-arrow-forward-outline" size={20} />
             </View>
         </Button>
     }
@@ -789,109 +789,109 @@ class Transaction extends BaseComponent {
                         <Text style={(this.props.ramInfo && this.props.ramInfo.increase>=0)?styles.incdo:styles.incup}> 
                             {this.props.ramInfo ? (this.props.ramInfo.increase > 0 ? '+' + (this.props.ramInfo.increase * 100).toFixed(2) : 
                                 (this.props.ramInfo.increase * 100).toFixed(2)): '0.00'}%</Text>
-                        <Text style={{color:'#8696B0',fontSize:13,marginTop:2,textAlign:'center', marginLeft:5}}>涨幅</Text>
+                        <Text style={{color:UColor.arrow,fontSize: ScreenUtil.setSpText(13),marginTop:2,textAlign:'center', marginLeft: ScreenUtil.autowidth(5)}}>涨幅</Text>
                     </View>
                 </View>
             </View>
           
-            <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
+            <View style={{width:ScreenWidth,height:ScreenUtil.autoheight(25),flexDirection:'row',justifyContent: 'center',alignItems:'center',backgroundColor: '#4D607E',}}>
                 <View style={{flexDirection:"column",flex:1,}}>
                     <Button onPress={this.onClickTimeType.bind(this,"时分")}>
-                        <View style={{ marginLeft: 2,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <View style={{ marginLeft: ScreenUtil.autowidth(2),width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             {this.state.selectedSegment == "时分" ? 
-                                    <Text style={{fontSize: 15, color: UColor.tintColor,}}>时分</Text> : 
-                                            <Text style={{fontSize: 15, color: UColor.fontColor,}}>时分</Text>}
+                                    <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.tintColor,}}>时分</Text> : 
+                                            <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.fontColor,}}>时分</Text>}
                         </View>
                     </Button>   
                 </View>
                 <View style={{flexDirection:"column",flex:1,}}>
                     <Button onPress={this.onClickTimeType.bind(this,"5分")}>
-                        <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             {this.state.selectedSegment == "5分" ? 
-                                    <Text style={{fontSize: 15, color: UColor.tintColor,}}>5分</Text> : 
-                                            <Text style={{fontSize: 15, color: UColor.fontColor,}}>5分</Text>}
+                                    <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.tintColor,}}>5分</Text> : 
+                                            <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.fontColor,}}>5分</Text>}
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickTimeType.bind(this,"15分")}>
-                        <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             {this.state.selectedSegment == "15分" ? 
-                                    <Text style={{fontSize: 15, color: UColor.tintColor,}}>15分</Text> : 
-                                            <Text style={{fontSize: 15, color: UColor.fontColor,}}>15分</Text>}
+                                    <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.tintColor,}}>15分</Text> : 
+                                            <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.fontColor,}}>15分</Text>}
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickTimeType.bind(this,"30分")}>
-                        <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                         {this.state.selectedSegment == "30分" ? 
-                                    <Text style={{fontSize: 15, color: UColor.tintColor,}}>30分</Text> : 
-                                            <Text style={{fontSize: 15, color: UColor.fontColor,}}>30分</Text>}
+                                    <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.tintColor,}}>30分</Text> : 
+                                            <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.fontColor,}}>30分</Text>}
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickMore.bind(this)}>
-                        <View style={{ flexDirection:"row",marginLeft: 0,width: 50, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                        <View style={{ flexDirection:"row", width: ScreenUtil.autowidth(50), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
                             {(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
                             || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? 
-                            <Text style={{fontSize: 15,color: UColor.tintColor,}}>{this.state.showMoreTitle}</Text> : 
-                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>{this.state.showMoreTitle}</Text>}
-                            <Image source={ UImage.txbtn_more } style={ {flex:0,width: 10, height:5,resizeMode:'contain'}}/>
+                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.tintColor,}}>{this.state.showMoreTitle}</Text> : 
+                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>{this.state.showMoreTitle}</Text>}
+                            <Image source={ UImage.txbtn_more } style={ {flex:0,width: ScreenUtil.autowidth(10), height:ScreenUtil.autoheight(5),resizeMode:'contain'}}/>
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1}}>
                     <Button disabled={true}>
-                        <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>    </Text>
                         </View>
                     </Button> 
                 </View>
             </View> 
 
             {this.state.showMore &&       
-            <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
+            <View style={{width:ScreenWidth,height:ScreenUtil.autoheight(25),flexDirection:'row',justifyContent: 'center',alignItems:'center',backgroundColor: '#4D607E',}}>
                 <View style={{flexDirection:"column",flex:1,}}>
                     <Button disabled={true}>
-                        <View style={{ marginLeft: 2,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                        <View style={{ marginLeft: ScreenUtil.autowidth(2),width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>    </Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1,}}>
                     <Button onPress={this.onClickTimeType.bind(this,"1小时")}>
-                        <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>1小时</Text>
+                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>1小时</Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickTimeType.bind(this,"1天")}>
-                        <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>1天</Text>
+                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>1天</Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickTimeType.bind(this,"1周")}>
-                        <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>1周</Text>
+                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>1周</Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1}}>
                 <Button onPress={this.onClickTimeType.bind(this,"1月")}>
-                        <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>1月</Text>
+                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>1月</Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1}}>
                 <Button disabled={true}>
-                        <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>    </Text>
                         </View>
                     </Button> 
                 </View>
@@ -899,11 +899,11 @@ class Transaction extends BaseComponent {
             }  
             {this.state.isKLine ? 
                 <View style={styles.echartsout} onStartShouldSetResponderCapture={this.onMoveLineView.bind(this)} onResponderRelease={this.onMoveLineViewEnd.bind(this)} onResponderEnd={this.onMoveLineViewEnd.bind(this)}>
-                    {<Echarts option={this.getDataKLine()} width={ScreenWidth} height={300} />}
+                    {<Echarts option={this.getDataKLine()} width={ScreenWidth} height={ScreenUtil.autoheight(300)} />}
                 </View>
             : 
                 <View style={styles.echartsout}>
-                    {<Echarts option={this.getDataLine()} width={ScreenWidth} height={160} />}
+                    {<Echarts option={this.getDataLine()} width={ScreenWidth} height={ScreenUtil.autoheight(160)} />}
                 </View>
             }
             <View style={styles.toptabout}>
@@ -912,13 +912,13 @@ class Transaction extends BaseComponent {
             </View>
             {this.state.selectedTransactionRecord == transactionOption[0] || this.state.selectedTransactionRecord == transactionOption[1] ? 
                 <View style={{flex: 1,}}>
-                    {(this.props.ramTradeLog  != null &&  this.props.ramTradeLog .length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
+                    {(this.props.ramTradeLog  != null &&  this.props.ramTradeLog .length == 0) ? <View style={{paddingTop: ScreenUtil.autoheight(50), justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: ScreenUtil.setSpText(16), color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                     <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                            renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
-                            <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
-                            <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                            <Text style={{ flex: 3.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
-                            <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                            renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: ScreenUtil.autowidth(5),marginVertical: ScreenUtil.autoheight(2),marginHorizontal: ScreenUtil.autowidth(5),}}>
+                            <Text style={{ flex: 3,paddingLeft: ScreenUtil.autowidth(8), textAlign: 'left',color: '#7382a1'}}>账号</Text>
+                            <Text style={{ flex: 4,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
+                            <Text style={{ flex: 3.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
+                            <Text style={{ flex: 2.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>时间</Text>
                             </View>
                         }
                         dataSource={this.state.dataSource.cloneWithRows(this.state.newramTradeLog == null ? [] : this.state.newramTradeLog)} 
@@ -947,16 +947,15 @@ class Transaction extends BaseComponent {
                     }
                 </View>: 
                 <View style={{flex: 1,}}>
-
                 {this.state.selectedTransactionRecord == transactionOption[2] ?  
                     <View style={{flex: 1,}}>
-                        {(this.props.ramBigTradeLog != null &&  this.props.ramBigTradeLog.length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
+                        {(this.props.ramBigTradeLog != null &&  this.props.ramBigTradeLog.length == 0) ? <View style={{paddingTop: ScreenUtil.autoheight(50), justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: ScreenUtil.setSpText(16), color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                             <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                                renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
-                                    <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
-                                    <Text style={{ flex: 4,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                                    <Text style={{ flex: 3.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
-                                    <Text style={{ flex: 2.5,paddingLeft: 8,textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                                renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: ScreenUtil.autowidth(5),marginVertical: ScreenUtil.autoheight(2),marginHorizontal: ScreenUtil.autowidth(5),}}>
+                                    <Text style={{ flex: 3,paddingLeft: ScreenUtil.autowidth(8), textAlign: 'left',color: '#7382a1'}}>账号</Text>
+                                    <Text style={{ flex: 4,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
+                                    <Text style={{ flex: 3.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
+                                    <Text style={{ flex: 2.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>时间</Text>
                                     </View>
                                 }
                                 dataSource={this.state.dataSource.cloneWithRows(this.props.ramBigTradeLog == null ? [] : this.props.ramBigTradeLog)} 
@@ -995,14 +994,14 @@ class Transaction extends BaseComponent {
                                             <Text style={styles.numtext}>排名 {rowData.num}</Text>
                                         </View>
                                         <View style={styles.Rankcenterout}>
-                                            <Text style={{fontSize: 12,color: UColor.arrow,}}>盈亏 
+                                            <Text style={{fontSize: ScreenUtil.setSpText(14),color: UColor.arrow,}}>盈亏 
                                             {rowData.profit.indexOf('-') != -1 ?
-                                            <Text style={{fontSize: 12, color: '#FF4C4C',}}> {rowData.profit}</Text>
+                                            <Text style={{fontSize: ScreenUtil.setSpText(14), color: '#FF4C4C',}}> {rowData.profit}</Text>
                                             :
-                                            <Text style={{fontSize: 12, color: '#5BD91E',}}> {rowData.profit}</Text>
+                                            <Text style={{fontSize: ScreenUtil.setSpText(14), color: '#5BD91E',}}> {rowData.profit}</Text>
                                             }
                                             </Text>
-                                            <Text style={{fontSize: 12,color: UColor.arrow,}}>成本价<Text style={{ fontSize: 12,color: UColor.fontColor,}}> {rowData.historyAverageCost}</Text></Text>
+                                            <Text style={{fontSize: ScreenUtil.setSpText(14),color: UColor.arrow,}}>成本价<Text style={{ fontSize: ScreenUtil.setSpText(14),color: UColor.fontColor,}}> {rowData.historyAverageCost}</Text></Text>
                                         </View>
                                         <View style={styles.Rankrightout}>
                                             <Text style={styles.pertext}>{rowData.per}</Text>
@@ -1038,7 +1037,7 @@ class Transaction extends BaseComponent {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
+                        {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: ScreenUtil.setSpText(12), color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
                         {this.state.isBuy?<View>
                             <View style={styles.greeninptout}>
                                 <Text style={styles.greenText}>单价: {this.props.ramInfo ? (this.props.ramInfo.price * 1).toFixed(4) : '0.0000'} EOS/KB</Text>
@@ -1137,37 +1136,37 @@ const styles = StyleSheet.create({
       width: ScreenWidth,
       flexDirection: 'row',
       alignItems: 'center',
-      paddingHorizontal: 6,
+      paddingHorizontal: ScreenUtil.autowidth(6),
     },
     leftout: {
         flexDirection: "row",
         flex: 6,
-        height: 50,
+        height: ScreenUtil.autoheight(50),
     },
     nameout: {
         flexDirection: 'column',
         justifyContent: 'space-around'
     },
     nametext: {
-        color: '#8696B0',
-        fontSize: 10,
+        color: UColor.arrow,
+        fontSize: ScreenUtil.setSpText(13),
     },
     recordout: {
         flex: 1,
         flexDirection: "column",
         justifyContent: 'space-around',
-        paddingLeft: 5,
+        paddingLeft: ScreenUtil.autowidth(5),
     },
     recordtext: {
-        color: '#fff',
-        fontSize: 11,
+        color: UColor.fontColor,
+        fontSize: ScreenUtil.setSpText(13),
     },
     rowout: {
         flexDirection: "row",
     },
     ashtext: {
-        color: '#8696B0',
-        fontSize: 11,
+        color: UColor.arrow,
+        fontSize: ScreenUtil.setSpText(13),
     },
     rightout: {
         flexDirection:'column',
@@ -1185,16 +1184,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     toptext: {
-        color: '#8696B0', 
-        fontSize: 13, 
-        marginTop: 2, 
+        color: UColor.arrow, 
+        fontSize: ScreenUtil.setSpText(13), 
+        marginTop: ScreenUtil.autoheight(2), 
         textAlign: 'center', 
-        marginLeft: 5, 
-        marginRight: 2
+        marginLeft: ScreenUtil.autowidth(5), 
+        marginRight: ScreenUtil.autowidth(2),
     },
     present: {
-        color: '#fff',
-        fontSize: 20,
+        color: UColor.fontColor,
+        fontSize: ScreenUtil.setSpText(20),
         textAlign:'center'
     },
 
@@ -1202,7 +1201,7 @@ const styles = StyleSheet.create({
       flex:1,
       backgroundColor:UColor.mainColor,
       flexDirection:"row",
-      padding: 20,
+      padding: ScreenUtil.autowidth(20),
       borderBottomColor: UColor.secdColor,
       borderBottomWidth: 0.6,
     },
@@ -1217,36 +1216,36 @@ const styles = StyleSheet.create({
       flexDirection:"column"
     },
     incup:{
-      fontSize:20,
+      fontSize: ScreenUtil.setSpText(20),
       color:'#F25C49',
       textAlign:'center',
     },
     incdo:{
-      fontSize:20,
+      fontSize: ScreenUtil.setSpText(20),
       color:'#25B36B',
       textAlign:'center',
     },
     toptabout: {
-        paddingHorizontal: 10,
-        paddingTop:10,
-        paddingBottom: 5,
+        paddingHorizontal: ScreenUtil.autowidth(10),
+        paddingTop:ScreenUtil.autoheight(10),
+        paddingBottom: ScreenUtil.autoheight(5),
     },
     echartsout: {
         // flex: 1,
     },
     tablayout: {   
         flex: 1,
-        height: 35,
+        height: ScreenUtil.autoheight(35),
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',  
-        paddingVertical: 5,
-        paddingHorizontal: 10,
+        paddingVertical: ScreenUtil.autoheight(5),
+        paddingHorizontal: ScreenUtil.autowidth(10),
         backgroundColor: UColor.secdColor,
     },
     txRecordtab: {
         flex: 1,
-        height: 26,
+        height: ScreenUtil.autoheight(26),
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
         borderColor: UColor.tintColor,
@@ -1256,7 +1255,7 @@ const styles = StyleSheet.create({
     },
     trackRecordtab: {
         flex: 1,
-        height: 26,
+        height: ScreenUtil.autoheight(26),
         borderTopRightRadius: 5,
         borderBottomRightRadius: 5,
         borderColor: UColor.tintColor,
@@ -1266,9 +1265,9 @@ const styles = StyleSheet.create({
     },
    
     inptoutsource: {
-      marginTop: 10,
-      paddingHorizontal: 20,
-      paddingBottom: 5,
+      marginTop: ScreenUtil.autoheight(10),
+      paddingHorizontal: ScreenUtil.autowidth(20),
+      paddingBottom: ScreenUtil.autoheight(5),
       justifyContent: 'center',
       flexDirection: 'row',  
       alignItems: 'center',
@@ -1279,58 +1278,58 @@ const styles = StyleSheet.create({
     },
     progressbar: {
         flex: 1,
-        paddingRight: 20,
+        paddingRight: ScreenUtil.autowidth(20),
     },
     inpt: {
       flex: 1, 
       color: UColor.fontColor, 
-      fontSize: 15, 
-      height: 45, 
-      paddingLeft: 10, 
+      fontSize: ScreenUtil.setSpText(15), 
+      height: ScreenUtil.autoheight(45), 
+      paddingLeft: ScreenUtil.autowidth(10), 
     },
     paragraph: {
-        height: 30,
+        height: ScreenUtil.autoheight(30),
         flexDirection: 'row',
         paddingHorizontal: Platform.OS == 'ios' ? 0 : 15,
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     subsection: {
-        fontSize: 12,
+        fontSize: ScreenUtil.setSpText(12),
         color: UColor.arrow
     },
     greeninptout: {
-        height: 50,
+        height: ScreenUtil.autoheight(50),
         flexDirection: 'column',
         alignItems: 'flex-start',
-        paddingHorizontal: 20,
+        paddingHorizontal: ScreenUtil.autowidth(20),
     },
     greenText: {
         flex: 1,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: "#42B324",
         textAlign: "left"
     },
 
     redText: {
         flex: 1,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.showy,
         textAlign: "left"
     },
 
     inptTitle: {
         flex: 1,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.fontColor,
         textAlign: "right"
     },
 
     inputout: {
-        height: 30,
-        marginHorizontal: 18,
-        marginBottom: 10,
-        paddingHorizontal: 10,
+        height: ScreenUtil.autoheight(30),
+        marginHorizontal: ScreenUtil.autowidth(18),
+        marginBottom: ScreenUtil.autoheight(10),
+        paddingHorizontal: ScreenUtil.autowidth(10),
         justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center',
@@ -1340,36 +1339,36 @@ const styles = StyleSheet.create({
     conversion: {
         flex: 1,
         color: UColor.arrow,
-        fontSize: 15,
-        paddingLeft: 10,
+        fontSize: ScreenUtil.setSpText(15),
+        paddingLeft: ScreenUtil.autowidth(10),
     },
     unittext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.fontColor,
     },
 
     botn: {
-      marginLeft: 10, 
-      width: 70, 
-      height: 30,  
+      marginLeft: ScreenUtil.autowidth(10), 
+      width: ScreenUtil.autowidth(70), 
+      height: ScreenUtil.autoheight(30),  
       borderRadius: 3, 
       justifyContent: 'center', 
       alignItems: 'center' 
     },
 
     botText: {
-      fontSize: 17, 
+      fontSize: ScreenUtil.setSpText(17), 
       color: UColor.fontColor,
     },
 
     businessout: {
-        height: Platform.OS == 'ios' ? 41 : 34,
+        height: ScreenUtil.autoheight(40),
         backgroundColor: UColor.mainColor,
         flexDirection: "row",
-        paddingHorizontal: 5,
+        paddingHorizontal: ScreenUtil.autowidth(5),
         borderRadius: 5,
-        marginVertical: 2,
-        marginHorizontal: 5,
+        marginVertical: ScreenUtil.autoheight(2),
+        marginHorizontal: ScreenUtil.autowidth(5),
     },
     liststrip: {
         flex: 1,
@@ -1378,60 +1377,60 @@ const styles = StyleSheet.create({
     },
     sellpricetext: {
         flex: 3.5,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: '#F25C49',
         textAlign: 'left',
-        paddingLeft: 8,
+        paddingLeft: ScreenUtil.autowidth(8),
     },
     buypricetext: {
         flex: 3.5,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: "#4ed694",
         textAlign: 'left',
-        paddingLeft: 8,
+        paddingLeft: ScreenUtil.autowidth(8),
     },
 
     payertext: {
         flex: 3,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.fontColor,
         textAlign: 'left'
     },
     selltext: {
         flex: 4,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: '#F25C49',
         textAlign: 'left',
-        paddingLeft: 8,
+        paddingLeft: ScreenUtil.autowidth(8),
     },
     selltime: {
         flex: 2.5,
-        fontSize: 12,
+        fontSize: ScreenUtil.setSpText(12),
         color: "#F25C49",
         textAlign: 'left'
     },
     buytext: {
         flex: 4,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: "#4ed694",
         textAlign: 'left',
-        paddingLeft: 8,
+        paddingLeft: ScreenUtil.autowidth(8),
     },
     buytime: {
         flex: 2.5,
-        fontSize: 12,
+        fontSize: ScreenUtil.setSpText(12),
         color: "#4ed694",
         textAlign: 'left'
     },
 
     businessRan: {
-        height: Platform.OS == 'ios' ? 52 : 45,
+        height: ScreenUtil.autoheight(50),
         backgroundColor: UColor.mainColor,
         flexDirection: "row",
-        paddingHorizontal: 5,
+        paddingHorizontal: ScreenUtil.autowidth(5),
         borderRadius: 5,
-        marginVertical: 2,
-        marginHorizontal: 5,
+        marginVertical: ScreenUtil.autoheight(2),
+        marginHorizontal: ScreenUtil.autowidth(5),
     },
     Rankleftout: {
         flex: 4.5,
@@ -1439,11 +1438,11 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
     },
     accounttext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.fontColor,
     },
     numtext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.arrow,
     },
     Rankcenterout: {
@@ -1458,12 +1457,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
     },
     pertext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.fontColor,
         textAlign: 'right',
     },
     quotatext: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.arrow,
         textAlign: 'right',
     },
@@ -1481,26 +1480,25 @@ const styles = StyleSheet.create({
     },
     busines: {
         width: ScreenWidth , 
-        height: Platform.OS == 'ios' ? 260:245.5,
-        // paddingBottom:Platform.OS == 'ios' ? 49:49.5,
+        height:ScreenUtil.autoheight(280),
     },
     businesout: {
         flex: 1,
-        backgroundColor: '#43536D', 
+        backgroundColor: UColor.secdColor, 
         alignItems: 'center', 
     },
     businestab: {
         flex: 1,
-        height: 40,
+        height: ScreenUtil.autoheight(40),
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',  
-        paddingLeft: 20,
+        paddingLeft: ScreenUtil.autowidth(20),
         backgroundColor: UColor.secdColor,
     },
     buytab: {
         flex: 1,
-        height: 26,
+        height: ScreenUtil.autoheight(26),
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
         borderColor: UColor.tintColor,
@@ -1510,7 +1508,7 @@ const styles = StyleSheet.create({
     },
     selltab: {
         flex: 1,
-        height: 26,
+        height: ScreenUtil.autoheight(26),
         borderTopRightRadius: 5,
         borderBottomRightRadius: 5,
         borderColor: UColor.tintColor,
@@ -1525,47 +1523,44 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     busrecordimg: {
-        width: 12,
-        height: 16,
+        width: ScreenUtil.autowidth(12),
+        height: ScreenUtil.autoheight(16),
         
     },
     busrecordtext: {
-        fontSize: 14,
-        color: '#65CAFF',
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.tintColor,
     },
     redclose: {
-        width: 40,
-        height: 40,
+        width: ScreenUtil.autowidth(40),
+        height: ScreenUtil.autowidth(40),
        
     },
     headbusines: {
         width: ScreenWidth,
-        height: 40,
+        height: ScreenUtil.autoheight(40),
         flexDirection: 'row',
         justifyContent: "center",
     },
 
 
     systemSettingTip: {
-        // flex: 1,
         width: ScreenWidth,
-        height:40,
+        height: ScreenUtil.autoheight(40),
         flexDirection: "row",
         alignItems: 'center', 
         backgroundColor: UColor.showy,
-      },
-      systemSettingText: {
-        color: UColor.fontColor,
-        textAlign: 'center',
-        fontSize: 15
-      },
-      systemSettingArrow: {
+    },
+    systemSettingText: {
         flex: 1,
         color: UColor.fontColor,
-        textAlign: 'right',
-        fontSize: 30,
-        marginBottom:6
-      },
+        textAlign: 'center',
+        fontSize: ScreenUtil.setSpText(14)
+    },
+    systemSettingArrow: {
+        color: UColor.fontColor,
+        marginRight: ScreenUtil.autowidth(5)
+    },
 });
 
 
