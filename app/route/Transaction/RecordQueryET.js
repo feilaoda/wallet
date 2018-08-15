@@ -35,7 +35,7 @@ class RecordQueryET extends React.Component {
   //加载地址数据
   componentDidMount() {
     this.setState({logRefreshing: true});
-    this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: this.props.navigation.state.params.record,"pageCount":"2", last_id: this.state.logId}, callback: (resp) => {
+    this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: this.props.navigation.state.params.record, last_id: this.state.logId}, callback: (resp) => {
       try {
         if(resp.code != '0' || ((resp.code == '0') && (this.props.etTradeLog.length == 0))){
           this.setState({
@@ -118,7 +118,7 @@ class RecordQueryET extends React.Component {
       }else{
         last_id = this.state.logId;
       }
-      this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: labelname.toLowerCase(),"pageCount":"2", last_id: last_id}, callback: (resp) => {
+      this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: labelname.toLowerCase(), last_id: last_id}, callback: (resp) => {
         try {
             if(resp.code != '0'){
               this.setState({
@@ -173,7 +173,7 @@ class RecordQueryET extends React.Component {
     if (this.state.labelname == ""||this.state.labelname == undefined||this.state.labelname==null) {
       accountName = this.props.navigation.state.params.record;
     }
-    this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: accountName.toLowerCase(),"pageCount":"2", last_id: this.state.logId}, callback: (resp) => {
+    this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: accountName.toLowerCase(),last_id: this.state.logId}, callback: (resp) => {
       try {
           if(resp.code != '0'){
             this.setState({
