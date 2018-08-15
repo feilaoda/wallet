@@ -155,7 +155,7 @@ export default {
     *changeJpush({ payload,callback }, { call, put }) {
       var jpush = yield call(store.get, 'jpush');        
       if (jpush == null) {
-        jpush = false;              
+        jpush = true;              
       }else{
         jpush = !jpush;
       }
@@ -165,7 +165,7 @@ export default {
     *getJpush({ payload,callback }, { call, put }) {
       var jpush = yield call(store.get, 'jpush');
       if (jpush == null) {
-        jpush = false;              
+        jpush = true;              
       }
       if (callback) callback({ jpush: jpush });
     },

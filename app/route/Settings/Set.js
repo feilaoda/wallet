@@ -26,7 +26,7 @@ class Set extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      value: false,
+      value: true,
       gesture: false
     }
   }
