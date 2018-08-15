@@ -4,21 +4,18 @@ import {Dimensions,DeviceEventEmitter,NativeModules, InteractionManager,ListView
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
+import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import Button from  '../../components/Button'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import {formatterNumber,formatterUnit} from '../../utils/FormatUtil'
 import Constants from '../../utils/Constants'
 const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
-
 const pages = [];
-
 let loadMoreTime = 0;
-
 let currentLoadMoreTypeId;
-
 let timer;
-
 let currentTab=0;
 
 @connect(({sticker}) => ({...sticker}))
@@ -142,25 +139,23 @@ class Coins extends React.Component {
         renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={{height:0.5,backgroundColor: UColor.secdColor}} />}
         style={{backgroundColor:UColor.secdColor}}
         enableEmptySections={true}
-
         renderHeader = {()=><View>
           {Constants.netTimeoutFlag==true &&
             <Button onPress={this.openSystemSetting.bind(this)}>
               <View style={styles.systemSettingTip}>
                   <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
-                  <Text style={styles.systemSettingArrow}>></Text>
+                  <Ionicons style={styles.systemSettingArrow} name="ios-arrow-forward-outline" size={20} />
               </View>
             </Button>}  
             </View>
         }
-
         refreshControl={
           <RefreshControl
             refreshing={this.props.loading}
             onRefresh={() => this.onRefresh(route.key)}
-            tintColor="#fff"
+            tintColor={UColor.fontColor}
             colors={['#ddd',UColor.tintColor]}
-            progressBackgroundColor="#ffffff"
+            progressBackgroundColor={UColor.fontColor}
           />
         }
         dataSource={this.state.dataSource.cloneWithRows(this.props.coinList[route.key]==null?[]:this.props.coinList[route.key])}
@@ -168,19 +163,19 @@ class Coins extends React.Component {
           <Button onPress={this.onPress.bind(this,rowData)}>
             <View style={styles.row}>
               <View style={{width:'35%'}}>
-                 <View style={{ flex:1,flexDirection:"row",alignItems: 'center',paddingTop:15}}>
-                    <Image source={{uri:rowData.img}} style={{width:25,height:25}} />
-                    <Text style={{marginLeft:20,fontSize:18,color:UColor.fontColor}}>{rowData.name}</Text>
+                 <View style={{ flex:1,flexDirection:"row",alignItems: 'center',paddingTop: ScreenUtil.autoheight(15)}}>
+                    <Image source={{uri:rowData.img}} style={{width: ScreenUtil.autowidth(25),height: ScreenUtil.autowidth(25)}} />
+                    <Text style={{marginLeft: ScreenUtil.autowidth(20),fontSize:ScreenUtil.setSpText(18),color:UColor.fontColor}}>{rowData.name}</Text>
                   </View>
                   <View>
-                    <Text style={{marginTop:10,fontSize:10,color:'#8696B0'}}>市值${formatterUnit(rowData.value)}</Text>
+                    <Text style={{marginTop: ScreenUtil.autoheight(10),fontSize:ScreenUtil.setSpText(10),color:'#8696B0'}}>市值${formatterUnit(rowData.value)}</Text>
                   </View>
               </View>
               <View style={{width:'65%'}}>
                 <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
-                  <View style={{flex:1,flexDirection:"column",alignItems:'flex-end',paddingTop:25}}>
-                    <Text style={{fontSize:18,color:UColor.fontColor}}>￥{rowData.price}</Text>
-                    <Text style={{marginTop:15,fontSize:10,color:'#8696B0'}}>量 {formatterNumber(rowData.txs)}</Text>
+                  <View style={{flex:1,flexDirection:"column",alignItems:'flex-end',paddingTop: ScreenUtil.autoheight(25)}}>
+                    <Text style={{fontSize:ScreenUtil.setSpText(18),color:UColor.fontColor}}>￥{rowData.price}</Text>
+                    <Text style={{marginTop: ScreenUtil.autoheight(15),fontSize:ScreenUtil.setSpText(10),color:'#8696B0'}}>量 {formatterNumber(rowData.txs)}</Text>
                   </View>
                   <Text style={rowData.increase>0?styles.incdo:styles.incup}>{rowData.increase>0?'+'+rowData.increase:rowData.increase}%</Text>
                 </View>
@@ -200,7 +195,7 @@ class Coins extends React.Component {
         style={styles.container}
         navigationState={this.state}
         renderScene={this.renderScene.bind(this)}
-        renderHeader={(props)=><TabBar onTabPress={this._handleTabItemPress} labelStyle={{fontSize:15,margin:0,marginBottom:10,paddingTop:10,color:'#8696B0'}} indicatorStyle={{backgroundColor:UColor.tintColor,width:60,marginLeft:20}} style={{backgroundColor:UColor.secdColor}} tabStyle={{width:100,padding:0,margin:0}} scrollEnabled={true} {...props}/>}
+        renderHeader={(props)=><TabBar onTabPress={this._handleTabItemPress} labelStyle={{fontSize:ScreenUtil.setSpText(15),margin:0,marginBottom:10,paddingTop:10,color:'#8696B0'}} indicatorStyle={{backgroundColor:UColor.tintColor,width:60,marginLeft:20}} style={{backgroundColor:UColor.secdColor}} tabStyle={{width:100,padding:0,margin:0}} scrollEnabled={true} {...props}/>}
         onIndexChange={this._handleIndexChange}
         initialLayout={{height:0,width:Dimensions.get('window').width}}
         />
@@ -219,8 +214,8 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor:UColor.mainColor,
     flexDirection:"row",
-    padding: 20,
-    paddingTop:10,
+    padding: ScreenUtil.autowidth(20),
+    paddingTop: ScreenUtil.autoheight(10),
     justifyContent:"space-between",
   },
   left:{
@@ -234,48 +229,45 @@ const styles = StyleSheet.create({
     backgroundColor:'black'
   },
   incup:{
-    fontSize:12,
+    fontSize: ScreenUtil.setSpText(12),
     color:UColor.fontColor,
     backgroundColor:'#F25C49',
-    padding:5,
+    padding: ScreenUtil.autowidth(5),
     textAlign:'center',
-    marginLeft:10,
-    borderRadius:5,
-    minWidth:60,
-    maxHeight:25
+    marginLeft: ScreenUtil.autowidth(10),
+    borderRadius: 5,
+    minWidth: ScreenUtil.autowidth(60),
+    maxHeight: ScreenUtil.autoheight(25),
   },
   incdo:{
-    fontSize:12,
+    fontSize: ScreenUtil.setSpText(12),
     color:UColor.fontColor,
     backgroundColor:'#25B36B',
-    padding:5,
+    padding: ScreenUtil.autowidth(5),
     textAlign:'center',
-    marginLeft:10,
-    borderRadius:5,
-    minWidth:60,
-    maxHeight:25
+    marginLeft: ScreenUtil.autowidth(10),
+    borderRadius: 5,
+    minWidth: ScreenUtil.autowidth(60),
+    maxHeight: ScreenUtil.autoheight(25)
   },
 
     
   systemSettingTip: {
-    // flex: 1,
     width: ScreenWidth,
-    height:40,
+    height: ScreenUtil.autoheight(40),
     flexDirection: "row",
     alignItems: 'center', 
     backgroundColor: UColor.showy,
   },
   systemSettingText: {
-    color: UColor.fontColor,
-    textAlign: 'center',
-    fontSize: 15
-  },
-  systemSettingArrow: {
     flex: 1,
     color: UColor.fontColor,
-    textAlign: 'right',
-    fontSize: 30,
-    marginBottom:6
+    textAlign: 'center',
+    fontSize: ScreenUtil.setSpText(14)
+  },
+  systemSettingArrow: {
+    color: UColor.fontColor,
+    marginRight: ScreenUtil.autowidth(5)
   },
 });
 

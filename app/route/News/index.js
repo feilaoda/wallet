@@ -12,6 +12,7 @@ import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from '../../components/Toast';
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import NavigationUtil from '../../utils/NavigationUtil'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import Constants from '../../utils/Constants'
 require('moment/locale/zh-cn');
 
@@ -244,7 +245,7 @@ class News extends React.Component {
           <Button onPress={this.openSystemSetting.bind(this)}>
             <View style={styles.systemSettingTip}>
                 <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
-                <Text style={styles.systemSettingArrow}>></Text>
+                <Ionicons style={styles.systemSettingArrow} name="ios-arrow-forward-outline" size={20} />
             </View>
           </Button>}
 
@@ -377,16 +378,14 @@ const styles = StyleSheet.create({
     backgroundColor: UColor.showy,
   },
   systemSettingText: {
-    color: UColor.fontColor,
-    textAlign: 'center',
-    fontSize: ScreenUtil.setSpText(15),
-  },
-  systemSettingArrow: {
     flex: 1,
     color: UColor.fontColor,
-    textAlign: 'right',
-    fontSize: ScreenUtil.setSpText(30),
-    marginBottom: ScreenUtil.autoheight(6),
+    textAlign: 'center',
+    fontSize: ScreenUtil.setSpText(14)
+  },
+  systemSettingArrow: {
+    color: UColor.fontColor,
+    marginRight: ScreenUtil.autowidth(5)
   },
 });
 

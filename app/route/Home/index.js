@@ -8,6 +8,7 @@ import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import QRCode from 'react-native-qrcode-svg';
 var Dimensions = require('Dimensions')
@@ -551,7 +552,7 @@ class Home extends React.Component {
           <Button onPress={this.openSystemSetting.bind(this)}>
             <View style={styles.systemSettingTip}>
                 <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
-                <Text style={styles.systemSettingArrow}>></Text>
+                <Ionicons style={styles.systemSettingArrow} name="ios-arrow-forward-outline" size={20} />
             </View>
           </Button>}
 
@@ -614,9 +615,9 @@ class Home extends React.Component {
             <RefreshControl
               refreshing={this.state.assetRefreshing}
               onRefresh={() => this.onRefresh()}
-              tintColor="#fff"
+              tintColor={UColor.fontColor}
               colors={['#ddd', UColor.tintColor]}
-              progressBackgroundColor="#ffffff"
+              progressBackgroundColor={UColor.fontColor}
             />
           }
           dataSource={this.state.dataSource.cloneWithRows(this.props.myAssets == null ? [] : this.props.myAssets)} 
@@ -630,10 +631,8 @@ class Home extends React.Component {
                   </View>
                   <View style={styles.rights}>
                     <View style={styles.rightout}>
-                      <View>
                         <Text style={styles.rightbalance}>{this.state.isEye ? (rowData.balance==null || rowData.balance=="" || (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')))? "0.0000" : rowData.balance.replace(rowData.asset.name, "") : '****'}</Text>
                         <Text style={styles.rightmarket}>≈{this.state.isEye ? (rowData.balance==null || rowData.balance=="" || rowData.asset.value == null || rowData.asset.value == "" || (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')))? "0.00" : (rowData.balance.replace(rowData.asset.name, "")*rowData.asset.value).toFixed(2) : '****'}（￥）</Text>
-                      </View>
                     </View>
                   </View>
                 </View>
@@ -684,16 +683,16 @@ class Home extends React.Component {
                   )}
                 />
                 <View style={styles.ebhbtnout}>
-                  <Button onPress={() => this.createWallet()} style={{height: 40,}}>
+                  <Button onPress={() => this.createWallet()} style={{height: ScreenUtil.autoheight(40),}}>
                     <View style={styles.establishout}>
                       <Image source={UImage.wallet_1} style={styles.establishimg} />
                       <Text style={styles.establishtext}>创建钱包</Text>
                     </View>
                   </Button>
-                  {/* <Button onPress={() => this.walletTest()} style={{ height: 40, }}>
+                  {/* <Button onPress={() => this.walletTest()} style={{ height: ScreenUtil.autoheight(40), }}>
                     <View style={{ flex: 1, flexDirection: "row", }}>
-                      <Image source={UImage.wallet_1} style={{ width: 25, height: 25, }} />
-                      <Text style={{ marginLeft: 20, fontSize: 15, color: '#8594AB', }}>钱包测试</Text>
+                      <Image source={UImage.wallet_1} style={{ width: 25, height: ScreenUtil.autoheight(25), }} />
+                      <Text style={{ marginLeft: 20, fontSize: ScreenUtil.setSpText(15), color: '#8594AB', }}>钱包测试</Text>
                     </View>
                   </Button> */}
                 </View>
@@ -752,13 +751,14 @@ const styles = StyleSheet.create({
   },
 
   listout: {
-    height: Platform.OS == 'ios' ? 70 : 75,
+    height: ScreenUtil.autoheight(70),
   },
 
   row: {
     backgroundColor: UColor.mainColor,
     flexDirection: "row",
-    padding: 15,
+    paddingVertical: ScreenUtil.autowidth(15),
+    paddingHorizontal: ScreenUtil.autowidth(20),
     justifyContent: "space-between",
   },
   listItem: {
@@ -771,16 +771,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: "space-between",
     width: Dimensions.get('window').width,
-    paddingTop:Platform.OS == 'ios' ? 30 : 20,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingTop: ScreenUtil.autoheight(30),
+    paddingHorizontal: ScreenUtil.autowidth(10),
     backgroundColor: UColor.mainColor, 
   },
   toptext: {
-    height: Platform.OS == 'ios' ? 65 : 50,
-    lineHeight: Platform.OS == 'ios' ? 65 : 50,
+    height: ScreenUtil.autoheight(65),
+    lineHeight: ScreenUtil.autoheight(65),
     textAlign: "center",
-    fontSize: 18,
+    fontSize: ScreenUtil.setSpText(18),
     color: UColor.fontColor,
   },
 
@@ -788,20 +787,18 @@ const styles = StyleSheet.create({
     justifyContent: "center" 
   },
   head: {
-    height: 70, 
+    height: ScreenUtil.autoheight(70), 
     flexDirection: "row",
     backgroundColor: UColor.secdColor, 
     borderRadius: 5,  
-    marginTop: 20,
-    marginBottom: 20,
-    marginRight: 10,
-    marginLeft: 10,
+    marginVertical: ScreenUtil.autoheight(20),
+    marginHorizontal: ScreenUtil.autowidth(10),
   },
   headbtn: {
     flex: 1, 
     justifyContent: "center", 
     alignItems: 'center',
-    padding: 5,
+    padding: ScreenUtil.autowidth(5),
   },
   headbtnout: {
     flex:1, 
@@ -810,17 +807,17 @@ const styles = StyleSheet.create({
   },
   headbtntext: {
     color: UColor.arrow,
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
   },
 
   addto: {
-    height: 75, 
+    height: ScreenUtil.autoheight(75), 
     backgroundColor: UColor.mainColor, 
     flexDirection: "row",
     justifyContent: "space-between",
     borderBottomColor: UColor.tintColor, 
     borderBottomWidth: 2,
-    paddingHorizontal: 5,
+    paddingHorizontal: ScreenUtil.autowidth(5),
   },
   addout: {
     flex: 1, 
@@ -829,13 +826,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   addtotext: { 
-    fontSize: 16, 
+    fontSize: ScreenUtil.setSpText(16), 
     color: UColor.fontColor
   },
   imgTeOy: {
-    width: 25,
-    height: 15,
-    marginHorizontal:5,
+    width: ScreenUtil.autowidth(25),
+    height: ScreenUtil.autoheight(15),
+    marginHorizontal: ScreenUtil.autowidth(5),
   },
   addtoout: {
     flex: 1,
@@ -844,11 +841,11 @@ const styles = StyleSheet.create({
     justifyContent: "center", 
   },
   addtoouttext: {
-    fontSize: 20, 
+    fontSize: ScreenUtil.setSpText(20), 
     color: UColor.fontColor 
   },
   addtobtn: {
-    width:60, 
+    width: ScreenUtil.autowidth(60), 
     alignItems: 'center', 
     justifyContent: "center",
   },
@@ -859,7 +856,7 @@ const styles = StyleSheet.create({
   },
   addbtnimg: {
     color:UColor.fontColor ,
-    fontSize: 14, 
+    fontSize: ScreenUtil.setSpText(14), 
     textAlign:'center'
   },
 
@@ -878,7 +875,7 @@ const styles = StyleSheet.create({
     height: maxHeight, 
     backgroundColor: '#394963', 
     alignItems: 'center', 
-    paddingTop: 50,
+    paddingTop: ScreenUtil.autoheight(50),
   },
   touchablelist: {
     width: '100%', 
@@ -887,16 +884,16 @@ const styles = StyleSheet.create({
   },
 
   imgBtn: {
-    width: 30,
-    height: 30,
-    margin:5,
+    width: ScreenUtil.autowidth(30),
+    height: ScreenUtil.autowidth(30),
+    margin: ScreenUtil.autowidth(5),
   },
 
   walletlist: {
     width: '100%',
-    paddingLeft: 20,
-    paddingRight: 10,
-    height: 67,
+    paddingLeft: ScreenUtil.autowidth(20),
+    paddingRight: ScreenUtil.autowidth(10),
+    height: ScreenUtil.autoheight(67),
   },
 
 
@@ -906,10 +903,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   outname: {
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
     color: UColor.fontColor,
     textAlign: 'left',
-    marginRight: 10,
+    marginRight: ScreenUtil.autowidth(10),
   },
   stopoutBackupsout: {
     borderRadius: 10,
@@ -919,11 +916,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   stopoutBackups: {
-    fontSize: 10,
+    fontSize: ScreenUtil.setSpText(10),
     color: '#2ACFFF',
     textAlign: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingHorizontal: ScreenUtil.autowidth(8),
+    paddingVertical: ScreenUtil.autoheight(2),
   },
 
   notactivedout: {
@@ -935,11 +932,11 @@ const styles = StyleSheet.create({
   },
 
   notactived: {
-    fontSize: 10,
+    fontSize: ScreenUtil.setSpText(10),
     color: UColor.showy,
     textAlign: 'center', 
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingHorizontal: ScreenUtil.autowidth(8),
+    paddingVertical: ScreenUtil.autoheight(2),
   },
 
   walletaccount: {
@@ -953,8 +950,8 @@ const styles = StyleSheet.create({
   width: '100%', 
   height: maxHeight / 2.5, 
   flexDirection: "column", 
-  paddingLeft: 20, 
-  paddingTop: 15, 
+  paddingLeft: ScreenUtil.autowidth(20), 
+  paddingTop: ScreenUtil.autoheight(15), 
   alignItems: 'flex-start', 
   borderTopWidth: 1, 
   borderTopColor: UColor.mainColor, 
@@ -966,12 +963,12 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
   },
   establishimg:{
-    width: 25, 
-    height: 25, 
+    width: ScreenUtil.autowidth(25), 
+    height: ScreenUtil.autowidth(25), 
   },
   establishtext: {
-    marginLeft: 20, 
-    fontSize: 15, 
+    marginLeft: ScreenUtil.autowidth(20), 
+    fontSize: ScreenUtil.setSpText(15), 
     color: '#8594AB',
   },
 
@@ -989,46 +986,46 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: 'center',
     justifyContent: 'center',
-    height: 30,
-    marginVertical: 15,
+    height: ScreenUtil.autoheight(30),
+    marginVertical: ScreenUtil.autoheight(15),
     paddingHorizontal: 10,
   },
   titleText: {
-    width: 40,
+    width: ScreenUtil.autowidth(40),
     color: '#CBCBCB',
-    fontSize: 28,
+    fontSize: ScreenUtil.setSpText(28),
     textAlign: 'center',
   },
   contentText: {
-    fontSize: 18,
+    fontSize: ScreenUtil.setSpText(18),
     fontWeight: 'bold',
     textAlign: 'center',
-    paddingBottom: 20,
+    paddingBottom: ScreenUtil.autoheight(20),
   },
   buttonView: {
     alignItems: 'flex-end',
   },
   prompt: {
-    fontSize: 12,
+    fontSize: ScreenUtil.setSpText(12),
     color: UColor.showy,
     textAlign: 'left',
-    marginBottom: 20,
-    paddingHorizontal: 20,
+    marginBottom: ScreenUtil.autoheight(20),
+    paddingHorizontal: ScreenUtil.autowidth(20),
   },
   codeout: {
-    height: 50,
+    height: ScreenUtil.autoheight(50),
     flexDirection: "row",
     alignItems: 'center',
-    marginHorizontal: 15,
+    marginHorizontal: ScreenUtil.autowidth(15),
     borderBottomColor: '#E5E5E5',
     borderBottomWidth: 1,
   },
   copyout: {
     flex: 1,
-    paddingLeft: 30,
+    paddingLeft: ScreenUtil.autowidth(30),
   },
   copytext: {
-    fontSize: 15,
+    fontSize: ScreenUtil.setSpText(15),
     color: '#4D4D4D'
   },
 
@@ -1038,12 +1035,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   leftimg: {
-    width: 25, 
-    height: 25
+    width: ScreenUtil.autowidth(25), 
+    height: ScreenUtil.autowidth(25),
   },
   lefttext: {
-    marginLeft: 20,
-    fontSize: 18,
+    marginLeft: ScreenUtil.autowidth(20),
+    fontSize: ScreenUtil.setSpText(18),
     color: UColor.fontColor
   },
   rights: {
@@ -1054,29 +1051,29 @@ const styles = StyleSheet.create({
   },
   rightout: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: 'flex-end',
   },
   rightbalance: {
-    fontSize: 18, 
+    fontSize: ScreenUtil.setSpText(18), 
     color: UColor.fontColor, 
     textAlign: 'right'
   },
   rightmarket: {
-    fontSize: 12,
+    fontSize: ScreenUtil.setSpText(12),
     color:  UColor.arrow,
     textAlign: 'right',
-    marginTop: 3
+    marginTop: ScreenUtil.autoheight(3),
   },
   incup:{
-    marginLeft: 5, 
-    fontSize: 16, 
+    marginLeft: ScreenUtil.autowidth(5), 
+    fontSize: ScreenUtil.setSpText(16), 
     color: '#F25C49'
   },
   incdo:{
-    marginLeft: 5, 
-    fontSize: 16, 
+    marginLeft: ScreenUtil.autowidth(5), 
+    fontSize: ScreenUtil.setSpText(16), 
     color: '#25B36B'
   },
 
@@ -1085,25 +1082,25 @@ const styles = StyleSheet.create({
     height: maxWidth*0.72,
  },
  btnestablish: {
-   height: 50,
+   height: ScreenUtil.autoheight(50),
    backgroundColor:  UColor.tintColor,
    justifyContent: 'center',
    alignItems: 'center',
-   marginTop: 90,
-   marginHorizontal: 20,
+   marginTop: ScreenUtil.autoheight(90),
+   marginHorizontal: ScreenUtil.autowidth(20),
    borderRadius: 5
  },
  btnimport: {
-   height: 50,
+   height: ScreenUtil.autoheight(50),
    backgroundColor:  UColor.mainColor,
    justifyContent: 'center',
    alignItems: 'center',
-   marginTop: 25,
-   marginHorizontal: 20,
+   marginTop: ScreenUtil.autoheight(25),
+   marginHorizontal: ScreenUtil.autowidth(20),
    borderRadius: 5
  },
  btntext: {
-   fontSize:17,
+   fontSize: ScreenUtil.setSpText(17),
    color: UColor.fontColor,
  },
 
@@ -1112,28 +1109,28 @@ const styles = StyleSheet.create({
   alignItems: 'center',
 },
 tabview: {
-  width: 24,
-  height: 24,
-  margin: 5,
+  width: ScreenUtil.autowidth(24),
+  height: ScreenUtil.autowidth(24),
+  margin: ScreenUtil.autowidth(5),
   borderColor: '#D2D2D2',
   borderWidth: 1,
 },
 tabimg: {
-  width: 24, 
-  height: 24
+  width: ScreenUtil.autowidth(24), 
+  height: ScreenUtil.autowidth(24),
 },
 
 deleteout: {
-  height: 50,
-  marginHorizontal: 60,
-  marginVertical: 15,
+  height: ScreenUtil.autoheight(50),
+  marginHorizontal: ScreenUtil.autowidth(60),
+  marginVertical: ScreenUtil.autoheight(15),
   borderRadius: 6,
   backgroundColor: UColor.tintColor,
   justifyContent: 'center',
   alignItems: 'center'
 },
 deletetext: {
-  fontSize: 16,
+  fontSize: ScreenUtil.setSpText(16),
   color: UColor.fontColor
 },
 
@@ -1145,12 +1142,12 @@ pupuoBackup: {
 },
 
 headout: {
-  paddingTop: 20,
-  paddingBottom: 15,
+  paddingTop: ScreenUtil.autoheight(20),
+  paddingBottom: ScreenUtil.autoheight(15),
 },
 warningout: {
   width: maxWidth-50,
-  marginHorizontal: 15,
+  marginHorizontal: ScreenUtil.autowidth(15),
   flexDirection: "row",
   alignItems: 'center', 
   // paddingHorizontal: 5,
@@ -1160,22 +1157,22 @@ warningout: {
   borderRadius: 5,
 },
 imgBtnBackup: {
-  width: 30,
-  height: 30,
+  width: ScreenUtil.autowidth(30),
+  height: ScreenUtil.autowidth(30),
 },
 
 inptitle: {
   flex: 1,
-  fontSize: 15,
-  lineHeight: 30,
+  fontSize: ScreenUtil.setSpText(15),
+  lineHeight: ScreenUtil.autoheight(30),
   color: UColor.fontColor,
 },
 headtitle: {
   flex: 1,
   color: UColor.showy,
-  fontSize: 14,
-  lineHeight: 25,
-  paddingLeft: 10,
+  fontSize: ScreenUtil.setSpText(14),
+  lineHeight: ScreenUtil.autoheight(25),
+  paddingLeft: ScreenUtil.autowidth(10),
 },
 
 
@@ -1188,10 +1185,10 @@ headtitle: {
     alignItems: 'flex-end',
     justifyContent: 'center',
     width: maxWidth-20,
-    height: 30,
+    height: ScreenUtil.autoheight(30),
   },
   buttonView2: {
-    width: 30,
+    width: ScreenUtil.autowidth(30),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1200,24 +1197,21 @@ headtitle: {
 
     
   systemSettingTip: {
-    // flex: 1,
     width: maxWidth,
-    height:40,
+    height: ScreenUtil.autoheight(40),
     flexDirection: "row",
     alignItems: 'center', 
     backgroundColor: UColor.showy,
   },
   systemSettingText: {
-    color: UColor.fontColor,
-    textAlign: 'center',
-    fontSize: 15
-  },
-  systemSettingArrow: {
     flex: 1,
     color: UColor.fontColor,
-    textAlign: 'right',
-    fontSize: 30,
-    marginBottom:6
+    textAlign: 'center',
+    fontSize: ScreenUtil.setSpText(14)
+  },
+  systemSettingArrow: {
+    color: UColor.fontColor,
+    marginRight: ScreenUtil.autowidth(5)
   },
 });
 
