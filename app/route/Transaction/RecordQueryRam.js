@@ -60,7 +60,13 @@ class RecordQueryRam extends React.Component {
       this.processLogId();
       this.setState({logRefreshing: false});
 
-    }});    
+    }});   
+    DeviceEventEmitter.addListener('scan_result', (data) => {
+      if(data.toaccount){
+          this.setState({labelname:data.toaccount})
+          this.query(data.toaccount);
+      }
+    }); 
   }
 
   processLogId(){
@@ -88,7 +94,6 @@ class RecordQueryRam extends React.Component {
 
   // 根据账号查找交易记录
   query = (labelname) =>{
-   
     if (labelname == ""||labelname == undefined||labelname==null) {
       EasyToast.show('请输入Eos账号');
       return;
@@ -193,6 +198,11 @@ class RecordQueryRam extends React.Component {
     navigate('TradeDetails', {ramtransaction});
   }
 
+  Scan() {
+    const { navigate } = this.props.navigation;
+    navigate('BarCode', {isTurnOut:true,coinType:"EOS"});
+  }
+
   render() {
     return (<View style={styles.container}>
       <View style={styles.header}>  
@@ -202,7 +212,10 @@ class RecordQueryRam extends React.Component {
                   selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor="#b3b3b3" maxLength={12} 
                   placeholder="输入EOS账号名" underlineColorAndroid="transparent" keyboardType="default"
                   onChangeText={(labelname) => this.setState({ labelname })}   
-                  />      
+                  />  
+              <TouchableOpacity onPress={this.Scan.bind(this,this.state.labelname)}>  
+                  <Image source={UImage.account_scan} style={styles.headleftimg} />
+              </TouchableOpacity>    
           </View>    
           <TouchableOpacity onPress={this.query.bind(this,this.state.labelname)}>  
               <Text style={styles.canceltext}>查询</Text>
@@ -268,14 +281,13 @@ const styles = StyleSheet.create({
     headleftimg: {
       width: ScreenUtil.autowidth(18),
       height: ScreenUtil.autowidth(18),
-      marginRight: ScreenUtil.autowidth(15),
+      marginHorizontal: ScreenUtil.autowidth(10),
     },
     inptout: {
       flex: 1,
       height: ScreenUtil.autoheight(30),
       borderRadius: 5,
       marginHorizontal: ScreenUtil.autowidth(15),
-      paddingHorizontal: ScreenUtil.autowidth(10),
       flexDirection: "row",
       alignItems: "center",
       justifyContent: 'center',

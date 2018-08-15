@@ -41,12 +41,13 @@ class MortgageRecord extends React.Component {
   //加载地址数据
   componentDidMount() {
     this.getAccountInfo();
-    this.props.dispatch({
-      type: 'wallet/info',
-      payload: {
-          address: "1111"
+    this.props.dispatch({type: 'wallet/info',payload: { address: "1111"}});
+    DeviceEventEmitter.addListener('scan_result', (data) => {
+      if(data.toaccount){
+          this.setState({labelname:data.toaccount})
+          this._query(data.toaccount);
       }
-    });
+    }); 
   }
 
   getAccountInfo() {
@@ -160,6 +161,11 @@ class MortgageRecord extends React.Component {
     dismissKeyboard();
   }
 
+  Scan() {
+    const { navigate } = this.props.navigation;
+    navigate('BarCode', {isTurnOut:true,coinType:"EOS"});
+  }
+
   render() {
     return (<View style={styles.container}>
       <View style={styles.header}>  
@@ -168,8 +174,11 @@ class MortgageRecord extends React.Component {
               <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
                   selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor="#b3b3b3" maxLength={12} 
                   placeholder="输入Eos账号(查询他人抵押信息)" underlineColorAndroid="transparent" keyboardType="default"
-                  onChangeText={(labelname) => this.setState({ labelname })}   
-                  />      
+                  onChangeText={(labelname) => this.setState({ labelname })}  numberOfLines={1} 
+                  />    
+              <TouchableOpacity onPress={this.Scan.bind(this)}>  
+                  <Image source={UImage.account_scan} style={styles.headleftimg} />
+              </TouchableOpacity>  
           </View>    
           <TouchableOpacity onPress={this._query.bind(this,this.state.labelname)}>  
               <Text style={styles.canceltext}>查询</Text>
@@ -230,14 +239,13 @@ const styles = StyleSheet.create({
     headleftimg: {
       width: 18,
       height: 18,
-      marginRight: 15,
+      marginHorizontal: 10,
     },
     inptout: {
       flex: 1,
       height: 30,
       borderRadius: 5,
       marginHorizontal: 10,
-      paddingHorizontal: 10,
       flexDirection: "row",
       alignItems: "center",
       justifyContent: 'center',

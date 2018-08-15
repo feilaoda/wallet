@@ -8,11 +8,11 @@ import Button from  '../../components/Button'
 import Item from '../../components/Item'
 import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import QRCode from 'react-native-qrcode-svg';
 const maxHeight = Dimensions.get('window').height;
 import { EasyShowLD } from '../../components/EasyShow'
 import { EasyToast } from '../../components/Toast';
-
 import BaseComponent from "../../components/BaseComponent";
 var dismissKeyboard = require('dismissKeyboard');
 @connect(({wallet, assets}) => ({...wallet, ...assets}))
@@ -58,7 +58,12 @@ class AssetSearch extends BaseComponent {
     } catch (error) {
       EasyShowLD.loadingClose();
     }
-
+    DeviceEventEmitter.addListener('scan_result', (data) => {
+      if(data.toaccount){
+          this.setState({labelname:data.toaccount})
+          this._query(data.toaccount);
+      }
+    }); 
   }
 
   //清空
@@ -182,17 +187,24 @@ class AssetSearch extends BaseComponent {
     dismissKeyboard();
   }
 
+  Scan() {
+    const { navigate } = this.props.navigation;
+    navigate('BarCode', {isTurnOut:true,coinType:"EOS"});
+  }
     render() {
         return (
             <View style={styles.container}>
                   <View style={styles.header}>  
                     <View style={styles.inptout} >
-                        <Image source={UImage.Magnifier_ash} style={styles.headleftimg}></Image>
+                        <Image source={UImage.Magnifier_ash} style={styles.headleftimg} />
                         <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
                             selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor="#b3b3b3" autoCorrect={true}
                             placeholder="输入token名称或合约账户搜索" underlineColorAndroid="transparent" keyboardType="default"
                             onChangeText={(labelname) => this.setState({ labelname })} 
-                            />      
+                            />
+                        <TouchableOpacity onPress={this.Scan.bind(this)}>  
+                            <Image source={UImage.account_scan} style={styles.headleftimg} />
+                        </TouchableOpacity>       
                     </View>    
                     <TouchableOpacity onPress={this._query.bind(this,this.state.labelname)}>  
                         <Text style={styles.canceltext}>查询</Text>
@@ -214,12 +226,12 @@ class AssetSearch extends BaseComponent {
                   renderRow={(rowData, sectionID, rowID) => (      
                   <View style={styles.listItem}>
                       <View style={styles.listInfo}>
-                        <Image source={rowData.icon==null ? UImage.eos : { uri: rowData.icon }} style={{width: 28, height: 28, resizeMode: "cover", overflow:"hidden", borderRadius: 10, marginRight:10,}}/>
+                        <Image source={rowData.icon==null ? UImage.eos : { uri: rowData.icon }} style={{width: ScreenUtil.autowidth(28), height: ScreenUtil.autowidth(28), resizeMode: "cover", overflow:"hidden", borderRadius: 10, marginRight: ScreenUtil.autowidth(10),}}/>
                         <View style={styles.scrollView}>
                           <Text style={styles.listInfoTitle}>{rowData.name}</Text>
                         </View>
                         <View style={styles.listInfoRight}>
-                          <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor="#ffffff"
+                          <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor={UColor.fontColor}
                               value={this.isMyAsset(rowData)} onValueChange={(value)=>{
                               this.setState({selectasset: rowData, value: value});
                               this.addAsset(rowData, value);
@@ -276,19 +288,18 @@ const styles = StyleSheet.create({
       backgroundColor: UColor.mainColor,
     },
     leftout: {
-      paddingLeft: 15
+      paddingLeft: ScreenUtil.autowidth(15),
     },
     headleftimg: {
-      width: 18,
-      height: 18,
-      marginRight: 15,
+      width: ScreenUtil.autowidth(18),
+      height: ScreenUtil.autowidth(18),
+      marginHorizontal: ScreenUtil.autowidth(15),
     },
     inptout: {
       flex: 1,
-      height: 30,
+      height: ScreenUtil.autoheight(30),
       borderRadius: 5,
-      marginHorizontal: 10,
-      paddingHorizontal: 10,
+      marginHorizontal: ScreenUtil.autowidth(10),
       flexDirection: "row",
       alignItems: "center",
       justifyContent: 'center',
@@ -297,12 +308,13 @@ const styles = StyleSheet.create({
 
     inpt: {
       flex: 1,
-      height: 45,
-      fontSize: 14,
+      height: ScreenUtil.autoheight(45),
+      fontSize: ScreenUtil.setSpText(14),
       color: '#999999',
     },
 
     listItem: {
+      flex: 1,
       backgroundColor: UColor.mainColor,
       flexDirection: "row",
       justifyContent: "center",
@@ -310,10 +322,9 @@ const styles = StyleSheet.create({
     },
    
     listInfo: {
-      height: 65,
       flex: 1,
-      paddingLeft: 16,
-      paddingRight: 16,
+      height: ScreenUtil.autoheight(65),
+      paddingHorizontal: ScreenUtil.autowidth(16),
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
@@ -325,7 +336,7 @@ const styles = StyleSheet.create({
     },
     listInfoTitle: {
       color:UColor.fontColor, 
-      fontSize:16
+      fontSize: ScreenUtil.setSpText(16)
     },
     listInfoRight: {
       flexDirection: "row",
@@ -344,8 +355,7 @@ const styles = StyleSheet.create({
     },
     // modal上子View的样式  
     subView: {
-      marginLeft: 10,
-      marginRight: 10,
+      marginHorizontal: ScreenUtil.autowidth(10),
       backgroundColor: UColor.fontColor,
       alignSelf: 'stretch',
       justifyContent: 'center',
@@ -358,16 +368,15 @@ const styles = StyleSheet.create({
       alignItems: 'flex-end',
     },
     butclose: {
-      width: 30,
-      height: 30,
-      marginBottom: 0,
+      width: ScreenUtil.autowidth(30),
+      height: ScreenUtil.autowidth(30),
       color: '#CBCBCB',
-      fontSize: 28,
+      fontSize: ScreenUtil.setSpText(28),
     },
     // 标题  
     titleText: {
-      marginBottom: 5,
-      fontSize: 18,
+      marginBottom: ScreenUtil.autoheight(5),
+      fontSize: ScreenUtil.setSpText(18),
       fontWeight: 'bold',
       textAlign: 'center',
     },
@@ -379,23 +388,23 @@ const styles = StyleSheet.create({
     },
     inptpass: {
         color: UColor.tintColor,
-        height: 45,
+        height: ScreenUtil.autoheight(45),
         width: '100%',
-        paddingHorizontal: 15,
-        marginVertical: 10,
-        fontSize: 16,
+        paddingHorizontal: ScreenUtil.autowidth(15),
+        marginVertical: ScreenUtil.autoheight(10),
+        fontSize: ScreenUtil.setSpText(16),
         backgroundColor: '#f3f3f3',
     },
     copyout: {
-      margin: 10, 
-      height: 45, 
+      margin: ScreenUtil.autowidth(10), 
+      height: ScreenUtil.autoheight(45), 
       borderRadius: 3, 
       backgroundColor: UColor.tintColor, 
       justifyContent: 'center', 
       alignItems: 'center' 
     },
     copytext: {
-      fontSize: 16, 
+      fontSize: ScreenUtil.setSpText(16), 
       color: UColor.fontColor,
     },
   
@@ -409,30 +418,30 @@ const styles = StyleSheet.create({
     
     canceltext: {
       color: UColor.arrow,
-      fontSize: 18,
+      fontSize: ScreenUtil.setSpText(18),
       justifyContent: 'flex-end',
-      paddingRight: 10,
+      paddingRight: ScreenUtil.autowidth(10),
     },
     prompttext: {
-      fontSize: 15,
+      fontSize: ScreenUtil.setSpText(15),
       color: UColor.arrow,
-      lineHeight: 30,
-      padding: 30,
+      lineHeight: ScreenUtil.autoheight(30),
+      padding: ScreenUtil.autowidth(30),
     },
     btnout: {
         justifyContent: 'center',
         alignItems: 'center',
     },
     btnloginUser: {
-      width: 150,
-      height: 45,
+      width: ScreenUtil.autowidth(150),
+      height: ScreenUtil.autoheight(45),
       backgroundColor: UColor.tintColor,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 5
     },
     btntext: {
-      fontSize:17,
+      fontSize: ScreenUtil.setSpText(17),
       color: UColor.fontColor,
     },
 })
