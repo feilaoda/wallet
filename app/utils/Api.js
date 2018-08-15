@@ -55,6 +55,7 @@ export const fetchAssetsByAccount = rootaddr + '/coins/coins/';
 
 export const isExistAccountNameAndPublicKey = rootaddr + '/eosrpc/isExistAccountNameAndPublicKey'
 export const listDelegateLoglist = rootaddr + '/eosrpc/getAccountDelbandInfo'
+export const delegatebw = rootaddr + '/eosrpc/delegatebw'
 
 export const getRamInfo = rootaddr + '/ramprice/ramPriceInfo';
 export const getRamPriceLine = rootaddr + '/ramprice/line/';
