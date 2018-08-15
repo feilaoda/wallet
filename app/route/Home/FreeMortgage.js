@@ -12,7 +12,7 @@ import ScreenUtil from '../../utils/ScreenUtil'
 var Dimensions = require('Dimensions')
 const maxWidth = Dimensions.get('window').width;
 const maxHeight = Dimensions.get('window').height;
-@connect(({ vote, }) => ({ ...vote,}))
+@connect(({ vote, wallet}) => ({ ...vote, ...wallet}))
 class FreeMortgage extends React.Component {
 
   static navigationOptions = {
@@ -30,24 +30,33 @@ class FreeMortgage extends React.Component {
 
   //加载地址数据
   componentDidMount() {
-   
+    this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" } });
   }
 
-  mortgageApply() {
+  delegatebw() {
     try {
-        EasyShowLD.loadingShow('正在申请');
-        this.props.dispatch({type: "vote/delegatebw", payload: {username:this.props.navigation.state.params.account_name}, callback:(mortgage) =>{
-            EasyShowLD.dialogClose()
-                // alert(JSON.stringify(mortgage));
-                if(mortgage.data){
-                    EasyToast.show("恭喜您！已经获得免费抵押，请到资源管理中查看")
+        if (this.props.defaultWallet == null || this.props.defaultWallet.name == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+            EasyToast.show("未检测有效的EOS账号, 请检查您当前账号是否有效!");
+            return;
+        }
+
+        EasyShowLD.loadingShow();
+        this.props.dispatch({type: "vote/delegatebw", payload: {username:this.props.defaultWallet.name}, callback:(resp) =>{
+                EasyShowLD.dialogClose();
+                // alert(JSON.stringify(resp));
+                if(resp && resp.code=='0'){
+                    EasyToast.show("恭喜您！已经获得免费抵押，请到资源管理中查看");
                 }else{
-                    EasyToast.show("抱歉，您的账号已经有足够的资源")
+                    if(resp && resp.data){
+                        EasyToast.show("抱歉，" + resp.data);
+                    }else{
+                        EasyToast.show("网络异常, 请稍后再试~");
+                    }
                 }
             }
         })           
     }catch (error) {
-
+        EasyShowLD.dialogClose();
     }
 
   }
@@ -58,12 +67,12 @@ class FreeMortgage extends React.Component {
         <View style={styles.head}>
             <ImageBackground style={styles.bgout} source={UImage.freemortgage_bg} resizeMode="cover">
                 <Text style={styles.Explaintext}>本功能由EosToken提供，是免费帮助用户临时抵押资源使其账户能正常使用。</Text>
-                <Text style={styles.Explaintext}>温馨提示：成功申请了免费抵押后，为了让账户正常使用，请尽快自行抵押。</Text>
+                <Text style={styles.Explaintext}>温馨提示：成功获得免费抵押后，为了让账户正常使用，请尽快自行抵押。</Text>
                 <Text style={styles.Tipstext}>可获：计算资源=2.5 EOS  网络资源=0.5 EOS</Text>
             </ImageBackground>
         </View>
         <View style={styles.btnout}>
-            <Button onPress={() => this.mortgageApply()}>
+            <Button onPress={() => this.delegatebw()}>
                 <View style={styles.Applyout}>
                     <Text style={styles.Applytext}>立即申请</Text>
                 </View>

@@ -133,6 +133,7 @@ export default {
             if (callback) callback(resp);
         } catch (error) {
             EasyToast.show('网络繁忙,请稍后!');
+            if (callback) callback({ code: 500, msg: "网络异常" });
         }
      },
 

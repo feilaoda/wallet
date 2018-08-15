@@ -52,7 +52,7 @@ class FunctionsMore extends React.Component {
     }else if(key == 'Tokenissue'){
       this. _setModalVisible();
     }else if(key == 'FreeMortgage'){
-        navigate('FreeMortgage', {account_name:this.props.navigation.state.params.account_name});
+        navigate('FreeMortgage');
     }else{
       EasyShowLD.dialogShow("温馨提示", "该功能正在紧急开发中，敬请期待！", "知道了", null, () => { EasyShowLD.dialogClose() });
     }
