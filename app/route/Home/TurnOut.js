@@ -6,6 +6,7 @@ import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 const maxWidth = Dimensions.get('window').width;
 const maxHeight = Dimensions.get('window').height;
@@ -22,9 +23,7 @@ var dismissKeyboard = require('dismissKeyboard');
 @connect(({ wallet }) => ({ ...wallet }))
 class TurnOut extends BaseComponent {
     static navigationOptions = ({ navigation }) => {
-        const params = navigation.state.params || {};
         return {
-            // headerTitle: '转出' + params.coins.name,
             headerTitle: '转出EOS',
             headerStyle: {
                 paddingTop:Platform.OS == 'ios' ? 30 : 20,
@@ -32,8 +31,8 @@ class TurnOut extends BaseComponent {
                 borderBottomWidth:0,
             },
             headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
-            <View style={{ paddingHorizontal: 10, alignItems: 'center' }}>
-                <Image source={UImage.scan} style={{ width: 28, height: 28 }}></Image>
+            <View style={{ paddingHorizontal: ScreenUtil.autowidth(10), alignItems: 'center' }}>
+                <Image source={UImage.scan} style={{ width: ScreenUtil.autowidth(28), height: ScreenUtil.autowidth(28) }}></Image>
             </View>
           </Button>),
         };
@@ -361,8 +360,8 @@ class TurnOut extends BaseComponent {
                                 </Button>
                             </View>
                                 <View style={styles.separationline} >
-                                <Text style={{fontSize: 26,paddingVertical: 15, lineHeight: 10,color:'#000000',textAlign: 'center',}}>{this.state.amount} </Text>
-                                <Text style={{fontSize: 13,paddingVertical: 10, lineHeight: 10,color:'#000000',textAlign: 'center',}}> EOS</Text>
+                                <Text style={styles.amounttext}>{this.state.amount} </Text>
+                                <Text style={styles.unittext}> EOS</Text>
                             </View>
                             <View style={{flex: 1,}}>
                                 <View style={styles.separationline} >
@@ -404,10 +403,10 @@ const styles = StyleSheet.create({
     },
     inptpass: {
         color: UColor.tintColor,
-        height: 45,
+        height:  ScreenUtil.autoheight(45),
         width: maxWidth-100,
-        paddingBottom: 5,
-        fontSize: 16,
+        paddingBottom:  ScreenUtil.autoheight(5),
+        fontSize: ScreenUtil.setSpText(16),
         backgroundColor: UColor.fontColor,
         borderBottomColor: UColor.baseline,
         borderBottomWidth: 1,
@@ -417,28 +416,28 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: UColor.secdColor,
-        paddingTop: 5,
+        paddingTop:  ScreenUtil.autoheight(5),
     },
     header: {
-        height: 110,
+        height:  ScreenUtil.autoheight(110),
         justifyContent: "center",
         alignItems: "center",
-        margin: 5,
+        margin: ScreenUtil.autowidth(5),
         borderRadius: 5,
         backgroundColor: UColor.mainColor,
     },
     headertext: {
-        fontSize: 20,
+        fontSize: ScreenUtil.setSpText(20),
         color: UColor.fontColor
     },
     row: {
-        height: 90,
+        height:  ScreenUtil.autoheight(90),
         backgroundColor: UColor.mainColor,
         flexDirection: "column",
-        padding: 10,
+        padding: ScreenUtil.autowidth(10),
         justifyContent: "space-between",
         borderRadius: 5,
-        margin: 5,
+        margin: ScreenUtil.autowidth(5),
     },
     top: {
         flex: 1,
@@ -446,7 +445,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     footer: {
-        height: 50,
+        height:  ScreenUtil.autoheight(50),
         flexDirection: 'row',
         position: 'absolute',
         backgroundColor: UColor.secdColor,
@@ -467,7 +466,7 @@ const styles = StyleSheet.create({
     // modal上子View的样式  
     subView: {
         flexDirection: "row", 
-        height: 50, 
+        height:  ScreenUtil.autoheight(50), 
         alignItems: 'center'
     },
     buttonView: {
@@ -475,36 +474,36 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttontext: {
-        width: 50,
+        width:  ScreenUtil.autoheight(50),
         color: '#CBCBCB',
-        fontSize: 28,
+        fontSize: ScreenUtil.setSpText(28),
         textAlign: 'center',
     },
     // 标题  
     titleText: {
         flex: 1,
-        fontSize: 18,
+        fontSize: ScreenUtil.setSpText(18),
         fontWeight: 'bold',
         color:'#4d4d4d', 
         textAlign:'center'
     },
     // 内容  
     explainText: {
-        fontSize: 18,
+        fontSize: ScreenUtil.setSpText(18),
         textAlign: 'left',
         color: '#4D4D4D',
     },
     contentText: {
         flex: 1,
-        fontSize: 18,
+        fontSize: ScreenUtil.setSpText(18),
         textAlign: 'right',
         color: '#4D4D4D',
     },
 
     //转帐信息提示分隔线
     separationline: {
-        height: 50,
-        paddingHorizontal: 20,
+        height:  ScreenUtil.autoheight(50),
+        paddingHorizontal: ScreenUtil.autowidth(20),
         flexDirection: "row",
         borderBottomWidth: 0.5,
         borderBottomColor: '#e5e5e5',
@@ -512,17 +511,32 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 
+    amounttext: {
+        fontSize: ScreenUtil.setSpText(26),
+        paddingVertical: ScreenUtil.autoheight(15), 
+        lineHeight: ScreenUtil.autoheight(10),
+        color:'#000000',
+        textAlign: 'center',
+    },
+    unittext: {
+        fontSize: ScreenUtil.setSpText(13),
+        paddingVertical: ScreenUtil.autoheight(10), 
+        lineHeight: ScreenUtil.autoheight(10),
+        color:'#000000',
+        textAlign: 'center',
+    },
+
     // 按钮  
     btnoutsource: {
-        margin: 15,
-        height: 45,
+        margin: ScreenUtil.autowidth(15),
+        height:  ScreenUtil.autoheight(45),
         borderRadius: 6,
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     btntext: {
-        fontSize: 16,
+        fontSize: ScreenUtil.setSpText(16),
         color: UColor.fontColor
     },
    
@@ -533,15 +547,15 @@ const styles = StyleSheet.create({
     outsource: {
         backgroundColor: UColor.secdColor,
         flexDirection: 'column',
-        padding: 20,
+        padding: ScreenUtil.autowidth(20),
         flex: 1,
     },
     inptoutsource: {
         flexDirection: 'row',
         borderBottomWidth: 1,
         borderBottomColor: UColor.mainColor,
-        marginBottom: 10,
-        paddingLeft: 5,
+        marginBottom:  ScreenUtil.autoheight(10),
+        paddingLeft: ScreenUtil.autowidth(5),
     },
     accountoue: {
         flex: 1,
@@ -552,89 +566,89 @@ const styles = StyleSheet.create({
     inpt: {
         flex: 1,
         color: UColor.arrow,
-        fontSize: 14,
-        height:Platform.OS == 'ios' ? 35:40,
+        fontSize: ScreenUtil.setSpText(14),
+        height: ScreenUtil.autoheight(40),
     },
     scanning: {
-        width: 40,
+        width:  ScreenUtil.autoheight(40),
         flexDirection: "row",
         alignSelf: 'center',
         justifyContent: "center",
     },
     scanningimg: {
-        width:30,
-        height:30,
+        width: ScreenUtil.autowidth(30),
+        height: ScreenUtil.autowidth(30),
     },
     textinptoue: {
-        paddingHorizontal: 5,
-        marginBottom: 10,
+        paddingHorizontal: ScreenUtil.autowidth(5),
+        marginBottom:  ScreenUtil.autoheight(10),
         borderBottomWidth: 1,
         borderBottomColor: UColor.mainColor,
         justifyContent: 'center',
     },
     inptitle: {
         flex: 1,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.fontColor,
     },
 
     textinpt: {
         color: UColor.arrow,
-        fontSize: 14,
-        height:Platform.OS == 'ios' ? 35:40,
+        fontSize: ScreenUtil.setSpText(14),
+        height: ScreenUtil.autoheight(40),
     },
     btnnextstep: {
-        height: 85,
-        marginTop: 30,
+        height:  ScreenUtil.autoheight(85),
+        marginTop:  ScreenUtil.autoheight(30),
     },
     nextstep: {
-        height: 45,
+        height:  ScreenUtil.autoheight(45),
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 20,
+        margin: ScreenUtil.autowidth(20),
         borderRadius: 5
     },
     nextsteptext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.fontColor
     },
 
     warningout: {
-        marginVertical: 10,
-        marginHorizontal: 20,
+        marginVertical: ScreenUtil.autoheight(10),
+        marginHorizontal:  ScreenUtil.autoheight(20),
         flexDirection: "row",
         alignItems: 'center', 
-        paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingHorizontal: ScreenUtil.autowidth(10),
+        paddingVertical:  ScreenUtil.autoheight(5),
         borderColor: UColor.showy,
         borderWidth: 1,
         borderRadius: 5,
     },
 
     warningoutShow: {
-        marginHorizontal: 20,
+        marginHorizontal: ScreenUtil.autowidth(20),
         width: maxWidth-40,
-        marginTop: 10,
+        marginTop: ScreenUtil.autoheight(10),
         flexDirection: "row",
         alignItems: 'center', 
-        paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingHorizontal: ScreenUtil.autowidth(10),
+        paddingVertical:  ScreenUtil.autoheight(5),
         borderColor: UColor.showy,
         borderWidth: 1,
         borderRadius: 5,
     },
 
     imgBtn: {
-        width: 20,
-        height: 20,
+        width: ScreenUtil.autowidth(20),
+        height: ScreenUtil.autowidth(20),
     },
     headtitle: {
         flex: 1,
         color: UColor.showy,
-        fontSize: 12,
-        lineHeight: 20,
-        paddingLeft: 10,
+        fontSize: ScreenUtil.setSpText(12),
+        lineHeight:  ScreenUtil.autoheight(20),
+        paddingLeft: ScreenUtil.autowidth(10),
     },
 })
 export default TurnOut;

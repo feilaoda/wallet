@@ -4,8 +4,8 @@ import {DeviceEventEmitter,ListView,StyleSheet,Image,ScrollView,View,RefreshCont
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyShowLD } from '../../components/EasyShow'
-
 import BaseComponent from "../../components/BaseComponent";
 
 @connect(({wallet, assets}) => ({...wallet, ...assets}))
@@ -139,13 +139,13 @@ class AddAssets extends BaseComponent {
                   renderRow={(rowData, sectionID, rowID) => (      
                   <View style={styles.listItem}>
                       <View style={styles.listInfo}>
-                        <Image source={rowData.icon==null ? UImage.eos : { uri: rowData.icon }} style={{width: 28, height: 28, resizeMode: "cover", overflow:"hidden", borderRadius: 10, marginRight:10,}}/>
+                        <Image source={rowData.icon==null ? UImage.eos : { uri: rowData.icon }} style={{width: ScreenUtil.autowidth(28), height: ScreenUtil.autowidth(28), resizeMode: "cover", overflow:"hidden", borderRadius: 10, marginRight: ScreenUtil.autowidth(10),}}/>
                         <View style={styles.scrollView}>
                           <Text style={styles.listInfoTitle}>{rowData.name}</Text>
                           <Text style={styles.quantity}>合约账户 : {rowData.contractAccount == null ? "" : rowData.contractAccount}</Text>
                         </View>
                         <View style={styles.listInfoRight}>
-                          <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor="#ffffff"
+                          <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor={UColor.fontColor}
                               value={this.isMyAsset(rowData)} onValueChange={(value)=>{
                                 if(this.state.isAdding){
                                   return;
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection:'column',
       backgroundColor: UColor.secdColor,
-      paddingTop:5,
+      paddingTop: ScreenUtil.autoheight(5),
     },
 
     listItem: {
@@ -180,25 +180,21 @@ const styles = StyleSheet.create({
     },
    
     listInfo: {
-      height: 60,
-      flex: 1,
-      paddingLeft: 16,
-      paddingRight: 16,
+      height: ScreenUtil.autoheight(60),
+      paddingHorizontal: ScreenUtil.autowidth(16),
       flexDirection: "row",
       alignItems: "center",
-      
       borderTopWidth:1,
       borderTopColor: UColor.secdColor
     },
     scrollView: {
       flex: 1,
-      paddingLeft: 10,
-      // alignItems: "center",
+      paddingLeft: ScreenUtil.autowidth(10),
       justifyContent: "center",
     },
     listInfoTitle: {
       color:UColor.fontColor, 
-      fontSize:16
+      fontSize: ScreenUtil.setSpText(16)
     },
     listInfoRight: {
       flexDirection: "row",
@@ -206,7 +202,7 @@ const styles = StyleSheet.create({
     },
 
     quantity: {
-      fontSize: 14,
+      fontSize: ScreenUtil.setSpText(14),
       color: UColor.arrow,
     },
    

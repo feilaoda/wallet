@@ -199,7 +199,7 @@ class TradeDetails extends BaseComponent {
           </View>
           <View style={styles.codeout}>
             <View style={styles.qrcode}>
-               <QRCode size={70} value={'https://eospark.com/MainNet/tx/' + this.state.trade.transactionId } />
+               <QRCode size={ScreenUtil.setSpText(90)} value={'https://eospark.com/MainNet/tx/' + this.state.trade.transactionId } />
             </View>
             <Button onPress={this.copy.bind(this,this.state.trade)}>
                <View style={{backgroundColor: UColor.mainColor,borderRadius: 25,}}>
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   },
   showytext: {
     color: UColor.showy, 
-    flex: 1,
+    flex: 4,
     fontSize: ScreenUtil.setSpText(14),
   },
   tintext: {

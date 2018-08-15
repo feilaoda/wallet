@@ -8,6 +8,7 @@ import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import QRCode from 'react-native-qrcode-svg';
 const maxHeight = Dimensions.get('window').height;
@@ -168,7 +169,6 @@ class AssetInfo extends BaseComponent {
         const c = this.props.navigation.state.params.asset;
         return (
             <View style={styles.container}>
-                
                 <View style={styles.header}>
                     <Text style={styles.headbalance}>{this.state.balance==""? "0.0000" :this.state.balance.replace(c.asset.name, "")} {c.asset.name}</Text>
                     <Text style={styles.headmarket}>≈ {(this.state.balance == null || c.asset.value == null) ? "0.00" : (this.state.balance.replace(c.asset.name, "") * c.asset.value).toFixed(2)} ￥</Text>
@@ -182,9 +182,9 @@ class AssetInfo extends BaseComponent {
                     <RefreshControl
                         refreshing={this.state.logRefreshing}
                         onRefresh={() => this.onRefresh()}
-                        tintColor="#fff"
+                        tintColor={UColor.fontColor}
                         colors={['#ddd', UColor.tintColor]}
-                        progressBackgroundColor="#ffffff"
+                        progressBackgroundColor={UColor.fontColor}
                     />
                     }
                     dataSource={this.state.dataSource.cloneWithRows(this.props.tradeLog == null ? [] : this.props.tradeLog)} 
@@ -198,9 +198,9 @@ class AssetInfo extends BaseComponent {
                                         <Text style={styles.quantity}>数量 : {rowData.quantity.replace(c.asset.name, "")}</Text>
                                     </View>
                                     {(rowData.blockNum == null || rowData.blockNum == '') ? 
-                                        <View style={{ flexDirection: "column",justifyContent: "flex-end",alignItems: 'center'}}>
+                                        <View style={styles.unconfirmedout}>
                                             {/* <Image source={UImage.unconfirm} style={styles.shiftturn} /> */}
-                                            <Text style={{fontSize: 14,color: UColor.showy,textAlign: 'center',marginTop: 3}}>未确认...</Text>
+                                            <Text style={styles.unconfirmed}>未确认...</Text>
                                         </View>
                                             :
                                         <View style={styles.typedescription}>
@@ -212,10 +212,9 @@ class AssetInfo extends BaseComponent {
                                             <Text style={styles.description}>（{rowData.description}）</Text>
                                         </View>
                                     }
-
                                 </View>
                                 <View style={styles.Ionicout}>
-                                    <Ionicons style={styles.Ionico} name="ios-arrow-forward-outline" size={20} /> 
+                                    <Ionicons color={UColor.arrow} name="ios-arrow-forward-outline" size={20} /> 
                                 </View>
                             </View>
                         </Button>  
@@ -247,24 +246,24 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: UColor.secdColor,
-        paddingTop: 5,
+        paddingTop: ScreenUtil.autoheight(5),
     },
     header: {
-        height: 110,
+        height: ScreenUtil.autoheight(110),
         justifyContent: "center",
         alignItems: "center",
-        margin: 5,
+        margin: ScreenUtil.autowidth(5),
         borderRadius: 5,
         backgroundColor: UColor.mainColor,
     },
     headbalance: {
-        fontSize: 20, 
+        fontSize: ScreenUtil.setSpText(20), 
         color: UColor.fontColor
     },
     headmarket: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.arrow,
-        marginTop: 5
+        marginTop: ScreenUtil.autowidth(5)
     },
 
     tab: {
@@ -272,32 +271,32 @@ const styles = StyleSheet.create({
     },
     btn: {
         flex: 1,
-        paddingBottom: 60,
+        paddingBottom: ScreenUtil.autoheight(60),
     },
 
     latelytext: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.arrow,
-        margin: 5
+        margin: ScreenUtil.autowidth(5),
     },
     nothave: {
-        height: Platform.OS == 'ios' ? 84.5 : 65,
+        height: ScreenUtil.autoheight(80),
         backgroundColor: UColor.mainColor,
         flexDirection: "row",
         alignItems: 'center',
         justifyContent: "center",
-        paddingHorizontal: 20,
+        paddingHorizontal: ScreenUtil.autowidth(20),
         borderRadius: 5,
-        margin: 5,
+        margin: ScreenUtil.autowidth(5),
     },
     row: {
-        height: Platform.OS == 'ios' ? 84.5 : 65,
-        backgroundColor: UColor.mainColor,
-        flexDirection: "row",
-        paddingHorizontal: 20,
-        justifyContent: "space-between",
         borderRadius: 5,
-        margin: 5,
+        flexDirection: "row",
+        backgroundColor: UColor.mainColor,
+        paddingHorizontal: ScreenUtil.autowidth(20),
+        paddingVertical: ScreenUtil.autoheight(5),
+        marginHorizontal: ScreenUtil.autowidth(5),
+        marginVertical: ScreenUtil.autowidth(2.5),
     },
     top: {
         flex: 1,
@@ -307,54 +306,64 @@ const styles = StyleSheet.create({
     },
     timequantity: {
         flex: 1,
+        height: ScreenUtil.autoheight(60),
         flexDirection: "column",
-        justifyContent: "flex-end",
+        justifyContent: "space-around",
+        alignItems: 'flex-start',
     },
     timetext: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.arrow,
         textAlign: 'left'
     },
     quantity: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.arrow,
         textAlign: 'left',
-        marginTop: 3
     },
     description: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.arrow,
+        textAlign: 'center',
+        marginTop: ScreenUtil.autoheight(3),
+    },
+    unconfirmedout: { 
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: 'center'
+    },
+    unconfirmed: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.showy,
         textAlign: 'center',
         marginTop: 3
     },
     typedescription: {
+        height: ScreenUtil.autoheight(60),
         flexDirection: "column",
-        justifyContent: "flex-end",
+        justifyContent: "space-around",
+        alignItems: 'center'
     },
     typeto: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.tintColor,
         textAlign: 'center'
     },
     typeout: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: "#4ed694",
         textAlign: 'center'
     },
 
     Ionicout: {
-        width: 30,
+        width: ScreenUtil.autowidth(30),
         justifyContent: 'center',
         alignItems: 'flex-end'
     },
-    Ionico: {
-        color: UColor.arrow,   
-    },
-
 
     footer: {
-        paddingTop: 5,
-        height: 60,
+        paddingTop: ScreenUtil.autoheight(1),
+        height: ScreenUtil.autoheight(60),
         flexDirection: 'row',
         position: 'absolute',
         backgroundColor: UColor.secdColor,
@@ -371,16 +380,16 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.mainColor,
     },
     shiftturn: {
-        width: 30, 
-        height: 30
+        width: ScreenUtil.autowidth(30), 
+        height: ScreenUtil.autowidth(30),
     },
     shifttoturnout: {
-        marginLeft: 20,
-        fontSize: 18,
+        marginLeft: ScreenUtil.autowidth(20),
+        fontSize: ScreenUtil.setSpText(18),
         color: UColor.fontColor
     },
     copytext: {
-        fontSize: 16, 
+        fontSize: ScreenUtil.setSpText(16), 
         color: UColor.fontColor
     },
 
