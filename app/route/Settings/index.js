@@ -5,6 +5,7 @@ import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import Item from '../../components/Item'
+import ScreenUtil from '../../utils/ScreenUtil'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import Constants from '../../utils/Constants'
@@ -201,23 +202,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    paddingHorizontal: 20,
+    paddingHorizontal: ScreenUtil.autowidth(20),
     backgroundColor: UColor.mainColor
   },
   headout: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 15
+    paddingVertical: ScreenUtil.autoheight(15),
   },
   headimg: {
-    width: 42,
-    height: 52
+    width: ScreenUtil.autowidth(42),
+    height: ScreenUtil.autoheight(52),
   },
   headtext: {
     color: UColor.fontColor,
-    fontSize: 17,
-    marginLeft: 15
+    fontSize: ScreenUtil.setSpText(17),
+    marginLeft: ScreenUtil.autowidth(15),
   },
 
   signedout: {
@@ -228,37 +229,37 @@ const styles = StyleSheet.create({
   },
   signedbtn: {
     borderRadius: 5,
-    paddingVertical: 5,
-    paddingHorizontal: 15
+    paddingVertical: ScreenUtil.autoheight(5),
+    paddingHorizontal: ScreenUtil.autowidth(15),
   },
   signedimg: {
-    width: 40,
-    height: 49
+    width: ScreenUtil.autowidth(40),
+    height: ScreenUtil.autoheight(49)
   },
 
   eosbtn: {
-    marginTop: 15
+    marginTop: ScreenUtil.autoheight(15),
   },
   eosbtnout: {
     flex: 1,
     flexDirection: "row",
-    paddingHorizontal: 20,
+    paddingHorizontal: ScreenUtil.autowidth(20),
     backgroundColor: UColor.mainColor,
     justifyContent: 'space-between'
   },
   eosout: {
     flex: 1,
     flexDirection: "column",
-    paddingVertical: 12
+    paddingVertical: ScreenUtil.autoheight(12)
   },
   eosbtntext: {
     color: UColor.arrow,
-    fontSize: 11
+    fontSize: ScreenUtil.setSpText(11),
   },
   eostext: {
     color: UColor.fontColor,
-    fontSize: 15,
-    marginTop: 10
+    fontSize: ScreenUtil.setSpText(15),
+    marginTop: ScreenUtil.autoheight(10),
   },
 
   Withdrawout: {
@@ -270,11 +271,11 @@ const styles = StyleSheet.create({
   Withdrawbtn: {
     backgroundColor: UColor.tintColor,
     borderRadius: 5,
-    paddingVertical: 5,
-    paddingHorizontal: 15
+    paddingVertical: ScreenUtil.autoheight(5),
+    paddingHorizontal: ScreenUtil.autowidth(15),
   },
   Withdrawtext: {
-    fontSize: 15,
+    fontSize: ScreenUtil.setSpText(15),
     color: UColor.fontColor,
   },
 
@@ -283,10 +284,10 @@ const styles = StyleSheet.create({
     borderColor: UColor.secdColor,
     borderWidth: 0.6,
     paddingTop: (Platform.OS == 'ios' ? 33 : 14),
-    paddingBottom: 10,
+    paddingBottom: ScreenUtil.autoheight(10),
     backgroundColor: UColor.mainColor,
     textAlign: "center",
-    fontSize: 18,
+    fontSize: ScreenUtil.setSpText(18),
     fontWeight: 'normal',
     color: UColor.fontColor
   },
@@ -298,10 +299,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   listInfo: {
-    height: 55,
+    height: ScreenUtil.autoheight(55),
     flex: 1,
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingHorizontal: ScreenUtil.autowidth(16),
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -309,8 +309,8 @@ const styles = StyleSheet.create({
     borderTopColor: UColor.secdColor,
   },
   listInfoTitle: {
-    color:UColor.fontColor, 
-    fontSize:16
+    color: UColor.fontColor, 
+    fontSize: ScreenUtil.setSpText(16)
   },
   listInfoRight: {
     flexDirection: "row",
@@ -319,22 +319,22 @@ const styles = StyleSheet.create({
 
   footer: {
     flex: 1,
-    marginTop: 30,
+    marginTop: ScreenUtil.autoheight(30),
     flexDirection: 'column'
   },
   foottext: {
-    fontSize: 10,
+    fontSize: ScreenUtil.setSpText(10),
     color: UColor.arrow,
     width: '100%',
     textAlign: 'center',
-    marginTop: 5
+    marginTop: ScreenUtil.autoheight(5),
   },
 
 
   systemSettingTip: {
     flex: 1,
     width: ScreenWidth,
-    height:40,
+    height: ScreenUtil.autoheight(40),
     flexDirection: "row",
     alignItems: 'center', 
     backgroundColor: UColor.showy,
@@ -342,14 +342,14 @@ const styles = StyleSheet.create({
   systemSettingText: {
     color: UColor.fontColor,
     textAlign: 'center',
-    fontSize: 15
+    fontSize: ScreenUtil.setSpText(15),
   },
   systemSettingArrow: {
     flex: 1,
     color: UColor.fontColor,
     textAlign: 'right',
-    fontSize: 30,
-    marginBottom:6
+    fontSize: ScreenUtil.setSpText(30),
+    marginBottom: ScreenUtil.autoheight(6),
   },
 });
 

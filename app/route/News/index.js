@@ -8,6 +8,7 @@ import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import moment from 'moment';
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from '../../components/Toast';
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import NavigationUtil from '../../utils/NavigationUtil'
@@ -253,9 +254,9 @@ class News extends React.Component {
             autoplay={true}
             horizontal={true}  
             autoplayTimeout={5} 
-            paginationStyle={{ bottom: 10 }}
-            dotStyle={{ backgroundColor: 'rgba(255,255,255,.2)', width: 6, height: 6 }}
-            activeDotStyle={{ backgroundColor: UColor.tintColor, width: 6, height: 6 }}>
+            paginationStyle={{ bottom: ScreenUtil.autoheight(10) }}
+            dotStyle={{ backgroundColor: 'rgba(255,255,255,.2)', width: ScreenUtil.autowidth(6), height: ScreenUtil.autowidth(6) }}
+            activeDotStyle={{ backgroundColor: UColor.tintColor, width: ScreenUtil.autowidth(6), height: ScreenUtil.autowidth(6) }}>
             {this.renderSwipeView()}
           </Swiper>
         </View>
@@ -264,35 +265,35 @@ class News extends React.Component {
           <RefreshControl
             refreshing={this.props.newsRefresh}
             onRefresh={() => this.onRefresh(route.key, true)}
-            tintColor="#fff"
+            tintColor={UColor.fontColor}
             colors={['#ddd', UColor.tintColor]}
-            progressBackgroundColor="#ffffff"
+            progressBackgroundColor={UColor.fontColor}
           />
         }
         dataSource={this.state.dataSource.cloneWithRows(this.props.newsData[route.key] == null ? [] : this.props.newsData[route.key])}
         renderRow={(rowData) => (
           <TouchableHighlight onPress={() => { this.onPress(rowData) }} onLongPress={this.onShare.bind(this, rowData)} activeOpacity={0.8} underlayColor={UColor.secdColor}>
             <View style={styles.row}>
-              <Text style={{ fontSize: 16, color: UColor.fontColor, marginTop: 5, }}>{rowData.title}</Text>
+              <Text style={{ fontSize: ScreenUtil.setSpText(16), color: UColor.fontColor, marginTop: ScreenUtil.autoheight(5), }}>{rowData.title}</Text>
               {
-                route.type == 2 && <Text numberOfLines={rowData.row} style={{ fontSize: 15, color: '#abb9d7', marginTop: 10, lineHeight: 25 }} >{rowData.content}</Text>
+                route.type == 2 && <Text numberOfLines={rowData.row} style={{ fontSize: ScreenUtil.setSpText(15), color: '#abb9d7', marginTop: ScreenUtil.autoheight(10), lineHeight: ScreenUtil.autoheight(25) }} >{rowData.content}</Text>
               }
-              {route.type == 2 && rowData.row == 3 && <Text style={{ fontSize: 13, color: '#65caff', lineHeight: 20, textAlign: "right", }}>展开更多</Text>}
+              {route.type == 2 && rowData.row == 3 && <Text style={{ fontSize: ScreenUtil.setSpText(13), color: UColor.tintColor, lineHeight: ScreenUtil.autoheight(20), textAlign: "right", }}>展开更多</Text>}
               {
-                route.type != 2 && <Text style={{ fontSize: 15, color: '#abb9d7', marginTop: 10, lineHeight: 25 }} >{rowData.content}</Text>
+                route.type != 2 && <Text style={{ fontSize: ScreenUtil.setSpText(15), color: '#abb9d7', marginTop: ScreenUtil.autoheight(10), lineHeight: ScreenUtil.autoheight(25) }} >{rowData.content}</Text>
               }
               <View style={styles.rowFooter}>
-                <Text style={{ fontSize: 13, color: '#abb9d7', paddingBottom: 10, marginTop: 10 }}>{moment(rowData.createdate).fromNow()}</Text>
+                <Text style={{ fontSize: ScreenUtil.setSpText(13), color: '#abb9d7', paddingBottom: ScreenUtil.autoheight(10), marginTop: ScreenUtil.autoheight(10) }}>{moment(rowData.createdate).fromNow()}</Text>
 
                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
                   <Button onPress={this.onUp.bind(this, rowData)}>
-                    <View style={{ flex: 1, flexDirection: "row", padding: 10 }}><Image style={{ width: 18, height: 18 }} source={rowData.isUp ? UImage.up_h : UImage.up} /><Text style={{ marginLeft: 5, fontSize: 13, color: '#abb9d7' }}>{rowData.up}</Text></View>
+                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autowidth(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={rowData.isUp ? UImage.up_h : UImage.up} /><Text style={{ marginLeft: ScreenUtil.autowidth(5), fontSize: ScreenUtil.setSpText(13), color: '#abb9d7' }}>{rowData.up}</Text></View>
                   </Button>
                   <Button onPress={this.onDown.bind(this, rowData)}>
-                    <View style={{ flex: 1, flexDirection: "row", padding: 10 }}><Image style={{ width: 18, height: 18 }} source={rowData.isDown ? UImage.down_h : UImage.down} /><Text style={{ marginLeft: 5, fontSize: 13, color: '#abb9d7' }}>{rowData.down}</Text></View>
+                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autowidth(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={rowData.isDown ? UImage.down_h : UImage.down} /><Text style={{ marginLeft: ScreenUtil.autowidth(5), fontSize: ScreenUtil.setSpText(13), color: '#abb9d7' }}>{rowData.down}</Text></View>
                   </Button>
                   <Button onPress={this.onShare.bind(this, rowData)}>
-                    <View style={{ flex: 1, flexDirection: "row", padding: 10 }}><Image style={{ width: 18, height: 18 }} source={UImage.share} /></View>
+                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autoheight(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={UImage.share} /></View>
                   </Button>
                 </View>
               </View>
@@ -322,7 +323,7 @@ class News extends React.Component {
             lazy={true} 
             navigationState={this.state}
             renderScene={this.renderScene.bind(this)}
-            renderHeader={(props) => <TabBar onTabPress={this._handleTabItemPress} labelStyle={{ fontSize: 15, margin: 0, marginBottom: 12, paddingTop: 18, color: '#8696B0' }} indicatorStyle={{ backgroundColor: UColor.tintColor, width: ScreenWidth / 3 - 40, marginLeft: 20 }} style={{ backgroundColor: UColor.secdColor }} tabStyle={{ width: ScreenWidth / 3, padding: 0, margin: 0 }} scrollEnabled={true} {...props} />}
+            renderHeader={(props) => <TabBar onTabPress={this._handleTabItemPress} labelStyle={{ fontSize: ScreenUtil.setSpText(15), margin: 0, marginBottom: ScreenUtil.autoheight(12), paddingTop: ScreenUtil.autoheight(18), color: '#8696B0' }} indicatorStyle={{ backgroundColor: UColor.tintColor, width: ScreenWidth / 3 - 40, marginLeft: 20 }} style={{ backgroundColor: UColor.secdColor }} tabStyle={{ width: ScreenWidth / 3, padding: 0, margin: 0 }} scrollEnabled={true} {...props} />}
             onIndexChange={this._handleIndexChange}
             initialLayout={{ height: 0, width: Dimensions.get('window').width }}
           />
@@ -338,7 +339,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     color: 'white',
-    fontSize: 30,
+    fontSize: ScreenUtil.setSpText(30),
 },
   container: {
     flex: 1,
@@ -347,34 +348,30 @@ const styles = StyleSheet.create({
     paddingTop:Platform.OS == 'ios' ? 30 : 20,
   },
   switem: {
-    paddingBottom: 10,
+    paddingBottom: ScreenUtil.autoheight(10),
     flex: 1,
     backgroundColor: "#000",
     flexDirection: "row",
     flexWrap: "wrap",
-    height: 100
+    height: ScreenUtil.autoheight(100),
   },
   row: {
     flex: 1,
     backgroundColor: UColor.mainColor,
     flexDirection: "column",
-    paddingLeft: 25,
-    paddingRight: 25,
-    paddingTop: 20
+    paddingHorizontal: ScreenUtil.autowidth(25),
+    paddingTop: ScreenUtil.autoheight(20),
   },
   rowFooter: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
+    marginTop: ScreenUtil.autoheight(10),
   },
 
-
-
   systemSettingTip: {
-    // flex: 1,
     width: ScreenWidth,
-    height:40,
+    height: ScreenUtil.autoheight(40),
     flexDirection: "row",
     alignItems: 'center', 
     backgroundColor: UColor.showy,
@@ -382,14 +379,14 @@ const styles = StyleSheet.create({
   systemSettingText: {
     color: UColor.fontColor,
     textAlign: 'center',
-    fontSize: 15
+    fontSize: ScreenUtil.setSpText(15),
   },
   systemSettingArrow: {
     flex: 1,
     color: UColor.fontColor,
     textAlign: 'right',
-    fontSize: 30,
-    marginBottom:6
+    fontSize: ScreenUtil.setSpText(30),
+    marginBottom: ScreenUtil.autoheight(6),
   },
 });
 

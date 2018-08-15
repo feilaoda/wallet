@@ -1,15 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar, TextInput, TouchableOpacity, TouchableHighlight } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import { Dimensions, DeviceEventEmitter, StyleSheet, View, Text, ScrollView, Image, Platform, TextInput, TouchableOpacity, } from 'react-native';
+import ScreenUtil from '../../utils/ScreenUtil'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import UImage from '../../utils/Img'
 import QRCode from 'react-native-qrcode-svg';
-
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from "../../components/EasyShow"
 import BaseComponent from "../../components/BaseComponent";
@@ -33,7 +29,7 @@ class ActivationAt extends BaseComponent {
                 borderBottomWidth:0,
             },
           headerRight: (<Button  onPress={navigation.state.params.onPress}>  
-                <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>删除该账号</Text>
+                <Text style={{color: UColor.arrow, fontSize: ScreenUtil.setSpText(18),justifyContent: 'flex-end',paddingRight:15}}>删除该账号</Text>
           </Button>),                  
         };
       };
@@ -96,7 +92,7 @@ class ActivationAt extends BaseComponent {
     checkDeleteWallet = () =>{
         const c = this.props.navigation.state.params.parameter;
       EasyShowLD.dialogShow("免责声明",  (<View>
-        <Text style={{color: UColor.arrow,fontSize: 14,}}>删除过程中会检测您的账号是否已激活，如果您没有备份私钥，删除后将无法找回！请确保该账号不再使用后再删除！</Text>
+        <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(14),}}>删除过程中会检测您的账号是否已激活，如果您没有备份私钥，删除后将无法找回！请确保该账号不再使用后再删除！</Text>
         </View>),"下一步","返回钱包",  () => {
             EasyShowLD.dialogClose();
             EasyShowLD.loadingShow();
@@ -107,7 +103,7 @@ class ActivationAt extends BaseComponent {
                     if(result.code == 0 && result.data == true){
                         //msg:success,data:true, code:0 账号已存在
                         EasyShowLD.dialogShow("免责声明",  (<View>
-                            <Text style={{color: UColor.arrow,fontSize: 14,}}>系统检测到该账号<Text style={{color: UColor.showy,fontSize: 15,}}>已经激活</Text>！如果执意删除请先导出私钥并保存好，否则删除后无法找回</Text>
+                            <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(14),}}>系统检测到该账号<Text style={{color: UColor.showy,fontSize: ScreenUtil.setSpText(15),}}>已经激活</Text>！如果执意删除请先导出私钥并保存好，否则删除后无法找回</Text>
                         </View>),"执意删除","返回钱包",  () => {
                             this.deleteWallet();
                             EasyShowLD.dialogClose()
@@ -115,7 +111,7 @@ class ActivationAt extends BaseComponent {
                     }else if(result.code == 521){
                         //msg:账号不存在,data:null,code:521
                         EasyShowLD.dialogShow("免责声明",  (<View>
-                            <Text style={{color: UColor.arrow,fontSize: 14,}}>系统检测到该账号还没激活，如果您不打算激活此账号，建议删除。</Text>
+                            <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(14),}}>系统检测到该账号还没激活，如果您不打算激活此账号，建议删除。</Text>
                         </View>),"删除","取消",  () => {
                             this.deletionDirect();
                             EasyShowLD.dialogClose()
@@ -123,14 +119,14 @@ class ActivationAt extends BaseComponent {
                     }else if(result.code == 515){
                         //msg:账号不存在,data:null,code:521
                         EasyShowLD.dialogShow("免责声明",  (<View>
-                        <Text style={{color: UColor.arrow,fontSize: 14,}}>系统检测到该账号已经被别人抢注，强烈建议删除。</Text>
+                        <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(14),}}>系统检测到该账号已经被别人抢注，强烈建议删除。</Text>
                       </View>),"删除","取消",  () => {
                           this.deletionDirect();
                           EasyShowLD.dialogClose()
                       }, () => { EasyShowLD.dialogClose() });
                     }else {
                         EasyShowLD.dialogShow("免责声明",  (<View>
-                            <Text style={{color: UColor.arrow,fontSize: 14,}}>网络异常, 暂不能检测到账号是否已经激活, 建议暂不删除此账号, 如果执意删除请先导出私钥并保存好，否则删除后无法找回。</Text>
+                            <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(14),}}>网络异常, 暂不能检测到账号是否已经激活, 建议暂不删除此账号, 如果执意删除请先导出私钥并保存好，否则删除后无法找回。</Text>
                           </View>),"执意删除","取消",  () => {
                               this.deletionDirect();
                               EasyShowLD.dialogClose()
@@ -253,7 +249,7 @@ class ActivationAt extends BaseComponent {
                         this.props.dispatch({type: 'wallet/activeWallet', wallet: wallet});
                         //msg:success,data:true, code:0 账号已存在
                         EasyShowLD.dialogShow("恭喜激活成功", (<View>
-                            <Text style={{fontSize: 20, color: UColor.showy, textAlign: 'center',}}>{name}</Text>
+                            <Text style={{fontSize: ScreenUtil.setSpText(20), color: UColor.showy, textAlign: 'center',}}>{name}</Text>
                             {/* <Text style={styles.inptpasstext}>您申请的账号已经被***激活成功</Text> */}
                         </View>), "知道了", null,  () => { EasyShowLD.dialogClose() });
                     }else if(result.code == 521){
@@ -283,8 +279,6 @@ class ActivationAt extends BaseComponent {
 
     render() {
         return (<View style={styles.container}>
-                
-
         <ScrollView keyboardShouldPersistTaps="always">
             <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
                 <View style={styles.header}>
@@ -313,7 +307,7 @@ class ActivationAt extends BaseComponent {
                         </View>
                         <View style={styles.codeout}>
                             <View style={styles.qrcode}>
-                               <QRCode size={120}  value = {this.getQRCode()} />
+                               <QRCode size={ScreenUtil.setSpText(120)}  value = {this.getQRCode()} />
                             </View>
                         </View> 
                     </View> 
@@ -345,16 +339,16 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.mainColor,
     },
     header: {
-        borderTopWidth: 10,
+        borderTopWidth: ScreenUtil.autowidth(10),
         borderTopColor: UColor.secdColor,
         backgroundColor: UColor.mainColor,
     },
     inptoutbg: {
         backgroundColor: UColor.mainColor,
-        paddingHorizontal: 20,
+        paddingHorizontal: ScreenUtil.autowidth(20),
     },
     headout: {
-        paddingTop: 10,
+        paddingTop: ScreenUtil.autoheight(10),
     },
     inptoutgo: {
         backgroundColor: UColor.mainColor,
@@ -365,69 +359,54 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     prompttext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.tintColor,
-        marginVertical: 5,
-        marginRight: 10,
+        marginVertical: ScreenUtil.autoheight(5),
+        marginRight: ScreenUtil.autowidth(10),
     },
     inptitle: {
         flex: 1,
-        fontSize: 15,
-        lineHeight: 30,
+        fontSize: ScreenUtil.setSpText(15),
+        lineHeight: ScreenUtil.autoheight(30),
         color: UColor.fontColor,
     },
     inptgo: {
-        // height: 120,
-        paddingHorizontal: 20,
-        paddingTop: 15,
+        paddingHorizontal: ScreenUtil.autowidth(20),
+        paddingTop: ScreenUtil.autoheight(15),
         backgroundColor: UColor.secdColor,
     },
     headtitle: {
         color: UColor.arrow,
-        fontSize: 14,
-        lineHeight: 25,
-        marginBottom: 10,
+        fontSize: ScreenUtil.setSpText(14),
+        lineHeight: ScreenUtil.autoheight(25),
+        marginBottom: ScreenUtil.autoheight(10),
     },
 
     codeout: {
         flex: 1,
-        marginBottom: 20,
+        marginBottom: ScreenUtil.autoheight(20),
         alignItems: "center",
         justifyContent: "center",
         alignItems: "center",
     },
     qrcode: {
         backgroundColor: UColor.fontColor,
-        padding: 5
+        padding: ScreenUtil.autowidth(5),
     },
 
     importPriout: {
-        height: 45,
+        height: ScreenUtil.autoheight(45),
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: 20,
-        marginBottom: 15,
+        marginHorizontal: ScreenUtil.autowidth(20),
+        marginBottom: ScreenUtil.autoheight(15),
         borderRadius: 5,
         backgroundColor:  UColor.tintColor,
     },
     importPritext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.fontColor,
     },
-
-    // deleteout: {
-    //     height: 45, 
-    //     justifyContent: 'center', 
-    //     alignItems: 'center', 
-    //     marginHorizontal: 20,
-    //     borderRadius: 5,
-    //     marginBottom: 30,
-    //     backgroundColor: UColor.showy,
-    // },
-    // delete: {
-    //     fontSize: 15,
-    //     color: UColor.fontColor,
-    // },
 
 });
 export default ActivationAt;

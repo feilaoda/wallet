@@ -7,7 +7,7 @@ import Item from '../../components/Item'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
-
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyShowLD } from "../../components/EasyShow"
 import { EasyToast } from '../../components/Toast';
 import { Eos } from "react-native-eosjs";
@@ -289,15 +289,13 @@ class createWallet extends BaseComponent {
   }
 
   render() {
-    return <View style={styles.container}>
-        
-
+    return <View style={styles.container}>    
     <ScrollView  keyboardShouldPersistTaps="always">
       <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
         <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
           <View style={styles.significantout}>
             <Image source={UImage.warning} style={styles.imgBtn} />
-            <View style={{flex: 1,paddingLeft: 5,}}>
+            <View style={{flex: 1,paddingLeft: ScreenUtil.autowidth(5),}}>
               <Text style={styles.significanttext} >重要声明:</Text>
               <Text style={styles.significanttext} >密码用于保护私钥和交易授权，建议设置高强度密码；EosToken不存储密码，也无法帮您找回，请务必牢记。</Text>
             </View>
@@ -312,7 +310,7 @@ class createWallet extends BaseComponent {
                   keyboardType="default" maxLength={12} onChangeText={(walletName) => this.setState({ walletName })} 
                 />
                 <Button onPress={() => this.random()}>
-                  <View style={{width: 60, height: 35,justifyContent: 'center',alignItems: 'center',borderRadius: 3, backgroundColor: UColor.tintColor,}}>
+                  <View style={{width: ScreenUtil.autowidth(60), height: ScreenUtil.autoheight(35),justifyContent: 'center',alignItems: 'center',borderRadius: 3, backgroundColor: UColor.tintColor,}}>
                     <Text style={styles.createWallet}>随机</Text>
                   </View>
                 </Button>
@@ -322,9 +320,9 @@ class createWallet extends BaseComponent {
                 <View style={{flexDirection: 'row',}}>
                   <Text style={styles.inptitle}>设置密码</Text>
                   <View style={{flexDirection: 'row',}}>
-                      <Text style={{color:this.state.weak, fontSize: 15, padding: 5,}}>弱</Text>
-                      <Text style={{color:this.state.medium, fontSize: 15, padding: 5,}}>中</Text>
-                      <Text style={{color:this.state.strong, fontSize: 15, padding: 5,}}>强</Text>
+                      <Text style={{color:this.state.weak, fontSize: ScreenUtil.setSpText(15), padding: ScreenUtil.autowidth(5),}}>弱</Text>
+                      <Text style={{color:this.state.medium, fontSize: ScreenUtil.setSpText(15), padding: ScreenUtil.autowidth(5),}}>中</Text>
+                      <Text style={{color:this.state.strong, fontSize: ScreenUtil.setSpText(15), padding: ScreenUtil.autowidth(5),}}>强</Text>
                   </View>
                 </View>
                 <TextInput ref={(ref) => this._lpass = ref} value={this.state.walletPassword}  returnKeyType="next" editable={true}
@@ -367,14 +365,14 @@ class createWallet extends BaseComponent {
 
 const styles = StyleSheet.create({
   inptpasstext: {
-    fontSize: 12,
+    fontSize: ScreenUtil.setSpText(12),
     color: UColor.arrow,
-    marginBottom: 15,
-    lineHeight: 20,
+    marginBottom: ScreenUtil.autoheight(15),
+    lineHeight: ScreenUtil.autoheight(20),
   },
   Becarefultext: {
      color: UColor.showy,
-     fontSize: 12,
+     fontSize: ScreenUtil.setSpText(12),
   },
 
   container: {
@@ -385,22 +383,22 @@ const styles = StyleSheet.create({
   significantout: {
     flexDirection: "row",
     alignItems: 'center', 
-    marginHorizontal: 20,
-    marginVertical: 16,
-    padding: 5,
+    marginHorizontal: ScreenUtil.autowidth(20),
+    marginVertical: ScreenUtil.autoheight(16),
+    padding: ScreenUtil.autowidth(5),
     backgroundColor: UColor.mainColor,
     borderColor: '#FF4F4F',
     borderWidth: 1,
     borderRadius: 5,
   },
   imgBtn: {
-    width: 30,
-    height: 30,
-    margin:5,
+    width: ScreenUtil.autowidth(30),
+    height: ScreenUtil.autowidth(30),
+    margin: ScreenUtil.autowidth(5),
   },
   significanttext: {
     color: '#FF4F4F',
-    fontSize: 12, 
+    fontSize: ScreenUtil.setSpText(12), 
   },
 
   outsource: {
@@ -408,59 +406,59 @@ const styles = StyleSheet.create({
   },
 
   inptout: {
-    paddingHorizontal: 15,
+    paddingHorizontal: ScreenUtil.autowidth(15),
     borderBottomWidth: 1,
     backgroundColor: UColor.mainColor,
     borderBottomColor: UColor.secdColor,
   },
   inptitle: {
     flex: 1,
-    fontSize: 15,
-    lineHeight: 30,
-    paddingLeft: 5,
+    fontSize: ScreenUtil.setSpText(15),
+    lineHeight: ScreenUtil.autoheight(30),
+    paddingLeft: ScreenUtil.autowidth(5),
     color: UColor.fontColor,
   },
   inpt: {
     flex: 1,
     color: UColor.arrow,
-    fontSize: 15,
-    height: 50,
-    paddingLeft: 2
+    fontSize: ScreenUtil.setSpText(15),
+    height: ScreenUtil.autoheight(50),
+    paddingLeft: ScreenUtil.autowidth(2),
   },
 
   clauseout: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: ScreenUtil.autoheight(20),
   },
   clauseimg: { 
-    width: 20, 
-    height: 20,
-    marginHorizontal: 10, 
+    width: ScreenUtil.autowidth(20), 
+    height: ScreenUtil.autowidth(20),
+    marginHorizontal: ScreenUtil.autowidth(10), 
   },
   welcome: {
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
     color: UColor.arrow,
   },
   clausetext: {
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
     color: UColor.tintColor,
   },
   createWalletout: {
-    height: 45,
+    height: ScreenUtil.autoheight(45),
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 20,
-    marginTop: 20,
+    marginHorizontal: ScreenUtil.autowidth(20),
+    marginVertical: ScreenUtil.autoheight(20),
     borderRadius: 5
   },
   createWallet: {
-    fontSize: 15,
+    fontSize: ScreenUtil.setSpText(15),
     color: UColor.fontColor
   },
   importWallettext: {
-    fontSize: 15,
+    fontSize: ScreenUtil.setSpText(15),
     color: UColor.tintColor,
     textAlign: 'center'
   },

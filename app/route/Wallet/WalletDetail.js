@@ -1,14 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Clipboard, Text, ScrollView, Image, Platform, StatusBar, TextInput, Modal } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import { Dimensions, DeviceEventEmitter, StyleSheet, View, Clipboard, Text, ScrollView, Image, Platform, TextInput, Modal } from 'react-native';
+import ScreenUtil from '../../utils/ScreenUtil'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import Constants from '../../utils/Constants'
-
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from '../../components/EasyShow'//CGP TEST
 import JPushModule from 'jpush-react-native';
@@ -37,11 +35,11 @@ class WalletDetail extends BaseComponent {
   constructor(props) {
     super(props);
     this.config = [
-      { avatar:UImage.lock, first: true, name: "修改密码", onPress: this.goPage.bind(this, "ModifyPassword") },
-      { avatar:UImage.privatekey, first: true, name: "备份私钥", onPress: this.goPage.bind(this, "ExportPrivateKey") },
+      { avatar:UImage.lock, name: "修改密码", onPress: this.goPage.bind(this, "ModifyPassword") },
+      { avatar:UImage.privatekey, name: "备份私钥", onPress: this.goPage.bind(this, "ExportPrivateKey") },
       { avatar:UImage.publickey, name: "导出公钥", onPress: this.goPage.bind(this, "ExportPublicKey") },
       { avatar:UImage.resources_f, name: "资源管理", onPress: this.goPage.bind(this, "Resources") },
-      { avatar:UImage.details, first: true, name: "账户详细信息", onPress: this.goPage.bind(this, "SeeBlockBrowser") },
+      { avatar:UImage.details, name: "账户详细信息", onPress: this.goPage.bind(this, "SeeBlockBrowser") },
       { avatar:UImage.adminA, name: "权限更改及过户", onPress: this.goPage.bind(this, "AdminManage") },
     ];
     this.state = {
@@ -204,7 +202,7 @@ class WalletDetail extends BaseComponent {
             //msg:success,data:true, code:0 账号已存在
               // EasyShowLD.dialogShow("免责声明",  (<View>
               EasyShowLD.dialogShow("免责声明",  (<View>
-                <Text style={{color: UColor.arrow,fontSize: 14,}}>系统检测到该账号<Text style={{color: UColor.showy,fontSize: 15,}}>已经激活</Text>！如果执意删除请先导出私钥并保存好，否则删除后无法找回</Text>
+                <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(14),}}>系统检测到该账号<Text style={{color: UColor.showy,fontSize: 15,}}>已经激活</Text>！如果执意删除请先导出私钥并保存好，否则删除后无法找回</Text>
               </View>),"执意删除","返回钱包",  () => {
                   this.deleteWallet();
                   EasyShowLD.dialogClose()
@@ -212,7 +210,7 @@ class WalletDetail extends BaseComponent {
             }else if(result.code == 521){
                 //msg:账号不存在,data:null,code:521
                 EasyShowLD.dialogShow("免责声明",  (<View>
-                <Text style={{color: UColor.arrow,fontSize: 14,}}>系统检测到该账号还没激活，如果您不打算激活此账号，建议删除。</Text>
+                <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(14),}}>系统检测到该账号还没激活，如果您不打算激活此账号，建议删除。</Text>
               </View>),"删除","取消",  () => {
                   this.deletionDirect();
                   EasyShowLD.dialogClose()
@@ -220,14 +218,14 @@ class WalletDetail extends BaseComponent {
             }else if(result.code == 515){
               //msg:账号不存在,data:null,code:521
               EasyShowLD.dialogShow("免责声明",  (<View>
-              <Text style={{color: UColor.arrow,fontSize: 14,}}>系统检测到该账号已经被别人抢注，强烈建议删除。</Text>
+              <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(14),}}>系统检测到该账号已经被别人抢注，强烈建议删除。</Text>
             </View>),"删除","取消",  () => {
                 this.deletionDirect();
                 EasyShowLD.dialogClose()
             }, () => { EasyShowLD.dialogClose() });
             }else {
               EasyShowLD.dialogShow("免责声明",  (<View>
-                <Text style={{color: UColor.arrow,fontSize: 14,}}>网络异常, 暂不能检测到账号是否已经激活, 建议暂不删除此账号, 如果执意删除请先导出私钥并保存好，否则删除后无法找回。</Text>
+                <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(14),}}>网络异常, 暂不能检测到账号是否已经激活, 建议暂不删除此账号, 如果执意删除请先导出私钥并保存好，否则删除后无法找回。</Text>
               </View>),"执意删除","取消",  () => {
                   this.deletionDirect();
                   EasyShowLD.dialogClose()
@@ -247,7 +245,7 @@ class WalletDetail extends BaseComponent {
     else{
       //msg:success,data:true, code:0 账号已存在
       EasyShowLD.dialogShow("免责声明",  (<View>
-       <Text style={{color: UColor.arrow,fontSize: 14,}}>系统检测到该账号<Text style={{color: UColor.showy,fontSize: 15,}}>已经激活</Text>！如果执意删除请先导出私钥并保存好，否则删除后无法找回</Text>
+       <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(14),}}>系统检测到该账号<Text style={{color: UColor.showy,fontSize: ScreenUtil.setSpText(15),}}>已经激活</Text>！如果执意删除请先导出私钥并保存好，否则删除后无法找回</Text>
      </View>),"执意删除","返回钱包",  () => {
          this.deleteWallet();
         //  EasyShowLD.dialogClose()
@@ -337,7 +335,7 @@ class WalletDetail extends BaseComponent {
                 this.props.dispatch({type: 'wallet/activeWallet', wallet: wallet});
                 //msg:success,data:true, code:0 账号已存在
                 EasyShowLD.dialogShow("恭喜激活成功", (<View>
-                    <Text style={{fontSize: 20, color: UColor.showy, textAlign: 'center',}}>{name}</Text>
+                    <Text style={{fontSize: ScreenUtil.setSpText(20), color: UColor.showy, textAlign: 'center',}}>{name}</Text>
                     {/* <Text style={styles.inptpasstext}>您申请的账号已经被***激活成功</Text> */}
                 </View>), "知道了", null,  () => { EasyShowLD.dialogClose() });
             }else if(result.code == 500){ // 网络异常
@@ -485,9 +483,7 @@ class WalletDetail extends BaseComponent {
   render() {
     const c = this.props.navigation.state.params.data
     const balance = this.props.navigation.state.params.balance
-    return <View style={styles.container}>
-        
-
+    return <View style={styles.container}>    
       <ScrollView style={styles.scrollView}>
         <View>
           <View style={styles.walletout}>
@@ -506,7 +502,7 @@ class WalletDetail extends BaseComponent {
               {(!c.isactived || !c.hasOwnProperty('isactived')) ? <View style={styles.notactivedout}><Text style={styles.notactived}>未激活</Text></View>:(c.isBackups ? null : <View style={styles.stopoutBackupsout}><Text style={styles.stopoutBackups}>未备份</Text></View>) }   
             </View>
           </View>
-          <View style={{ marginBottom: 30 }}>{this._renderListItem()}</View>
+          <View>{this._renderListItem()}</View>
           {/* <Button onPress={() => this.backupWords()} style={{ flex: 1 }}>
             <View style={{ height: 45, backgroundColor: '#65CAFF', justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
               <Text style={{ fontSize: 15, color: '#fff' }}>备份助记词</Text>b
@@ -525,7 +521,6 @@ class WalletDetail extends BaseComponent {
               <Text style={styles.delete}>删除账户</Text>
             </View>
           </Button>
-
         </View>
       </ScrollView>
       <View style={styles.pupuo}>
@@ -537,18 +532,18 @@ class WalletDetail extends BaseComponent {
                     <Ionicons style={{ color: '#CBCBCB'}} name="ios-close-outline" size={28} />
                 </View>
               </Button>
-              <View style={{paddingHorizontal: 11, paddingVertical: 15,  marginBottom: 18, marginHorizontal: 20, flexDirection: "row",borderColor: UColor.tintColor, borderWidth: 1,borderRadius: 5,}}>
-                <Text style={{flex: 1, fontSize: 20, color: UColor.mainColor}}>eospark.com</Text>
+              <View style={styles.eosparkout}>
+                <Text style={styles.titletext}>eospark.com</Text>
                 <Button onPress={() => { this.eospark() }}>
-                  <View style={{ width: 64, height: 30, borderRadius: 5, backgroundColor:  UColor.tintColor, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={styles.buttonText}>查看</Text>
+                  <View style={styles.eosparktext}>
+                  <Text style={styles.buttonText}>查看</Text>
                   </View>
                 </Button>
               </View>
-              <View style={{paddingHorizontal: 11, paddingVertical: 15, marginBottom: 34, marginHorizontal: 20, flexDirection: "row",borderColor: UColor.tintColor, borderWidth: 1,borderRadius: 5, }}>
-                <Text style={{flex: 1, fontSize: 20, color: UColor.mainColor}}>eoseco.com</Text>
+              <View style={styles.eosecoout}>
+                <Text style={styles.titletext}>eoseco.com</Text>
                 <Button onPress={() => { this.eoseco() }}>
-                  <View style={{ width: 64, height: 30, borderRadius: 5, backgroundColor:  UColor.tintColor, justifyContent: 'center', alignItems: 'center'}}>
+                  <View style={styles.eosecotext}>
                     <Text style={styles.buttonText}>查看</Text>
                   </View>
                 </Button>
@@ -563,26 +558,11 @@ class WalletDetail extends BaseComponent {
 
 const styles = StyleSheet.create({
   inptpasstext: {
-    fontSize: 12,
+    fontSize: ScreenUtil.setSpText(12),
     color: UColor.arrow,
-    marginBottom: 15,
-    lineHeight: 20,
+    marginBottom: ScreenUtil.autoheight(15),
+    lineHeight: ScreenUtil.autoheight(20),
   },
-  Becarefultext: {
-     color: UColor.showy,
-     fontSize: 12,
-  },
-  linkout: {
-    flexDirection: 'row',
-    paddingTop: 20,
-    justifyContent: 'flex-end'
-  },
-  linktext: {
-    paddingLeft: 15,
-    color: UColor.tintColor,
-    fontSize: 14,
-  },
-
 
   passoutsource: {
     flexDirection: 'column', 
@@ -591,9 +571,9 @@ const styles = StyleSheet.create({
   inptpass: {
     color: UColor.tintColor,
     width: maxWidth-100,
-    height: 45,
-    paddingBottom: 5,
-    fontSize: 16,
+    height: ScreenUtil.autoheight(45),
+    paddingBottom: ScreenUtil.autoheight(5),
+    fontSize: ScreenUtil.setSpText(16),
     backgroundColor: UColor.fontColor,
     borderBottomColor: UColor.baseline,
     borderBottomWidth: 1,
@@ -605,10 +585,10 @@ const styles = StyleSheet.create({
     backgroundColor: UColor.secdColor,
   },
   walletout: { 
-    padding: 20, 
-    height: 120, 
+    padding: ScreenUtil.autowidth(20), 
+    height: ScreenUtil.autoheight(100), 
     backgroundColor:  UColor.mainColor, 
-    margin: 10, 
+    margin: ScreenUtil.autowidth(10), 
     borderRadius: 5, 
   },
   accountout: { 
@@ -617,48 +597,45 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
   },
   accounttext: { 
-    fontSize: 24, 
+    fontSize: ScreenUtil.setSpText(24), 
     color: UColor.fontColor, 
-    marginBottom: 10, 
+    marginBottom: ScreenUtil.autoheight(10), 
   },
   company: {
-    fontSize: 15,
-    color: '#FFFFFF',
-    marginBottom: 5,
+    fontSize: ScreenUtil.setSpText(15),
+    color: UColor.fontColor,
+    marginBottom: ScreenUtil.autoheight(5),
   },
-
-
 
   topout: {
     flexDirection: "row",
-    marginBottom: 20,
     alignItems: 'center',
   },
   category: {
-    fontSize: 16,
+    fontSize: ScreenUtil.setSpText(16),
     color:  UColor.fontColor,
   },
   outname: {
-    fontSize: 14,
+    fontSize: ScreenUtil.setSpText(14),
     color: UColor.arrow,
   },
   imgBtn: {
-    width: 20,
-    height: 20,
-    marginHorizontal:5,
+    width: ScreenUtil.autowidth(20),
+    height: ScreenUtil.autowidth(20),
+    marginHorizontal: ScreenUtil.autowidth(5),
   },
   stopoutBackupsout: {
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#2ACFFF',
+    borderColor: UColor.tintColor,
     justifyContent: 'center',
     alignItems: 'center',
   },
   stopoutBackups: {
-    fontSize: 10,
-    color: '#2ACFFF',
+    fontSize: ScreenUtil.setSpText(10),
+    color: UColor.tintColor,
     textAlign: 'center',
-    paddingHorizontal: 8,
+    paddingHorizontal: ScreenUtil.autowidth(8),
     paddingVertical: 1,
   },
 
@@ -671,40 +648,38 @@ const styles = StyleSheet.create({
   },
 
   notactived: {
-    fontSize: 10,
+    fontSize: ScreenUtil.setSpText(10),
     color: UColor.showy,
     textAlign: 'center', 
-    paddingHorizontal: 8,
+    paddingHorizontal: ScreenUtil.autowidth(8),
     paddingVertical: 1,
   },
  
 
   walletname: { 
-    fontSize: 15, 
+    fontSize: ScreenUtil.setSpText(15), 
     color:  UColor.arrow, 
   },
   acttiveout: {
-    height: 45, 
+    height: ScreenUtil.autoheight(45), 
     backgroundColor:  UColor.tintColor, 
     justifyContent: 'center', 
     alignItems: 'center', 
-    marginLeft: 20, 
-    marginRight: 20, 
+    marginHorizontal: ScreenUtil.autowidth(20), 
     borderRadius: 5,
-    marginBottom: 30,
+    marginTop: ScreenUtil.autoheight(20),
   },
   deleteout: {
-    height: 45, 
+    height: ScreenUtil.autoheight(45), 
     backgroundColor: UColor.showy, 
     justifyContent: 'center', 
     alignItems: 'center', 
-    marginLeft: 20, 
-    marginRight: 20, 
+    marginHorizontal: ScreenUtil.autowidth(20),  
     borderRadius: 5,
-    marginBottom: 30,
+    marginTop: ScreenUtil.autoheight(20),
   },
   delete: { 
-    fontSize: 15, 
+    fontSize: ScreenUtil.setSpText(15), 
     color:  UColor.fontColor,
   },
 
@@ -720,7 +695,7 @@ const styles = StyleSheet.create({
   },
   // modal上子View的样式  
   subView: {
-    marginHorizontal: 15,
+    marginHorizontal: ScreenUtil.setSpText(15),
     backgroundColor:  UColor.fontColor,
     alignSelf: 'stretch',
     justifyContent: 'center',
@@ -729,65 +704,56 @@ const styles = StyleSheet.create({
     borderColor: UColor.baseline,
   },
   closeText: {
-    width: 50,
-    height: 50,
+    width: ScreenUtil.setSpText(50),
+    height: ScreenUtil.setSpText(50),
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  // 标题  
-  titleText: {
-    color: '#000000',
-    marginBottom: 5,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  //警告提示  
-  noticeText: {
-    color: '#F45353',
-    fontSize: 14,
-    marginLeft: 15,
-    marginRight: 15,
-    textAlign: 'left',
-  },
-  // 内容  
-  contentText: {
-    margin: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: "row",
-  },
-  textContent: {
-    color: '#999999',
-    fontSize: 14,
-    textAlign: 'left',
-    lineHeight: 25,
-  },
-  // 按钮  
-  buttonView: {
-    margin: 10,
-    height: 46,
-    borderRadius: 6,
-    backgroundColor:  UColor.tintColor,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: ScreenUtil.setSpText(16),
     color:  UColor.fontColor,
   },
 
-   // 关闭按钮  
-   buttonView: {
-    alignItems: 'flex-end',
+  eosparkout: {
+    paddingHorizontal: ScreenUtil.autowidth(11), 
+    paddingVertical: ScreenUtil.autoheight(15),  
+    marginBottom: ScreenUtil.autoheight(18), 
+    marginHorizontal: ScreenUtil.autowidth(20), 
+    flexDirection: "row",
+    borderColor: UColor.tintColor, 
+    borderWidth: 1,
+    borderRadius: 5,
   },
-  butclose: {
-    width: 30,
-    height: 30,
-    marginBottom: 0,
-    color: '#CBCBCB',
-    fontSize: 28,
+  eosecoout: {
+    paddingHorizontal: ScreenUtil.autowidth(11), 
+    paddingVertical: ScreenUtil.autoheight(15), 
+    marginBottom: ScreenUtil.autoheight(34), 
+    marginHorizontal: ScreenUtil.autowidth(20), 
+    flexDirection: "row",
+    borderColor: UColor.tintColor,
+    borderWidth: 1,
+    borderRadius: 5, 
+  },
+  titletext: {
+    flex: 1, 
+    fontSize: ScreenUtil.setSpText(20), 
+    color: UColor.mainColor
+  },
+  eosparktext: { 
+    width: ScreenUtil.autowidth(64), 
+    height: ScreenUtil.autoheight(30), 
+    borderRadius: 5, 
+    backgroundColor:  UColor.tintColor, 
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+  eosecotext: { 
+    width: ScreenUtil.autowidth(64), 
+    height: ScreenUtil.autoheight(30), 
+    borderRadius: 5, 
+    backgroundColor:  UColor.tintColor, 
+    justifyContent: 'center', 
+    alignItems: 'center'
   },
 
 });
