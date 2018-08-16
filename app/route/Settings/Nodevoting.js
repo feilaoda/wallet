@@ -1,47 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,StatusBar, Modal,TextInput,TouchableOpacity} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import {Dimensions,ListView,StyleSheet,View,Text,Image,Platform,TextInput,TouchableOpacity} from 'react-native';
+import UImage from '../../utils/Img'
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
-import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
-import UImage from '../../utils/Img'
-
+import Constants from '../../utils/Constants'
+import ScreenUtil from '../../utils/ScreenUtil'
+import { Eos } from "react-native-eosjs";
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from "../../components/EasyShow"
-import { Eos } from "react-native-eosjs";
-import {formatEosQua} from '../../utils/FormatUtil';
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import BaseComponent from "../../components/BaseComponent";
-import Constants from '../../utils/Constants'
+
 const maxWidth = Dimensions.get('window').width;
 const maxHeight = Dimensions.get('window').height;
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 
-
 @connect(({vote, wallet}) => ({...vote, ...wallet}))
 class Nodevoting extends BaseComponent {
 
-  
-    static navigationOptions = ({ navigation }) => {
-    
-        const params = navigation.state.params || {};
-       
-        return {    
-          title: "投票",
-          headerStyle: {
+    static navigationOptions =  {
+        title: "投票",
+        headerStyle: {
             paddingTop:Platform.OS == 'ios' ? 30 : 20,
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
           },
-        //   headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
-        //     <View style={{ padding: 15 }}>
-        //         <Image source={UImage.Magnifier} style={{ width: 30, height: 30 }}></Image>
-        //     </View>
-        //   </Button>),            
-        };
       };
 
     constructor(props) {
@@ -216,7 +201,7 @@ class Nodevoting extends BaseComponent {
                         renderRow={(rowData, sectionID, rowID) => (                  
                         <View>
                             <Button onPress={this._openAgentInfo.bind(this,rowData)}> 
-                                <View style={styles.outsource} backgroundColor={(parseInt(rowID)%2 == 0) ? UColor.secdColor : "#4E5E7B"}>
+                                <View style={styles.outsource} backgroundColor={(parseInt(rowID)%2 == 0) ? UColor.secdColor : '#4D607E'}>
                                     <View style={styles.logview}>
                                         <Image source={rowData.icon==null ? UImage.eos : {uri: rowData.icon}} style={styles.logimg}/>
                                     </View>
@@ -275,19 +260,18 @@ const styles = StyleSheet.create({
     },
     inptpass: {
         color: UColor.tintColor,
-        height: 45,
+        height: ScreenUtil.autoheight(45),
         width: maxWidth-100,
-        paddingBottom: 5,
-        fontSize: 16,
+        fontSize: ScreenUtil.setSpText(16),
         backgroundColor: UColor.fontColor,
         borderBottomColor: UColor.baseline,
         borderBottomWidth: 1,
     },
     inptpasstext: {
-        fontSize: 14,
-        color: '#808080',
-        lineHeight: 25,
-        marginTop: 5,
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.arrow,
+        lineHeight: ScreenUtil.autoheight(20),
+        marginTop: ScreenUtil.autowidth(10),
     },
 
     container: {
@@ -298,60 +282,61 @@ const styles = StyleSheet.create({
     headout: {
         flexDirection: 'row', 
         backgroundColor: UColor.mainColor,
-        height: 25,
+        height: ScreenUtil.autoheight(25),
     },
     nodename:{
-        width:140,  
+        width: ScreenUtil.autowidth(140),  
         color: UColor.fontColor, 
-        fontSize:16,  
+        fontSize: ScreenUtil.setSpText(16),  
         textAlign:'center', 
-        lineHeight:25,
+        lineHeight: ScreenUtil.autoheight(25),
     },
     rankingticket: {
         flex: 1,
         color: UColor.fontColor,
-        fontSize: 16,
+        fontSize: ScreenUtil.setSpText(16),
         textAlign: 'center',
-        lineHeight: 25,
+        lineHeight: ScreenUtil.autoheight(25),
     },
     choice: {
-        width: 50,
+        width: ScreenUtil.autowidth(50),
         color: UColor.fontColor,
-        fontSize: 16,
+        fontSize: ScreenUtil.setSpText(16),
         textAlign: 'center',
-        lineHeight: 25,
+        lineHeight: ScreenUtil.autoheight(25),
     },
 
     outsource: {
         flexDirection: 'row', 
-        height: 60,
+        height: ScreenUtil.autoheight(60),
+        paddingVertical: ScreenUtil.autoheight(10),
     },
     logview: {
         justifyContent: 'center', 
         alignItems: 'center', 
     },
     logimg: {
-        width: 30, 
-        height: 30, 
-        margin: 10,
+        width: ScreenUtil.autowidth(30), 
+        height: ScreenUtil.autowidth(30), 
+        margin: ScreenUtil.autowidth(10),
     },
     nameregion: {
-        width: 100,
-        justifyContent: 'center',
+        width: ScreenUtil.autowidth(100),
+        justifyContent: 'space-between',
         alignItems: 'flex-start',
     },
     rankvote: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
     },
     nameranking: {
         color: UColor.fontColor, 
-        fontSize:14,
+        fontSize: ScreenUtil.setSpText(14),
     }, 
     regiontotalvotes: {
-        color:'#7787A3', 
-        fontSize:14,
+        color: UColor.lightgray, 
+        fontSize: ScreenUtil.setSpText(14),
     },
 
     taboue: {
@@ -359,19 +344,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     tabview: {
-        width: 27,
-        height: 27,
-        margin: 5,
-        borderColor: UColor.mainColor,
-        borderWidth: 2,
+        width: ScreenUtil.autowidth(27),
+        height: ScreenUtil.autowidth(27),
+        margin: ScreenUtil.autowidth(5),
+        borderColor: UColor.lightgray,
+        borderWidth: 1,
     },
     tabimg: {
-        width: 25, 
-        height: 25
+        width: ScreenUtil.autowidth(25), 
+        height: ScreenUtil.autowidth(25),
     },
 
     footer: {
-      height: 50,
+      height: ScreenUtil.autoheight(50),
       flexDirection: 'row',
       backgroundColor: UColor.secdColor,  
     },
@@ -383,32 +368,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        marginRight: 1,
+        marginRight: 0.5,
         backgroundColor: UColor.mainColor,
     },
     nodenumber: {
-        fontSize: 18, 
-        color: '#F3F4F4'
+        fontSize: ScreenUtil.setSpText(18), 
+        color: UColor.fontColor,
     },
     nodetext: {
-        fontSize: 14, 
-        color: UColor.arrow
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.lightgray,
     },
     btnvote: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-        marginLeft: 1,
+        marginLeft: 0.5,
         backgroundColor: UColor.mainColor,
     },
     voteimg: {
-        width: 30, 
-        height: 30
+        width: ScreenUtil.autowidth(30), 
+        height: ScreenUtil.autowidth(30),
     },
     votetext: {
-        marginLeft: 20,
-        fontSize: 18,
+        marginLeft: ScreenUtil.autowidth(20),
+        fontSize: ScreenUtil.setSpText(18),
         color: UColor.fontColor
     },
 });
