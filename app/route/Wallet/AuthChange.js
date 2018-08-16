@@ -21,7 +21,7 @@ var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 
 @connect(({wallet, vote}) => ({...wallet, ...vote}))
-class AdminChange extends BaseComponent {
+class AuthChange extends BaseComponent {
 
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
@@ -262,15 +262,6 @@ EosUpdateAuth = (account, pvk,Keys,Accounts, callback) => {
   //这个是用来删除当前行的
   deleteUser = (delKey) =>{  
 
-// var str="etbexchanger@eosio.code";
-// var fa=str.indexOf("@");
-// if(fa){
-//     str = str.replace( /([^@]+)$/, "");  //删除@后面的字符
-//     str = str.replace( "@", "");  //删除@后面的字符
-// }
-
-// var fak=delKey.indexOf("@");
-
     if(delKey.indexOf("@")!=-1){
         delKey = delKey.replace( /([^@]+)$/, "");  //删除@后面的字符
         delKey = delKey.replace( "@", "");  //删除@后面的字符
@@ -307,10 +298,7 @@ EosUpdateAuth = (account, pvk,Keys,Accounts, callback) => {
 //这个是用来删除当前行的
 addMoreUser(){
     console.log("add more ")
-    console.log("userCnt=%s",this.state.userCnt)
-    console.log("threshold=%s",this.state.threshold)
-    console.log("required_auth.keys.key=%s",this.state.required_auth.keys[0].key)
-    console.log("required_auth=%s",JSON.stringify(this.state.required_auth))
+
     }
     
 
@@ -623,4 +611,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AdminChange;
+export default AuthChange;

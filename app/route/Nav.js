@@ -44,12 +44,12 @@ import ImportKey from './Wallet/ImportPrivateKey'
 import ImportEosKey from './Wallet/ImportEosKey'
 import WalletManage from './Wallet/WalletManage'
 import WalletDetail from './Wallet/WalletDetail'
-import AdminChange from './Wallet/AdminChange'
+import AuthChange from './Wallet/AuthChange'
 import ModifyPassword from './Wallet/ModifyPassword'
 import ExportKeystore from './Wallet/ExportKeystore'
 import ExportPrivateKey from './Wallet/ExportPrivateKey' 
 import ExportPublicKey from './Wallet/ExportPublicKey'
-import AdminManage from './Wallet/AdminManage'
+import AuthManage from './Wallet/AuthManage'
 import BarCode from './Wallet/BarcodeTest'
 // import AddressQr from './Wallet/AddressQr'
 import { EasyToast } from "../components/Toast"
@@ -225,11 +225,11 @@ const Nav = StackNavigator(
     ExportPublicKey: {
       screen: ExportPublicKey
     },
-    AdminManage: {
-      screen: AdminManage
+    AuthManage: {
+      screen: AuthManage
     },
-    AdminChange: {
-      screen: AdminChange
+    AuthChange: {
+      screen: AuthChange
     },
     ModifyPassword: {
       screen: ModifyPassword

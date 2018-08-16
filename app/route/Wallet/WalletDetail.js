@@ -40,7 +40,7 @@ class WalletDetail extends BaseComponent {
       { avatar:UImage.publickey, name: "导出公钥", onPress: this.goPage.bind(this, "ExportPublicKey") },
       { avatar:UImage.resources_f, name: "资源管理", onPress: this.goPage.bind(this, "Resources") },
       { avatar:UImage.details, name: "账户详细信息", onPress: this.goPage.bind(this, "SeeBlockBrowser") },
-      { avatar:UImage.adminA, name: "权限更改及过户", onPress: this.goPage.bind(this, "AdminManage") },
+      { avatar:UImage.adminA, name: "权限更改及过户", onPress: this.goPage.bind(this, "AuthManage") },
     ];
     this.state = {
       password: '',
@@ -81,7 +81,7 @@ class WalletDetail extends BaseComponent {
 
   goPage(key, data) {
     const { navigate } = this.props.navigation;
-    if (key == 'ExportPrivateKey' || key == 'AdminManage') {
+    if (key == 'ExportPrivateKey' || key == 'AuthManage') {
       const view =
         <View style={styles.passoutsource}>
           <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
@@ -110,9 +110,9 @@ class WalletDetail extends BaseComponent {
             // this._setModalVisible();
             // alert('解锁成功' + plaintext_words);
             // this.toBackup(wordsArr);
-            if(key == 'AdminManage'){
+            if(key == 'AuthManage'){
               if(this.props.navigation.state.params.data.isactived){     
-                navigate('AdminManage', {wallet: this.props.navigation.state.params.data});
+                navigate('AuthManage', {wallet: this.props.navigation.state.params.data});
               }else{
                 EasyToast.show("该账号还没激活，激活之后才能进入权限管理")
               }

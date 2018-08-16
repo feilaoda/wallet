@@ -12,7 +12,7 @@ import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 var dismissKeyboard = require('dismissKeyboard');
 @connect(({login}) => ({...login}))
-class AdminManage extends BaseComponent {
+class AuthManage extends BaseComponent {
 
   static navigationOptions = {
     headerTitle: '权限管理',
@@ -51,7 +51,7 @@ class AdminManage extends BaseComponent {
   manageByActive() {
     // Clipboard.setString(this.state.activePk);
     const { navigate } = this.props.navigation;
-    navigate('AdminChange', { wallet:this.props.navigation.state.params.wallet});
+    navigate('AuthChange', { wallet:this.props.navigation.state.params.wallet});
   }
 
   dismissKeyboardClick() {
@@ -191,4 +191,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default AdminManage;
+export default AuthManage;
