@@ -1224,7 +1224,7 @@ class Transaction extends BaseComponent {
                   </View> :
                   <View style={{flex: 1,}}>
                       <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                        dataSource={this.state.dataSource.cloneWithRows(this.props.bigRamRank == null ? [] : this.props.bigRamRank)} 
+                        dataSource={this.state.dataSource.cloneWithRows(this.props.bigAccouontRank == null ? [] : this.props.bigAccouontRank)} 
                         renderRow={(rowData, sectionID, rowID) => (                 
                             <Button onPress={this.openQuery.bind(this,rowData.account)}>
                                 <View style={styles.businessRan}>
