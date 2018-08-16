@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     headleftimg: {
       width: ScreenUtil.autowidth(18),
       height: ScreenUtil.autowidth(18),
-      marginHorizontal: ScreenUtil.autowidth(15),
+      marginHorizontal: ScreenUtil.autowidth(10),
     },
     inptout: {
       flex: 1,

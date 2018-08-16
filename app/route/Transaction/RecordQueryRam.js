@@ -262,18 +262,18 @@ class RecordQueryRam extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: "column",
-        backgroundColor: UColor.secdColor,
-        paddingTop: 1,
+      flex: 1,
+      paddingTop: 1,
+      flexDirection: "column",
+      backgroundColor: UColor.secdColor,
     },
     header: {
       flexDirection: "row",
-      justifyContent: "center",
       alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: UColor.mainColor,
       paddingVertical: ScreenUtil.autoheight(7),
       marginBottom: ScreenUtil.autoheight(5),
-      backgroundColor: UColor.mainColor,
     },
     headleftout: {
       paddingLeft: ScreenUtil.autowidth(15),
@@ -285,24 +285,24 @@ const styles = StyleSheet.create({
     },
     inptout: {
       flex: 1,
-      height: ScreenUtil.autoheight(30),
       borderRadius: 5,
-      marginHorizontal: ScreenUtil.autowidth(15),
       flexDirection: "row",
       alignItems: "center",
       justifyContent: 'center',
+      height: ScreenUtil.autoheight(30),
       backgroundColor: UColor.fontColor,
+      marginHorizontal: ScreenUtil.autowidth(10),
     },
     inpt: {
-        flex: 1,
-        height: ScreenUtil.autoheight(45),
-        fontSize: ScreenUtil.setSpText(14),
-        color: '#999999',
+      flex: 1,
+      color: '#999999',
+      height: ScreenUtil.autoheight(45),
+      fontSize: ScreenUtil.setSpText(14),
     },
     canceltext: {
+      textAlign: 'center',
       color: UColor.fontColor,
       fontSize: ScreenUtil.setSpText(15),
-      textAlign: 'center',
       paddingRight: ScreenUtil.autowidth(15),
     },
 
@@ -310,27 +310,27 @@ const styles = StyleSheet.create({
       flex: 1,
     },
     nothave: {
-      height: ScreenUtil.autowidth(84),
-      backgroundColor: UColor.mainColor,
+      borderRadius: 5,
       flexDirection: "row",
       alignItems: 'center',
       justifyContent: "center",
-      paddingHorizontal: ScreenUtil.autowidth(20),
-      borderRadius: 5,
       margin: ScreenUtil.autowidth(5),
+      height: ScreenUtil.autowidth(84),
+      backgroundColor: UColor.mainColor,
+      paddingHorizontal: ScreenUtil.autowidth(20),
     },
     copytext: {
+      color: UColor.fontColor,
       fontSize: ScreenUtil.setSpText(16), 
-      color: UColor.fontColor
     },
 
     package: {
+      borderRadius: 5,
+      flexDirection: "row",
       height: ScreenUtil.autoheight(52),
       backgroundColor: UColor.mainColor,
-      flexDirection: "row",
       paddingHorizontal: ScreenUtil.autowidth(10),
       paddingVertical: ScreenUtil.autoheight(5),
-      borderRadius: 5,
       marginHorizontal: ScreenUtil.autowidth(10),
       marginVertical: ScreenUtil.autoheight(5),
     },
@@ -339,12 +339,12 @@ const styles = StyleSheet.create({
       justifyContent: "space-between",
     },
     payertext: {
-      fontSize: ScreenUtil.setSpText(15),
       color: UColor.fontColor,
+      fontSize: ScreenUtil.setSpText(15),
     },
     timetext: {
-      fontSize: ScreenUtil.setSpText(15),
       color: UColor.arrow,
+      fontSize: ScreenUtil.setSpText(15),
     },
    
     rightout: {
@@ -354,20 +354,20 @@ const styles = StyleSheet.create({
     },
     selltext: {
       flex: 5,
-      fontSize: ScreenUtil.setSpText(15),
       color: '#F25C49',
       textAlign: 'right',
+      fontSize: ScreenUtil.setSpText(15),
     },
     buytext: {
       flex: 5,
-      fontSize: ScreenUtil.setSpText(15),
       color: "#4ed694",
       textAlign: 'right',
+      fontSize: ScreenUtil.setSpText(15),
     },
     presentprice: {
-      fontSize: ScreenUtil.setSpText(14),
-      color: UColor.arrow,
       textAlign: 'right',
+      color: UColor.arrow,
+      fontSize: ScreenUtil.setSpText(14),
     }
 });
 export default RecordQueryRam;

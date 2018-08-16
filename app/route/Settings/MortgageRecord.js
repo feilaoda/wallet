@@ -1,20 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, TextInput, KeyboardAvoidingView, ImageBackground, ScrollView } from 'react-native';
+import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, TouchableOpacity, TextInput, } from 'react-native';
+import UImage from '../../utils/Img'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import UImage from '../../utils/Img'
+import Constants from '../../utils/Constants'
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from "../../components/Toast"
 import { EasyShowLD } from '../../components/EasyShow'
-import Constants from '../../utils/Constants'
-import { Eos } from "react-native-eosjs";
-import {formatEosQua} from '../../utils/FormatUtil';
-var dismissKeyboard = require('dismissKeyboard');
+import { Eos } from "react-native-eosjs"
+import {formatEosQua} from '../../utils/FormatUtil'
+var AES = require("crypto-js/aes")
+var CryptoJS = require("crypto-js")
 var Dimensions = require('Dimensions')
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
-var AES = require("crypto-js/aes");
-var CryptoJS = require("crypto-js");
+var dismissKeyboard = require('dismissKeyboard')
+const maxWidth = Dimensions.get('window').width
+const maxHeight = Dimensions.get('window').height
+
 @connect(({wallet, vote}) => ({...wallet, ...vote}))
 class MortgageRecord extends React.Component {
 
@@ -195,7 +197,7 @@ class MortgageRecord extends React.Component {
               <View style={styles.leftout}>
                 <Button onPress={this._setModalVisible.bind(this,rowData)} style={{flex: 1,}}>
                     <View >
-                        <Text style={{fontSize: 12, color: UColor.tintColor,}}>一键赎回</Text>
+                        <Text style={{fontSize: ScreenUtil.setSpText(12), color: UColor.tintColor,}}>一键赎回</Text>
                     </View>
                 </Button> 
                 <View style={{flex: 1,justifyContent: 'space-between',}}>
@@ -221,74 +223,74 @@ class MortgageRecord extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      paddingTop: 1,
       flexDirection: "column",
       backgroundColor: UColor.secdColor,
-      paddingTop: 1,
     },
     header: {
       flexDirection: "row",
-      justifyContent: "center",
       alignItems: "center",
-      paddingVertical: 7,
+      justifyContent: "center",
       backgroundColor: UColor.mainColor,
-      marginBottom: 5,
+      paddingVertical: ScreenUtil.autoheight(7), 
+      marginBottom: ScreenUtil.autoheight(5),
     },
     headleftout: {
-      paddingLeft: 15
+      paddingLeft: ScreenUtil.autowidth(15),
     },
     headleftimg: {
-      width: 18,
-      height: 18,
-      marginHorizontal: 10,
+      width: ScreenUtil.autowidth(18),
+      height: ScreenUtil.autowidth(18),
+      marginHorizontal: ScreenUtil.autowidth(10),
     },
     inptout: {
       flex: 1,
-      height: 30,
       borderRadius: 5,
-      marginHorizontal: 10,
       flexDirection: "row",
       alignItems: "center",
       justifyContent: 'center',
       backgroundColor: UColor.fontColor,
+      height: ScreenUtil.autoheight(30),
+      marginHorizontal: ScreenUtil.autowidth(10),
     },
     inpt: {
       flex: 1,
-      height: 45,
-      fontSize: 14,
       color: '#999999',
+      height: ScreenUtil.autoheight(45),
+      fontSize: ScreenUtil.setSpText(14),
     },
     canceltext: {
-      color: UColor.fontColor,
-      fontSize: 13,
       textAlign: 'center',
-      paddingRight: 15,
+      color: UColor.fontColor,
+      fontSize: ScreenUtil.setSpText(15),
+      paddingRight: ScreenUtil.autowidth(15),
     },
 
     btn: {
       flex: 1,
     },
     nothave: {
-      height: 110,
-      backgroundColor: UColor.mainColor,
+      borderRadius: 5,
       flexDirection: "row",
       alignItems: 'center',
       justifyContent: "center",
-      paddingHorizontal: 20,
-      borderRadius: 5,
-      margin: 5,
+      margin: ScreenUtil.autowidth(5),
+      backgroundColor: UColor.mainColor,
+      height: ScreenUtil.autoheight(110),
+      paddingHorizontal: ScreenUtil.autowidth(20),
     },
     copytext: {
-      fontSize: 16, 
-      color: UColor.fontColor
+      color: UColor.fontColor,
+      fontSize: ScreenUtil.setSpText(16), 
     },
     outsource: {
-      margin: 5,
-      height: 90,
       borderRadius: 5,
-      paddingHorizontal: 20,
-      paddingVertical: 10,
       flexDirection: "row",
+      margin: ScreenUtil.autowidth(5),
       backgroundColor: UColor.mainColor,
+      height: ScreenUtil.autoheight(90),
+      paddingHorizontal: ScreenUtil.autowidth(20),
+      paddingVertical: ScreenUtil.autoheight(10),
     },
     leftout:{
       flex: 1, 
@@ -300,39 +302,37 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between',
     },
     fromtotext: {
-      fontSize: 12,
       color: UColor.fontColor,
+      fontSize: ScreenUtil.setSpText(12),
     },
     payernet: {
-      fontSize: 12,
       color: UColor.arrow,
+      fontSize: ScreenUtil.setSpText(12),
     },
     Receivercpu: {
-      fontSize: 12,
       color: UColor.arrow,
+      fontSize: ScreenUtil.setSpText(12),
     },
 
     warningout: {
+      borderWidth: 1,
+      borderRadius: 5,
       width: maxWidth-80,
       flexDirection: "row",
       alignItems: 'center', 
-      // paddingHorizontal: 5,
-      // paddingVertical: 5,
       borderColor: UColor.showy,
-      borderWidth: 1,
-      borderRadius: 5,
     },
     imgBtn: {
-      width: 30,
-      height: 30,
-      margin:5,
+      width: ScreenUtil.autowidth(30),
+      height: ScreenUtil.autowidth(30),
+      margin: ScreenUtil.autowidth(5),
     },
     headtitle: {
       flex: 1,
       color: UColor.showy,
-      fontSize: 14,
-      lineHeight: 25,
-      paddingLeft: 10,
+      fontSize: ScreenUtil.setSpText(14),
+      lineHeight: ScreenUtil.autoheight(25),
+      paddingLeft: ScreenUtil.autowidth(10),
     },
    
    
@@ -342,64 +342,63 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     inptpass: {
-      color: UColor.tintColor,
-      height: 45,
       width: maxWidth-100,
-      paddingBottom: 5,
-      fontSize: 16,
+      borderBottomWidth: 1,
+      color: UColor.tintColor,
+      height: ScreenUtil.autoheight(45),
+      paddingBottom: ScreenUtil.autoheight(5),
+      fontSize: ScreenUtil.setSpText(16),
       backgroundColor: UColor.fontColor,
       borderBottomColor: UColor.baseline,
-      borderBottomWidth: 1,
     },
     inptpasstext: {
-      fontSize: 14,
       color: '#808080',
-      lineHeight: 25,
-      marginTop: 5,
+      marginTop: ScreenUtil.autoheight(5),
+      fontSize: ScreenUtil.setSpText(14),
+      lineHeight: ScreenUtil.autoheight(25),
     },
-
 
     subViewBackup: {
+      width: maxWidth-20,
       alignItems: 'flex-end',
       justifyContent: 'center',
-      width: maxWidth-20,
-      height: 20,
-      paddingHorizontal: 5,
+      height: ScreenUtil.autoheight(20),
+      paddingHorizontal: ScreenUtil.autowidth(5),
     },
     buttonView2: {
-      width: 30,
-      height: 20,
       alignItems: 'center',
       justifyContent: 'center',
+      width: ScreenUtil.autowidth(30),
+      height: ScreenUtil.autoheight(20),
     },
     buttontext: {
-      width: 40,
       color: '#CBCBCB',
-      fontSize: 28,
       textAlign: 'right',
+      width: ScreenUtil.autowidth(40),
+      fontSize: ScreenUtil.setSpText(28),
     },
 
     contentText: {
-      fontSize: 18,
       fontWeight: 'bold',
       textAlign: 'center',
-      paddingBottom: 20,
+      fontSize: ScreenUtil.setSpText(18),
+      paddingBottom: ScreenUtil.autoheight(20),
     },
     buttonView: {
       alignItems: 'flex-end',
     },
 
     deleteout: {
-      height: 50,
-      marginHorizontal: 60,
-      marginVertical: 15,
       borderRadius: 6,
-      backgroundColor: UColor.tintColor,
+      alignItems: 'center',
       justifyContent: 'center',
-      alignItems: 'center'
+      backgroundColor: UColor.tintColor,
+      height: ScreenUtil.autoheight(50),
+      marginHorizontal: ScreenUtil.autowidth(60),
+      marginVertical: ScreenUtil.autoheight(15),
     },
     deletetext: {
-      fontSize: 16,
+      fontSize: ScreenUtil.setSpText(16),
     },
     
 });
