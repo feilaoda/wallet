@@ -6,6 +6,7 @@ import UColor from '../utils/Colors'
 import UImage from '../utils/Img'
 import Home from './Home'
 import Coins from './Coins'
+import Ram from './Transaction/Ram'
 import Transaction from './Transaction'
 import Community from './Settings/Community'
 import News from './News'
@@ -88,11 +89,12 @@ var ScreenHeight = Dimensions.get('window').height;
 // import Eosjs from '../components/eosjs/Eosjs'
 var WeChat = require('react-native-wechat');
 
+var isRam = true;
 const TabContainer = TabNavigator(
   {
     Home: { screen: Home },
     Coins: { screen: Coins },
-    Transaction: { screen: Transaction },
+    Transaction: { screen: (isRam ?  Ram : Transaction) },
     News: { screen: News },
     Settings: { screen: Settings }
   },
@@ -108,6 +110,9 @@ const TabContainer = TabNavigator(
           case 'Coins':
             iconName = focused ? UImage.tab_2_h : UImage.tab_2
             break;
+          case 'Ram':
+            iconName = focused ? UImage.tab_5_h : UImage.tab_5
+            break;  
           case 'Transaction':
             iconName = focused ? UImage.tab_5_h : UImage.tab_5
             break;  
@@ -837,7 +842,7 @@ class Route extends React.Component {
         this.props.dispatch({ type: 'wallet/updateTipState', payload: {tipFlagIOS: false}});
       }
 
-    }else if(action && action.routeName && action.routeName == "Transaction"){
+    }else if((action && action.routeName && action.routeName == "Transaction") || (action && action.routeName && action.routeName == "Ram")){
       this.stopTimer();
       this.startTxTimer();
       DeviceEventEmitter.emit('changeTab', action.routeName);
