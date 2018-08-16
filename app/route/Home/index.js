@@ -370,6 +370,13 @@ class Home extends React.Component {
       modal: false
     });
   }
+  importWallet() {
+    const { navigate } = this.props.navigation;
+    navigate('ImportEosKey', {});
+    this.setState({
+      modal: false
+    });
+  }
 
   changeWallet(data) {
     this.setState({
@@ -691,7 +698,7 @@ class Home extends React.Component {
                   </Button>
                   <Button onPress={() => this.createWallet()} style={styles.btnout}>
                     <View style={styles.establishout}>
-                      <Image source={UImage.wallet_1} style={styles.establishimg} />
+                      <Image source={UImage.xin_import} style={styles.establishimg} />
                       <Text style={styles.establishtext}>导入钱包</Text>
                     </View>
                   </Button>
@@ -952,6 +959,7 @@ const styles = StyleSheet.create({
   height: maxHeight / 2.5, 
   flexDirection: "column", 
   alignItems: 'center',  
+  paddingVertical: ScreenUtil.autoheight(10),
  },
 
  btnout: {
@@ -960,7 +968,7 @@ const styles = StyleSheet.create({
   marginVertical: ScreenUtil.autoheight(10),
   alignItems: 'center', 
   borderRadius: 25, 
-  borderWidth: 1, 
+  borderWidth: 0.5, 
   borderColor: UColor.lightgray,
  },
 

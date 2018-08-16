@@ -133,6 +133,7 @@ export default {
   wallet_h: require('../img/wallet_h.png'),
   warning:require('../img/warning.png'),
   warning_h:require('../img/warning_h.png'),
+  xin_import:require('../img/xin_import.png'),
   xin0:require('../img/xin0.png'),
   xin1:require('../img/xin1.png'),
   tx_slide0:require('../img/tx_slide0.png'),
