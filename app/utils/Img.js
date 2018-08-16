@@ -81,6 +81,7 @@ export default {
   share_banner:require('../img/share_banner.png'),
   share_bg:require('../img/share_bg.png'),
   share_bottom:require('../img/share_bottom.png'),
+  share_bright:require('../img/share_bright.png'),
   share_i:require('../img/share_i.png'),
   share_img:require('../img/share_img.png'),
   share_pyq:require('../img/share_pyq.png'),

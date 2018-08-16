@@ -288,13 +288,21 @@ class News extends React.Component {
 
                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
                   <Button onPress={this.onUp.bind(this, rowData)}>
-                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autowidth(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={rowData.isUp ? UImage.up_h : UImage.up} /><Text style={{ marginLeft: ScreenUtil.autowidth(5), fontSize: ScreenUtil.setSpText(13), color: UColor.lightgray }}>{rowData.up}</Text></View>
+                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autowidth(10) }}>
+                      <Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={rowData.isUp ? UImage.up_h : UImage.up} />
+                      <Text style={{ marginLeft: ScreenUtil.autowidth(5), fontSize: ScreenUtil.setSpText(13), color: UColor.lightgray }}>{rowData.up}</Text>
+                    </View>
                   </Button>
                   <Button onPress={this.onDown.bind(this, rowData)}>
-                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autowidth(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={rowData.isDown ? UImage.down_h : UImage.down} /><Text style={{ marginLeft: ScreenUtil.autowidth(5), fontSize: ScreenUtil.setSpText(13), color: UColor.lightgray }}>{rowData.down}</Text></View>
+                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autowidth(10) }}>
+                      <Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={rowData.isDown ? UImage.down_h : UImage.down} />
+                      <Text style={{ marginLeft: ScreenUtil.autowidth(5), fontSize: ScreenUtil.setSpText(13), color: UColor.lightgray }}>{rowData.down}</Text>
+                    </View>
                   </Button>
                   <Button onPress={this.onShare.bind(this, rowData)}>
-                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autoheight(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={UImage.share} /></View>
+                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autoheight(10) }}>
+                      <Image style={{ width: ScreenUtil.autowidth(22), height: ScreenUtil.autowidth(22) }} source={UImage.share_bright} />
+                    </View>
                   </Button>
                 </View>
               </View>
