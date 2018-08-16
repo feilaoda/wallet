@@ -90,6 +90,10 @@ var ScreenHeight = Dimensions.get('window').height;
 var WeChat = require('react-native-wechat');
 
 var isRam = true;
+export const setIsRamSelect = (isRam) =>{
+  isRam = isRam;
+}
+
 const TabContainer = TabNavigator(
   {
     Home: { screen: Home },
@@ -314,6 +318,9 @@ const Nav = StackNavigator(
     },
     TurnOut: {
       screen: TurnOut
+    },
+    Ram: {
+      screen: Ram
     },
     RecordQueryRam: {
       screen: RecordQueryRam
