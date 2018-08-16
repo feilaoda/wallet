@@ -112,7 +112,7 @@ class WalletDetail extends BaseComponent {
             // this.toBackup(wordsArr);
             if(key == 'AdminManage'){
               if(this.props.navigation.state.params.data.isactived){     
-                navigate('AdminManage', { ownerPublicKey: this.props.navigation.state.params.data.ownerPublic, activePublicKey:this.props.navigation.state.params.data.activePublic,account_name:this.props.navigation.state.params.data.name});
+                navigate('AdminManage', {wallet: this.props.navigation.state.params.data});
               }else{
                 EasyToast.show("该账号还没激活，激活之后才能进入权限管理")
               }

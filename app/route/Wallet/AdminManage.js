@@ -28,15 +28,13 @@ class AdminManage extends BaseComponent {
     this.state = {
         ownerPk: '',
         activePk: '',
-        accountName:''
       }
   }
     //组件加载完成
     componentDidMount() {
         this.setState({
-            ownerPk: this.props.navigation.state.params.ownerPublicKey,
-            activePk: this.props.navigation.state.params.activePublicKey,
-            accountName:this.props.navigation.state.params.account_name
+            ownerPk: this.props.navigation.state.params.wallet.ownerPublic,
+            activePk: this.props.navigation.state.params.wallet.activePublic,
         })
     }
   
@@ -53,8 +51,7 @@ class AdminManage extends BaseComponent {
   manageByActive() {
     // Clipboard.setString(this.state.activePk);
     const { navigate } = this.props.navigation;
-    navigate('AdminChange', { ownerPublicKey:this.state.ownerPk,activePublicKey:this.state.activePk,account_name: this.state.accountName });
-    EasyToast.show("这个跳转到管理")
+    navigate('AdminChange', { wallet:this.props.navigation.state.params.wallet});
   }
 
   dismissKeyboardClick() {
