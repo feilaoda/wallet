@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
    
 
     pupuo:{  
-        backgroundColor: '#ECECF0',  
+        backgroundColor: UColor.riceWhite,  
       },  
       // modal的样式  
       modalStyle: {  
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         marginBottom: 0,
-        color: '#CBCBCB',
+        color: UColor.baseline,
         fontSize: 28,
       },
       

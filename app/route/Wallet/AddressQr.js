@@ -86,15 +86,15 @@ class AddressQr extends BaseComponent {
                     
 
                 <View style={styles.header}>
-                    <Text style={{ fontSize: 20, color: '#fff' }}></Text>
-                    <Text style={{ fontSize: 14, color: '#8696B0', marginTop: 5 }}>ds2f1gdsg1321gd3sf1d3sf1ds3f1d32sf1ds3f1d25s</Text>
+                    <Text style={{ fontSize: 20, color: UColor.fontColor }}></Text>
+                    <Text style={{ fontSize: 14, color: UColor.arrow, marginTop: 5 }}>ds2f1gdsg1321gd3sf1d3sf1ds3f1d32sf1ds3f1d25s</Text>
                 </View>
                 <View style={styles.tab1}>
                    <QRCode size={200} style={{ width: 200, }} value={'{\"contract\":\"eos\",\"toaccount\":\"' + 'this.props.defaultWallet.account' + '\",\"symbol\":\"EOS\"}'} />
                 </View>
                 <Button onPress={() => { this.copy() }}>
-                    <View style={{ margin: 10, height: 40, borderRadius: 6, backgroundColor: '#65CAFF', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 16, color: '#fff' }}>复制地址</Text>
+                    <View style={{ margin: 10, height: 40, borderRadius: 6, backgroundColor: UColor.tintColor, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 16, color: UColor.fontColor }}>复制地址</Text>
                     </View>
                 </Button>              
             </View>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         margin: 5,
         borderRadius: 5,
-        backgroundColor: '#4e5e7d',
+        backgroundColor: UColor.mainColor,
     },
     row: {
         height: 90,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         height: 60,
         flexDirection: 'row',
         position: 'absolute',
-        backgroundColor: '#43536D',
+        backgroundColor: UColor.secdColor,
         bottom: 0,
         left: 0,
         right: 0,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
 
     pupuo: {
         // flex:1,  
-        backgroundColor: '#ECECF0',
+        backgroundColor: UColor.riceWhite,
     },
     // modal的样式  
     modalStyle: {
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     subView: {
         marginLeft: 10,
         marginRight: 10,
-        backgroundColor: '#fff',
+        backgroundColor: UColor.fontColor,
         alignSelf: 'stretch',
         justifyContent: 'center',
         borderRadius: 10,

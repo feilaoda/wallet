@@ -1,17 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  StyleSheet,
-  Modal,
-  Text,
-  Platform,
-  TouchableHighlight,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  View,
-  Dimensions,
-  ActivityIndicator
-} from 'react-native';
+import { StyleSheet, Modal, Text, Platform, TouchableHighlight, KeyboardAvoidingView, TouchableWithoutFeedback, View, Dimensions, ActivityIndicator} from 'react-native';
 import { material } from 'react-native-typography';
 const { height } = Dimensions.get('window');
 const maxWidth = Dimensions.get('window').width;
@@ -179,7 +168,7 @@ export class LoadingDialog extends React.Component {
 
           {this.state.loadingDialogFlag==LoadingShow &&
           <View style={[styles.load_box, this.props.loadingStyle]}>
-              <ActivityIndicator animating={true} color={this.props.color || '#FFF'} size={'large'} style={styles.load_progress} />
+              <ActivityIndicator animating={true} color={this.props.color || UColor.fontColor} size={'large'} style={styles.load_progress} />
               <Text style={[styles.load_text, this.props.textStyle]}>{this.state.text}</Text>
           </View>}
 
@@ -191,7 +180,7 @@ export class LoadingDialog extends React.Component {
                     <TouchableWithoutFeedback>
                       <View>
                         <View style={styles.titleContainer}>
-                            <Text style={[material.title,{color:'#4e5e7d'}]}>{this.state.title}</Text>
+                            <Text style={[material.title,{color:UColor.mainColor}]}>{this.state.title}</Text>
                         </View>
                         <View style={[styles.contentContainer,styles.contentContainerPadding]}>
                           {
@@ -203,9 +192,9 @@ export class LoadingDialog extends React.Component {
                             <TouchableHighlight
                               testID="dialog-cancel-button"
                               style={styles.disactionContainer}
-                              underlayColor="#8696B0"
+                              underlayColor={UColor.arrow}
                               onPress={()=>{this.setState({modalVisible:false})}}>
-                              <Text style={[material.button, { color: '#FFFFFF' }]}>{this.state.disLabel}</Text>
+                              <Text style={[material.button, { color: UColor.fontColor }]}>{this.state.disLabel}</Text>
                             </TouchableHighlight>
                           ):null
                         }
@@ -213,9 +202,9 @@ export class LoadingDialog extends React.Component {
                             <TouchableHighlight
                               testID="dialog-ok-button"
                               style={styles.okactionContainer}
-                              underlayColor="#8696B0"
+                              underlayColor={UColor.arrow}
                               onPress={this.state.okHandler}>
-                              <Text style={[material.button, { color: '#FFFFFF' }]}>{this.state.okLable}</Text>
+                              <Text style={[material.button, { color: UColor.fontColor }]}>{this.state.okLable}</Text>
                             </TouchableHighlight>
                           ):null
                         }
@@ -252,7 +241,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     elevation: 24,
     overflow: 'hidden',
-    backgroundColor:"#ffffff",
+    backgroundColor:UColor.fontColor,
     borderRadius: 5,
   },
   modalContainerPadding: {
@@ -314,7 +303,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ff6565',
+    backgroundColor: UColor.showy,
     borderRadius: 3,
   },
   okactionContainer: {
@@ -324,7 +313,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#65CAFF',
+    backgroundColor: UColor.tintColor,
     borderRadius: 3,
   },
 
@@ -332,7 +321,7 @@ const styles = StyleSheet.create({
 load_box: {
     width: 100,
     height: 100,
-    backgroundColor: '#0008',
+    backgroundColor: UColor.blackColor,
     alignItems: 'center',
     marginLeft: SCREEN_WIDTH / 2 - 50,
     marginTop: SCREEN_HEIGHT / 2 - 50,
@@ -345,7 +334,7 @@ load_progress: {
 },
 load_text: {
     marginTop: 70,
-    color: '#FFF',
+    color: UColor.fontColor,
 },
 
 

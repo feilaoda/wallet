@@ -115,9 +115,9 @@ rem = (world) =>{
                     </View>
                 </View> */}
         <View>
-          <Text  style={{color:'#FFFFFF',marginTop:30,marginLeft:10,fontSize:17}}>确认您的钱包助记词</Text>
-          <Text  style={{color:'#8696B0',marginLeft:10}}>请按顺序点击助记词，以确认您的备份助记词正确</Text>
-          <View style={{backgroundColor:'#4e5e7d',marginTop:40}} >
+          <Text  style={{color:UColor.fontColor,marginTop:30,marginLeft:10,fontSize:17}}>确认您的钱包助记词</Text>
+          <Text  style={{color:UColor.arrow,marginLeft:10}}>请按顺序点击助记词，以确认您的备份助记词正确</Text>
+          <View style={{backgroundColor:UColor.mainColor,marginTop:40}} >
             <View style={{height:100,margin:10,backgroundColor:'#4F617D',flexDirection:'row',flexWrap:'wrap',}} >
                 {this._select()}
             </View>
@@ -141,8 +141,8 @@ rem = (world) =>{
             </View>
           </View>
           <Button onPress={() => this.logout()}>
-            <View style={{height:45,backgroundColor:'#65CAFF',justifyContent:'center',alignItems:'center',margin:20,borderRadius:5}}>
-              <Text style={{fontSize:15,color:'#fff'}}>下一步</Text>
+            <View style={{height:45,backgroundColor:UColor.tintColor,justifyContent:'center',alignItems:'center',margin:20,borderRadius:5}}>
+              <Text style={{fontSize:15,color:UColor.fontColor}}>下一步</Text>
             </View>
           </Button>
         </View>
@@ -155,8 +155,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection:'column',
-    backgroundColor:'#4e5e7d',
-    // backgroundColor: UColor.secdColor,
+    backgroundColor:UColor.mainColor,
     
   },
   scrollView: {

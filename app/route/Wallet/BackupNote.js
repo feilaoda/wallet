@@ -95,7 +95,7 @@ class Set extends BaseComponent {
                     <Text style={styles.welcome} >丢失钱包或忘记密码时，可帮助恢复 钱包。</Text>
                     <Button onPress={() => this.decryptWords()}>
                         <View style={styles.backupsout}>
-                            {/* <Text style={{fontSize:15,color:'#fff'}}>{this.props.loginUser?"退出":"登陆"}</Text> */}
+                            {/* <Text style={{fontSize:15,color:UColor.fontColor}}>{this.props.loginUser?"退出":"登陆"}</Text> */}
                             <Text style={styles.backups}>开始备份</Text>
                         </View>
                     </Button>

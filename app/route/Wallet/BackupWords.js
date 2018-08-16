@@ -44,11 +44,11 @@ class Set extends BaseComponent {
 
       <ScrollView style={styles.scrollView}>
         <View>
-          <Text style={styles.welcome} style={{ color: '#FFFFFF', fontSize: 15, marginTop: 15, marginLeft: 10 }}>抄写下您的钱包助记词</Text>
-          <Text style={styles.welcome} style={{ color: '#8696B0', marginTop: 5, marginLeft: 10, marginBottom: 25 }}>助记词用于恢复钱包或重置钱包密码，将它准确的抄写到纸上，并存放在只有您知道的安全地方。</Text>
-          <View style={{ backgroundColor: '#43536D' }} style={{ marginBottom: 20 }}>
-            <View style={{ padding: 20, height: 100, backgroundColor: '#4e5e7d' }} >
-              <Text style={{ fontSize: 15, color: '#8696B0', height: 100 }}>{
+          <Text style={styles.welcome} style={{ color: UColor.fontColor, fontSize: 15, marginTop: 15, marginLeft: 10 }}>抄写下您的钱包助记词</Text>
+          <Text style={styles.welcome} style={{ color: UColor.arrow, marginTop: 5, marginLeft: 10, marginBottom: 25 }}>助记词用于恢复钱包或重置钱包密码，将它准确的抄写到纸上，并存放在只有您知道的安全地方。</Text>
+          <View style={{ backgroundColor: UColor.secdColor, }} style={{ marginBottom: 20 }}>
+            <View style={{ padding: 20, height: 100, backgroundColor: UColor.mainColor, }} >
+              <Text style={{ fontSize: 15, color: UColor.arrow, height: 100 }}>{
                 this.props.navigation.state.params.words_owner[0] + ' , ' + this.props.navigation.state.params.words_owner[1] + ' , ' + this.props.navigation.state.params.words_owner[2] + ' , '
                 + this.props.navigation.state.params.words_owner[3] + ' , ' + this.props.navigation.state.params.words_owner[4] + ' , ' + this.props.navigation.state.params.words_owner[5] + ' , '
                 + this.props.navigation.state.params.words_owner[6] + ' , ' + this.props.navigation.state.params.words_owner[7] + ' , ' + this.props.navigation.state.params.words_owner[8] + ' , '
@@ -58,9 +58,9 @@ class Set extends BaseComponent {
             </View>
           </View>
 
-          <View style={{ backgroundColor: '#43536D' }} style={{ marginBottom: 20 }}>
-            <View style={{ padding: 20, height: 100, backgroundColor: '#4e5e7d' }} >
-              <Text style={{ fontSize: 15, color: '#8696B0', height: 100 }}>{
+          <View style={{ backgroundColor: UColor.secdColor, }} style={{ marginBottom: 20 }}>
+            <View style={{ padding: 20, height: 100, backgroundColor: UColor.mainColor, }} >
+              <Text style={{ fontSize: 15, color: UColor.arrow, height: 100 }}>{
                 this.props.navigation.state.params.words_active[0] + ' , ' + this.props.navigation.state.params.words_active[1] + ' , ' + this.props.navigation.state.params.words_active[2] + ' , '
                 + this.props.navigation.state.params.words_active[3] + ' , ' + this.props.navigation.state.params.words_active[4] + ' , ' + this.props.navigation.state.params.words_active[5] + ' , '
                 + this.props.navigation.state.params.words_active[6] + ' , ' + this.props.navigation.state.params.words_active[7] + ' , ' + this.props.navigation.state.params.words_active[8] + ' , '
@@ -71,9 +71,9 @@ class Set extends BaseComponent {
           </View>
 
           <Button onPress={() => this.nextStep()}>
-            <View style={{ height: 45, backgroundColor: '#65CAFF', justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
-              {/* <Text style={{fontSize:15,color:'#fff'}}>{this.props.loginUser?"退出":"登陆"}</Text> */}
-              <Text style={{ fontSize: 15, color: '#fff' }}>完成</Text>
+            <View style={{ height: 45, backgroundColor: UColor.tintColor, justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
+              {/* <Text style={{fontSize:15,color:UColor.fontColor}}>{this.props.loginUser?"退出":"登陆"}</Text> */}
+              <Text style={{ fontSize: 15, color: UColor.fontColor }}>完成</Text>
             </View>
           </Button>
         </View>

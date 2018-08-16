@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
-import {
-  WebView,
-  StyleSheet,
-  CameraRoll, Image, View, BackHandler, Text, Platform, DeviceEventEmitter, BackAndroid, AppState, Linking, Dimensions, ScrollView, Animated, Easing
-} from 'react-native'
+import { WebView, StyleSheet, CameraRoll, Image, View, BackHandler, Text, Platform, DeviceEventEmitter, BackAndroid, AppState, Linking, Dimensions, ScrollView, Animated, Easing} from 'react-native'
 import { connect } from 'react-redux'
 import moment from 'moment';
 import Button from '../components/Button'
@@ -116,7 +112,7 @@ export default class Web extends BaseComponent {
 const styles = StyleSheet.create({
   webview_style: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: UColor.fontColor,
   },
   progress: {
     position: "absolute",

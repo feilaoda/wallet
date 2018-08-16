@@ -171,13 +171,13 @@ class CoinDetail extends BaseComponent {
         </View>
         <View style={{flex:1,paddingTop:ScreenUtil.autoheight(10)}}>
           {
-            <Echarts option={this.props.lineDatas?this.props.lineDatas:{}} width={ScreenWidth} height={ScreenUtil.autoheight(300)} />
+            <Echarts option={this.props.lineDatas?this.props.lineDatas:{}} width={ScreenWidth} height={ScreenUtil.autoheight(200)} />
           }
         </View>
         <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
             <View style={{width: ScreenUtil.autowidth(8),height: ScreenUtil.autowidth(8),borderRadius:4,backgroundColor:UColor.tintColor}}></View>
             <Text style={{color:UColor.arrow,fontSize: ScreenUtil.setSpText(11),marginLeft: 5}}>价格走势</Text>
-            <View style={{width: ScreenUtil.autowidth(8),height: ScreenUtil.autowidth(8),borderRadius:4,backgroundColor:'#556E95',marginLeft: ScreenUtil.autowidth(10)}}></View>
+            <View style={{width: ScreenUtil.autowidth(8),height: ScreenUtil.autowidth(8),borderRadius:4,backgroundColor:UColor.arrow,marginLeft: ScreenUtil.autowidth(10)}}></View>
             <Text style={{color:UColor.arrow,fontSize: ScreenUtil.setSpText(11),marginLeft:5}}>交易量</Text>
         </View>
         <View>
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
   incup:{
     fontSize: ScreenUtil.setSpText(12),
     color:UColor.fontColor,
-    backgroundColor:'#F25C49',
+    backgroundColor: UColor.riseColor,
     padding: ScreenUtil.autowidth(5),
     textAlign:'center',
     marginLeft: ScreenUtil.autowidth(10),
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   incdo:{
     fontSize: ScreenUtil.setSpText(12),
     color:UColor.fontColor,
-    backgroundColor:'#25B36B',
+    backgroundColor: UColor.fallColor,
     padding: ScreenUtil.autowidth(5),
     textAlign:'center',
     marginLeft: ScreenUtil.autowidth(10),

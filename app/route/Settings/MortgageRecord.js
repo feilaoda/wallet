@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
       height: ScreenUtil.autoheight(20),
     },
     buttontext: {
-      color: '#CBCBCB',
+      color: UColor.baseline,
       textAlign: 'right',
       width: ScreenUtil.autowidth(40),
       fontSize: ScreenUtil.setSpText(28),

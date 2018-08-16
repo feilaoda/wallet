@@ -169,17 +169,17 @@ const styles = StyleSheet.create({
   },
   textname: {
     fontSize: ScreenUtil.setSpText(16),
-    color:'#FFFFFF',
+    color:UColor.fontColor,
   },
   textlinktwo: {
     paddingTop: ScreenUtil.autoheight(5),
     fontSize: ScreenUtil.setSpText(16),
-    color: '#65CAFF',
+    color: UColor.tintColor,
     textAlign: 'left',
   },
   textlink: {
     fontSize: ScreenUtil.setSpText(16),
-    color: '#65CAFF',
+    color: UColor.tintColor,
     textAlign: 'left',
   }
 

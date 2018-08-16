@@ -3,6 +3,7 @@ import {getRamInfo, getRamPriceLine, getRamTradeLog, getRamBigTradeLog, getRamTr
     getRamKLines,getETList,getETInfo,getETPriceLine,getETKLine,getETTradeLog,getETBigTradeLog,getETTradeLogByAccount,getBalance} from '../utils/Api';
 import store from 'react-native-simple-store';
 import { EasyToast } from '../components/Toast';
+import UColor from '../utils/Colors'
 import Constants from '../utils/Constants'
 let newarr = new Array();
 
@@ -332,7 +333,7 @@ export default {
                 },
                 axisLine: {
                     lineStyle: {
-                        color: "#7382a1"
+                        color: UColor.arrow,
                     }
                 },
                 axisLabel: {
@@ -355,7 +356,7 @@ export default {
                 },
                 axisLine: {
                     lineStyle: {
-                        color: "#7382a1"
+                        color: UColor.arrow,
                     }
                 },
                 axisTick: {
@@ -386,7 +387,7 @@ export default {
                 lineStyle: {
                     normal: {
                         width: 1,  //连线粗细
-                        color: "#6CDAFF"  //连线颜色
+                        color: UColor.tintColor //连线颜色
                     }
                 },
                 smooth: true,//折线图是趋缓的
@@ -419,7 +420,7 @@ function combineET(data) {
                 },
                 axisLine: {
                     lineStyle: {
-                        color: "#7382a1"
+                        color: UColor.arrow,
                     }
                 },
                 axisLabel: {
@@ -442,7 +443,7 @@ function combineET(data) {
                 },
                 axisLine: {
                     lineStyle: {
-                        color: "#7382a1"
+                        color: UColor.arrow,
                     }
                 },
                 axisTick: {
@@ -479,7 +480,7 @@ function combineET(data) {
                 lineStyle: {
                     normal: {
                         width: 2,  //连线粗细
-                        color: "#6CDAFF"  //连线颜色
+                        color:  UColor.tintColor, //连线颜色
                     }
                 },
                 smooth: true,//折线图是趋缓的

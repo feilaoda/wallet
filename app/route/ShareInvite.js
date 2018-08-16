@@ -50,7 +50,7 @@ class ShareInvite extends React.Component {
     //   type: "invite/getBind", payload: { uid: Constants.uid }, callback: function (data) {
         // if (data.code == "0") {
         //   if (data.data == "" || data.data == "null" || data.data == null) {
-        //     const view = <TextInput autoFocus={true} onChangeText={(code) => th.setState({ code })} returnKeyType="go" selectionColor="#65CAFF" style={{ color: '#65CAFF', width: maxWidth - 100, fontSize: 15, backgroundColor: '#EFEFEF' }} placeholderTextColor="#8696B0" placeholder="输入邀请码" underlineColorAndroid="transparent" keyboardType="phone-pad" maxLength={8} />
+        //     const view = <TextInput autoFocus={true} onChangeText={(code) => th.setState({ code })} returnKeyType="go" selectionColor={UColor.tintColor} style={{ color: UColor.tintColor, width: maxWidth - 100, fontSize: 15, backgroundColor: '#EFEFEF' }} placeholderTextColor={UColor.arrow} placeholder="输入邀请码" underlineColorAndroid="transparent" keyboardType="phone-pad" maxLength={8} />
         //     EasyShowLD.dialogShow("未绑定，补填邀请码", view, "绑定", "取消", () => {
         //       th.setState({ focus: true })
         //       EasyShowLD.loadingShow("绑定中");

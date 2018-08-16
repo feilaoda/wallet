@@ -154,7 +154,7 @@ class Coins extends React.Component {
             refreshing={this.props.loading}
             onRefresh={() => this.onRefresh(route.key)}
             tintColor={UColor.fontColor}
-            colors={['#ddd',UColor.tintColor]}
+            colors={[UColor.lightgray,UColor.tintColor]} 
             progressBackgroundColor={UColor.fontColor}
           />
         }
@@ -168,14 +168,14 @@ class Coins extends React.Component {
                     <Text style={{marginLeft: ScreenUtil.autowidth(20),fontSize:ScreenUtil.setSpText(18),color:UColor.fontColor}}>{rowData.name}</Text>
                   </View>
                   <View>
-                    <Text style={{marginTop: ScreenUtil.autoheight(10),fontSize:ScreenUtil.setSpText(10),color:'#8696B0'}}>市值${formatterUnit(rowData.value)}</Text>
+                    <Text style={{marginTop: ScreenUtil.autoheight(10),fontSize:ScreenUtil.setSpText(10),color:UColor.arrow}}>市值${formatterUnit(rowData.value)}</Text>
                   </View>
               </View>
               <View style={{width:'65%'}}>
                 <View style={{flex:1,flexDirection:"row",alignItems: 'center',justifyContent:"flex-end"}}>
                   <View style={{flex:1,flexDirection:"column",alignItems:'flex-end',paddingTop: ScreenUtil.autoheight(25)}}>
                     <Text style={{fontSize:ScreenUtil.setSpText(18),color:UColor.fontColor}}>￥{rowData.price}</Text>
-                    <Text style={{marginTop: ScreenUtil.autoheight(15),fontSize:ScreenUtil.setSpText(10),color:'#8696B0'}}>量 {formatterNumber(rowData.txs)}</Text>
+                    <Text style={{marginTop: ScreenUtil.autoheight(15),fontSize:ScreenUtil.setSpText(10),color:UColor.arrow}}>量 {formatterNumber(rowData.txs)}</Text>
                   </View>
                   <Text style={rowData.increase>0?styles.incdo:styles.incup}>{rowData.increase>0?'+'+rowData.increase:rowData.increase}%</Text>
                 </View>
@@ -192,10 +192,10 @@ class Coins extends React.Component {
       <View style={styles.container}>
         <TabViewAnimated
         lazy={true}
-        style={styles.container}
+        style={styles.containertab}
         navigationState={this.state}
         renderScene={this.renderScene.bind(this)}
-        renderHeader={(props)=><TabBar onTabPress={this._handleTabItemPress} labelStyle={{fontSize:ScreenUtil.setSpText(15),margin:0,marginBottom:10,paddingTop:10,color:'#8696B0'}} indicatorStyle={{backgroundColor:UColor.tintColor,width:60,marginLeft:20}} style={{backgroundColor:UColor.secdColor}} tabStyle={{width:100,padding:0,margin:0}} scrollEnabled={true} {...props}/>}
+        renderHeader={(props)=><TabBar onTabPress={this._handleTabItemPress} labelStyle={{fontSize:ScreenUtil.setSpText(15),margin:0,marginBottom:10,paddingTop:10,color:UColor.lightgray}} indicatorStyle={{backgroundColor:UColor.tintColor,width:60,marginLeft:20}} style={{backgroundColor:UColor.secdColor,}} tabStyle={{width:100,padding:0,margin:0,}} scrollEnabled={true} {...props}/>}
         onIndexChange={this._handleIndexChange}
         initialLayout={{height:0,width:Dimensions.get('window').width}}
         />
@@ -209,6 +209,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: UColor.secdColor
+  },
+  containertab: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: UColor.tintColor,
   },
   row:{
     flex:1,
@@ -231,7 +236,7 @@ const styles = StyleSheet.create({
   incup:{
     fontSize: ScreenUtil.setSpText(12),
     color:UColor.fontColor,
-    backgroundColor:'#F25C49',
+    backgroundColor: UColor.riseColor,
     padding: ScreenUtil.autowidth(5),
     textAlign:'center',
     marginLeft: ScreenUtil.autowidth(10),
@@ -242,7 +247,7 @@ const styles = StyleSheet.create({
   incdo:{
     fontSize: ScreenUtil.setSpText(12),
     color:UColor.fontColor,
-    backgroundColor:'#25B36B',
+    backgroundColor: UColor.fallColor,
     padding: ScreenUtil.autowidth(5),
     textAlign:'center',
     marginLeft: ScreenUtil.autowidth(10),

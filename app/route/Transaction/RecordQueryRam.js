@@ -231,7 +231,7 @@ class RecordQueryRam extends React.Component {
             refreshing={this.state.logRefreshing}
             onRefresh={() => this.onRefresh()}
             tintColor={UColor.fontColor}
-            colors={['#ddd', UColor.tintColor]}
+            colors={[UColor.lightgray, UColor.tintColor]}
             progressBackgroundColor={UColor.fontColor}
           />
         }
@@ -354,13 +354,13 @@ const styles = StyleSheet.create({
     },
     selltext: {
       flex: 5,
-      color: '#F25C49',
+      color: UColor.riseColor,
       textAlign: 'right',
       fontSize: ScreenUtil.setSpText(15),
     },
     buytext: {
       flex: 5,
-      color: "#4ed694",
+      color: UColor.fallColor,
       textAlign: 'right',
       fontSize: ScreenUtil.setSpText(15),
     },

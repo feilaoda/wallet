@@ -781,13 +781,13 @@ class Resources extends BaseComponent {
                                 <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
                                     <View style={styles.stripbg} height={this.state.column_Three}/>
                                 </ImageBackground>
-                                {/* <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5, backgroundColor: '#43536d',marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
+                                {/* <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5, backgroundColor: UColor.secdColor,marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
                                     <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,}} height={this.state.column_One}/>
                                 </View>
-                                <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5,backgroundColor: '#43536d',marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
+                                <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5,backgroundColor: UColor.secdColor,marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
                                     <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,}} height={this.state.column_Two}/>
                                 </View>
-                                <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5,backgroundColor: '#43536d',marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
+                                <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5,backgroundColor: UColor.secdColor,marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
                                     <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236}} height={this.state.column_Three}/>
                                 </View> */}
                             </ImageBackground>
@@ -1002,7 +1002,7 @@ const styles = StyleSheet.create({
     },
     inptTitlered1: {
         fontSize: 12, 
-        color: '#FF6565', 
+        color: UColor.showy, 
         lineHeight: 35,
     },
     inptTitle1: {
@@ -1237,7 +1237,7 @@ const styles = StyleSheet.create({
         marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,
     },
     stripbg: {
-        backgroundColor: '#43536d'
+        backgroundColor: UColor.secdColor,
     },
     ratiotext: {
         fontSize: 12,
@@ -1286,7 +1286,7 @@ const styles = StyleSheet.create({
 
     //弹框
     pupuo: {
-        backgroundColor: '#ECECF0',
+        backgroundColor: UColor.riceWhite,
     },
     // modal的样式  
     modalStyle: {
@@ -1310,12 +1310,12 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         marginBottom: 0,
-        color: '#CBCBCB',
+        color: UColor.baseline,
         fontSize: 28,
     },
     // 标题  
     titleText: {
-        color: '#000000',
+        color: UColor.blackColor,
         marginBottom: 5,
         fontSize: 18,
         fontWeight: 'bold',

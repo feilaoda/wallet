@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
     },
    
     pupuo: {
-        backgroundColor: '#ECECF0',
+        backgroundColor: UColor.riceWhite,
     },
     // modal的样式  
     modalStyle: {
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
     },
     buttontext: {
         width: ScreenUtil.autowidth(50),
-        color: '#CBCBCB',
+        color: UColor.baseline,
         fontSize: ScreenUtil.setSpText(28),
         textAlign: 'center',
     },
@@ -484,14 +484,14 @@ const styles = StyleSheet.create({
         fontSize: ScreenUtil.setSpText(26),
         paddingVertical: ScreenUtil.autoheight(15), 
         lineHeight: ScreenUtil.autoheight(10),
-        color:'#000000',
+        color:UColor.blackColor,
         textAlign: 'center',
     },
     unittext: {
         fontSize: ScreenUtil.setSpText(13),
         paddingVertical: ScreenUtil.autoheight(10), 
         lineHeight: ScreenUtil.autoheight(10),
-        color:'#000000',
+        color:UColor.blackColor,
         textAlign: 'center',
     },
 

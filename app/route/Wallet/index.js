@@ -38,10 +38,10 @@ class Set extends React.Component {
 
      <ScrollView style={styles.scrollView}>
         <View>
-        <Text style={{fontSize:15,color:'#fff'}}>{"重要声明。。。。。"}</Text>
+        <Text style={{fontSize:15,color:UColor.fontColor}}>{"重要声明。。。。。"}</Text>
           <Button onPress={() => this.logout()}>
-            <View style={{height:45,backgroundColor:'#65CAFF',justifyContent:'center',alignItems:'center',margin:20,borderRadius:5}}>
-              <Text style={{fontSize:15,color:'#fff'}}>{this.props.loginUser?"退出":"登陆"}</Text>
+            <View style={{height:45,backgroundColor:UColor.tintColor,justifyContent:'center',alignItems:'center',margin:20,borderRadius:5}}>
+              <Text style={{fontSize:15,color:UColor.fontColor}}>{this.props.loginUser?"退出":"登陆"}</Text>
             </View>
           </Button>
         </View>

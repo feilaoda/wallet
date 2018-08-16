@@ -4,6 +4,7 @@ import { Dimensions, Animated,View} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import NavigationUtil from '../utils/NavigationUtil';
 import UImage from '../utils/Img'
+import UColor from '../utils/Colors'
 const maxHeight = Dimensions.get('window').height;
 const maxWidth = Dimensions.get('window').width;
 import Constants from '../utils/Constants';
@@ -38,7 +39,7 @@ class Splash extends React.Component {
 
   render() {
     return (
-      <View style={{backgroundColor: "#43536D"}}/>
+      <View style={{backgroundColor: UColor.secdColor}}/>
     );
   }
 }

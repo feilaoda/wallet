@@ -597,7 +597,7 @@ const styles = StyleSheet.create({
       },
       inptTitlered: {
           fontSize: 12, 
-          color: '#FF6565', 
+          color: UColor.showy, 
           lineHeight: 35,
       },
       inptTitle: {
@@ -634,7 +634,7 @@ const styles = StyleSheet.create({
           lineHeight: 25,
       },
       pupuo: {
-          backgroundColor: '#ECECF0',
+          backgroundColor: UColor.riceWhite,
         },
         // modal的样式  
         modalStyle: {
@@ -658,12 +658,12 @@ const styles = StyleSheet.create({
           width: 30,
           height: 30,
           marginBottom: 0,
-          color: '#CBCBCB',
+          color: UColor.baseline,
           fontSize: 28,
         },
          // 标题  
       titleText: {
-          color: '#000000',
+          color: UColor.blackColor,
           marginBottom: 5,
           fontSize: 18,
           fontWeight: 'bold',

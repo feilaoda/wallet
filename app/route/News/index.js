@@ -267,7 +267,7 @@ class News extends React.Component {
             refreshing={this.props.newsRefresh}
             onRefresh={() => this.onRefresh(route.key, true)}
             tintColor={UColor.fontColor}
-            colors={['#ddd', UColor.tintColor]}
+            colors={[UColor.lightgray, UColor.tintColor]}
             progressBackgroundColor={UColor.fontColor}
           />
         }
@@ -277,21 +277,21 @@ class News extends React.Component {
             <View style={styles.row}>
               <Text style={{ fontSize: ScreenUtil.setSpText(16), color: UColor.fontColor, marginTop: ScreenUtil.autoheight(5), }}>{rowData.title}</Text>
               {
-                route.type == 2 && <Text numberOfLines={rowData.row} style={{ fontSize: ScreenUtil.setSpText(15), color: '#abb9d7', marginTop: ScreenUtil.autoheight(10), lineHeight: ScreenUtil.autoheight(25) }} >{rowData.content}</Text>
+                route.type == 2 && <Text numberOfLines={rowData.row} style={{ fontSize: ScreenUtil.setSpText(15), color: UColor.lightgray, marginTop: ScreenUtil.autoheight(10), lineHeight: ScreenUtil.autoheight(25) }} >{rowData.content}</Text>
               }
               {route.type == 2 && rowData.row == 3 && <Text style={{ fontSize: ScreenUtil.setSpText(13), color: UColor.tintColor, lineHeight: ScreenUtil.autoheight(20), textAlign: "right", }}>展开更多</Text>}
               {
-                route.type != 2 && <Text style={{ fontSize: ScreenUtil.setSpText(15), color: '#abb9d7', marginTop: ScreenUtil.autoheight(10), lineHeight: ScreenUtil.autoheight(25) }} >{rowData.content}</Text>
+                route.type != 2 && <Text style={{ fontSize: ScreenUtil.setSpText(15), color: UColor.lightgray, marginTop: ScreenUtil.autoheight(10), lineHeight: ScreenUtil.autoheight(25) }} >{rowData.content}</Text>
               }
               <View style={styles.rowFooter}>
-                <Text style={{ fontSize: ScreenUtil.setSpText(13), color: '#abb9d7', paddingBottom: ScreenUtil.autoheight(10), marginTop: ScreenUtil.autoheight(10) }}>{moment(rowData.createdate).fromNow()}</Text>
+                <Text style={{ fontSize: ScreenUtil.setSpText(13), color: UColor.lightgray, paddingBottom: ScreenUtil.autoheight(10), marginTop: ScreenUtil.autoheight(10) }}>{moment(rowData.createdate).fromNow()}</Text>
 
                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
                   <Button onPress={this.onUp.bind(this, rowData)}>
-                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autowidth(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={rowData.isUp ? UImage.up_h : UImage.up} /><Text style={{ marginLeft: ScreenUtil.autowidth(5), fontSize: ScreenUtil.setSpText(13), color: '#abb9d7' }}>{rowData.up}</Text></View>
+                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autowidth(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={rowData.isUp ? UImage.up_h : UImage.up} /><Text style={{ marginLeft: ScreenUtil.autowidth(5), fontSize: ScreenUtil.setSpText(13), color: UColor.lightgray }}>{rowData.up}</Text></View>
                   </Button>
                   <Button onPress={this.onDown.bind(this, rowData)}>
-                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autowidth(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={rowData.isDown ? UImage.down_h : UImage.down} /><Text style={{ marginLeft: ScreenUtil.autowidth(5), fontSize: ScreenUtil.setSpText(13), color: '#abb9d7' }}>{rowData.down}</Text></View>
+                    <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autowidth(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={rowData.isDown ? UImage.down_h : UImage.down} /><Text style={{ marginLeft: ScreenUtil.autowidth(5), fontSize: ScreenUtil.setSpText(13), color: UColor.lightgray }}>{rowData.down}</Text></View>
                   </Button>
                   <Button onPress={this.onShare.bind(this, rowData)}>
                     <View style={{ flex: 1, flexDirection: "row", padding: ScreenUtil.autoheight(10) }}><Image style={{ width: ScreenUtil.autowidth(18), height: ScreenUtil.autowidth(18) }} source={UImage.share} /></View>
@@ -324,7 +324,7 @@ class News extends React.Component {
             lazy={true} 
             navigationState={this.state}
             renderScene={this.renderScene.bind(this)}
-            renderHeader={(props) => <TabBar onTabPress={this._handleTabItemPress} labelStyle={{ fontSize: ScreenUtil.setSpText(15), margin: 0, marginBottom: ScreenUtil.autoheight(12), paddingTop: ScreenUtil.autoheight(18), color: '#8696B0' }} indicatorStyle={{ backgroundColor: UColor.tintColor, width: ScreenWidth / 3 - 40, marginLeft: 20 }} style={{ backgroundColor: UColor.secdColor }} tabStyle={{ width: ScreenWidth / 3, padding: 0, margin: 0 }} scrollEnabled={true} {...props} />}
+            renderHeader={(props) => <TabBar onTabPress={this._handleTabItemPress} labelStyle={{ fontSize: ScreenUtil.setSpText(15), margin: 0, marginBottom: ScreenUtil.autoheight(12), paddingTop: ScreenUtil.autoheight(18), color: UColor.arrow }} indicatorStyle={{ backgroundColor: UColor.tintColor, width: ScreenWidth / 3 - 40, marginLeft: 20 }} style={{ backgroundColor: UColor.secdColor }} tabStyle={{ width: ScreenWidth / 3, padding: 0, margin: 0 }} scrollEnabled={true} {...props} />}
             onIndexChange={this._handleIndexChange}
             initialLayout={{ height: 0, width: Dimensions.get('window').width }}
           />
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
   switem: {
     paddingBottom: ScreenUtil.autoheight(10),
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: UColor.blackColor,
     flexDirection: "row",
     flexWrap: "wrap",
     height: ScreenUtil.autoheight(100),

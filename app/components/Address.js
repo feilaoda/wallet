@@ -15,6 +15,7 @@ import { material } from 'react-native-typography';
 const { height } = Dimensions.get('window');
 var ScreenWidth = Dimensions.get('window').width;
 import ProgressBar from "../components/ProgressBar";
+import UColor from '../utils/Colors'
 
 const prs = 0;
 
@@ -101,7 +102,7 @@ export class Address extends React.Component {
                     <TouchableWithoutFeedback>
                       <View>
                         <View style={styles.titleContainer}>
-                            <Text style={[material.title,{color:'#65CAFF'}]}>{this.state.title}</Text>
+                            <Text style={[material.title,{color:UColor.tintColor,}]}>{this.state.title}</Text>
                         </View>
                         <View style={[styles.contentContainer,styles.contentContainerPadding]}>
                           {
@@ -115,7 +116,7 @@ export class Address extends React.Component {
                               style={styles.actionContainer}
                               underlayColor="#F0F0F0"
                               onPress={()=>{this.setState({visible:false})}}>
-                              <Text style={[material.button, { color: '#65CAFF' }]}>{this.state.disLabel}</Text>
+                              <Text style={[material.button, { color: UColor.tintColor, }]}>{this.state.disLabel}</Text>
                             </TouchableHighlight>
                           ):null
                         }
@@ -125,7 +126,7 @@ export class Address extends React.Component {
                               style={styles.actionContainer}
                               underlayColor="#F0F0F0"
                               onPress={this.state.okHandler}>
-                              <Text style={[material.button, { color: '#65CAFF' }]}>{this.state.okLable}</Text>
+                              <Text style={[material.button, { color: UColor.tintColor, }]}>{this.state.okLable}</Text>
                             </TouchableHighlight>
                           ):null
                         }
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     elevation: 24,
     overflow: 'hidden',
-    backgroundColor:"#ffffff"
+    backgroundColor: UColor.fontColor,
   },
   modalContainerPadding: {
     paddingTop: 24,

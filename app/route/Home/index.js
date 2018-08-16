@@ -616,7 +616,7 @@ class Home extends React.Component {
               refreshing={this.state.assetRefreshing}
               onRefresh={() => this.onRefresh()}
               tintColor={UColor.fontColor}
-              colors={['#ddd', UColor.tintColor]}
+              colors={[UColor.lightgray, UColor.tintColor]}
               progressBackgroundColor={UColor.fontColor}
             />
           }
@@ -646,7 +646,7 @@ class Home extends React.Component {
               <View style={{ width: maxWidth-20, backgroundColor: UColor.fontColor, borderRadius: 5, position: 'absolute', }}>
                 <View style={styles.subViewBackup}> 
                   <Button onPress={this._disableTipVisible.bind(this) } style={styles.buttonView2}>
-                      <Ionicons style={{ color: '#CBCBCB'}} name="ios-close-outline" size={30} />
+                      <Ionicons style={{ color: UColor.baseline}} name="ios-close-outline" size={30} />
                   </Button>
                 </View>
                 <Text style={styles.contentText}>IOS用户重要提示</Text>
@@ -672,7 +672,7 @@ class Home extends React.Component {
                   enableEmptySections={true} dataSource={this.state.dataSource.cloneWithRows(this.props.walletList == null ? [] : this.props.walletList)}
                   renderRow={(rowData) => (
                     <Button onPress={this.changeWallet.bind(this, rowData)}>
-                      <View style={styles.walletlist} backgroundColor={(this.props.defaultWallet == null || this.props.defaultWallet.name == rowData.account) ? '#4D607E' : '#394963'}>
+                      <View style={styles.walletlist} backgroundColor={(this.props.defaultWallet == null || this.props.defaultWallet.name == rowData.account) && '#4D607E'}>
                         <View style={styles.topout}>
                           <Text style={styles.outname}>{rowData.name}</Text>
                           {(!rowData.isactived || !rowData.hasOwnProperty('isactived')) ? <View style={styles.notactivedout}><Text style={styles.notactived} onPress={this.WalletDetail.bind(this, rowData)}>未激活</Text></View>:(rowData.isBackups ? null :  <View style={styles.stopoutBackupsout}><Text style={styles.stopoutBackups} onPress={this.WalletDetail.bind(this, rowData)}>未备份</Text></View>)}  
@@ -683,18 +683,18 @@ class Home extends React.Component {
                   )}
                 />
                 <View style={styles.ebhbtnout}>
-                  <Button onPress={() => this.createWallet()} style={{height: ScreenUtil.autoheight(40),}}>
+                  <Button onPress={() => this.createWallet()} style={styles.btnout}>
                     <View style={styles.establishout}>
                       <Image source={UImage.wallet_1} style={styles.establishimg} />
                       <Text style={styles.establishtext}>创建钱包</Text>
                     </View>
                   </Button>
-                  {/* <Button onPress={() => this.walletTest()} style={{ height: ScreenUtil.autoheight(40), }}>
-                    <View style={{ flex: 1, flexDirection: "row", }}>
-                      <Image source={UImage.wallet_1} style={{ width: 25, height: ScreenUtil.autoheight(25), }} />
-                      <Text style={{ marginLeft: 20, fontSize: ScreenUtil.setSpText(15), color: '#8594AB', }}>钱包测试</Text>
+                  <Button onPress={() => this.createWallet()} style={styles.btnout}>
+                    <View style={styles.establishout}>
+                      <Image source={UImage.wallet_1} style={styles.establishimg} />
+                      <Text style={styles.establishtext}>导入钱包</Text>
                     </View>
-                  </Button> */}
+                  </Button>
                 </View>
               </View>
             </TouchableOpacity>
@@ -873,14 +873,14 @@ const styles = StyleSheet.create({
   touchableout: {
     width: maxWidth / 2, 
     height: maxHeight, 
-    backgroundColor: '#394963', 
+    backgroundColor: UColor.secdColor, 
     alignItems: 'center', 
     paddingTop: ScreenUtil.autoheight(50),
   },
   touchablelist: {
     width: '100%', 
     borderBottomWidth: 1, 
-    borderBottomColor: '#4D607E', 
+    borderBottomColor: UColor.mainColor, 
   },
 
   imgBtn: {
@@ -891,9 +891,10 @@ const styles = StyleSheet.create({
 
   walletlist: {
     width: '100%',
-    paddingLeft: ScreenUtil.autowidth(20),
-    paddingRight: ScreenUtil.autowidth(10),
-    height: ScreenUtil.autoheight(67),
+    paddingHorizontal: ScreenUtil.autowidth(10),
+    height: ScreenUtil.autoheight(68),
+    borderBottomWidth: 1, 
+    borderBottomColor: UColor.mainColor, 
   },
 
 
@@ -911,13 +912,13 @@ const styles = StyleSheet.create({
   stopoutBackupsout: {
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#2ACFFF',
+    borderColor: UColor.tintColor,
     justifyContent: 'center',
     alignItems: 'center',
   },
   stopoutBackups: {
     fontSize: ScreenUtil.setSpText(10),
-    color: '#2ACFFF',
+    color: UColor.tintColor,
     textAlign: 'center',
     paddingHorizontal: ScreenUtil.autowidth(8),
     paddingVertical: ScreenUtil.autoheight(2),
@@ -942,7 +943,7 @@ const styles = StyleSheet.create({
   walletaccount: {
     flex:1,
     alignItems: 'center',
-    color: '#8594AB', 
+    color: UColor.lightgray, 
   },
 
 
@@ -950,26 +951,32 @@ const styles = StyleSheet.create({
   width: '100%', 
   height: maxHeight / 2.5, 
   flexDirection: "column", 
-  paddingLeft: ScreenUtil.autowidth(20), 
-  paddingTop: ScreenUtil.autoheight(15), 
-  alignItems: 'flex-start', 
-  borderTopWidth: 1, 
-  borderTopColor: UColor.mainColor, 
+  alignItems: 'center',  
+ },
+
+ btnout: {
+  width: ScreenUtil.autowidth(140),
+  height: ScreenUtil.autoheight(35),
+  marginVertical: ScreenUtil.autoheight(10),
+  alignItems: 'center', 
+  borderRadius: 25, 
+  borderWidth: 1, 
+  borderColor: UColor.lightgray,
  },
 
   establishout: {
-    flex: 1, 
+    flex: 1,
     flexDirection: "row",
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   establishimg:{
     width: ScreenUtil.autowidth(25), 
     height: ScreenUtil.autowidth(25), 
   },
   establishtext: {
-    marginLeft: ScreenUtil.autowidth(20), 
+    marginLeft: ScreenUtil.autowidth(10), 
     fontSize: ScreenUtil.setSpText(15), 
-    color: '#8594AB',
+    color: UColor.lightgray,
   },
 
   pupuo: {
@@ -992,7 +999,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     width: ScreenUtil.autowidth(40),
-    color: '#CBCBCB',
+    color: UColor.baseline,
     fontSize: ScreenUtil.setSpText(28),
     textAlign: 'center',
   },
@@ -1017,7 +1024,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: 'center',
     marginHorizontal: ScreenUtil.autowidth(15),
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: UColor.riceWhite,
     borderBottomWidth: 1,
   },
   copyout: {
@@ -1069,12 +1076,12 @@ const styles = StyleSheet.create({
   incup:{
     marginLeft: ScreenUtil.autowidth(5), 
     fontSize: ScreenUtil.setSpText(16), 
-    color: '#F25C49'
+    color: UColor.riseColor,
   },
   incdo:{
     marginLeft: ScreenUtil.autowidth(5), 
     fontSize: ScreenUtil.setSpText(16), 
-    color: '#25B36B'
+    color: UColor.fallColor,
   },
 
   imgTop: {

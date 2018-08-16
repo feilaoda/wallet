@@ -504,8 +504,8 @@ class WalletDetail extends BaseComponent {
           </View>
           <View>{this._renderListItem()}</View>
           {/* <Button onPress={() => this.backupWords()} style={{ flex: 1 }}>
-            <View style={{ height: 45, backgroundColor: '#65CAFF', justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
-              <Text style={{ fontSize: 15, color: '#fff' }}>备份助记词</Text>b
+            <View style={{ height: 45, backgroundColor: UColor.tintColor, justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
+              <Text style={{ fontSize: 15, color: UColor.fontColor }}>备份助记词</Text>b
             </View>
           </Button> */}
           {(!c.isactived || !c.hasOwnProperty('isactived')) ? 
@@ -529,7 +529,7 @@ class WalletDetail extends BaseComponent {
             <View style={styles.subView} >
               <Button style={{ alignItems: 'flex-end',}} onPress={this._setModalVisible.bind(this)}>
                 <View style={styles.closeText}>
-                    <Ionicons style={{ color: '#CBCBCB'}} name="ios-close-outline" size={28} />
+                    <Ionicons style={{ color: UColor.baseline}} name="ios-close-outline" size={28} />
                 </View>
               </Button>
               <View style={styles.eosparkout}>
@@ -684,7 +684,7 @@ const styles = StyleSheet.create({
   },
 
   pupuo: {
-    backgroundColor: '#ECECF0',
+    backgroundColor: UColor.riceWhite,
   },
   // modal的样式  
   modalStyle: {

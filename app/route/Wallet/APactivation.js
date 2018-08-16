@@ -263,8 +263,8 @@ class APactivation extends BaseComponent {
                         </View>
                         <View style={styles.separationline} >
                             <View style={{flexDirection: "row",padding: 15,justifyContent: "center",}}>
-                                <Text style={{fontSize: 26,paddingVertical: 15, lineHeight: 10,color:'#000000',textAlign: 'center',}}>{parseFloat(this.state.cpu)+parseFloat(this.state.ram)+parseFloat(this.state.net)} </Text>
-                                <Text style={{fontSize: 13,paddingVertical: 10, lineHeight: 10,color:'#000000',textAlign: 'center',}}> EOS</Text>
+                                <Text style={{fontSize: 26,paddingVertical: 15, lineHeight: 10,color: UColor.blackColor,textAlign: 'center',}}>{parseFloat(this.state.cpu)+parseFloat(this.state.ram)+parseFloat(this.state.net)} </Text>
+                                <Text style={{fontSize: 13,paddingVertical: 10, lineHeight: 10,color: UColor.blackColor,textAlign: 'center',}}> EOS</Text>
                             </View>
                         </View>
                         <View style={{flex: 1, paddingLeft: 10, paddingRight:10,paddingHorizontal: 20}}>
@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
   },
 
   pupuo: {
-    backgroundColor: '#ECECF0',
+    backgroundColor: UColor.riceWhite,
 },
 // modal的样式  
 modalStyle: {
@@ -494,7 +494,7 @@ buttontext: {
     // marginRight: 1,
     // paddingVertical: 12, 
     lineHeight: 25,
-    color: '#CBCBCB',
+    color: UColor.baseline,
     marginBottom: 0,
     fontSize: 28,
 },

@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
   incup: {
     fontSize: ScreenUtil.setSpText(12),
     color: UColor.fontColor,
-    backgroundColor: '#F25C49',
+    backgroundColor: UColor.riseColor,
     padding: ScreenUtil.autowidth(5),
     textAlign: 'center',
     marginLeft: ScreenUtil.autowidth(10),
@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
   incdo: {
     fontSize: ScreenUtil.setSpText(12),
     color: UColor.fontColor,
-    backgroundColor: '#25B36B',
+    backgroundColor: UColor.fallColor,
     padding: ScreenUtil.autowidth(5),
     textAlign: 'center',
     marginLeft: ScreenUtil.autowidth(10),
@@ -638,7 +638,7 @@ const styles = StyleSheet.create({
   },
   titleout: {
     width: ScreenUtil.autowidth(40),
-    color: '#CBCBCB',
+    color: UColor.baseline,
     fontSize: ScreenUtil.setSpText(28),
     textAlign: 'center',
   },

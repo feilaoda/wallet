@@ -48,25 +48,25 @@ class Set extends BaseComponent {
             <Text style={styles.welcome}>抄写下您的钱包助记词:</Text>
             <Text style={styles.welcome}>助记词用于恢复钱包或重置钱包密码，将它准确的抄写 到纸上，并存放在只有您知道的安全地方。</Text>
             {/* <Button onPress={() => this.logout()}>
-              <View style={{height:45,backgroundColor:'#65CAFF',justifyContent:'center',alignItems:'center',margin:20,borderRadius:5}}>
-                <Text style={{fontSize:15,color:'#fff'}}>{this.props.loginUser?"退出":"登陆"}</Text>
+              <View style={{height:45,backgroundColor:UColor.tintColor,justifyContent:'center',alignItems:'center',margin:20,borderRadius:5}}>
+                <Text style={{fontSize:15,color:UColor.fontColor}}>{this.props.loginUser?"退出":"登陆"}</Text>
               </View>
             </Button> */}
-            <View style={{backgroundColor:'#43536D'}}>
-              <View style={{padding:20,height:80,backgroundColor:'#4e5e7d'}} >
-                  {/* <Text style={{fontSize:12,color:'#8696B0'}}> 手机号</Text> */}
+            <View style={{backgroundColor:UColor.tintColor,}}>
+              <View style={{padding:20,height:80,backgroundColor:UColor.mainColor,}} >
+                  {/* <Text style={{fontSize:12,color:UColor.arrow}}> 手机号</Text> */}
                   <TextInput ref={(ref) => this._lphone = ref} autoFocus={false} editable = {true} 
                   // value={this.state.loginPhone} 
-                  returnKeyType="next" selectionColor="#65CAFF" style={{color:'#8696B0',fontSize:15,height:40,paddingLeft:2}} 
-                  placeholderTextColor="#8696B0" placeholder="钱包名称" underlineColorAndroid="transparent" keyboardType="phone-pad" maxLength={11}
+                  returnKeyType="next" selectionColor={UColor.tintColor} style={{color:UColor.arrow,fontSize:15,height:40,paddingLeft:2}} 
+                  placeholderTextColor={UColor.arrow} placeholder="钱包名称" underlineColorAndroid="transparent" keyboardType="phone-pad" maxLength={11}
                   />
               </View>
-              <View style={{height:0.5,backgroundColor:'#43536D',flex: 1,flexDirection: 'column',}}></View>
-              <View style={{padding:20,height:80,backgroundColor:'#4e5e7d'}} >
-                  {/* <Text style={{fontSize:12,color:'#8696B0'}}> 密码</Text> */}
+              <View style={{height:0.5,backgroundColor:UColor.tintColor,flex: 1,flexDirection: 'column',}}></View>
+              <View style={{padding:20,height:80,backgroundColor:UColor.mainColor,}} >
+                  {/* <Text style={{fontSize:12,color:UColor.arrow}}> 密码</Text> */}
                   <TextInput ref={(ref) => this._lpass = ref} autoFocus={false} editable = {true} 
                   // value={this.state.loginPwd} 
-                  returnKeyType="go" selectionColor="#65CAFF" style={{color:'#8696B0',fontSize:15,height:40,paddingLeft:2}} placeholderTextColor="#8696B0" 
+                  returnKeyType="go" selectionColor={UColor.tintColor} style={{color:UColor.arrow,fontSize:15,height:40,paddingLeft:2}} placeholderTextColor={UColor.arrow}
                   placeholder="密码"  underlineColorAndroid="transparent" secureTextEntry={true} maxLength={20}
                   // onSubmitEditing={() => this.loginKcaptrue()}
                   // onChangeText={(loginPwd) => this.setState({loginPwd})}
@@ -74,15 +74,15 @@ class Set extends BaseComponent {
               </View>
             </View>
             <Button onPress={() => this.logout()}>
-              <View style={{height:45,backgroundColor:'#65CAFF',justifyContent:'center',alignItems:'center',margin:20,borderRadius:5}}>
-                {/* <Text style={{fontSize:15,color:'#fff'}}>{this.props.loginUser?"退出":"登陆"}</Text> */}
-                <Text style={{fontSize:15,color:'#fff'}}>备份助记词</Text>
+              <View style={{height:45,backgroundColor:UColor.tintColor,justifyContent:'center',alignItems:'center',margin:20,borderRadius:5}}>
+                {/* <Text style={{fontSize:15,color:UColor.fontColor}}>{this.props.loginUser?"退出":"登陆"}</Text> */}
+                <Text style={{fontSize:15,color:UColor.fontColor}}>备份助记词</Text>
               </View>
             </Button>
             <Button onPress={() => this.logout()}>
-              <View style={{height:45,backgroundColor:'#65CAFF',justifyContent:'center',alignItems:'center',margin:20,borderRadius:5}}>
-                {/* <Text style={{fontSize:15,color:'#fff'}}>{this.props.loginUser?"退出":"登陆"}</Text> */}
-                <Text style={{fontSize:15,color:'#fff'}}>删除钱包</Text>
+              <View style={{height:45,backgroundColor:UColor.tintColor,justifyContent:'center',alignItems:'center',margin:20,borderRadius:5}}>
+                {/* <Text style={{fontSize:15,color:UColor.fontColor}}>{this.props.loginUser?"退出":"登陆"}</Text> */}
+                <Text style={{fontSize:15,color:UColor.fontColor}}>删除钱包</Text>
               </View>
             </Button>
           </View>

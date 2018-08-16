@@ -125,7 +125,7 @@ class FunctionsMore extends React.Component {
               <View style={{ width: maxWidth-30, backgroundColor: UColor.fontColor, borderRadius: 5, position: 'absolute', }}>
                 <View style={styles.subViewBackup}> 
                   <Button onPress={this._setModalVisible.bind(this) } style={styles.buttonView2}>
-                      <Ionicons style={{ color: '#CBCBCB'}} name="ios-close-outline" size={30} />
+                      <Ionicons style={{ color: UColor.baseline}} name="ios-close-outline" size={30} />
                   </Button>
                 </View>
                 <Text style={styles.contentText}>使用说明</Text>

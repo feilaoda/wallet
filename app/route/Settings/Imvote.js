@@ -179,8 +179,6 @@ class Imvote extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
-                    
-
                 <View style={styles.headout}>         
                     <Text style={styles.nodename}>节点名称</Text>           
                     <Text style={styles.rankingticket}>排名/票数</Text>           
@@ -191,7 +189,7 @@ class Imvote extends BaseComponent {
                     renderRow={(rowData, sectionID, rowID) => (                 
                     <View>
                         <Button onPress={this._openAgentInfo.bind(this,rowData)}> 
-                            <View style={styles.outsource} backgroundColor={(parseInt(rowID)%2 == 0) ? "#43536D" : "#4E5E7B"}>
+                            <View style={styles.outsource} backgroundColor={(parseInt(rowID)%2 == 0) ? UColor.secdColor : "#4E5E7B"}>
                                 <View style={styles.logview}>
                                 <Image source={rowData.icon==null ? UImage.eos : {uri: rowData.icon}} style={styles.logimg}/>
                                 </View>

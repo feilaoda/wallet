@@ -126,14 +126,14 @@ class Coins extends BaseComponent {
             const v = <View style={styles.container}>
                 <ScrollView style={styles.scrollView}>
                     <View>
-                        <Text style={styles.welcome} style={{ color: '#FFFFFF', fontSize: 17, marginLeft: 10, marginRight: 10, marginTop: 20 }}>离线保存:</Text>
-                        <Text style={styles.welcome} style={{ margin: 10, color: '#8696B0' }}>请复制Keystore到安全离线的地方</Text>
-                        <View style={{ backgroundColor: '#8696B0', height: 150, marginTop: 30, marginLeft: 10, marginRight: 10 }}>
+                        <Text style={styles.welcome} style={{ color: UColor.fontColor, fontSize: 17, marginLeft: 10, marginRight: 10, marginTop: 20 }}>离线保存:</Text>
+                        <Text style={styles.welcome} style={{ margin: 10, color: UColor.arrow }}>请复制Keystore到安全离线的地方</Text>
+                        <View style={{ backgroundColor: UColor.arrow, height: 150, marginTop: 30, marginLeft: 10, marginRight: 10 }}>
                             <Text style={{ fontSize: 15 }}> jsdf46as56f16as5d1f6sad56a4g6s5d4f3sd1f654sdf564as6d5f4as86d45s6d4f65asd4f6a5sd4f8asd4f65asd4f65asd4f65as4df</Text>
                         </View>
                         <Button onPress={() => this.logout()}>
-                            <View style={{ height: 45, backgroundColor: '#65CAFF', justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
-                                <Text style={{ fontSize: 15, color: '#fff' }}>复制Keystore</Text>
+                            <View style={{ height: 45, backgroundColor: UColor.tintColor, justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
+                                <Text style={{ fontSize: 15, color: UColor.fontColor }}>复制Keystore</Text>
                             </View>
                         </Button>
                     </View>
@@ -146,15 +146,15 @@ class Coins extends BaseComponent {
             const v = <View style={styles.container}>
                 <ScrollView style={styles.scrollView}>
                     <View>
-                        <Text style={styles.welcome} style={{ color: '#FFFFFF', marginTop: 20, marginLeft: 10, fontSize: 17 }}>仅供直接扫描</Text>
+                        <Text style={styles.welcome} style={{ color: UColor.fontColor, marginTop: 20, marginLeft: 10, fontSize: 17 }}>仅供直接扫描</Text>
                         <Text style={styles.welcome} style={{ marginLeft: 10, marginRight: 10, }} >直接复制粘贴以太坊官方钱包 Keystore 文件内 容至输入框。或者通过生成 Keystore 内容的二 维码，扫描录入。</Text>
-                        <Text style={styles.welcome} style={{ color: '#FFFFFF', marginTop: 20, marginLeft: 10, fontSize: 17 }}>在安全环境下使用</Text>
+                        <Text style={styles.welcome} style={{ color: UColor.fontColor, marginTop: 20, marginLeft: 10, fontSize: 17 }}>在安全环境下使用</Text>
                         <Text style={styles.welcome} style={{ marginLeft: 10, marginRight: 10, }}>请在确保四周无人及无摄像头的情况下使用。二维码一旦 被他人获取将造成不可挽回的资产损失</Text>
-                        <View style={{ backgroundColor: '#8696B0', height: 150, marginTop: 30, marginLeft: 10, marginRight: 10 }}>
+                        <View style={{ backgroundColor: UColor.arrow, height: 150, marginTop: 30, marginLeft: 10, marginRight: 10 }}>
                         </View>
                         <Button onPress={() => this.showQR()}>
-                            <View style={{ height: 45, backgroundColor: '#65CAFF', justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
-                                <Text style={{ fontSize: 15, color: '#fff' }}>显示二维码</Text>
+                            <View style={{ height: 45, backgroundColor: UColor.tintColor, justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
+                                <Text style={{ fontSize: 15, color: UColor.fontColor }}>显示二维码</Text>
                             </View>
                         </Button>
                     </View>
@@ -172,7 +172,7 @@ class Coins extends BaseComponent {
                     style={styles.container}
                     navigationState={this.state}
                     renderScene={this.renderScene.bind(this)}
-                    renderHeader={(props) => <TabBar onTabPress={this._handleTabItemPress} labelStyle={{ fontSize: 15, margin: 0, marginBottom: 10, paddingTop: 10, color: '#8696B0' }} indicatorStyle={{ backgroundColor: UColor.tintColor, width: 60, marginLeft: 20 }} style={{ backgroundColor: UColor.secdColor }} tabStyle={{ width: 100, padding: 0, margin: 0 }} scrollEnabled={true} {...props} />}
+                    renderHeader={(props) => <TabBar onTabPress={this._handleTabItemPress} labelStyle={{ fontSize: 15, margin: 0, marginBottom: 10, paddingTop: 10, color: UColor.arrow }} indicatorStyle={{ backgroundColor: UColor.tintColor, width: 60, marginLeft: 20 }} style={{ backgroundColor: UColor.secdColor }} tabStyle={{ width: 100, padding: 0, margin: 0 }} scrollEnabled={true} {...props} />}
                     onIndexChange={this._handleIndexChange}
                     initialLayout={{ height: 0, width: Dimensions.get('window').width }}
                 />
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     incup: {
         fontSize: 12,
         color: UColor.fontColor,
-        backgroundColor: '#F25C49',
+        backgroundColor: UColor.riseColor,
         padding: 5,
         textAlign: 'center',
         marginLeft: 10,
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     incdo: {
         fontSize: 12,
         color: UColor.fontColor,
-        backgroundColor: '#25B36B',
+        backgroundColor: UColor.fallColor,
         padding: 5,
         textAlign: 'center',
         marginLeft: 10,

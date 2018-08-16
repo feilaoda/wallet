@@ -132,7 +132,7 @@ const TabContainer = TabNavigator(
     animationEnabled: false,
     tabBarOptions: {
       activeTintColor: UColor.tintColor,
-      inactiveTintColor: "#abb9d7",
+      inactiveTintColor: UColor.lightgray,
       showIcon: true,
       showLabel: true,
       style: {
@@ -344,7 +344,7 @@ const Nav = StackNavigator(
       headerBackTitleStyle: {
         color: UColor.fontColor
       },
-      headerTintColor: '#fff',
+      headerTintColor: UColor.fontColor,
       headerStyle: {
         backgroundColor: UColor.secdColor,
         elevation: 0,
@@ -358,7 +358,7 @@ const Nav = StackNavigator(
       ),
       mode: 'card',
       headerMode: 'screen',
-      cardStyle: { backgroundColor: "#fff" },
+      cardStyle: { backgroundColor: UColor.fontColor },
       transitionConfig: (() => ({
         screenInterpolator: CardStackStyleInterpolator.forHorizontal,
       })),
@@ -880,7 +880,7 @@ class Route extends React.Component {
             <ScrollView style={{ marginTop: 50 }}>
               <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                 <ViewShot ref="viewShot" style={{ left: 20, width: ScreenWidth - 40 }} options={{ format: "jpg", quality: 0.9 }}>
-                  <View style={{ backgroundColor: "#fff", flex: 1}}>
+                  <View style={{ backgroundColor: UColor.fontColor, flex: 1}}>
                     <Image source={UImage.share_banner} resizeMode="stretch" style={{ width: ScreenWidth - 40, height: (ScreenWidth - 40) * 0.3386 }} />
                    <View style={{ backgroundColor: UColor.fontColor,flexDirection: "row",marginTop: 10,paddingHorizontal: 20,paddingVertical: 5, justifyContent: "flex-start", alignItems:'center', }}>
                       <Image source={UImage.share_time} style={{width: 25,height: 25}} />
@@ -892,11 +892,11 @@ class Route extends React.Component {
                   </View>
                   <View style={{borderBottomWidth: 1,borderBottomColor: '#e5e5e5' ,justifyContent: 'center',}} >
                   </View>
-                  <View style={{ backgroundColor: '#FFFFFF', width: '100%', paddingVertical: 5, flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center' }}>
+                  <View style={{ backgroundColor: UColor.fontColor, width: '100%', paddingVertical: 5, flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center' }}>
                       <View style={{ width: ScreenWidth - 40 - (ScreenWidth - 40) * 0.319, justifyContent: 'center', alignSelf: 'center' }}>
-                        <Text style={{ color: '#12b9ff', fontSize: ScreenUtil.setSpText(16), textAlign: 'center', width: '100%', marginTop: 5 }}>ET钱包</Text>
-                        <Text style={{ color: '#12b9ff', fontSize: ScreenUtil.setSpText(16), textAlign: 'center', width: '100%', marginTop: 3 }}>专注于柚子生态</Text>
-                        <Text style={{ color: '#fff', fontSize: ScreenUtil.setSpText(13), textAlign: 'center', padding: 5, backgroundColor: '#3baaff', margin: 15,}}>更多精彩 长按识别二维码</Text>
+                        <Text style={{ color: UColor.tintColor, fontSize: ScreenUtil.setSpText(16), textAlign: 'center', width: '100%', marginTop: 5 }}>ET钱包</Text>
+                        <Text style={{ color: UColor.tintColor, fontSize: ScreenUtil.setSpText(16), textAlign: 'center', width: '100%', marginTop: 3 }}>专注于柚子生态</Text>
+                        <Text style={{ color: UColor.fontColor, fontSize: ScreenUtil.setSpText(13), textAlign: 'center', padding: 5, backgroundColor: UColor.blueDeep, margin: 15,}}>更多精彩 长按识别二维码</Text>
                       </View>
                       <View style={{ width: (ScreenWidth - 40) * 0.319, justifyContent: 'center', alignSelf: 'center' }}>
                         <QRCode size={(ScreenWidth - 40) * 0.319 - 20} value={Constants.rootaddr+redirect + (Constants.loginUser ? Constants.loginUser.uid : "nuid") + "/" + (Constants.token ? Constants.token.substr(0, 4) : "ntk") + "/" + this.state.news.id} />
@@ -915,7 +915,7 @@ class Route extends React.Component {
               ]
             }}>
               <View style={{ height: 125 }}>
-                <Text style={{ color: '#000', marginTop: 10, width: "100%", textAlign: "center" }}>分享到</Text>
+                <Text style={{ color: UColor.blackColor, marginTop: 10, width: "100%", textAlign: "center" }}>分享到</Text>
                 <View style={{ flexDirection: "row" }}>
                   <Button onPress={() => { this.shareAction(1) }} style={{ width: '33%', justifyContent: 'center' }}>
                     <View style={{ alignSelf: 'center', width: '100%', padding: 10 }}>
@@ -938,8 +938,8 @@ class Route extends React.Component {
                 </View>
               </View>
               <Button onPress={() => { this.setState({ showShare: false }) }}>
-                <View style={{ height: 45, backgroundColor: "#fff", flexDirection: "row" }}>
-                  <Text style={{ color: '#000', fontSize: 15, width: "100%", textAlign: "center", alignSelf: 'center' }}>取消</Text>
+                <View style={{ height: 45, backgroundColor: UColor.fontColor, flexDirection: "row" }}>
+                  <Text style={{ color: UColor.blackColor, fontSize: 15, width: "100%", textAlign: "center", alignSelf: 'center' }}>取消</Text>
                 </View>
               </Button>
             </Animated.View>
@@ -958,7 +958,7 @@ class Route extends React.Component {
               <ScrollView style={{ marginTop: 50 }}>
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                   <ViewShot ref="viewShot" style={{ left: 20, width: ScreenWidth - 40 }} options={{ format: "jpg", quality: 0.9 }}>
-                    <View style={{ backgroundColor: "#fff", width: '100%', height: '100%' }}>
+                    <View style={{ backgroundColor: UColor.fontColor, width: '100%', height: '100%' }}>
                       <View style={{ padding: 10 }}>
                         <Image source={UImage.Invitation_vote} resizeMode="cover" style={{ width: '100%', height:ScreenWidth-70 }} />
                         <View style={{ width: (ScreenWidth - 40) * 0.319, justifyContent: 'center', alignSelf: 'center',paddingBottom:20, }}>
@@ -970,7 +970,7 @@ class Route extends React.Component {
                         <View style={{ width: ScreenWidth - 40, justifyContent: 'center', alignSelf: 'center' }}>
                           <Text style={{ color: '#85a7cd', fontSize: 16, textAlign: 'center', width: '100%', marginTop: 5 }}>ET钱包</Text>
                           <Text style={{ color: '#85a7cd', fontSize: 16, textAlign: 'center', width: '100%', marginTop: 5 }}>专注于柚子生态</Text>
-                          <Text style={{ color: '#fff', fontSize: 16, textAlign: 'center', padding: 5, backgroundColor: '#306eb1', margin: 10 }}>更多精彩 长按识别二维码</Text>
+                          <Text style={{ color: UColor.fontColor, fontSize: 16, textAlign: 'center', padding: 5, backgroundColor: '#306eb1', margin: 10 }}>更多精彩 长按识别二维码</Text>
                         </View>                            
                       </View>
                     </View>
@@ -986,7 +986,7 @@ class Route extends React.Component {
                 ]
               }}>
                 <View style={{ height: 125 }}>
-                  <Text style={{ color: '#000', marginTop: 10, width: "100%", textAlign: "center" }}>分享到</Text>
+                  <Text style={{ color: UColor.blackColor, marginTop: 10, width: "100%", textAlign: "center" }}>分享到</Text>
                   <View style={{ flexDirection: "row" }}>
                     <Button style={{ width: '33%', justifyContent: 'center' }} onPress={() => { this.shareAction(1) }}>
                       <View style={{ alignSelf: 'center', width: '100%', padding: 10 }}>
@@ -1009,8 +1009,8 @@ class Route extends React.Component {
                   </View>
                 </View>
                 <Button onPress={() => { this.setState({ showVoteShare: false }) }}>
-                  <View style={{ height: 45, backgroundColor: "#fff", flexDirection: "row" }}>
-                    <Text style={{ color: '#000', fontSize: 15, width: "100%", textAlign: "center", alignSelf: 'center' }}>取消</Text>
+                  <View style={{ height: 45, backgroundColor: UColor.fontColor, flexDirection: "row" }}>
+                    <Text style={{ color: UColor.blackColor, fontSize: 15, width: "100%", textAlign: "center", alignSelf: 'center' }}>取消</Text>
                   </View>
                 </Button>
               </Animated.View>
@@ -1057,7 +1057,7 @@ class Route extends React.Component {
                 ]
               }}>
                 <View style={{ height: 125 }}>
-                  <Text style={{ color: '#000', marginTop: 10, width: "100%", textAlign: "center" }}>分享到</Text>
+                  <Text style={{ color: UColor.blackColor, marginTop: 10, width: "100%", textAlign: "center" }}>分享到</Text>
                   <View style={{ flexDirection: "row" }}>
                     <Button style={{ width: '33%', justifyContent: 'center' }} onPress={() => { this.shareAction(1) }}>
                       <View style={{ alignSelf: 'center', width: '100%', padding: 10 }}>
@@ -1080,8 +1080,8 @@ class Route extends React.Component {
                   </View>
                 </View>
                 <Button onPress={() => { this.setState({ showTurninShare: false }) }}>
-                  <View style={{ height: 45, backgroundColor: "#fff", flexDirection: "row" }}>
-                    <Text style={{ color: '#000', fontSize: 15, width: "100%", textAlign: "center", alignSelf: 'center' }}>取消</Text>
+                  <View style={{ height: 45, backgroundColor: UColor.fontColor, flexDirection: "row" }}>
+                    <Text style={{ color: UColor.blackColor, fontSize: 15, width: "100%", textAlign: "center", alignSelf: 'center' }}>取消</Text>
                   </View>
                 </Button>
               </Animated.View>
@@ -1101,7 +1101,7 @@ class Route extends React.Component {
               <ScrollView style={{ marginTop: 50 }}>
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                   <ViewShot ref="viewShot" style={{ left: 20, width: ScreenWidth - 40 }} options={{ format: "jpg", quality: 0.9 }}>
-                    <View style={{ backgroundColor: "#fff", width: ScreenWidth - 40,}}>
+                    <View style={{ backgroundColor: UColor.fontColor, width: ScreenWidth - 40,}}>
                       <View style={{ }}>
                         <Image source={UImage.activation_head} resizeMode="stretch" style={{ width: ScreenWidth - 40, height: (ScreenWidth - 40)*0.234}} />
                         <View style={{ justifyContent: 'center', alignSelf: 'center',paddingVertical:20, }}>
@@ -1110,16 +1110,16 @@ class Route extends React.Component {
                         <Text style={{ color: '#999999', fontSize: 15, textAlign: 'center',}}>使用ET钱包扫一扫支付EOS激活此账号</Text>
                         <View style={{paddingVertical: 10, paddingHorizontal: 20,}}>
                             <View style={{ flexDirection: 'row', alignItems: 'center',marginVertical: 5,}}>
-                              <Text style={{fontSize: 20, color:"#000000", }}>账号：</Text>
-                              <Text style={{fontSize: 18, color: "#000000"}}>{this.state.turnintoaccount}</Text>
+                              <Text style={{fontSize: 20, color: UColor.blackColor, }}>账号：</Text>
+                              <Text style={{fontSize: 18, color: UColor.blackColor,}}>{this.state.turnintoaccount}</Text>
                             </View>
                             <Text style={{fontSize: 15, color:"#999999", marginVertical: 5,}}>Active公钥：</Text>
-                            <Text style={{fontSize: 14, color: "#000000",}}>{this.state.turninsymbol}</Text>
+                            <Text style={{fontSize: 14, color: UColor.blackColor,}}>{this.state.turninsymbol}</Text>
                             <Text style={{fontSize: 15, color:"#999999", marginVertical: 5, }}>Owner公钥：</Text>
-                            <Text style={{fontSize: 14, color: "#000000",}}>{this.state.turninamount}</Text>
+                            <Text style={{fontSize: 14, color: UColor.blackColor,}}>{this.state.turninamount}</Text>
                         </View>
                         <View style={{backgroundColor: '#445877', paddingHorizontal: 18, paddingVertical: 8,}}>
-                            <Text style={{color: '#FFFFFF', fontSize: 12, lineHeight: 25,}}>该好友正在使用EosToken钱包激活账号并向您发出代付求助，建议帮助他支付激活前先联系确认清楚！</Text>
+                            <Text style={{color: UColor.fontColor, fontSize: 12, lineHeight: 25,}}>该好友正在使用EosToken钱包激活账号并向您发出代付求助，建议帮助他支付激活前先联系确认清楚！</Text>
                         </View>
                       </View>
                     </View>
@@ -1135,7 +1135,7 @@ class Route extends React.Component {
                 ]
               }}>
                 <View style={{ height: 125 }}>
-                  <Text style={{ color: '#000', marginTop: 10, width: "100%", textAlign: "center" }}>分享到</Text>
+                  <Text style={{ color: UColor.blackColor, marginTop: 10, width: "100%", textAlign: "center" }}>分享到</Text>
                   <View style={{ flexDirection: "row" }}>
                     <Button style={{ width: '33%', justifyContent: 'center' }} onPress={() => { this.shareAction(1) }}>
                       <View style={{ alignSelf: 'center', width: '100%', padding: 10 }}>
@@ -1158,8 +1158,8 @@ class Route extends React.Component {
                   </View>
                 </View>
                 <Button onPress={() => { this.setState({ showActivationPay: false }) }}>
-                  <View style={{ height: 45, backgroundColor: "#fff", flexDirection: "row" }}>
-                    <Text style={{ color: '#000', fontSize: 15, width: "100%", textAlign: "center", alignSelf: 'center' }}>取消</Text>
+                  <View style={{ height: 45, backgroundColor: UColor.fontColor, flexDirection: "row" }}>
+                    <Text style={{ color: UColor.blackColor, fontSize: 15, width: "100%", textAlign: "center", alignSelf: 'center' }}>取消</Text>
                   </View>
                 </Button>
               </Animated.View>
@@ -1179,37 +1179,37 @@ class Route extends React.Component {
               <ScrollView style={{ marginTop: 50 }}>
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                   <ViewShot ref="viewShot" style={{ left: 20, width: ScreenWidth - 40 }} options={{ format: "jpg", quality: 0.9 }}>
-                    <View style={{ backgroundColor: "#fff", width: ScreenWidth - 40,}}>
+                    <View style={{ backgroundColor: UColor.fontColor, width: ScreenWidth - 40,}}>
                       <Image source={UImage.activation_head} resizeMode="stretch" style={{ width: ScreenWidth - 40, height: (ScreenWidth - 40)*0.234}} />
                       <View style={{ paddingHorizontal: 20, paddingVertical: 10,}}>
                         <Text style={{ color: '#999999', fontSize: 15, textAlign: 'left', paddingVertical: 15,}}>我在ET钱包成功激活了该EOS账号</Text>
                         <View style={{ flexDirection: 'row',alignItems: 'center',marginVertical: 5,}}>
-                          <Text style={{fontSize: 20, color:"#000000", }}>账号：</Text>
-                          <Text style={{fontSize: 18, color: "#000000"}}>{this.state.turnintoaccount}</Text>
+                          <Text style={{fontSize: 20, color: UColor.blackColor, }}>账号：</Text>
+                          <Text style={{fontSize: 18, color: UColor.blackColor,}}>{this.state.turnintoaccount}</Text>
                         </View>
                         <View style={{ flexDirection: 'row',borderBottomColor: "#999999", borderBottomWidth: 0.5, }}>
                           <View  style={{ flex: 1,  alignItems: 'center',}}>
-                            <Text style={{fontSize: 14, color:"#000000", lineHeight: 30, }}>{this.state.ram}</Text>
+                            <Text style={{fontSize: 14, color: UColor.blackColor, lineHeight: 30, }}>{this.state.ram}</Text>
                             <Text style={{fontSize: 15, color: "#999999", paddingBottom: 10,}}>分配内存( EOS )</Text>
-                            <Text style={{fontSize: 14, color: "#000000", lineHeight: 30,}}>{this.state.net}</Text>
+                            <Text style={{fontSize: 14, color: UColor.blackColor, lineHeight: 30,}}>{this.state.net}</Text>
                             <Text style={{fontSize: 15, color: "#999999", paddingBottom: 10,}}>网络抵押( EOS )</Text>
                           </View>
                           <View style={{ flex: 1,  alignItems: 'center',}}>
-                            <Text style={{fontSize: 14, color: "#000000", lineHeight: 30,}}>{this.state.cpu}</Text>
+                            <Text style={{fontSize: 14, color: UColor.blackColor, lineHeight: 30,}}>{this.state.cpu}</Text>
                             <Text style={{fontSize: 15, color: "#999999", paddingBottom: 10,}}>CPU抵押( EOS )</Text>
                           </View>
                         </View>
                         <View style={{paddingVertical: 10, borderBottomColor: "#999999", borderBottomWidth: 0.5, }}>
                           <Text style={{fontSize: 15, color:"#999999", marginVertical: 5,}}>Active公钥：</Text>
-                          <Text style={{fontSize: 14, color: "#000000",}}>{this.state.turninsymbol}</Text>
+                          <Text style={{fontSize: 14, color: UColor.blackColor,}}>{this.state.turninsymbol}</Text>
                           <Text style={{fontSize: 15, color:"#999999", marginVertical: 5, }}>Owner公钥：</Text>
-                          <Text style={{fontSize: 14, color: "#000000",}}>{this.state.turninamount}</Text>
+                          <Text style={{fontSize: 14, color: UColor.blackColor,}}>{this.state.turninamount}</Text>
                         </View>
-                        <View style={{ backgroundColor: '#FFFFFF', paddingVertical: 10, flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center',}}>
+                        <View style={{ backgroundColor: UColor.fontColor, paddingVertical: 10, flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center',}}>
                           <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
                             <Text style={{ color: '#85a7cd', fontSize: 16, textAlign: 'center',}}>扫码进入区块链浏览器</Text>
                             <Text style={{ color: '#85a7cd', fontSize: 16, textAlign: 'center', marginBottom: 10 }}>查询该账号激活信息</Text>
-                            <Text style={{ color: '#fff', fontSize: 12, textAlign: 'center',width: '100%', paddingVertical: 5, backgroundColor: '#47546e',}}>EosToken技术提供</Text>
+                            <Text style={{ color: UColor.fontColor, fontSize: 12, textAlign: 'center',width: '100%', paddingVertical: 5, backgroundColor: '#47546e',}}>EosToken技术提供</Text>
                           </View>
                           <View style={{justifyContent: 'center', alignSelf: 'center', paddingLeft: 10, }}>
                             <QRCode size={96} value={"https://eosmonitor.io/account/" + this.state.turnintoaccount} />
@@ -1229,7 +1229,7 @@ class Route extends React.Component {
                 ]
               }}>
                 <View style={{ height: 125 }}>
-                  <Text style={{ color: '#000', marginTop: 10, width: "100%", textAlign: "center" }}>分享到</Text>
+                  <Text style={{ color: UColor.blackColor, marginTop: 10, width: "100%", textAlign: "center" }}>分享到</Text>
                   <View style={{ flexDirection: "row" }}>
                     <Button style={{ width: '33%', justifyContent: 'center' }} onPress={() => { this.shareAction(1) }}>
                       <View style={{ alignSelf: 'center', width: '100%', padding: 10 }}>
@@ -1252,8 +1252,8 @@ class Route extends React.Component {
                   </View>
                 </View>
                 <Button onPress={() => { this.setState({ showReturnActivationPay: false }) }}>
-                  <View style={{ height: 45, backgroundColor: "#fff", flexDirection: "row" }}>
-                    <Text style={{ color: '#000', fontSize: 15, width: "100%", textAlign: "center", alignSelf: 'center' }}>取消</Text>
+                  <View style={{ height: 45, backgroundColor: UColor.fontColor, flexDirection: "row" }}>
+                    <Text style={{ color: UColor.blackColor, fontSize: 15, width: "100%", textAlign: "center", alignSelf: 'center' }}>取消</Text>
                   </View>
                 </Button>
               </Animated.View>

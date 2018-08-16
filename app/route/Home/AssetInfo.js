@@ -183,7 +183,7 @@ class AssetInfo extends BaseComponent {
                         refreshing={this.state.logRefreshing}
                         onRefresh={() => this.onRefresh()}
                         tintColor={UColor.fontColor}
-                        colors={['#ddd', UColor.tintColor]}
+                        colors={[UColor.lightgray, UColor.tintColor]}
                         progressBackgroundColor={UColor.fontColor}
                     />
                     }
