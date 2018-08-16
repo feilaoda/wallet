@@ -930,7 +930,17 @@ class Transaction extends BaseComponent {
   openbusiness() { 
     const view = 
     <View style={styles.passoutsource}>
-      <Text style={styles.inptpasstext}>TEST币仅用于测试,没有任何价值,请不要大量购买!</Text>  
+      <Text　
+        style={ 
+            {
+                height: 45,
+                width: ScreenWidth-100,
+                paddingBottom: 5,
+                fontSize: 16,
+            }
+        }>
+        TEST币仅用于测试,没有投资价值,请不要大量购买!
+        </Text>  
     </View>
     EasyShowLD.dialogShow("警示", view, "确认", "取消", () => {
         EasyShowLD.dialogClose();
