@@ -172,7 +172,7 @@ export default {
             try{
                 const resp = yield call(Request.request, getETPriceLine + payload.code + '/' + payload.type, 'post', payload);
                 // alert("getETPriceLine : " + JSON.stringify(resp));
-                if(resp.code=='0'){               
+                if(resp && resp.code=='0'){               
                     yield put({ type: 'updateETPriceLine', payload: { data: resp.data, ...payload } });
                     Constants.netTimeoutFlag=false;
                 }else{
@@ -181,6 +181,7 @@ export default {
                 if (callback) callback(resp);
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
             }
         },
         //et K线图

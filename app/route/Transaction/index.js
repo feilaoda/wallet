@@ -199,16 +199,25 @@ class Transaction extends BaseComponent {
 
   //获取时分图
   fetchETLine(type,opt){
+    this.setState({logRefreshing: true});
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type:'transaction/getETPriceLine',payload:{code:this.state.selectcode,type:type}});
+        try {
+            this.props.dispatch({type:'transaction/getETPriceLine',payload:{code:this.state.selectcode,type:type}, callback: (resp) => {
+                this.setState({logRefreshing: false});
+            }});
+        } catch (error) {
+            this.setState({logRefreshing: false});
+        }
     });
   }
 
   //获取K线
   fetchETKLine(dateType,opt){
+    this.setState({logRefreshing: true});
     InteractionManager.runAfterInteractions(() => {
         this.props.dispatch({type: 'transaction/getETKLine',payload: {code:this.state.selectcode,pageSize: "180", dateType: dateType}, callback: (resp) => {
             try {
+                this.setState({logRefreshing: false});
                 if(resp.code == '0'){
                   if(resp.data && resp.data.length > 0){
                     // // 数据意义：日期(record_date),开盘(open)，收盘(close)，最低(min)，最高(max),交易量(volum)
@@ -254,6 +263,7 @@ class Transaction extends BaseComponent {
                 }
             } catch (error) {
                 this.setState({ dataKLine : {}});
+                this.setState({logRefreshing: false});
             }
         }});
     
