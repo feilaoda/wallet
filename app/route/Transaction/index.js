@@ -32,8 +32,13 @@ class Transaction extends BaseComponent {
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
-          title: '交易',
+          title: 'ET交易所',
           header:null,  //隐藏顶部导航栏
+          headerStyle: {
+            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+            backgroundColor: UColor.mainColor,
+            borderBottomWidth:0,
+          },
          //铃铛small_bell/small_bell_h
         //   headerRight: (
         //     <Button name="share" onPress={() => this._rightTopClick()} >
@@ -65,6 +70,7 @@ class Transaction extends BaseComponent {
       logRefreshing: false,
       newetTradeLog: [],
       logId: "-1",
+      password : "", //买卖交易时的密码
       modal: false,
       contractAccount:"issuemytoken", //ET合约账户名称
       tradename:"TEST",  //ET交易币种的名称
@@ -193,16 +199,25 @@ class Transaction extends BaseComponent {
 
   //获取时分图
   fetchETLine(type,opt){
+    this.setState({logRefreshing: true});
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type:'transaction/getETPriceLine',payload:{code:this.state.selectcode,type:type}});
+        try {
+            this.props.dispatch({type:'transaction/getETPriceLine',payload:{code:this.state.selectcode,type:type}, callback: (resp) => {
+                this.setState({logRefreshing: false});
+            }});
+        } catch (error) {
+            this.setState({logRefreshing: false});
+        }
     });
   }
 
   //获取K线
   fetchETKLine(dateType,opt){
+    this.setState({logRefreshing: true});
     InteractionManager.runAfterInteractions(() => {
         this.props.dispatch({type: 'transaction/getETKLine',payload: {code:this.state.selectcode,pageSize: "180", dateType: dateType}, callback: (resp) => {
             try {
+                this.setState({logRefreshing: false});
                 if(resp.code == '0'){
                   if(resp.data && resp.data.length > 0){
                     // // 数据意义：日期(record_date),开盘(open)，收盘(close)，最低(min)，最高(max),交易量(volum)
@@ -215,7 +230,8 @@ class Transaction extends BaseComponent {
                         if(element.record_date){
                             var timezone;
                             try {
-                                timezone = moment(element.record_date).add(8,'hours').format('MM-DD HH:mm');
+                                // timezone = moment(element.record_date).add(8,'hours').format('MM-DD HH:mm');
+                                timezone = moment(element.record_date).format('MM-DD HH:mm');
                             } catch (error) {
                                 timezone = "";
                             }
@@ -247,6 +263,7 @@ class Transaction extends BaseComponent {
                 }
             } catch (error) {
                 this.setState({ dataKLine : {}});
+                this.setState({logRefreshing: false});
             }
         }});
     
@@ -578,11 +595,16 @@ class Transaction extends BaseComponent {
         this.setState({ buyETAmount: "" })
         return ;
     };
+
+    if(parseFloat(this.state.buyETAmount) > 1){
+        this.setState({ error: true,errortext: '测试版本每次购买上限为１EOS.' });
+        return;
+    }
     this.setState({ business: false});
     this. dismissKeyboardClick();
         const view =
         <View style={styles.passoutsource}>
-            <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
+            <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password : password })} returnKeyType="go" 
                 selectionColor={UColor.tintColor} secureTextEntry={true} keyboardType="ascii-capable" style={styles.inptpass} maxLength={Constants.PWD_MAX_LENGTH}
                 placeholderTextColor={UColor.arrow} placeholder="请输入密码" underlineColorAndroid="transparent" />
             <Text style={styles.inptpasstext}></Text>  
@@ -600,22 +622,80 @@ class Transaction extends BaseComponent {
                 plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
                 EasyShowLD.loadingShow();
                 Eos.transaction({
-                    actions: [{
-                        account: "etbexchanger",
-                        name: "buytoken", 
-                        authorization: [{
-                        actor: 'eostokenapp1',
-                        permission: 'active'
-                        }], 
-                        data: {
-                            payer: "eostokenapp1",
-                            eos_quant: formatEosQua(this.state.buyETAmount + " EOS"),
-                            token_contract: "issuemytoken",
-                            token_symbol: "4,TEST",
-                            fee_account: "eostokenapp1",
-                            fee_rate: "1", 
-                        }
-                    }]
+                    actions: [
+                        {
+                            account: "eosio",
+                            name: "updateauth", 
+                            authorization: [{
+                            actor: this.props.defaultWallet.account,
+                            permission: 'active'
+                            }], 
+                            data: {
+                                account: this.props.defaultWallet.account,
+                                permission: 'active',
+                                parent: "owner",
+                                auth: {
+                                    threshold: 1,
+                                    keys: [
+                                        {
+                                            key: this.props.defaultWallet.activePublic,
+                                            weight: 1,
+                                        }
+                                    ],
+                                    accounts: [
+                                        {
+                                            permission: {
+                                                actor: "etbexchanger",
+                                                permission: "eosio.code",
+                                            },
+                                            weight: 1,
+                                        }
+                                    ],
+                                },
+                            }
+                        },
+                        {
+                            account: "etbexchanger",
+                            name: "buytoken", 
+                            authorization: [{
+                            actor: this.props.defaultWallet.account,
+                            permission: 'active'
+                            }], 
+                            data: {
+                                payer: this.props.defaultWallet.account,
+                                eos_quant: formatEosQua(this.state.buyETAmount + " EOS"),
+                                token_contract: "issuemytoken",
+                                token_symbol: "4,TEST",
+                                fee_account: this.props.defaultWallet.account,
+                                fee_rate: "1", 
+                            }
+                        },
+                        {
+                            account: "eosio",
+                            name: "updateauth", 
+                            authorization: [{
+                            actor: this.props.defaultWallet.account,
+                            permission: 'active'
+                            }], 
+                            data: {
+                                account: this.props.defaultWallet.account,
+                                permission: 'active',
+                                parent: "owner",
+                                auth: {
+                                    threshold: 1,
+                                    keys: [
+                                        {
+                                            key: this.props.defaultWallet.activePublic,
+                                            weight: 1,
+                                        }
+                                    ],
+                                    accounts: [
+
+                                    ],
+                                },
+                            }
+                        },
+                    ]
                 }, plaintext_privateKey, (r) => {
                     EasyShowLD.loadingClose();
                     if(r.isSuccess){
@@ -648,7 +728,6 @@ class Transaction extends BaseComponent {
   // 出售
   sell = (rowData) => {
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-       //EasyToast.show('请先创建并激活钱包');
        this.setState({ error: true,errortext: '请先创建并激活钱包' });
        setTimeout(() => {
            this.setState({ error: false,errortext: '' });
@@ -656,14 +735,13 @@ class Transaction extends BaseComponent {
        return;
     }; 
     if(this.state.sellET == ""||this.state.sellET == '0'){
-        //EasyToast.show('请输入出售内存KB数量');
-        this.setState({ error: true,errortext: '请输入出售内存KB数量' });
+        this.setState({ error: true,errortext: '请输入出售数量' });
         setTimeout(() => {
             this.setState({ error: false,errortext: '' });
         }, 2000);
         return;
     };
-    if(this.chkAmountIsZero(this.state.sellET,'请输入出售内存KB数量')){
+    if(this.chkAmountIsZero(this.state.sellET,'请输入出售数量')){
         this.setState({ sellET: "" })
         return ;
     };
@@ -690,21 +768,79 @@ class Transaction extends BaseComponent {
             EasyShowLD.loadingShow();
 
             Eos.transaction({
-                actions: [{
-                    account: "etbexchanger",
-                    name: "selltoken", 
-                    authorization: [{
-                    actor: 'eostokenapp1',
-                    permission: 'active'
-                    }], 
-                    data: {
-                        receiver: "eostokenapp1",
-                        token_contract: "issuemytoken",
-                        quant: formatEosQua("100.0000 TEST"),
-                        fee_account: "eostokenapp1",
-                        fee_rate: "1", 
-                    }
-                }]
+                actions: [
+                    {
+                        account: "eosio",
+                        name: "updateauth", 
+                        authorization: [{
+                        actor: this.props.defaultWallet.account,
+                        permission: 'active'
+                        }], 
+                        data: {
+                            account: this.props.defaultWallet.account,
+                            permission: 'active',
+                            parent: "owner",
+                            auth: {
+                                threshold: 1,
+                                keys: [
+                                    {
+                                        key: this.props.defaultWallet.activePublic,
+                                        weight: 1,
+                                    }
+                                ],
+                                accounts: [
+                                    {
+                                        permission: {
+                                            actor: "etbexchanger",
+                                            permission: "eosio.code",
+                                        },
+                                        weight: 1,
+                                    }
+                                ],
+                            },
+                        }
+                    },
+                    {
+                        account: "etbexchanger",
+                        name: "selltoken", 
+                        authorization: [{
+                        actor: this.props.defaultWallet.account,
+                        permission: 'active'
+                        }], 
+                        data: {
+                            receiver: this.props.defaultWallet.account,
+                            token_contract: "issuemytoken",
+                            quant: formatEosQua(this.state.sellET + " TEST"),
+                            fee_account: this.props.defaultWallet.account,
+                            fee_rate: "1", 
+                        }
+                    },
+                    {
+                        account: "eosio",
+                        name: "updateauth", 
+                        authorization: [{
+                        actor: this.props.defaultWallet.account,
+                        permission: 'active'
+                        }], 
+                        data: {
+                            account: this.props.defaultWallet.account,
+                            permission: 'active',
+                            parent: "owner",
+                            auth: {
+                                threshold: 1,
+                                keys: [
+                                    {
+                                        key: this.props.defaultWallet.activePublic,
+                                        weight: 1,
+                                    }
+                                ],
+                                accounts: [
+
+                                ],
+                            },
+                        }
+                    },
+                ]
             }, plaintext_privateKey, (r) => {
                 EasyShowLD.loadingClose();
                 if(r.isSuccess){
@@ -801,13 +937,31 @@ class Transaction extends BaseComponent {
     return timezone;
   }
 
-  openbusiness() {  
-    let business = this.state.business;  
-    this.setState({  
-        business:!business,
-        buyETAmount: '0',
-        sellET: '0',  
-      });  
+  openbusiness() { 
+    const view = 
+    <View style={styles.passoutsource}>
+      <Text　
+        style={ 
+            {
+                height: 45,
+                width: ScreenWidth-100,
+                paddingBottom: 5,
+                fontSize: 16,
+            }
+        }>
+        TEST币仅用于测试,没有投资价值,请不要大量购买!
+        </Text>  
+    </View>
+    EasyShowLD.dialogShow("警示", view, "确认", "取消", () => {
+        EasyShowLD.dialogClose();
+        let business = this.state.business;  
+        this.setState({  
+            business:!business,
+            buyETAmount: '0',
+            sellET: '0',  
+        });
+    }, () => { EasyShowLD.dialogClose() })
+  
   }  
 
   openSystemSetting(){
@@ -834,21 +988,22 @@ class Transaction extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 20 : 30, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
+    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 30 : 50, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
         <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
             <Text style={{fontSize: 12, color: '#fff'}}>交易面板</Text>
         </View>
     </TouchableOpacity>
     <View style={styles.headerTitle}>  
-        <TouchableOpacity onPress={this._leftTopClick.bind()} activeOpacity={0.8}>
+        {/* <TouchableOpacity onPress={this._leftTopClick.bind()} activeOpacity={0.8}>
             <View style={styles.leftoutTitle} >
                 <Image source={this.state.modal ? UImage.tx_slide0 : UImage.tx_slide1} style={styles.HeadImg}/>
             </View>
-        </TouchableOpacity>
-          <View style={styles.HeadTitle} >
-              <Text style={{ fontSize: 18,color: UColor.fontColor, justifyContent: 'center',alignItems: 'center',}} 
-                       numberOfLines={1} ellipsizeMode='middle'>{this.state.tradename + "/EOS"}</Text>
-          </View>     
+        </TouchableOpacity> */}
+        <Button onPress={this._leftTopClick.bind()}>
+              <Image source={this.state.modal ? UImage.tx_slide0 : UImage.tx_slide1} style={styles.imgBtn} />
+        </Button>
+        <Text style={styles.headerTitleText}>{this.state.tradename + "/EOS"}</Text>
+        <View style={styles.imgBtn}></View>
         {/* <TouchableOpacity onPress={this._rightTopClick.bind()}>
         <View style={styles.Rightout} >
             <Image source={UImage.tx_ram } style={styles.imgTeOy}/>
@@ -1089,7 +1244,7 @@ class Transaction extends BaseComponent {
                   </View> :
                   <View style={{flex: 1,}}>
                       <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                        dataSource={this.state.dataSource.cloneWithRows(this.props.bigRamRank == null ? [] : this.props.bigRamRank)} 
+                        dataSource={this.state.dataSource.cloneWithRows(this.props.bigAccouontRank == null ? [] : this.props.bigAccouontRank)} 
                         renderRow={(rowData, sectionID, rowID) => (                 
                             <Button onPress={this.openQuery.bind(this,rowData.account)}>
                                 <View style={styles.businessRan}>
@@ -1243,18 +1398,18 @@ class Transaction extends BaseComponent {
                         </TouchableOpacity>
                     </View>
                 </View>
-                {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: 12, color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
                 {this.state.isBuy?<View>
                     <View style={styles.greeninptout}>
                         <Text style={styles.greenText}>单价: {this.props.etinfo ? this.precisionTransfer(this.props.etinfo.price,8) : '0'} EOS</Text>
-                        <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0" : this.state.balance}</Text>
+                        <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0" : this.state.balance} EOS</Text>
+                        {this.state.error&&<Text style={{flex: 1, fontSize: 12, color: UColor.showy, textAlign: 'left', }}>{this.state.errortext}</Text>}
                     </View>
                     <View style={styles.inputout}>
                         <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyETAmount + ''} returnKeyType="go" 
                         selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow} 
                         placeholder="输入购买的额度" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
                         onChangeText={(buyETAmount) => this.setState({ buyETAmount: this.chkBuyEosQuantity(buyETAmount), 
-                            eosToET: this.eosToET(buyETAmount, this.props.etinfo?this.props.etinfo.price:'')})}
+                            eosToET: this.eosToET(buyETAmount, this.props.etinfo?this.props.etinfo.price:''), error: false,errortext: '' })}
                         />
                         <Text style={styles.unittext}>EOS</Text>
                     </View>
@@ -1341,11 +1496,20 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
+        alignItems: 'center',
+        justifyContent: "space-between",
+        width: Dimensions.get('window').width,
         paddingTop:Platform.OS == 'ios' ? 30 : 20,
-        paddingBottom: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
         backgroundColor: UColor.mainColor,
+      },
+      headerTitleText: {
+        height: Platform.OS == 'ios' ? 65 : 50,
+        lineHeight: Platform.OS == 'ios' ? 65 : 50,
+        textAlign: "center",
+        fontSize: 18,
+        color: UColor.fontColor,
       },
     leftoutTitle: {
         paddingLeft: 15
@@ -1468,6 +1632,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingTop:10,
         paddingBottom: 5,
+    },
+    echartsout: {
+        // flex: 1,
     },
     tablayout: {   
         flex: 1,
@@ -1792,8 +1959,8 @@ const styles = StyleSheet.create({
     },
     busines: {
         width: ScreenWidth , 
-        height: Platform.OS == 'ios' ? 310:295,
-        paddingBottom:Platform.OS == 'ios' ? 49:49.5,
+        height: Platform.OS == 'ios' ? 260:245.5,
+        // paddingBottom:Platform.OS == 'ios' ? 49:49.5,
     },
     businesout: {
         flex: 1,
@@ -1945,7 +2112,7 @@ function combineETKLine(data) {
                 var obj = {top: 10};
                 obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
                 return obj;
-            }
+            },
             // extraCssText: 'width: 170px'
         },
         axisPointer: {
@@ -1983,6 +2150,7 @@ function combineETKLine(data) {
                 color: upColor
             }]
         },
+        color:['#ec0000','#6e6e46','#835098','#4b9373','#4b7793'],
         legend: {
             data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
             // left: '20%',
@@ -1990,17 +2158,18 @@ function combineETKLine(data) {
                 color: "#7382a1",
                 fontSize: 10,
             },
+            // inactiveColor:upColor,
             itemHeight: 12,
         },
         grid: [
             {
                 top: '8%',
-                left: '15%',
+                left: '14%',
                 right: '4%',
                 height: '60%'
             },
             {
-                left: '15%',
+                left: '14%',
                 right: '4%',
                 top: '70%',
                 height: '30%',
@@ -2016,7 +2185,7 @@ function combineETKLine(data) {
                 axisLabel: {
                     show: true,
                     color: "#7382a1",
-                    fontSize: 2,
+                    fontSize: 8,
                 },
                 axisLine: {
                     show: true,
@@ -2072,7 +2241,7 @@ function combineETKLine(data) {
         ],
         yAxis: [
             {
-                scale: true,
+                // scale: true,
                 splitArea: {
                     show: false
                 },
