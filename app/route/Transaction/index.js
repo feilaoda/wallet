@@ -34,6 +34,11 @@ class Transaction extends BaseComponent {
         return {
           title: 'ET交易所',
           header:null,  //隐藏顶部导航栏
+          headerStyle: {
+            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+            backgroundColor: UColor.mainColor,
+            borderBottomWidth:0,
+          },
          //铃铛small_bell/small_bell_h
         //   headerRight: (
         //     <Button name="share" onPress={() => this._rightTopClick()} >
@@ -968,15 +973,16 @@ class Transaction extends BaseComponent {
         </View>
     </TouchableOpacity>
     <View style={styles.headerTitle}>  
-        <TouchableOpacity onPress={this._leftTopClick.bind()} activeOpacity={0.8}>
+        {/* <TouchableOpacity onPress={this._leftTopClick.bind()} activeOpacity={0.8}>
             <View style={styles.leftoutTitle} >
                 <Image source={this.state.modal ? UImage.tx_slide0 : UImage.tx_slide1} style={styles.HeadImg}/>
             </View>
-        </TouchableOpacity>
-          <View style={styles.HeadTitle} >
-              <Text style={{ fontSize: 18,color: UColor.fontColor, justifyContent: 'center',alignItems: 'center',}} 
-                       numberOfLines={1} ellipsizeMode='middle'>{this.state.tradename + "/EOS"}</Text>
-          </View>     
+        </TouchableOpacity> */}
+        <Button onPress={this._leftTopClick.bind()}>
+              <Image source={this.state.modal ? UImage.tx_slide0 : UImage.tx_slide1} style={styles.imgBtn} />
+        </Button>
+        <Text style={styles.headerTitleText}>{this.state.tradename + "/EOS"}</Text>
+        <View style={styles.imgBtn}></View>
         {/* <TouchableOpacity onPress={this._rightTopClick.bind()}>
         <View style={styles.Rightout} >
             <Image source={UImage.tx_ram } style={styles.imgTeOy}/>
@@ -1469,11 +1475,20 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
+        alignItems: 'center',
+        justifyContent: "space-between",
+        width: Dimensions.get('window').width,
         paddingTop:Platform.OS == 'ios' ? 30 : 20,
-        paddingBottom: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
         backgroundColor: UColor.mainColor,
+      },
+      headerTitleText: {
+        height: Platform.OS == 'ios' ? 65 : 50,
+        lineHeight: Platform.OS == 'ios' ? 65 : 50,
+        textAlign: "center",
+        fontSize: 18,
+        color: UColor.fontColor,
       },
     leftoutTitle: {
         paddingLeft: 15
