@@ -70,32 +70,49 @@ class AuthChange extends BaseComponent {
             EasyToast.show("找不到对应的公钥或账号");
             return
         }
+
+        if(this.state.inputText.length<1){
+            EasyToast.show("请先输入账号或者公钥");
+            return
+        }
+
+
         var arrKeys=this.state.inputPubKey;
         var arrAccounts=this.state.inputAccounts;
-        if (this.state.inputContent.length > 12) {
-            Eos.checkPublicKey(this.state.inputContent, (r) => {
-                if (!r.isSuccess) {
-                    EasyToast.show('公钥格式不正确');
-                    return;
+
+        for(var i=0;i<this.state.inputText.length;i++){
+            if (this.state.inputText[i].value.length > 12) {
+                Eos.checkPublicKey(this.state.inputText[i].value, (r) => {
+                    if (!r.isSuccess) {
+                        EasyToast.show('公钥格式不正确');
+                        return;
+                    }
+                });j
+
+                for (var j = 0; j < arrKeys.length; j++) {
+                    if (arrKeys[j].key ==this.state.inputText[i].value) {
+                        EasyToast.show('添加公钥已存在');
+                        return;
+                    }
                 }
-            });
+                arrKeys.push({weight:1,key:this.state.inputText[i].value})
+            }else if(this.state.inputText[i].value.length >= 1){
+                if(this.verifyAccount(this.state.inputText[i].value)==false){
+                    EasyToast.show('请输入正确的账号');
+                    return 
+                }
 
-            arrKeys.push({weight:1,key:this.state.inputContent})
-            // this.setState({
-            //     inputPubKey:arrKeys,//输入公钥组
-            // });
-
-        }else if(this.state.inputContent.length >= 1){
-            if(this.verifyAccount(this.state.inputContent)==false){
-                EasyToast.show('请输入正确的账号');
-                return 
+                for (var j = 0; j < arrAccounts.length; j++) {
+                    if (arrAccounts[j].permission.actor ==this.state.inputText[i].value) {
+                        EasyToast.show('添加账号已存在');
+                        return;
+                    }
+                }
+                // {"weight":1,"permission":{"actor":this.state.inputContent,"permission":"eosio.code"}}
+                arrAccounts.push({"weight":1,"permission":{"actor":this.state.inputText[i].value,"permission":"active"}});
             }
-            // {"weight":1,"permission":{"actor":this.state.inputContent,"permission":"eosio.code"}}
-            arrAccounts.push({"weight":1,"permission":{"actor":this.state.inputContent,"permission":"active"}});
-            // this.setState({
-            //     inputAccounts:arrAccounts,//输入账户组
-            // });
         }
+
         this.changeAuth(arrKeys,arrAccounts);
        
     }  
@@ -115,7 +132,10 @@ class AuthChange extends BaseComponent {
             inputPubKey:[],//输入公钥组
             inputAccounts:[],//输入账户组
 
-            inputContent:'',
+            inputCount:0,
+            inputText:[{key:0,value:''}],
+
+
         }
     }
     //组件加载完成
@@ -173,6 +193,9 @@ class AuthChange extends BaseComponent {
             authKeys:temp,//授权的公钥组
             inputPubKey:retKeys,//输入公钥组
             inputAccounts:retAcc,//输入账户组
+
+            inputCount:0,
+            inputText:[{key:0,value:''}],
         });
         console.log("getaccountinfo=%s",JSON.stringify(data))
     } });
@@ -292,18 +315,6 @@ EosUpdateAuth = (account, pvk,Keys,Accounts, callback) => {
 }  
 
 
-
-
-
-//这个是用来删除当前行的
-addMoreUser(){
-    console.log("add more ")
-
-    }
-    
-
-
-
   _renderRow(rowData, sectionID, rowID){ // cell样式
 
     return (
@@ -337,6 +348,84 @@ addMoreUser(){
   }
 
 
+
+//添加更多
+addMoreUser() {
+
+    var txt=this.state.inputText;
+    var cnt = this.state.inputCount;
+
+    if(txt.length){
+        cnt++;
+    }else{
+        cnt=0;
+    }
+    txt.push({key:cnt,value:''});
+    this.setState({
+        inputCount: cnt, //输入账户组
+        inputText:txt,
+    });
+}
+    
+
+//输入值
+inputValue(inputKey,inputData){
+
+    this.state.inputText[inputKey].value=inputData;
+    return this.state.inputText;
+}
+
+//删除输入框
+delInputBox(delKey){
+    var txt=this.state.inputText;
+    if(delKey<=this.state.inputCount){
+        for (var i = 0; i < txt.length; i++) {
+            if (txt[i].key ==delKey) {
+                txt.splice(i, 1);
+            }
+        }
+        this.setState({
+            inputText:txt,
+        });
+    }
+
+}
+
+  _renderRowInput(rowData, sectionID, rowID){ // cell样式
+
+    return (
+        
+        <View style={styles.addUserTitle} >
+            <View style={styles.titleStyle}>
+                <View style={styles.userAddView}>
+                    <Image source={UImage.adminAddA} style={styles.imgBtn} />
+                    <Text style={styles.buttonText}>添加授权用户</Text>
+                    <Text style={styles.buttonText}>{rowData.key}</Text>
+                </View>
+
+                <View style={styles.buttonView}>
+                    <Text style={styles.weightText}>权阀值  </Text>
+                    <Text style={styles.buttonText}>1</Text>
+                </View>
+            </View>
+
+            <TextInput ref={(ref) => this._lphone = ref} value={rowData.value} returnKeyType="next" editable={true}
+                selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
+                onChangeText={(inputText) => this.setState({ inputText: this.inputValue(rowData.key,inputText)})}   keyboardType="default" 
+                placeholder="输入账号或Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
+
+            {/* {rowData.key<this.state.inputCount && */}
+            {/* {rowData.key>0 && */}
+            {this.state.inputText.length>1 &&
+            <TouchableHighlight onPress={() => { this.delInputBox(rowData.key) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
+                <View style={styles.delButton}>
+                    <Text style={styles.delText}>删除</Text>
+                </View>
+            </TouchableHighlight>}
+
+        </View>
+    )
+  }
 
 
 
@@ -373,24 +462,9 @@ addMoreUser(){
             dataSource={this.state.dataSource.cloneWithRows(this.state.authKeys.length==null ?[]: this.state.authKeys)}> 
         </ListView> 
 
-        <View style={styles.addUserTitle} >
-            <View style={styles.titleStyle}>
-                <View style={styles.userAddView}>
-                    <Image source={UImage.adminAddA} style={styles.imgBtn} />
-                    <Text style={styles.buttonText}>添加授权用户</Text>
-                </View>
-
-                <View style={styles.buttonView}>
-                    <Text style={styles.weightText}>权阀值  </Text>
-                    <Text style={styles.buttonText}>{this.state.weightValue}</Text>
-                </View>
-            </View>
-
-            <TextInput ref={(ref) => this._lphone = ref} value={this.state.inputContent} returnKeyType="next" editable={true}
-                selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
-                onChangeText={(inputContent) => this.setState({ inputContent })}   keyboardType="default" 
-                placeholder="输入账号或Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
-        </View>
+        <ListView renderRow={this._renderRowInput.bind(this)}  
+            dataSource={this.state.dataSource.cloneWithRows(this.state.inputText.length==null ?[]: this.state.inputText)}> 
+        </ListView> 
 
         <TouchableHighlight onPress={() => { this.addMoreUser(this) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
             <View style={styles.delButton}>
