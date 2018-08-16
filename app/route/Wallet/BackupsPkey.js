@@ -237,7 +237,6 @@ const styles = StyleSheet.create({
         paddingBottom: ScreenUtil.autoheight(15),
     },
     inptitle: {
-        flex: 1,
         fontSize: ScreenUtil.setSpText(15),
         lineHeight: ScreenUtil.autoheight(30),
         color: UColor.fontColor,
