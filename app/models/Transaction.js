@@ -317,6 +317,7 @@ export default {
             left: '0%',
             right: '5%',
             bottom: '3%',
+            height: '82%',
             containLabel: true
         },
         xAxis: [
@@ -384,7 +385,7 @@ export default {
                 data: data.ps,
                 lineStyle: {
                     normal: {
-                        width: 2,  //连线粗细
+                        width: 1,  //连线粗细
                         color: "#6CDAFF"  //连线颜色
                     }
                 },

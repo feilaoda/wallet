@@ -747,7 +747,7 @@ class Transaction extends BaseComponent {
   render() {
     return <View style={styles.container}>
     <TouchableOpacity style={{ position:'absolute', bottom: ScreenUtil.autoheight(45), right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
-        <View style={{height: ScreenUtil.autoheight(35),width: ScreenUtil.autowidth(90),backgroundColor: UColor.tintColor,justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
+        <View style={{height: ScreenUtil.autoheight(35),width: ScreenUtil.autowidth(90),backgroundColor: UColor.tintColor,justifyContent: "center", alignItems: "center",borderTopLeftRadius: 25,borderBottomLeftRadius: 25,}}>
             <Text style={{fontSize: ScreenUtil.setSpText(14), color: UColor.fontColor}}>交易面板</Text>
         </View>
     </TouchableOpacity>
@@ -903,7 +903,7 @@ class Transaction extends BaseComponent {
                 </View>
             : 
                 <View style={styles.echartsout}>
-                    {<Echarts option={this.getDataLine()} width={ScreenWidth} height={ScreenUtil.autoheight(160)} />}
+                    {<Echarts option={this.getDataLine()} width={ScreenWidth} height={ScreenUtil.autoheight(180)} />}
                 </View>
             }
             <View style={styles.toptabout}>
@@ -1673,36 +1673,36 @@ function combineRamKLine(data) {
             // left: '20%',
             textStyle:{
                 color: "#7382a1",
-                fontSize: 10,
+                fontSize: ScreenUtil.setSpText(10),
             },
             // inactiveColor:upColor,
-            itemHeight: 12,
+            itemHeight: ScreenUtil.autoheight(12),
         },
         grid: [
             {
-                top: '8%',
-                left: '13%',
-                right: '4%',
-                height: '60%'
+                top: ScreenUtil.autoheight(30),
+                left: ScreenUtil.autowidth(55),
+                right: ScreenUtil.autowidth(20),
+                height: ScreenUtil.autoheight(160),
             },
             {
-                left: '13%',
-                right: '4%',
-                top: '70%',
-                height: '30%',
-                // bottom: '0',
+                left: ScreenUtil.autowidth(55),
+                right: ScreenUtil.autowidth(20),
+                top: ScreenUtil.autoheight(210),
+                height: ScreenUtil.autoheight(85),
+                bottom: ScreenUtil.autoheight(5),
             }
         ],
         xAxis: [
             {
-                type: 'category',
+                type: 'category', 
                 data:  data.categoryData,
                 scale: true,
                 boundaryGap : true,
                 axisLabel: {
                     show: true,
                     color: "#7382a1",
-                    fontSize: 8,
+                    fontSize: ScreenUtil.setSpText(8),
                 },
                 axisLine: {
                     show: true,
@@ -1765,7 +1765,7 @@ function combineRamKLine(data) {
                 axisLabel: {
                     show: true,
                     color: "#7382a1",
-                    fontSize: 2,
+                    fontSize: ScreenUtil.setSpText(2),
                     formatter: function(value, index) {
                         if(value == null || value == ''){
                             return '0.0000';
