@@ -221,7 +221,8 @@ class Transaction extends BaseComponent {
                         if(element.record_date){
                             var timezone;
                             try {
-                                timezone = moment(element.record_date).add(8,'hours').format('MM-DD HH:mm');
+                                // timezone = moment(element.record_date).add(8,'hours').format('MM-DD HH:mm');
+                                timezone = moment(element.record_date).format('MM-DD HH:mm');
                             } catch (error) {
                                 timezone = "";
                             }
