@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.mainColor,
     },
     inptgo: {
-        flex: 1,
+        width: maxWidth - 40,
         height: 60,
         paddingHorizontal: 10,
         backgroundColor: UColor.secdColor,
@@ -357,6 +357,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         lineHeight: 25,
         color: UColor.arrow,
+        flexWrap: 'wrap',
     },
 
     readout: {

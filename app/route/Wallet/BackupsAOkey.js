@@ -433,6 +433,7 @@ const styles = StyleSheet.create({
         color: UColor.arrow,
     },
     inptoutgo: {
+        width: ScreenWidth - 40,
         paddingBottom: 15,
         backgroundColor: UColor.mainColor,
     },
@@ -446,6 +447,7 @@ const styles = StyleSheet.create({
         height: 60,
         fontSize: 14,
         lineHeight: 25,
+        flexWrap: 'wrap',
         color: UColor.arrow,
         paddingHorizontal: 10,
         textAlignVertical: 'top',
