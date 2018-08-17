@@ -879,14 +879,24 @@ class Transaction extends BaseComponent {
     if(eos == null || eos == '' || currentPrice == null || currentPrice == ''){
         return '0';
     }
-    return (eos/currentPrice).toFixed(8); 
+    var ret = (eos/currentPrice).toFixed(8); 
+    if(ret == 'NaN')
+    {
+        ret = '0';
+    }
+    return ret; 
   }
 
   etToEos(et, currentPrice){
     if(et == null || et == '' || currentPrice == null || currentPrice == ''){
         return '0.0000';
     }
-    return (et * currentPrice).toFixed(4);
+    var ret = (et * currentPrice).toFixed(4);
+    if(ret == 'NaN')
+    {
+        ret = '0';
+    }
+    return ret
   }
   //小数点位数大于指定位数,强制显示指定位数,少于则按实际位数显示
   precisionTransfer(data,pos){

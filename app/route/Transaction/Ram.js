@@ -690,14 +690,24 @@ class Ram extends BaseComponent {
     if(eos == null || eos == '' || currentPrice == null || currentPrice == ''){
         return '0';
     }
-    return (eos/currentPrice).toFixed(4); 
+    var ret = (eos/currentPrice).toFixed(4);
+    if(ret == 'NaN')
+    {
+        ret = '0';
+    }
+    return ret; 
   }
 
   kbToEos(kb, currentPrice){
     if(kb == null || kb == '' || currentPrice == null || currentPrice == ''){
         return '0.0000';
     }
-    return (kb * currentPrice).toFixed(4);
+    var ret = (kb * currentPrice).toFixed(4);
+    if(ret == 'NaN')
+    {
+        ret = '0';
+    } 
+    return ret;
   }
 
   openQuery =(payer) => {
