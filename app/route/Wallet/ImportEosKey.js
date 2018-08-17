@@ -1,13 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, Image, View, RefreshControl, Text, Platform, TextInput, ScrollView, TouchableHighlight, Animated,  Easing, TouchableOpacity, Modal  } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
-import store from 'react-native-simple-store';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import ScreenUtil from '../../utils/ScreenUtil'
-import { formatterNumber, formatterUnit, formatEosQua } from '../../utils/FormatUtil'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from "../../components/EasyShow"
 import { Eos } from "react-native-eosjs";
@@ -17,12 +14,6 @@ import Constants from '../../utils/Constants'
 const maxWidth = Dimensions.get('window').width;
 const maxHeight = Dimensions.get('window').height;
 var dismissKeyboard = require('dismissKeyboard');
-const pages = [];
-let loadMoreTime = 0;
-let currentLoadMoreTypeId;
-let timer;
-let currentTab = 0;
-const _index = 0;
 
 @connect(({ wallet }) => ({ ...wallet }))
 class ImportEosKey extends BaseComponent {
@@ -57,6 +48,9 @@ class ImportEosKey extends BaseComponent {
       Invalid: false,
       publicKey: '',
       ReturnData: '',
+      selectAccount: false,  //选择钱包
+      walletList: [],  //获取到的账户
+      keyObj:{},       //导入密钥对象
     };
   }
   //组件加载完成
@@ -89,20 +83,6 @@ class ImportEosKey extends BaseComponent {
     // }
     DeviceEventEmitter.removeListener('changeTab');
   }
-
-  // startTick(index) {
-  //   const { dispatch } = this.props;
-  //   InteractionManager.runAfterInteractions(() => {
-  //     clearInterval(timer);
-  //     timer = setInterval(function () {
-  //       dispatch({ type: 'sticker/list', payload: { type: index } });
-  //     }, 7000);
-  //   });
-  // }
-
-  // onRefresh(key) {
-  //   this.startTick(this.getRouteIndex(key));
-  // }
 
   //获得typeid坐标
   getRouteIndex(typeId) {
@@ -222,58 +202,21 @@ class ImportEosKey extends BaseComponent {
                 pthis.opendelay(active_publicKey, data);
                 return;
               }
-            var walletList = [];
-            var salt;
-            Eos.randomPrivateKey((r) => {
-              salt = r.data.ownerPrivate.substr(0, 18);
-              for (var i = 0; i < data.data.account_names.length; i++) {
-                var result = {
-                  data: {
-                    ownerPublic: '',
-                    activePublic: '',
-                    ownerPrivate: '',
-                    activePrivate: '',
-                    words_active: '',
-                    words: '',
-                  }
-                };
-                result.data.ownerPublic = owner_publicKey;
-                result.data.activePublic = active_publicKey;
-                result.data.words = '';
-                result.data.words_active = '';
-                result.data.ownerPrivate = owner_privateKey;
-                result.data.activePrivate = active_privatekey;
-                result.password = this.state.walletpwd;
-                result.name = data.data.account_names[i];
-                result.account = data.data.account_names[i];
-                result.isactived = true;
-                result.salt = salt;
-                walletList[i] = result;
-              }
-              // 保存钱包信息
-              this.props.dispatch({
-                type: 'wallet/saveWalletList',
-                walletList: walletList,
-                callback: (data) => {
-                  EasyShowLD.loadingClose();
-                  if (data.error != null) {
-                    EasyToast.show('导入私钥失败：' + data.error);
-                  } else {
-                    EasyToast.show('导入私钥成功！');
-                    this.props.dispatch({
-                      type: 'wallet/updateGuideState',
-                      payload: {
-                        guide: false
-                      }
-                    });
-                    DeviceEventEmitter.emit('updateDefaultWallet');
-                    DeviceEventEmitter.emit('modify_password');
-                    this.props.navigation.goBack();
+              var array = new Array();
+              for(var i = 0;i < data.data.account_names.length;i++){
+                var obj = new Object();
+                obj.name = data.data.account_names[i];
+                obj.isChecked = false;
 
-                  }
-                }
-              });
-            });
+                array[i] = obj;
+              }
+
+              var keyObj = new Object();
+              keyObj.owner_privateKey = owner_privateKey;
+              keyObj.owner_publicKey = owner_publicKey;
+              keyObj.active_privatekey = active_privatekey;
+              keyObj.active_publicKey = active_publicKey;
+              this.setState({selectAccount: true,walletList : array,keyObj:keyObj});  
           }
         });
       });
@@ -282,7 +225,70 @@ class ImportEosKey extends BaseComponent {
       EasyToast.show('privateToPublic err: ' + JSON.stringify(e));
     }
   }
+  specifiedAccountToWallet(account_names){
+    var walletList = [];
+    var salt;
+    Eos.randomPrivateKey((r) => {
+      salt = r.data.ownerPrivate.substr(0, 18);
+      for (var i = 0; i < account_names.length; i++) {
+        if(account_names[i].isChecked == false){
+          continue;// 未选中的跳过
+        }
+        var result = {
+          data: {
+            ownerPublic: '',
+            activePublic: '',
+            ownerPrivate: '',
+            activePrivate: '',
+            words_active: '',
+            words: '',
+          }
+        };
+        result.data.ownerPublic = this.state.keyObj.owner_publicKey;
+        result.data.activePublic = this.state.keyObj.active_publicKey;
+        result.data.words = '';
+        result.data.words_active = '';
+        result.data.ownerPrivate = this.state.keyObj.owner_privateKey;
+        result.data.activePrivate = this.state.keyObj.active_privatekey;
+        result.password = this.state.walletpwd;
+        result.name = account_names[i].name;
+        result.account = account_names[i].name;
+        result.isactived = true;
+        result.salt = salt;
+        walletList[i] = result;
+      }
+      if(walletList.length < 1)
+      {
+        //未选择，直接退出
+        return ;
+      }
 
+      // 保存钱包信息
+      this.props.dispatch({
+        type: 'wallet/saveWalletList',
+        walletList: walletList,
+        callback: (data) => {
+          EasyShowLD.loadingClose();
+          if (data.error != null) {
+            EasyToast.show('导入私钥失败：' + data.error);
+          } else {
+            EasyToast.show('导入私钥成功！');
+            this.props.dispatch({
+              type: 'wallet/updateGuideState',
+              payload: {
+                guide: false
+              }
+            });
+            DeviceEventEmitter.emit('updateDefaultWallet');
+            DeviceEventEmitter.emit('modify_password');
+            this.props.navigation.goBack();
+
+          }
+        }
+      });
+    });
+
+  }
   _onRequestClose() {
     let isShow = this.state.show;
     this.setState({
@@ -337,6 +343,39 @@ class ImportEosKey extends BaseComponent {
 
   dismissKeyboardClick() {
     dismissKeyboard();
+  }
+
+  _onRequestAccountClose() {
+    this.setState({selectAccount: false,});
+  }
+  _onPressEnter() {
+     this._onRequestAccountClose();
+     var selected = false; 
+     for (var i = 0; i < this.state.walletList.length; i++) 
+     {
+      if(this.state.walletList[i].isChecked){
+        selected = true;
+        break;
+      }
+    }
+    if(selected)
+    {
+      this.specifiedAccountToWallet(this.state.walletList);
+    }else{
+      EasyToast.show("请选择导入钱包");
+    }
+  }
+
+  selectItem(rowData){
+    var array = this.state.walletList;
+    for(var i = 0;i < array.length;i++){
+      if(rowData.name == array[i].name){
+        //已选中的，又撤销
+        array[i].isChecked = !(rowData.isChecked);  
+        break;
+      }
+    }
+    this.setState({walletList : array });
   }
 
   render() {
@@ -453,6 +492,44 @@ class ImportEosKey extends BaseComponent {
               </View>
             </TouchableOpacity>
         </Modal>  
+        <Modal style={styles.businesmodal} animationType={'slide'} transparent={true}  visible={this.state.selectAccount} onRequestClose={()=>{}}>
+            <TouchableOpacity style={styles.businestouchable} activeOpacity={1.0}>
+              <View style={styles.modalStyle}>
+                <View style={styles.subView}> 
+                  <Text style={styles.titleout}/>
+                  <Text style={styles.titleText}>请选择导入钱包</Text>
+                  <Button style={{}} onPress={this._onRequestAccountClose.bind(this)}>
+                    <Text style={styles.titleout}>×</Text>
+                  </Button>
+                </View>
+
+                <ListView style={styles.tab} renderRow={this.renderRow} enableEmptySections={true} 
+                    dataSource={this.state.dataSource.cloneWithRows(this.state.walletList == null ? [] : this.state.walletList)} 
+                    renderRow={(rowData, sectionID, rowID) => (                 
+                        <View style={styles.businessout}>
+                            <View style={styles.liststrip}>
+                                <Text style={styles.payertext} numberOfLines={1}>{rowData.name}</Text>
+
+                                <TouchableOpacity style={styles.taboue} onPress={ () => this.selectItem(rowData)}>
+                                  <View style={styles.tabview} >
+                                      <Image source={rowData.isChecked ? UImage.Tick:null} style={styles.tabimg} />
+                                  </View>  
+                                </TouchableOpacity>  
+                     
+                            </View>
+                        </View>
+
+                    )}                
+                /> 
+                <Button onPress={this._onPressEnter.bind(this)}>
+                    <View style={styles.buttonViewEnter}>
+                        <Text style={styles.buttonEnter}>确认导入</Text>
+                    </View>
+                </Button>  
+              </View>
+            </TouchableOpacity>
+        </Modal>  
+
       </View>
     );
   }
@@ -678,7 +755,85 @@ const styles = StyleSheet.create({
     fontSize: ScreenUtil.setSpText(14),
     color: UColor.arrow,
     lineHeight: ScreenUtil.autoheight(30),
-  }
+  },
+
+  touchableout: {
+    // flexDirection: "row",
+    // paddingTop: ScreenUtil.autoheight(15),
+    // paddingHorizontal: ScreenUtil.autowidth(5),
+  },
+  
+
+  businesmodal: {
+    flex: 1,
+    flexDirection:'column',
+    justifyContent: 'flex-end',
+    backgroundColor: UColor.tintColor,
+  },
+  businestouchable: {
+      flex: 1, 
+      justifyContent: 'flex-end', 
+      backgroundColor: UColor.mask,
+  },
+
+  businessout: {
+    height: ScreenUtil.autoheight(40),
+    // backgroundColor: UColor.mainColor,
+    // flexDirection: "row",
+    // paddingHorizontal: ScreenUtil.autowidth(5),
+    borderRadius: 5,
+    marginVertical: ScreenUtil.autoheight(2),
+    marginHorizontal: ScreenUtil.autowidth(5),
+
+    paddingHorizontal: ScreenUtil.autowidth(20),
+    flexDirection: "row",
+    borderBottomWidth: 0.5,
+    borderBottomColor: UColor.riceWhite,
+    justifyContent: 'center',
+    alignItems: 'center'
+},
+liststrip: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: 'center',
+},
+
+payertext: {
+  flex: 3,
+  fontSize: ScreenUtil.setSpText(14),
+  color: UColor.tintColor,
+  textAlign: 'left'
+},
+
+  buttonViewEnter: {
+    height: ScreenUtil.autoheight(50),
+    marginVertical: ScreenUtil.autoheight(10),
+    borderRadius: 6,
+    backgroundColor: UColor.tintColor,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonEnter: {
+    fontSize: ScreenUtil.setSpText(16),
+    color: UColor.fontColor
+  },
+
+  taboue: {
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  tabview: {
+      width: ScreenUtil.autowidth(27),
+      height: ScreenUtil.autowidth(27),
+      margin: ScreenUtil.autowidth(5),
+      borderColor: UColor.lightgray,
+      borderWidth: 1,
+  },
+  tabimg: {
+      width: ScreenUtil.autowidth(25), 
+      height: ScreenUtil.autowidth(25),
+  },
+
 });
 
 export default ImportEosKey;
