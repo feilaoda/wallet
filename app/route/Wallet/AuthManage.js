@@ -44,12 +44,12 @@ class AuthManage extends BaseComponent {
   }
  
   transferByOwner() {
-    // Clipboard.setString(this.state.ownerPk);
-    EasyToast.show("这个是跳转到过户")
+    const { navigate } = this.props.navigation;
+    navigate('AuthAransfer', { wallet:this.props.navigation.state.params.wallet});
+
   }
 
   manageByActive() {
-    // Clipboard.setString(this.state.activePk);
     const { navigate } = this.props.navigation;
     navigate('AuthChange', { wallet:this.props.navigation.state.params.wallet});
   }
