@@ -99,7 +99,7 @@ class Ram extends BaseComponent {
         // 默认获取RAM的时分图
         // this.fetchRAMLine(24,'24小时');
         // 获取曲线
-        this.onClickTimeType(this.state.selectedSegment);
+        this.fetchLine(this.state.selectedSegment);
        
         // 获取钱包信息和余额
         this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }, callback: () => {
@@ -134,7 +134,7 @@ class Ram extends BaseComponent {
     this.props.dispatch({type: 'transaction/getRamInfo',payload: {}});
 
     // 获取曲线
-    this.onClickTimeType(this.state.selectedSegment);
+    this.fetchLine(this.state.selectedSegment, true);
   }
   
   getRamTradeLog(){
@@ -173,18 +173,32 @@ class Ram extends BaseComponent {
   } 
 
    //获取时分图
-  fetchRAMLine(type,opt){
+  fetchRAMLine(type,opt, onRefreshing = false){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type:'transaction/getRamPriceLine',payload:{type:type}});
+        try {
+            if(!onRefreshing){
+                this.setState({logRefreshing: true});
+            }
+            this.props.dispatch({type:'transaction/getRamPriceLine',payload:{type:type}, callback: () => {
+                this.setState({logRefreshing: false});
+            }});
+        } catch (error) {
+            this.setState({logRefreshing: false});
+        }
+
     });
   }
   //获取K线
   fetchRAMKLine(dateType,opt){
     InteractionManager.runAfterInteractions(() => {
-        this.props.dispatch({type: 'transaction/getRamKLines',payload: {pageSize: "180", dateType: dateType}, callback: (resp) => {
-            try {
+        try {
+            if(!onRefreshing){
+                this.setState({logRefreshing: true});
+            }
+            this.props.dispatch({type: 'transaction/getRamKLines',payload: {pageSize: "180", dateType: dateType}, callback: (resp) => {
+                this.setState({logRefreshing: false});
                 if(resp.code == '0'){
-                  if(resp.data && resp.data.length > 0){
+                    if(resp.data && resp.data.length > 0){
                     // // 数据意义：日期(record_date),开盘(open)，收盘(close)，最低(min)，最高(max),交易量(volum)
                     // var data = splitData([
                     //     ['2013/1/24', 2320.26,2320.26,2287.3,2362.94,117990000],
@@ -221,45 +235,50 @@ class Ram extends BaseComponent {
                     var constructdata = splitData(arrayObj);
                     var echartsoption = combineRamKLine(constructdata);
                     this.setState({ dataKLine : echartsoption});
-                  }else{
+                    }else{
                     this.setState({ dataKLine : {}});
-                  }
+                    }
                 }
-            } catch (error) {
-                this.setState({ dataKLine : {}});
-            }
-        }});
-    
+            }});
+        }  catch (error) {
+            this.setState({ dataKLine : {}});
+            this.setState({logRefreshing: false});
+        }
+        
     });
     
   }
 
   onClickTimeType(opt){
+    this.fetchLine(opt);
+  }
+
+  fetchLine(opt, onRefreshing = false){
     if(opt == "时分"){
         this.setState({isKLine:false, showMore: false,selectedSegment:opt});
-        this.fetchRAMLine(24,'24小时');
+        this.fetchRAMLine(24,'24小时', onRefreshing);
         return ;
     }
     
     this.setState({isKLine:true, showMore: false,selectedSegment:opt});
     if(opt == "5分"){
-        this.fetchRAMKLine("5m",opt);
+        this.fetchRAMKLine("5m",opt, onRefreshing);
     }else if(opt == "15分"){
-        this.fetchRAMKLine("15m",opt);
+        this.fetchRAMKLine("15m",opt, onRefreshing);
     }else if(opt == "30分"){
-        this.fetchRAMKLine("30m",opt);
+        this.fetchRAMKLine("30m",opt, onRefreshing);
     }else if(opt == "1小时"){
         this.setState({showMoreTitle:opt});
-        this.fetchRAMKLine("1h",opt);
+        this.fetchRAMKLine("1h",opt, onRefreshing);
     }else if(opt == "1天"){
         this.setState({showMoreTitle:opt});
-        this.fetchRAMKLine("1d",opt);
+        this.fetchRAMKLine("1d",opt, onRefreshing);
     }else if(opt == "1周"){
         this.setState({showMoreTitle:opt});
-        this.fetchRAMKLine("1w",opt);
+        this.fetchRAMKLine("1w",opt, onRefreshing);
     }else if(opt == "1月"){
         this.setState({showMoreTitle:opt});
-        this.fetchRAMKLine("1M",opt);
+        this.fetchRAMKLine("1M",opt, onRefreshing);
     }
   }
   
