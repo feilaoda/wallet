@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: ScreenUtil.autowidth(20),
-        marginTop: ScreenUtil.autoheight(60),
+        marginTop: ScreenUtil.autoheight(30),
         borderRadius: 5,
         backgroundColor:  UColor.tintColor,
     },

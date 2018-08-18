@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.secdColor,
         fontSize: ScreenUtil.setSpText(14),
         lineHeight: ScreenUtil.autoheight(25),
-        minHeight: ScreenUtil.autoheight(60),
+        height: ScreenUtil.autoheight(60),
         paddingHorizontal: ScreenUtil.autowidth(10),
     },
 
@@ -382,6 +382,7 @@ const styles = StyleSheet.create({
 
     logout:{
         flex: 1,
+        minHeight: ScreenUtil.autoheight(200),
         alignItems: 'center',
         justifyContent: 'flex-end',
         paddingBottom: ScreenUtil.autoheight(20),
