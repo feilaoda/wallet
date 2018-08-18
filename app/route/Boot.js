@@ -66,7 +66,7 @@ class Boot extends React.Component {
                 <View style={{height:'50%',alignItems:'center'}}>
                     <Image source={UImage.d} style={{width:215,height:283,marginTop:50}} />
                 </View>
-                <Text onPress={()=>{this.comin()}} style={{color:UColor.tintColor,fontSize:22,width:100,textAlign:"center",position: 'absolute',left: width-100,right: 0,top: height-80,bottom: 0,}}>进入→</Text>
+                <Text onPress={()=>{this.comin()}} style={{color:UColor.tintColor,fontSize:22,width:100,textAlign:"center",position: 'absolute',left: ScreenWidth-100,right: 0,top: ScreenHeight-80,bottom: 0,}}>进入→</Text>
             </View>
         </Swiper>
       </View>
