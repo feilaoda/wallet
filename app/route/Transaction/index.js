@@ -993,7 +993,7 @@ class Transaction extends BaseComponent {
     return <View style={styles.container}>
     <TouchableOpacity style={styles.transactiontou}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
         <View style={styles.transactionout}>
-            <Text style={styles.paneltext}>交易面板1</Text>
+            <Text style={styles.paneltext}>交易面板</Text>
         </View>
     </TouchableOpacity>
     <View style={styles.headerTitle}>  
