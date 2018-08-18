@@ -72,8 +72,8 @@ class AuthChange extends BaseComponent {
             return
         }
 
-        if(this.state.inputText.length<53){
-            EasyToast.show("请先输入完整公钥");
+        if(this.state.inputText.length<1){
+            EasyToast.show("请先输入公钥");
             return//暂不支持账号先
         }
 
