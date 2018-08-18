@@ -363,10 +363,8 @@ class Home extends React.Component {
 
   createWallet() {
     const { navigate } = this.props.navigation;
-    navigate('WalletManage', {});
-    this.setState({
-      modal: false
-    });
+    navigate('CreateWallet', {});
+    this.setState({modal: false});
     this._disableTipVisible();
   }
   importWallet() {
@@ -698,7 +696,7 @@ class Home extends React.Component {
                       <Text style={styles.establishtext}>创建钱包</Text>
                     </View>
                   </Button>
-                  <Button onPress={() => this.createWallet()} style={styles.btnout}>
+                  <Button onPress={() => this.importWallet()} style={styles.btnout}>
                     <View style={styles.establishout}>
                       <Image source={UImage.xin_import} style={styles.establishimg} />
                       <Text style={styles.establishtext}>导入钱包</Text>
