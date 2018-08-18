@@ -437,7 +437,7 @@ delInputBox(delKey){
 
     return (<View style={styles.container}>
       <ScrollView keyboardShouldPersistTaps="always">
-      <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
+      <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "padding" : null}>
         {this.state.activePk != '' && 
         <View style={styles.inptoutgo} >
             <View style={styles.titleStyle}>
