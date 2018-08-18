@@ -242,10 +242,11 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
         
         var privateKey = this.props.navigation.state.params.wallet.activePrivate;
         try {
+            EasyShowLD.loadingShow();
             var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.navigation.state.params.wallet.salt);
             var plaintext_privateKey = bytes_privateKey.toString(CryptoJS.enc.Utf8);
             if (plaintext_privateKey.indexOf('eostoken') != -1) {
-                EasyShowLD.loadingShow();
+                
                 plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
                 this.EosUpdateAuth(this.props.navigation.state.params.wallet.name, plaintext_privateKey,authTempActive,(r) => {
                     EasyShowLD.loadingClose();
@@ -258,7 +259,6 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
                         }
                         this.getAccountInfo();//刷新一下
                     });
-                EasyShowLD.loadingClose();
             } else {
                 EasyShowLD.loadingClose();
                 EasyToast.show('密码错误');
@@ -407,7 +407,7 @@ delInputBox(delKey){
                 <View style={styles.userAddView}>
                     <Image source={UImage.adminAddA} style={styles.imgBtn} />
                     <Text style={styles.buttonText}>添加授权用户</Text>
-                    <Text style={styles.buttonText}>{rowID+1}</Text>
+                    <Text style={styles.buttonText}>{rowData.index+1}</Text>
                 </View>
 
                 <View style={styles.buttonView}>
@@ -418,13 +418,13 @@ delInputBox(delKey){
 
             <TextInput ref={(ref) => this._lphone = ref} value={rowData.item.value} returnKeyType="next" editable={true}
                 selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
-                onChangeText={(inputText) => this.setState({ inputText: this.inputValue(rowID,inputText)})}   keyboardType="default" 
+                onChangeText={(inputText) => this.setState({ inputText: this.inputValue(rowData.index,inputText)})}   keyboardType="default" 
                 placeholder="输入Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
 
             {/* {rowData.key<this.state.inputCount && */}
             {/* {rowData.key>0 && */}
             {this.state.inputText.length>1 &&
-            <TouchableHighlight onPress={() => { this.delInputBox(rowID) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
+            <TouchableHighlight onPress={() => { this.delInputBox(rowData.index) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
                 <View style={styles.delButton}>
                     <Text style={styles.delText}>删除</Text>
                 </View>
