@@ -858,14 +858,7 @@ class Ram extends BaseComponent {
                             || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? styles.timeinitial : styles.timeSelect }>
                             {this.state.showMoreTitle}
                             </Text> 
-                            <Ionicons name={this.state.showMore ? "md-arrow-dropdown" : "md-arrow-dropright"} size={20} color={this.state.showMore ? UColor.tintColor : UColor.fontColor}/>
-                        </View>
-                    </Button> 
-                </View>
-                <View style={styles.timetabout}>
-                    <Button disabled={true}>
-                        <View style={styles.timeview}>
-                            <Text style={styles.timeSelect}></Text>
+                            <Ionicons name={this.state.showMore ? "md-arrow-dropdown" : "md-arrow-dropright"} size={ScreenUtil.autowidth(20)} color={this.state.showMore ? UColor.tintColor : UColor.fontColor}/>
                         </View>
                     </Button> 
                 </View>
@@ -905,13 +898,6 @@ class Ram extends BaseComponent {
                     <Button onPress={this.onClickTimeType.bind(this,"1月")}>
                         <View style={styles.timeview} >
                             <Text style={styles.timeSelect}>1月</Text>
-                        </View>
-                    </Button> 
-                </View>
-                <View style={styles.timetabout}>
-                    <Button disabled={true}>
-                        <View style={styles.timeview} >
-                            <Text style={styles.timeSelect}></Text>
                         </View>
                     </Button> 
                 </View>
@@ -974,10 +960,10 @@ class Ram extends BaseComponent {
                             <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                                 renderHeader = {()=>
                                 <View style={styles.formout}>
-                                    <Text style={styles.formname}>账号</Text>
+                                    <Text style={styles.formName}>账号</Text>
                                     <Text style={styles.formNumber}>数量(EOS)</Text>
                                     <Text style={styles.formPrice}>价格(KB)</Text>
-                                    <Text style={styles.buytime}>时间</Text>
+                                    <Text style={styles.formTime}>时间</Text>
                                 </View>
                                 }
                                 dataSource={this.state.dataSource.cloneWithRows(this.props.ramBigTradeLog == null ? [] : this.props.ramBigTradeLog)} 
@@ -1229,7 +1215,7 @@ const styles = StyleSheet.create({
     timeview: { 
         flexDirection:'row',
         marginLeft: ScreenUtil.autowidth(2),
-        width: ScreenUtil.autowidth(40), 
+        width: ScreenUtil.autowidth(45), 
         height: ScreenUtil.autoheight(30),
         justifyContent: 'center', 
         alignItems: 'center' 

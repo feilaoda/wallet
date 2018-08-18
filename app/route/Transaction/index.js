@@ -1083,15 +1083,7 @@ class Transaction extends BaseComponent {
                     <View style={styles.timeview} >
                          <Text style={(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
                          || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? styles.timeinitial : styles.timeSelect}>{this.state.showMoreTitle}</Text>
-                         <Ionicons name={this.state.showMore ? "md-arrow-dropdown" : "md-arrow-dropright"} size={20} color={this.state.showMore ? UColor.tintColor : UColor.fontColor}/>
-                    </View>
-                </Button> 
-
-            </View>
-            <View style={styles.timetabout}>
-                <Button disabled={true}>
-                    <View style={styles.timeview} >
-                        <Text style={styles.timeSelect}></Text>
+                         <Ionicons name={this.state.showMore ? "md-arrow-dropdown" : "md-arrow-dropright"} size={ScreenUtil.autowidth(20)} color={this.state.showMore ? UColor.tintColor : UColor.fontColor}/>
                     </View>
                 </Button> 
             </View>
@@ -1130,13 +1122,6 @@ class Transaction extends BaseComponent {
                <Button onPress={this.onClickTimeType.bind(this,"1月")}>
                     <View style={styles.timeview} >
                         <Text style={styles.timeSelect}>1月</Text>
-                    </View>
-                </Button> 
-            </View>
-            <View style={styles.timetabout}>
-               <Button disabled={true}>
-                    <View style={styles.timeview} >
-                        <Text style={styles.timeSelect}></Text>
                     </View>
                 </Button> 
             </View>
@@ -1639,7 +1624,7 @@ const styles = StyleSheet.create({
     timeview: { 
         flexDirection:'row',
         marginLeft: ScreenUtil.autowidth(2),
-        width: ScreenUtil.autowidth(40), 
+        width: ScreenUtil.autowidth(45), 
         height: ScreenUtil.autoheight(30),
         borderRadius: 3, 
         justifyContent: 'center', 
