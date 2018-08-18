@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
     width: ScreenUtil.autowidth(120),
     height: ScreenUtil.autoheight(45),
     fontSize: ScreenUtil.setSpText(15),
-    backgroundColor: UColor.fontColor,
+    backgroundColor: UColor.riceWhite,
   },
 
   container: {

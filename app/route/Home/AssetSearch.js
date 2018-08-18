@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: ScreenUtil.autowidth(15),
         marginVertical: ScreenUtil.autoheight(10),
         fontSize: ScreenUtil.setSpText(16),
-        backgroundColor: UColor.fontColor,
+        backgroundColor: UColor.riceWhite,
     },
     copyout: {
       margin: ScreenUtil.autowidth(10), 
