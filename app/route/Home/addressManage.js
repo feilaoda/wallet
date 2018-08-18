@@ -204,6 +204,64 @@ class addressManage extends BaseComponent {
         const { navigate } = this.props.navigation;
         navigate('BarCode', {isTurnOut:true,coinType:this.state.coinType});
     }
+
+    editClick = () => { // 管理地址
+        this.setState({
+            isEdit: !this.state.isEdit,
+            selectMap: new Map()
+        }, () => {
+            this.setState({
+                isShowBottom: this.state.isEdit ? true : false
+            })
+        })    
+        const { dispatch } = this.props;
+        this.props.dispatch({ type: 'addressBook/addressInfo'});   
+    };
+
+    deleteItem = () => { // 删除地址
+        let {selectMap} = this.state;
+        // let valueArr = [...selectMap.values()];
+        let keyArr = [...selectMap.keys()];
+        const { dispatch } = this.props;
+        this.props.dispatch({ type: 'addressBook/delAddress', payload: { keyArr: keyArr},callback: (data) => {
+            this.props.dispatch({ type: 'addressBook/addressInfo'});   
+        }});
+    };
+
+    // allSelect = (isChecked) => { // 全选
+    //     this.setState({
+    //         isAllSelect: !isChecked
+    //     });
+    //     if (isChecked) { // 如果已经勾选了,则取消选中
+    //         let {selectMap} = this.state;
+    //         selectMap = new Map();
+    //         this.setState({selectMap})
+    //     } else { // 没有勾选的, 全部勾选
+    //         let newMap = new Map();
+    //         for (let key = 0; key < collectionArray.length; key++) {
+    //             let value = collectionArray[key].collectItem; // 拿到数组的collectItem
+    //             newMap.set(key, value) // 第一个key, 第二个是value
+    //         }
+    //         this.setState({selectMap: newMap})
+    //     }
+    // }
+
+    selectItem = (key, value, isChecked) => { // 单选
+        this.setState({
+            isChecked: !this.state.isChecked,
+            // preIndex: key  //  **** 单选逻辑 ****
+        }, () => {
+            let map = this.state.selectMap;
+            if (isChecked) {
+                map.delete(key, value) // 再次点击的时候,将map对应的key,value删除
+            } else {
+                // map = new Map() // ------>   **** 单选逻辑 ****
+                map.set(key, value) // 勾选的时候,重置一下map的key和value
+            }
+            this.setState({selectMap: map})
+        })
+    }
+
     render() {
         let temp = [...this.state.selectMap.values()];
         let isChecked = temp.length === this.state.dataSource._cachedRowCount;
@@ -232,9 +290,9 @@ class addressManage extends BaseComponent {
                     <TouchableOpacity onPress={() => this.deleteItem(this)} style={styles.deleteItemout}>
                         <Text style={styles.address}>删除地址</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.editClick(this)} style={styles.completeout}>                              
+                    {/* <TouchableOpacity onPress={() => this.editClick(this)} style={styles.completeout}>                              
                         <Text style={styles.address}>完成</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View> : null
                 }
                 <View style={styles.pupuo}>  
@@ -274,64 +332,6 @@ class addressManage extends BaseComponent {
                 </View>    
             </View>
         );
-    }
-
-    
-
-    editClick = () => { // 管理地址
-        this.setState({
-            isEdit: !this.state.isEdit,
-            selectMap: new Map()
-        }, () => {
-            this.setState({
-                isShowBottom: this.state.isEdit ? true : false
-            })
-        })    
-        const { dispatch } = this.props;
-        this.props.dispatch({ type: 'addressBook/addressInfo'});   
-    };
-
-    deleteItem = () => { // 删除地址
-        let {selectMap} = this.state;
-        // let valueArr = [...selectMap.values()];
-        let keyArr = [...selectMap.keys()];
-        const { dispatch } = this.props;
-        this.props.dispatch({ type: 'addressBook/delAddress', payload: { keyArr: keyArr}});
-       
-    };
-
-    // allSelect = (isChecked) => { // 全选
-    //     this.setState({
-    //         isAllSelect: !isChecked
-    //     });
-    //     if (isChecked) { // 如果已经勾选了,则取消选中
-    //         let {selectMap} = this.state;
-    //         selectMap = new Map();
-    //         this.setState({selectMap})
-    //     } else { // 没有勾选的, 全部勾选
-    //         let newMap = new Map();
-    //         for (let key = 0; key < collectionArray.length; key++) {
-    //             let value = collectionArray[key].collectItem; // 拿到数组的collectItem
-    //             newMap.set(key, value) // 第一个key, 第二个是value
-    //         }
-    //         this.setState({selectMap: newMap})
-    //     }
-    // }
-
-    selectItem = (key, value, isChecked) => { // 单选
-        this.setState({
-            isChecked: !this.state.isChecked,
-            // preIndex: key  //  **** 单选逻辑 ****
-        }, () => {
-            let map = this.state.selectMap;
-            if (isChecked) {
-                map.delete(key, value) // 再次点击的时候,将map对应的key,value删除
-            } else {
-                // map = new Map() // ------>   **** 单选逻辑 ****
-                map.set(key, value) // 勾选的时候,重置一下map的key和value
-            }
-            this.setState({selectMap: map})
-        })
     }
 };
 

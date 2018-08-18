@@ -50,15 +50,15 @@ export default {
         //     // alert('walletArr'+JSON.stringify(walletArr));
         //     yield put({ type: 'updateAction', payload: { data: walletArr, ...payload } });
         // }, 
-        *delAddress({ payload }, { call, put }) {          
+        *delAddress({ payload ,callback}, { call, put }) {          
             var addressBook = yield call(store.get, 'addressBook');
             for (var i = payload.keyArr.length; i > 0 ; i--) {
                 addressBook.splice(payload.keyArr[i-1], 1);
                 yield call(store.save, 'addressBook', addressBook);
                 yield put({ type: 'update', payload: { data: addressBook, ...payload } });
-                EasyToast.show('删除成功，点击完成刷新');
+                // EasyToast.show('删除成功，点击完成刷新');
             }
-
+            if(callback) callback("ok");
             // var myAddressBook = yield call(store.get, 'addressBook');        
             // if (myAddressBook == null) {
             //     return;
