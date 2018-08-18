@@ -20,7 +20,6 @@ export default {
           const resp = yield call(Request.request,sticker,'get');
           if(resp.code=='0'){
               yield put({type:'update',payload:{...payload,data:resp.data}});
-              Constants.netTimeoutFlag=false;
               if (callback) callback(resp.data);
           }else{
             yield put({type:'updateLoading',payload:{loading:false}});
@@ -40,7 +39,6 @@ export default {
           const resp = yield call(Request.request,sticker,'get');
           if(resp.code=='0'){
               yield put({type:'update',payload:{...payload,data:resp.data}});
-              Constants.netTimeoutFlag=false;
           }else{
             yield put({type:'updateLoading',payload:{loading:false}});
             EasyToast.show(resp.msg);

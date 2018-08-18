@@ -35,7 +35,6 @@ export default {
                          dts.push(item);
                     }
                     yield put({type:'update',payload:{data:dts,...payload}});
-                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }
@@ -58,7 +57,6 @@ export default {
                 payload.news.isUp=true;
                 payload.news.up=payload.news.up+1;
                 yield put({type:'updateAction',...payload});
-                Constants.netTimeoutFlag=false;
             }else{
                 EasyToast.show(resp.msg);
             }
@@ -79,7 +77,6 @@ export default {
                 payload.news.isDown=true;
                 payload.news.down=payload.news.down+1;
                 yield put({type:'updateAction',...payload});
-                Constants.netTimeoutFlag=false;
             }else{
                 EasyToast.show(resp.msg);
             }
@@ -93,7 +90,6 @@ export default {
             if(resp.code==0){
                 payload.news.view=payload.news.view+1;
                 yield put({type:'updateAction',...payload});
-                Constants.netTimeoutFlag=false;
             }else{
                 EasyToast.show(resp.msg);
             }
@@ -107,7 +103,6 @@ export default {
             if(resp.code==0){
                 payload.news.share=payload.news.share+1;
                 yield put({type:'updateAction',...payload});
-                Constants.netTimeoutFlag=false;
             }else{
                 EasyToast.show(resp.msg);
             }

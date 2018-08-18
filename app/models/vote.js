@@ -19,8 +19,7 @@ export default {
             //  alert('listAgent ：'+JSON.stringify(resp));
             // const resp = yield call(Request.request,listAgent,"get");
             if(resp && resp.code=='0'){               
-                yield put({ type: 'updateVote', payload: { voteData:resp.data } });
-                Constants.netTimeoutFlag=false;
+                yield put({ type: 'updateVote', payload: { voteData:resp.data } });            
                 // yield put({ type: 'updateVote', payload: { AgentData:resp.data } });
                 if (callback) callback(resp.data);
             }else{
@@ -89,7 +88,7 @@ export default {
             let used_Percentage= (((resp.data.rows[0].total_ram_bytes_reserved / 1024 / 1024 / 1024).toFixed(2) / (resp.data.rows[0].max_ram_size / 1024 / 1024 / 1024).toFixed(2)) * 10000 / 100).toFixed()
             if(resp && resp.code=='0'){    
                 yield put({ type: 'updateGlobal', payload: { total:total,used:used,used_Percentage:used_Percentage } });
-                Constants.netTimeoutFlag=false;
+                
             }else{
                 EasyToast.show(resp.msg);
             }

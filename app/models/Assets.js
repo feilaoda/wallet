@@ -33,7 +33,6 @@ export default {
                 EasyToast.show(resp.msg);
             }
             yield put({type:'upstatus',payload:{newsRefresh:false}});
-            Constants.netTimeoutFlag=false;
         } catch (error) {
             yield put({type:'upstatus',payload:{newsRefresh:false}});
             EasyToast.show('网络繁忙,请稍后!');
@@ -45,7 +44,6 @@ export default {
             const resp = yield call(Request.request, addAssetToServer, 'post', {contract_account: payload.contractAccount, name: payload.name});
             if(resp && resp.code=='0'){
                 DeviceEventEmitter.emit('updateAssetList', payload);
-                Constants.netTimeoutFlag=false;
             }
             if(callback){
                 callback(resp);
@@ -161,7 +159,6 @@ export default {
                 // }
 
                 DeviceEventEmitter.emit('updateMyAssetsBalance', payload);
-                Constants.netTimeoutFlag=false;
             }
 
             if(callback){

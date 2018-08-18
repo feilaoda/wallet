@@ -415,8 +415,7 @@ export default {
                     }
                 }
                 yield call(store.save, 'walletArr', walletArr);
-                yield put({ type: 'updateAction', payload: { data: walletArr, ...payload } });
-                Constants.netTimeoutFlag=false;
+                yield put({ type: 'updateAction', payload: { data: walletArr, ...payload } });                
             } catch (error) {
                 if (callback) callback({ code: 500, msg: "网络异常" });
             }

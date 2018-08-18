@@ -1,6 +1,6 @@
 import React from 'react';
 import { StackNavigator, TabNavigator } from 'react-navigation';
-import { CameraRoll, Image, View, BackHandler, Text, Platform, DeviceEventEmitter, BackAndroid, AppState, Linking, Dimensions, ScrollView, Animated, Easing } from 'react-native';
+import { CameraRoll, Image, View, BackHandler, Text, Platform, DeviceEventEmitter, BackAndroid, AppState, Linking, Dimensions, ScrollView, Animated, Easing, NetInfo } from 'react-native';
 import { redirect } from '../utils/Api'
 import UColor from '../utils/Colors'
 import UImage from '../utils/Img'
@@ -72,7 +72,6 @@ import ScreenUtil from '../utils/ScreenUtil'
 import RecordQueryRam from './Transaction/RecordQueryRam';
 import RecordQueryET from './Transaction/RecordQueryET';
 import Warning from './Transaction/Warning'
-
 
 require('moment/locale/zh-cn');
 var ScreenWidth = Dimensions.get('window').width;
@@ -615,6 +614,25 @@ class Route extends React.Component {
       this.stopTimer();
     });
 
+    NetInfo.fetch().done((status) => {
+      // alert(status);
+      if(status == "NONE"){
+        Constants.netTimeoutFlag = true;
+      }else{
+        Constants.netTimeoutFlag = false;
+      }
+    })
+
+    NetInfo.addEventListener('change', this.handleConnectivityChange);
+  }
+
+  handleConnectivityChange(status){
+    // alert("111:" + status)
+    if(status == "NONE"){
+      Constants.netTimeoutFlag = true;
+    }else{
+      Constants.netTimeoutFlag = false;
+    }
   }
 
   shareAction = (e) => {

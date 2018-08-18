@@ -15,7 +15,6 @@ export default {
                 const resp = yield call(Request.request, line + payload.coin + "?type=" + payload.type, 'get');
                 if (resp.code == '0') {
                     yield put({ type: 'update', payload: { data: resp.data, ...payload } });
-                    Constants.netTimeoutFlag=false;
                 } else {
                     EasyToast.show(resp.msg);
                 }
@@ -29,7 +28,6 @@ export default {
                 const resp = yield call(Request.request, coinInfo + payload.id, 'get');
                 if (resp.code == '0') {
                     yield put({ type: 'updateInfo', payload: { info: resp.data, ...payload } });
-                    Constants.netTimeoutFlag=false;
                 } else {
                     EasyToast.show(resp.msg);
                 }

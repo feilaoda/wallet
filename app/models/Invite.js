@@ -16,7 +16,6 @@ export default {
                 //解析数据
                 if (resp.code == "0") {
                     yield put({type:'update',payload:{invite:resp.data}});
-                    Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
                 }

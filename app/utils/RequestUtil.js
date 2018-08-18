@@ -56,7 +56,6 @@ const requestO = (url,method, body, timeout=30000) => {
     }).then((response) => {
         if (response.ok) {
           isOk = true;
-          Constants.netTimeoutFlag=false;
         } else {
           isOk = false;
         }
@@ -90,6 +89,9 @@ const requestO = (url,method, body, timeout=30000) => {
 };
 
 const request = (url,method,body, timeout = 30000)=>{
+   if(Constants.netTimeoutFlag){
+    return { code: 500, msg: '网络繁忙，请稍后再试' };
+   }
    return getRootaddr().then(res=>{
       let okUrl = url
       let rootaddr = res
@@ -100,9 +102,8 @@ const request = (url,method,body, timeout = 30000)=>{
       return requestO(okUrl, method, body, timeout)
    }).catch(e=>{
     console.log(e);
-    Constants.netTimeoutFlag=true;
+    // Constants.netTimeoutFlag=true;
     return { code: 500, msg: '网络繁忙，请稍后再试' };
-   
    })
 };
 
