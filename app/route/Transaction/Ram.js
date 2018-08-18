@@ -780,7 +780,7 @@ class Ram extends BaseComponent {
             <Text style={styles.paneltext}>交易面板</Text>
         </View>
     </TouchableOpacity>
-    {Constants.netTimeoutFlag==true &&
+    {Constants.isNetWorkOffline &&
         <Button onPress={this.openSystemSetting.bind(this)}>
             <View style={styles.systemSettingTip}>
                 <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>

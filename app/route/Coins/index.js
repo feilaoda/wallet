@@ -183,7 +183,7 @@ class Coins extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {Constants.netTimeoutFlag==true &&
+        {Constants.isNetWorkOffline &&
         <Button onPress={this.openSystemSetting.bind(this)}>
           <View style={styles.systemSettingTip}>
             <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>

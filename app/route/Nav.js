@@ -614,25 +614,17 @@ class Route extends React.Component {
       this.stopTimer();
     });
 
-    NetInfo.fetch().done((status) => {
-      // alert(status);
-      if(status == "NONE"){
-        Constants.netTimeoutFlag = true;
-      }else{
-        Constants.netTimeoutFlag = false;
-      }
-    })
+    // NetInfo.addEventListener('change', this.handleConnectivityChange);
 
-    NetInfo.addEventListener('change', this.handleConnectivityChange);
+    NetInfo.isConnected.fetch().then(isConnected => {
+      Constants.isNetWorkOffline = !isConnected;
+    });
+
+    NetInfo.isConnected.addEventListener('change',this.handleConnectivityChange);
   }
 
-  handleConnectivityChange(status){
-    // alert("111:" + status)
-    if(status == "NONE"||status=='none'){
-      Constants.netTimeoutFlag = true;
-    }else{
-      Constants.netTimeoutFlag = false;
-    }
+  handleConnectivityChange(isConnected){
+    Constants.isNetWorkOffline = !isConnected;
   }
 
   shareAction = (e) => {
