@@ -101,10 +101,10 @@ class addressManage extends BaseComponent {
                 EasyToast.show('请输入正确的账号');
             }
         }
-        if (obj == this.props.defaultWallet.account) {
-            EasyToast.show('收款账户和转出账户不能相同，请重输');
-            obj = "";
-        }
+        // if (obj == this.props.defaultWallet.account) {
+        //     EasyToast.show('收款账户和转出账户不能相同，请重输');
+        //     obj = "";
+        // }
         return obj;
     }
 
