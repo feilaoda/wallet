@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TouchableOpacity, TextInput, RefreshControl } from 'react-native';
 import moment from 'moment';
 import UColor from '../../utils/Colors'
@@ -271,6 +272,9 @@ class RecordQueryRam extends React.Component {
                 }
                 <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : (rowData.price * 1).toFixed(4)}{(rowData.price == null || rowData.price == '0') ? '' :  ' EOS/KB'}</Text>
               </View>
+              <View style={styles.Ionicout}>
+                <Ionicons color={UColor.arrow} name="ios-arrow-forward-outline" size={20} /> 
+              </View>
             </View>
           </Button>
         )}                   
@@ -352,9 +356,10 @@ const styles = StyleSheet.create({
       paddingHorizontal: ScreenUtil.autowidth(10),
       paddingVertical: ScreenUtil.autoheight(5),
       marginHorizontal: ScreenUtil.autowidth(10),
-      marginVertical: ScreenUtil.autoheight(5),
+      marginVertical: ScreenUtil.autoheight(1),
     },
     leftout: {
+      flex: 1,
       flexDirection: "column",
       justifyContent: "space-between",
     },
@@ -375,19 +380,24 @@ const styles = StyleSheet.create({
     selltext: {
       flex: 5,
       color: UColor.riseColor,
-      textAlign: 'right',
+      textAlign: 'left',
       fontSize: ScreenUtil.setSpText(15),
     },
     buytext: {
       flex: 5,
       color: UColor.fallColor,
-      textAlign: 'right',
+      textAlign: 'left',
       fontSize: ScreenUtil.setSpText(15),
     },
     presentprice: {
-      textAlign: 'right',
+      textAlign: 'left',
       color: UColor.arrow,
       fontSize: ScreenUtil.setSpText(14),
-    }
+    },
+    Ionicout: {
+      width: ScreenUtil.autowidth(30),
+      justifyContent: 'center',
+      alignItems: 'flex-end'
+  },
 });
 export default RecordQueryRam;
