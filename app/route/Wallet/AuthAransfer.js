@@ -73,15 +73,15 @@ class AuthAransfer extends BaseComponent {
                 }
             });
 
-            for (var j = 0; j < authTempOwner.data.keys.length; j++) {
-                if (authTempOwner.data.keys[j].key ==this.state.inputOwnerPK){
+            for (var j = 0; j < authTempOwner.data.auth.keys.length; j++) {
+                if (authTempOwner.data.auth.keys[j].key ==this.state.inputOwnerPK){
                     EasyToast.show('Owner公钥已存在');
                     return;
                 }
             }
-            for (var j = 0; j < authTempOwner.data.keys.length; j++) {
-                if (authTempOwner.data.keys[j].key ==this.props.navigation.state.params.wallet.ownerPublic){
-                    authTempOwner.data.keys[j].key=this.state.inputOwnerPK;//替换原公钥
+            for (var j = 0; j < authTempOwner.data.auth.keys.length; j++) {
+                if (authTempOwner.data.auth.keys[j].key ==this.props.navigation.state.params.wallet.ownerPublic){
+                    authTempOwner.data.auth.keys[j].key=this.state.inputOwnerPK;//替换原公钥
                 }
             }
         }
@@ -102,9 +102,9 @@ class AuthAransfer extends BaseComponent {
                 }
             }
 
-            for (var j = 0; j < authTempActive.data.keys.length; j++) {
-                if (authTempActive.data.keys[j].key ==this.props.navigation.state.params.wallet.activePublic){
-                    authTempActive.data.keys[j].key=this.state.inputActivePK;//替换原公钥
+            for (var j = 0; j < authTempActive.data.auth.keys.length; j++) {
+                if (authTempActive.data.auth.keys[j].key ==this.props.navigation.state.params.wallet.activePublic){
+                    authTempActive.data.auth.keys[j].key=this.state.inputActivePK;//替换原公钥
                 }
             }
         }
@@ -170,8 +170,8 @@ class AuthAransfer extends BaseComponent {
                 parent: "",// owner
                 auth: {
                     threshold: '',//总阀值 1
-                    keys: '',//公钥组 Keys
-                    accounts: '',//帐户组 Accounts
+                    keys: [],//公钥组 Keys
+                    accounts: [],//帐户组 Accounts
                   }
             }
         };
@@ -188,8 +188,8 @@ class AuthAransfer extends BaseComponent {
                 parent: "",// owner
                 auth: {
                     threshold: '',//总阀值 1
-                    keys: '',//公钥组 Keys
-                    accounts: '',//帐户组 Accounts
+                    keys: [],//公钥组 Keys
+                    accounts: [],//帐户组 Accounts
                   }
             }
         };
@@ -205,8 +205,8 @@ class AuthAransfer extends BaseComponent {
         // authTempActive.data.permission="active";
         authTempActive.data.parent=data.permissions[0].parent;
         authTempActive.data.auth.threshold=data.permissions[0].required_auth.threshold;
-        authTempActive.data.keys=data.permissions[0].required_auth.keys;
-        authTempActive.data.accounts=data.permissions[0].required_auth.accounts;
+        authTempActive.data.auth.keys=data.permissions[0].required_auth.keys;
+        authTempActive.data.auth.accounts=data.permissions[0].required_auth.accounts;
 
         //owner
         authTempOwner.authorization[0].actor=this.props.navigation.state.params.wallet.name;
@@ -215,13 +215,13 @@ class AuthAransfer extends BaseComponent {
         // authTempOwner.data.permission="owner";
         authTempOwner.data.parent=data.permissions[1].parent;
         authTempOwner.data.auth.threshold=data.permissions[1].required_auth.threshold;
-        authTempOwner.data.keys=data.permissions[1].required_auth.keys;
-        authTempOwner.data.accounts=data.permissions[1].required_auth.accounts;
+        authTempOwner.data.auth.keys=data.permissions[1].required_auth.keys;
+        authTempOwner.data.auth.accounts=data.permissions[1].required_auth.accounts;
 
 
         //公钥
-        for(var i=0;i<authTempOwner.data.keys.length;i++){
-            if(authTempOwner.data.keys[i].key == this.props.navigation.state.params.wallet.ownerPublic){
+        for(var i=0;i<authTempOwner.data.auth.keys.length;i++){
+            if(authTempOwner.data.auth.keys[i].key == this.props.navigation.state.params.wallet.ownerPublic){
                 temp=retKeys[i];
                 authFlag=true;
             }

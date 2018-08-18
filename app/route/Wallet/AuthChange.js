@@ -77,9 +77,7 @@ class AuthChange extends BaseComponent {
             return
         }
 
-
-        var arrKeys=this.state.inputPubKey;
-        var arrAccounts=this.state.inputAccounts;
+        var authTempActive=this.state.activeAuth;
 
         for(var i=0;i<this.state.inputText.length;i++){
             if (this.state.inputText[i].value.length > 12) {
@@ -90,31 +88,31 @@ class AuthChange extends BaseComponent {
                     }
                 });j
 
-                for (var j = 0; j < arrKeys.length; j++) {
-                    if (arrKeys[j].key ==this.state.inputText[i].value) {
+                for (var j = 0; j < authTempActive.data.auth.keys.length; j++) {
+                    if (authTempActive.data.auth.keys[j].key ==this.state.inputText[i].value) {
                         EasyToast.show('添加公钥已存在');
                         return;
                     }
                 }
-                arrKeys.push({weight:1,key:this.state.inputText[i].value})
+                authTempActive.data.auth.keys.push({weight:1,key:this.state.inputText[i].value})
             }else if(this.state.inputText[i].value.length >= 1){
                 if(this.verifyAccount(this.state.inputText[i].value)==false){
                     EasyToast.show('请输入正确的账号');
                     return 
                 }
 
-                for (var j = 0; j < arrAccounts.length; j++) {
-                    if (arrAccounts[j].permission.actor ==this.state.inputText[i].value) {
+                for (var j = 0; j < authTempActive.data.auth.accounts.length; j++) {
+                    if (authTempActive.data.auth.accounts[j].permission.actor ==this.state.inputText[i].value) {
                         EasyToast.show('添加账号已存在');
                         return;
                     }
                 }
                 // {"weight":1,"permission":{"actor":this.state.inputContent,"permission":"eosio.code"}}
-                arrAccounts.push({"weight":1,"permission":{"actor":this.state.inputText[i].value,"permission":"active"}});
+                authTempActive.data.auth.accounts.push({"weight":1,"permission":{"actor":this.state.inputText[i].value,"permission":"active"}});
             }
         }
 
-        this.changeAuth(arrKeys,arrAccounts);
+        this.changeAuth(authTempActive);
        
     }  
 
@@ -129,13 +127,9 @@ class AuthChange extends BaseComponent {
             threshold:'1',//权阀值
             authKeys:[],//授权的公钥组
             isAuth:false,//当前的公钥是否在授权公钥的范围内
-
-            inputPubKey:[],//输入公钥组
-            inputAccounts:[],//输入账户组
-
             inputCount:0,
             inputText:[{key:0,value:''}],
-
+            activeAuth:'',//更改的数据组
 
         }
     }
@@ -152,37 +146,51 @@ class AuthChange extends BaseComponent {
     super.componentWillUnmount();
   }
  
-  transferByOwner() {
-    // Clipboard.setString(this.state.ownerPk);
-    EasyToast.show("这个是跳转到过户")
-  }
-
-  manageByActive() {
-    // Clipboard.setString(this.state.activePk);
-    EasyToast.show("这个跳转到管理")
-  }
-
   //获取账户信息
   getAccountInfo(){
     EasyShowLD.loadingShow();
     this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.navigation.state.params.wallet.name},callback: (data) => {
         EasyShowLD.loadingClose();
-        var retAcc=data.permissions[0].required_auth.accounts;
-        var retKeys=data.permissions[0].required_auth.keys;
         var temp=[];
         var authFlag=false;
+        var authTempActive={
+            account: "eosio",
+            name: "updateauth", 
+            authorization: [{
+            actor: '',//操作者 account
+            permission: 'active'// active
+            }], 
+            data: {
+                account: '',//操作者 account
+                permission: 'active',// active
+                parent: "",// owner
+                auth: {
+                    threshold: '',//总阀值 1
+                    keys: [],//公钥组 Keys
+                    accounts: [],//帐户组 Accounts
+                  }
+            }
+        };
+
+        //active 
+        authTempActive.authorization[0].actor=this.props.navigation.state.params.wallet.name;
+        authTempActive.data.account=this.props.navigation.state.params.wallet.name;
+        authTempActive.data.parent=data.permissions[0].parent;
+        authTempActive.data.auth.threshold=data.permissions[0].required_auth.threshold;
+        authTempActive.data.auth.keys=data.permissions[0].required_auth.keys;
+        authTempActive.data.auth.accounts=data.permissions[0].required_auth.accounts;
 
         //账户
-        for(var i=0;i<retAcc.length;i++){
-            if(retAcc[i].permission.actor != this.props.navigation.state.params.wallet.name){
-                temp.push({weight:retAcc[i].weight,key:retAcc[i].permission.actor+"@"+retAcc[i].permission.permission});
+        for(var i=0;i<authTempActive.data.auth.accounts.length;i++){
+            if(authTempActive.data.auth.accounts[i].permission.actor != this.props.navigation.state.params.wallet.name){
+                temp.push({weight:authTempActive.data.auth.accounts[i].weight,key:authTempActive.data.auth.accounts[i].permission.actor+"@"+authTempActive.data.auth.accounts[i].permission.permission});
             }
         }
 
         //公钥
-        for(var i=0;i<retKeys.length;i++){
-            if(retKeys[i].key != this.props.navigation.state.params.wallet.activePublic){
-                temp.push({weight:retKeys[i].weight,key:retKeys[i].key});
+        for(var i=0;i<authTempActive.data.auth.keys.length;i++){
+            if(authTempActive.data.auth.keys[i].key != this.props.navigation.state.params.wallet.activePublic){
+                temp.push({weight:authTempActive.data.auth.keys[i].weight,key:authTempActive.data.auth.keys[i].key});
             }else{
                 authFlag=true;
             }
@@ -192,9 +200,7 @@ class AuthChange extends BaseComponent {
             threshold:data.permissions[0].required_auth.threshold,
             isAuth:authFlag,
             authKeys:temp,//授权的公钥组
-            inputPubKey:retKeys,//输入公钥组
-            inputAccounts:retAcc,//输入账户组
-
+            activeAuth:authTempActive,
             inputCount:0,
             inputText:[{key:0,value:''}],
         });
@@ -202,35 +208,17 @@ class AuthChange extends BaseComponent {
     } });
 } 
 
-EosUpdateAuth = (account, pvk,Keys,Accounts, callback) => { 
+EosUpdateAuth = (account, pvk,authActiveArr, callback) => { 
     if (account == null) {
       if(callback) callback("无效账号");
       return;
     };
 
-    console.log("Keys=%s",JSON.stringify(Keys))
-    console.log("Accounts=%s",JSON.stringify(Accounts))
+    console.log("authActiveArr=%s",JSON.stringify(authActiveArr))
 
     Eos.transaction({
         actions: [
-            {
-                account: "eosio",
-                name: "updateauth", 
-                authorization: [{
-                actor: account,
-                permission: 'active'
-                }], 
-                data: {
-                    account: account,
-                    permission: 'active',
-                    parent: "owner",
-                    auth: {
-                        threshold: 1,
-                        keys: Keys,
-                        accounts: Accounts,
-                      }
-                }
-            }
+            authActiveArr,
         ]
     }, pvk, (r) => {
       if(callback) callback(r);
@@ -238,7 +226,7 @@ EosUpdateAuth = (account, pvk,Keys,Accounts, callback) => {
   };
 
 
-  changeAuth(arrKeys,arrAccounts){
+  changeAuth(authTempActive){
 
     const view =
         <View style={styles.passoutsource}>
@@ -259,11 +247,17 @@ EosUpdateAuth = (account, pvk,Keys,Accounts, callback) => {
             if (plaintext_privateKey.indexOf('eostoken') != -1) {
                 EasyShowLD.loadingShow();
                 plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
-                this.EosUpdateAuth(this.props.navigation.state.params.wallet.name, plaintext_privateKey,arrKeys,arrAccounts, (r) => {
+                this.EosUpdateAuth(this.props.navigation.state.params.wallet.name, plaintext_privateKey,authTempActive,(r) => {
+                    EasyShowLD.loadingClose();
                         // alert(JSON.stringify(r));
-                        console.log("r=%s",JSON.stringify(r))
-                        EasyShowLD.loadingClose();
-                        this.getAccountInfo();//成功后刷新一下
+                        // console.log("r=%s",JSON.stringify(r))
+                        if(r.isSuccess==true){
+                            EasyToast.show('授权变更成功！');
+                            this.getAccountInfo();//成功后刷新一下
+                        }else{
+                            EasyToast.show('授权变更失败！');
+                        }
+    
                     });
                 EasyShowLD.loadingClose();
             } else {
@@ -295,23 +289,25 @@ EosUpdateAuth = (account, pvk,Keys,Accounts, callback) => {
         EasyToast.show("找不到对应的公钥或账号");
         return
     }
-    var arrKeys=this.state.inputPubKey;
-    var arrAccounts=this.state.inputAccounts;
+
+    var authTempActive=this.state.activeAuth;
+
+    
     if(delKey.length>12){
-        for (var i = 0; i < arrKeys.length; i++) {
-            if (arrKeys[i].key ==delKey) {
-                arrKeys.splice(i, 1);
+        for (var i = 0; i < authTempActive.data.auth.keys.length; i++) {
+            if (authTempActive.data.auth.keys[i].key ==delKey) {
+                authTempActive.data.auth.keys.splice(i, 1);
             }
         }
     }else{
-        for (var i = 0; i < arrAccounts.length; i++) {
-            if (arrAccounts[i].permission.actor ==delKey) {
-                arrAccounts.splice(i, 1);
+        for (var i = 0; i < authTempActive.data.auth.accounts.length; i++) {
+            if (authTempActive.data.auth.accounts[i].permission.actor ==delKey) {
+                authTempActive.data.auth.accounts.splice(i, 1);
             }
         }
     }
 // arrAccounts.push({"weight":1,"permission":{"actor":this.state.inputContent}});
-    this.changeAuth(arrKeys,arrAccounts);
+    this.changeAuth(authTempActive);
    
 }  
 
