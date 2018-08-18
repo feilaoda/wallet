@@ -253,11 +253,10 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
                         // console.log("r=%s",JSON.stringify(r))
                         if(r.isSuccess==true){
                             EasyToast.show('授权变更成功！');
-                            this.getAccountInfo();//成功后刷新一下
                         }else{
                             EasyToast.show('授权变更失败！');
                         }
-    
+                        this.getAccountInfo();//刷新一下
                     });
                 EasyShowLD.loadingClose();
             } else {
@@ -408,7 +407,7 @@ delInputBox(delKey){
                 <View style={styles.userAddView}>
                     <Image source={UImage.adminAddA} style={styles.imgBtn} />
                     <Text style={styles.buttonText}>添加授权用户</Text>
-                    <Text style={styles.buttonText}>{rowID}</Text>
+                    <Text style={styles.buttonText}>{rowID+1}</Text>
                 </View>
 
                 <View style={styles.buttonView}>
@@ -440,7 +439,7 @@ delInputBox(delKey){
   render() {
 
     return (<View style={styles.container}>
-      <ScrollView keyboardShouldPersistTaps="always">
+      <ScrollView keyboardShouldPersistTaps="handled" >
       <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "padding" : null}>
         {this.state.activePk != '' && 
         <View style={styles.inptoutgo} >
@@ -477,8 +476,6 @@ delInputBox(delKey){
             extraData={this.state}
             renderItem={this._renderRowInput.bind(this)} >
         </FlatList>
-
-
 
         <TouchableHighlight onPress={() => { this.addMoreUser(this) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
             <View style={styles.delButton}>
