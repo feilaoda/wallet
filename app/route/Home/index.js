@@ -488,7 +488,7 @@ class Home extends React.Component {
 
   isTipShow() {
     if (Platform.OS == 'ios') {
-      if (this.props.defaultWallet != null && this.props.defaultWallet.isBackups==false) {
+      if (this.props.defaultWallet  && !this.props.defaultWallet.isBackups) {
         return true;
       }
     }
