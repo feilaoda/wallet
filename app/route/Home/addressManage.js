@@ -339,37 +339,31 @@ const styles = StyleSheet.create({
     selectout: {
         flex: 1,
         flexDirection: "row",
-        // alignItems: 'flex-start', 
     },
     selectouttou: {
         position:'absolute',
-        left:3,
+        left: ScreenUtil.autowidth(3),
     },
     selectoutimg: {
-        width:30,
-        height:30,
+        width: ScreenUtil.autowidth(30),
+        height: ScreenUtil.autowidth(30),
     },
     touchSelect:{ 
-        width: 60, 
-        height: 60, 
+        width: ScreenUtil.autowidth(60), 
+        height: ScreenUtil.autowidth(60), 
         backgroundColor: UColor.secdColor, 
-        marginTop: 5, 
-        marginBottom: 5, 
+        //marginVertical: ScreenUtil.autoheight(5),
         alignItems: "center", 
         justifyContent: 'center', 
-       //  paddingLeft: this.state.isEdit ? 54 : 0
    },
 
     selout: {
-        flex: 1, 
         width: ScreenWidth-20,
-        height: 60,
+        height: ScreenUtil.autoheight(60),
         backgroundColor: UColor.mainColor,
-        marginBottom: 10,
-        marginLeft:10,
-        marginRight:10,
-        paddingLeft: 10,
-        paddingRight: 10,
+        marginBottom: ScreenUtil.autoheight(10),
+        marginHorizontal: ScreenUtil.autowidth(10),
+        paddingHorizontal: ScreenUtil.autowidth(10),
         alignItems: "flex-start",
         justifyContent: 'center',
         borderColor: UColor.mainColor,
@@ -378,18 +372,18 @@ const styles = StyleSheet.create({
     },
     outlabelname:{
         color: UColor.fontColor,
-        fontSize:15,
+        fontSize: ScreenUtil.setSpText(15),
     },
     outaddress: {
         color: UColor.arrow,
-        fontSize:15,
+        fontSize: ScreenUtil.setSpText(15),
     },
 
 
     container: {
         flex: 1,
         backgroundColor: UColor.secdColor,
-        paddingTop: 5,
+        paddingTop: ScreenUtil.autoheight(10),
     },
     replace: {
         width: ScreenWidth,
@@ -407,47 +401,46 @@ const styles = StyleSheet.create({
     },
     added: {
         width: ScreenWidth - 20,
-        height: 45,
+        height: ScreenUtil.autoheight(45),
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10,
+        margin: ScreenUtil.autowidth(10),
         borderRadius: 5
     },
     address: {
-        fontSize:17,
+        fontSize: ScreenUtil.setSpText(17),
         color:UColor.fontColor
     },
     editClickout: {
         width: ScreenWidth - 20,
-        height: 45,
+        height: ScreenUtil.autoheight(45),
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10,
+        margin: ScreenUtil.autowidth(10),
         borderRadius: 5
     },
 
     deleteItemout: {
         width: ScreenWidth - 20,
-        height: 45,
+        height: ScreenUtil.autoheight(45),
         backgroundColor: UColor.riseColor,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10,
+        margin: ScreenUtil.autowidth(10),
         borderRadius: 5
     },
     completeout: {
         flexDirection:'row',
         width: ScreenWidth - 20,
-        height: 45,
+        height: ScreenUtil.autoheight(45),
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10,
+        margin: ScreenUtil.autowidth(10),
         borderRadius: 5
     },
-   
 
     pupuo:{  
         backgroundColor: UColor.riceWhite,  
@@ -464,17 +457,17 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end', 
       },  
       buttoncols: {
-        width: 30,
-        height: 30,
+        width: ScreenUtil.autowidth(30),
+        height: ScreenUtil.autowidth(30),
         marginBottom: 0,
         color: UColor.baseline,
-        fontSize: 28,
+        fontSize: ScreenUtil.setSpText(28),
       },
       
       // modal上子View的样式  
       subView:{  
         width:ScreenWidth-20,
-        marginHorizontal:10,  
+        marginHorizontal: ScreenUtil.autowidth(10),  
         backgroundColor: UColor.fontColor,  
         alignSelf: 'stretch',  
         justifyContent:'center',  
@@ -484,67 +477,64 @@ const styles = StyleSheet.create({
       },  
       // 标题  
       titleText:{   
-        marginBottom:10,  
-        fontSize:18,  
+        marginBottom: ScreenUtil.autoheight(10),  
+        fontSize: ScreenUtil.setSpText(18),  
         fontWeight:'bold',  
         textAlign:'center',  
       }, 
       inptout: {
           width:ScreenWidth-40,
-          height: 40,
-          paddingHorizontal: 10,
+          height: ScreenUtil.autoheight(40),
+          paddingHorizontal: ScreenUtil.autowidth(10),
           backgroundColor: UColor.riceWhite,
-          marginBottom: 10,
-          marginHorizontal: 10,
+          marginBottom: ScreenUtil.autoheight(10),
+          marginHorizontal: ScreenUtil.autowidth(10),
           justifyContent: 'center',
       },
       inpt: {
           color: UColor.arrow,
-          fontSize: 14,
-          height: 50,
-          paddingLeft: 2
+          fontSize: ScreenUtil.setSpText(14),
+          height: ScreenUtil.autoheight(40),
+          paddingLeft: ScreenUtil.autowidth(2),
       },
       conout: {
-          margin: 10,
-          height: 40,
+          margin: ScreenUtil.autowidth(10),
+          height: ScreenUtil.autoheight(40),
           borderRadius: 6,
           backgroundColor: UColor.tintColor,
           justifyContent: 'center',
           alignItems: 'center'
       },
       context: {
-        fontSize: 16, 
+        fontSize: ScreenUtil.setSpText(16), 
         color: UColor.fontColor
       },
 
       inptoutsource: {
         width:ScreenWidth-40,
-        height: 40,
-        paddingHorizontal: 10,
+        height: ScreenUtil.autoheight(40),
+       
         backgroundColor: UColor.riceWhite,
-        marginBottom: 10,
-        marginHorizontal: 10,
-        // justifyContent: 'center',
-
+        marginBottom: ScreenUtil.autoheight(10),
+        marginHorizontal: ScreenUtil.autowidth(10),
         flexDirection: 'row',
-        // marginBottom: 10,
-        // paddingLeft: 5,
     },
     accountoue: {
         flex: 1,
+        paddingHorizontal: ScreenUtil.autowidth(10),
         justifyContent: 'center',
         flexDirection: "column",
     },
 
     scanning: {
-        width: 40,
+        width: ScreenUtil.autowidth(50),
         flexDirection: "row",
         alignSelf: 'center',
         justifyContent: "center",
     },
     scanningimg: {
-        width:30,
-        height:30,
+        width: ScreenUtil.autowidth(25),
+        height: ScreenUtil.autowidth(25),
     },
 
   
