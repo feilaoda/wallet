@@ -11,14 +11,16 @@ var ScreenUtil = {
     pixelRatio: PixelRatio.get(),
     fontScale: PixelRatio.getFontScale(),
     scale: Math.min(Dimensions.get('window').height / 667, Dimensions.get('window').width / 375),
+    widthRadio: Dimensions.get('window').width / 375,
+    heightRadio: Dimensions.get('window').height / 667,
 
     /*宽度适配，例如我的设计稿某个样式宽度是50pt，那么使用就是：ScreenUtil.autowidth(50)*/
     autowidth: function (value) {
-        return Dimensions.get('window').width * value / this.uiWidth;
+        return this.widthRadio * value;
     },
     /*高度适配，例如我的设计稿某个样式高度是50pt，那么使用就是：ScreenUtil.autoheight(50)*/
     autoheight: function (value) {
-        return Dimensions.get('window').height * value / this.uiHeight;
+        return this.heightRadio * value;
     },
     get: function (url, successCallback, failCallback) {
         fetch(url).then((response) => response.text())
