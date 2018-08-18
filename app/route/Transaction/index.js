@@ -1083,7 +1083,7 @@ class Transaction extends BaseComponent {
                     <View style={styles.timeview} >
                          <Text style={(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
                          || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? styles.timeinitial : styles.timeSelect}>{this.state.showMoreTitle}</Text>
-                         <Image source={ UImage.txbtn_more } style={styles.triangleimg}/>
+                         <Ionicons name={this.state.showMore ? "md-arrow-dropdown" : "md-arrow-dropright"} size={20} color={this.state.showMore ? UColor.tintColor : UColor.fontColor}/>
                     </View>
                 </Button> 
 
@@ -1091,7 +1091,7 @@ class Transaction extends BaseComponent {
             <View style={styles.timetabout}>
                 <Button disabled={true}>
                     <View style={styles.timeview} >
-                        <Text style={styles.timeinitial}></Text>
+                        <Text style={styles.timeSelect}></Text>
                     </View>
                 </Button> 
             </View>
@@ -1101,42 +1101,42 @@ class Transaction extends BaseComponent {
             <View style={styles.timetabout}>
                 <Button disabled={true}>
                     <View style={styles.timeview} >
-                        <Text style={styles.timeinitial}></Text>
+                        <Text style={styles.timeSelect}></Text>
                     </View>
                 </Button> 
             </View>
             <View style={styles.timetabout}>
                 <Button onPress={this.onClickTimeType.bind(this,"1小时")}>
                     <View style={styles.timeview} >
-                        <Text style={styles.timeinitial}>1小时</Text>
+                        <Text style={styles.timeSelect}>1小时</Text>
                     </View>
                 </Button> 
             </View>
             <View style={styles.timetabout}>
                 <Button onPress={this.onClickTimeType.bind(this,"1天")}>
                     <View style={styles.timeview} >
-                        <Text style={styles.timeinitial}>1天</Text>
+                        <Text style={styles.timeSelect}>1天</Text>
                     </View>
                 </Button> 
             </View>
             <View style={styles.timetabout}>
                 <Button onPress={this.onClickTimeType.bind(this,"1周")}>
                     <View style={styles.timeview} >
-                        <Text style={styles.timeinitial}>1周</Text>
+                        <Text style={styles.timeSelect}>1周</Text>
                     </View>
                 </Button> 
             </View>
             <View style={styles.timetabout}>
                <Button onPress={this.onClickTimeType.bind(this,"1月")}>
                     <View style={styles.timeview} >
-                        <Text style={styles.timeinitial}>1月</Text>
+                        <Text style={styles.timeSelect}>1月</Text>
                     </View>
                 </Button> 
             </View>
             <View style={styles.timetabout}>
                <Button disabled={true}>
                     <View style={styles.timeview} >
-                        <Text style={styles.timeinitial}></Text>
+                        <Text style={styles.timeSelect}></Text>
                     </View>
                 </Button> 
             </View>
@@ -1626,7 +1626,7 @@ const styles = StyleSheet.create({
 
     timeout: {
         width:ScreenWidth,
-        height:ScreenUtil.autoheight(25),
+        height:ScreenUtil.autoheight(30),
         flexDirection:'row',
         justifyContent: 'center',
         alignItems:'center',
@@ -1637,12 +1637,13 @@ const styles = StyleSheet.create({
         flex:1,
     },
     timeview: { 
+        flexDirection:'row',
         marginLeft: ScreenUtil.autowidth(2),
         width: ScreenUtil.autowidth(40), 
-        height: ScreenUtil.autoheight(25),
+        height: ScreenUtil.autoheight(30),
         borderRadius: 3, 
         justifyContent: 'center', 
-        alignItems: 'center' 
+        alignItems: 'center'  
     },
     timeinitial: {
         fontSize: ScreenUtil.setSpText(15), 
@@ -1651,11 +1652,6 @@ const styles = StyleSheet.create({
     timeSelect: {
         fontSize: ScreenUtil.setSpText(15), 
         color: UColor.fontColor,
-    },
-    triangleimg: {
-        width: ScreenUtil.autowidth(10), 
-        height:ScreenUtil.autoheight(5),
-        resizeMode:'contain'
     },
 
     echartsout: {

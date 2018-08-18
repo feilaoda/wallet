@@ -859,13 +859,14 @@ class Ram extends BaseComponent {
                             {this.state.showMoreTitle}
                             </Text> 
                             <Image source={ UImage.txbtn_more } style={styles.triangleimg}/>
+                            <Ionicons name={this.state.showMore ? "md-arrow-dropdown" : "md-arrow-dropright"} size={20} color={this.state.showMore ? UColor.tintColor : UColor.fontColor}/>
                         </View>
                     </Button> 
                 </View>
                 <View style={styles.timetabout}>
                     <Button disabled={true}>
                         <View style={styles.timeview}>
-                            <Text style={styles.timeinitial}></Text>
+                            <Text style={styles.timeSelect}></Text>
                         </View>
                     </Button> 
                 </View>
@@ -876,42 +877,42 @@ class Ram extends BaseComponent {
                 <View style={styles.timetabout}>
                     <Button disabled={true}>
                         <View style={styles.timeview} >
-                            <Text style={styles.timeinitial}></Text>
+                            <Text style={styles.timeSelect}></Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={styles.timetabout}>
                     <Button onPress={this.onClickTimeType.bind(this,"1小时")}>
                         <View style={styles.timeview} >
-                            <Text style={styles.timeinitial}>1小时</Text>
+                            <Text style={styles.timeSelect}>1小时</Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickTimeType.bind(this,"1天")}>
                         <View style={styles.timeview} >
-                            <Text style={styles.timeinitial}>1天</Text>
+                            <Text style={styles.timeSelect}>1天</Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={styles.timetabout}>
                     <Button onPress={this.onClickTimeType.bind(this,"1周")}>
                         <View style={styles.timeview} >
-                            <Text style={styles.timeinitial}>1周</Text>
+                            <Text style={styles.timeSelect}>1周</Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={styles.timetabout}>
                     <Button onPress={this.onClickTimeType.bind(this,"1月")}>
                         <View style={styles.timeview} >
-                            <Text style={styles.timeinitial}>1月</Text>
+                            <Text style={styles.timeSelect}>1月</Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={styles.timetabout}>
                     <Button disabled={true}>
                         <View style={styles.timeview} >
-                            <Text style={styles.timeinitial}></Text>
+                            <Text style={styles.timeSelect}></Text>
                         </View>
                     </Button> 
                 </View>
@@ -1216,7 +1217,7 @@ const styles = StyleSheet.create({
 
     timeout: {
         width:ScreenWidth,
-        height:ScreenUtil.autoheight(25),
+        height:ScreenUtil.autoheight(30),
         flexDirection:'row',
         justifyContent: 'center',
         alignItems:'center',
@@ -1229,8 +1230,7 @@ const styles = StyleSheet.create({
     timeview: { 
         marginLeft: ScreenUtil.autowidth(2),
         width: ScreenUtil.autowidth(40), 
-        height: ScreenUtil.autoheight(25),
-        borderRadius: 3, 
+        height: ScreenUtil.autoheight(30),
         justifyContent: 'center', 
         alignItems: 'center' 
     },
@@ -1241,11 +1241,6 @@ const styles = StyleSheet.create({
     timeSelect: {
         fontSize: ScreenUtil.setSpText(15), 
         color: UColor.fontColor,
-    },
-    triangleimg: {
-        width: ScreenUtil.autowidth(10), 
-        height:ScreenUtil.autoheight(5),
-        resizeMode:'contain'
     },
 
     echartsout: {
