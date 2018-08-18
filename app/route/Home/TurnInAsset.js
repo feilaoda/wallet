@@ -4,6 +4,7 @@ import { DeviceEventEmitter, Clipboard, StyleSheet, Image, ScrollView, View, Tex
 import UColor from "../../utils/Colors";
 import Button from "../../components/Button";
 import UImage from "../../utils/Img";
+import ScreenUtil from '../../utils/ScreenUtil'
 import QRCode from "react-native-qrcode-svg";
 import { EasyToast } from "../../components/Toast";
 import BaseComponent from "../../components/BaseComponent";
