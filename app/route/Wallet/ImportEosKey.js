@@ -42,6 +42,7 @@ class ImportEosKey extends BaseComponent {
       Invalid: false,
       publicKey: '',
       ReturnData: '',
+      dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }),
       selectAccount: false,  //选择钱包
       walletList: [],  //获取到的账户
       keyObj:{},       //导入密钥对象
