@@ -189,7 +189,7 @@ class Ram extends BaseComponent {
     });
   }
   //获取K线
-  fetchRAMKLine(dateType,opt){
+  fetchRAMKLine(dateType,opt,onRefreshing = false){
     InteractionManager.runAfterInteractions(() => {
         try {
             if(!onRefreshing){
