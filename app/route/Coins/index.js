@@ -18,7 +18,7 @@ let currentLoadMoreTypeId;
 let timer;
 let currentTab=0;
 
-@connect(({sticker}) => ({...sticker}))
+@connect(({wallet, sticker}) => ({...wallet, ...sticker}))
 class Coins extends React.Component {
 
   static navigationOptions = {
@@ -41,6 +41,7 @@ class Coins extends React.Component {
   //组件加载完成
   componentDidMount() {
     const {dispatch}=this.props;
+    this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }});
     InteractionManager.runAfterInteractions(() => {
       dispatch({type: 'sticker/list',payload:{type:-1}});
       this.startTick(0);
