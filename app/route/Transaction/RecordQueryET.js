@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import {  ListView, StyleSheet, Image, View, Text, Platform,  TouchableOpacity, TextInput, RefreshControl } from 'react-native';
+import moment from 'moment';
 import UColor from '../../utils/Colors'
 import UImage from '../../utils/Img'
 import Button from '../../components/Button'
 import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from "../../components/Toast"
-import moment from 'moment';
 var dismissKeyboard = require('dismissKeyboard');
 
 @connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
@@ -269,24 +269,24 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       justifyContent: "center",
       alignItems: "center",
-      paddingVertical: 7,
-      marginBottom: 5,
+      paddingVertical: ScreenUtil.autoheight(7),
+      marginBottom: ScreenUtil.autoheight(5),
       backgroundColor: UColor.mainColor,
     },
     headleftout: {
-      paddingLeft: 15
+      paddingLeft: ScreenUtil.autowidth(15),
     },
     headleftimg: {
-      width: 18,
-      height: 18,
-      marginRight: 15,
+      width: ScreenUtil.autowidth(18),
+      height: ScreenUtil.autowidth(18),
+      marginRight: ScreenUtil.autowidth(15),
     },
     inptout: {
       flex: 1,
-      height: 30,
+      height: ScreenUtil.autoheight(30),
       borderRadius: 5,
-      marginHorizontal: 15,
-      paddingHorizontal: 10,
+      marginHorizontal: ScreenUtil.autowidth(15),
+      paddingHorizontal: ScreenUtil.autowidth(10),
       flexDirection: "row",
       alignItems: "center",
       justifyContent: 'center',
@@ -294,55 +294,55 @@ const styles = StyleSheet.create({
     },
     inpt: {
         flex: 1,
-        height: 45,
-        fontSize: 14,
+        height: ScreenUtil.autoheight(45),
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.arrow,
     },
     canceltext: {
       color: UColor.fontColor,
-      fontSize: 15,
+      fontSize: ScreenUtil.setSpText(15),
       textAlign: 'center',
-      paddingRight: 15,
+      paddingRight: ScreenUtil.autowidth(15),
     },
 
     btn: {
       flex: 1,
     },
     nothave: {
-      height: Platform.OS == 'ios' ? 84.5 : 65,
+      height: ScreenUtil.autoheight(80),
       backgroundColor: UColor.mainColor,
       flexDirection: "row",
       alignItems: 'center',
       justifyContent: "center",
-      paddingHorizontal: 20,
+      paddingHorizontal: ScreenUtil.autowidth(20),
       borderRadius: 5,
-      margin: 5,
+      margin: ScreenUtil.autowidth(5),
     },
     copytext: {
-      fontSize: 16, 
+      fontSize: ScreenUtil.setSpText(16), 
       color: UColor.fontColor
     },
 
     package: {
-      height: 52,
+      height: ScreenUtil.autoheight(52),
       backgroundColor: UColor.mainColor,
       flexDirection: "row",
-      paddingHorizontal: 10,
-      paddingVertical: 5,
+      paddingHorizontal: ScreenUtil.autowidth(10),
+      paddingVertical: ScreenUtil.autoheight(5),
       borderRadius: 5,
-      marginHorizontal: 10,
-      marginVertical: 5,
+      marginHorizontal: ScreenUtil.autowidth(10),
+      marginVertical: ScreenUtil.autoheight(5),
     },
     leftout: {
       flexDirection: "column",
       justifyContent: "space-between",
     },
     payertext: {
-      fontSize: 15,
+      fontSize: ScreenUtil.setSpText(15),
       color: UColor.fontColor,
     },
     timetext: {
-      fontSize: 15,
+      fontSize: ScreenUtil.setSpText(15),
       color: UColor.arrow,
     },
    
@@ -353,18 +353,18 @@ const styles = StyleSheet.create({
     },
     selltext: {
       flex: 5,
-      fontSize: 15,
+      fontSize: ScreenUtil.setSpText(15),
       color: UColor.riseColor,
       textAlign: 'right',
     },
     buytext: {
       flex: 5,
-      fontSize: 15,
+      fontSize: ScreenUtil.setSpText(15),
       color: UColor.fallColor,
       textAlign: 'right',
     },
     presentprice: {
-      fontSize: 14,
+      fontSize: ScreenUtil.setSpText(14),
       color: UColor.arrow,
       textAlign: 'right',
     }

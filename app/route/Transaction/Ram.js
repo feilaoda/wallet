@@ -775,9 +775,9 @@ class Ram extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-    <TouchableOpacity style={{ position:'absolute', bottom: ScreenUtil.autoheight(45), right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
-        <View style={{height: ScreenUtil.autoheight(35),width: ScreenUtil.autowidth(90),backgroundColor: UColor.tintColor,justifyContent: "center", alignItems: "center",borderTopLeftRadius: 25,borderBottomLeftRadius: 25,}}>
-            <Text style={{fontSize: ScreenUtil.setSpText(14), color: UColor.fontColor}}>交易面板</Text>
+    <TouchableOpacity style={styles.transactiontou}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
+        <View style={styles.transactionout}>
+            <Text style={styles.paneltext}>交易面板</Text>
         </View>
     </TouchableOpacity>
     {Constants.netTimeoutFlag==true &&
@@ -790,9 +790,8 @@ class Ram extends BaseComponent {
     }
     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
       <ScrollView scrollEnabled={this.state.scrollEnabled} keyboardShouldPersistTaps="always"refreshControl={
-            <RefreshControl refreshing={this.state.logRefreshing} onRefresh={() => this.onRefreshing()}
-            tintColor={UColor.fontColor} colors={[UColor.riceWhite, UColor.tintColor]} progressBackgroundColor={UColor.fontColor}/>}
-            >
+            <RefreshControl refreshing={this.state.logRefreshing} onRefresh={() => this.onRefreshing()} tintColor={UColor.fontColor} 
+                            colors={[UColor.riceWhite, UColor.tintColor]} progressBackgroundColor={UColor.fontColor}/>}>
             <View style={styles.header}>
                 <View style={styles.leftout}>
                 <View style={styles.nameout}>
@@ -818,109 +817,101 @@ class Ram extends BaseComponent {
                         <Text style={(this.props.ramInfo && this.props.ramInfo.increase>=0)?styles.incdo:styles.incup}> 
                             {this.props.ramInfo ? (this.props.ramInfo.increase > 0 ? '+' + (this.props.ramInfo.increase * 100).toFixed(2) : 
                                 (this.props.ramInfo.increase * 100).toFixed(2)): '0.00'}%</Text>
-                        <Text style={{color:UColor.arrow,fontSize: ScreenUtil.setSpText(13),marginTop:2,textAlign:'center', marginLeft: ScreenUtil.autowidth(5)}}>涨幅</Text>
+                        <Text style={styles.Increasetext}>涨幅</Text>
                     </View>
                 </View>
             </View>
           
-            <View style={{width:ScreenWidth,height:ScreenUtil.autoheight(25),flexDirection:'row',justifyContent: 'center',alignItems:'center',backgroundColor: UColor.inash,}}>
-                <View style={{flexDirection:"column",flex:1,}}>
+            <View style={styles.timeout}>
+                <View style={styles.timetabout}>
                     <Button onPress={this.onClickTimeType.bind(this,"时分")}>
-                        <View style={{ marginLeft: ScreenUtil.autowidth(2),width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            {this.state.selectedSegment == "时分" ? 
-                                    <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.tintColor,}}>时分</Text> : 
-                                            <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.fontColor,}}>时分</Text>}
+                        <View style={styles.timeview}>
+                            <Text style={this.state.selectedSegment == "时分" ? styles.timeinitial : styles.timeSelect}>时分</Text>
                         </View>
                     </Button>   
                 </View>
-                <View style={{flexDirection:"column",flex:1,}}>
+                <View style={styles.timetabout}>
                     <Button onPress={this.onClickTimeType.bind(this,"5分")}>
-                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            {this.state.selectedSegment == "5分" ? 
-                                    <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.tintColor,}}>5分</Text> : 
-                                            <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.fontColor,}}>5分</Text>}
+                        <View style={styles.timeview}>
+                            <Text style={this.state.selectedSegment == "5分" ? styles.timeinitial : styles.timeSelect}>5分</Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flex:1}}>
+                <View style={styles.timetabout}>
                     <Button onPress={this.onClickTimeType.bind(this,"15分")}>
-                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            {this.state.selectedSegment == "15分" ? 
-                                    <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.tintColor,}}>15分</Text> : 
-                                            <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.fontColor,}}>15分</Text>}
+                        <View style={styles.timeview}>
+                            <Text style={this.state.selectedSegment == "15分" ? styles.timeinitial : styles.timeSelect}>15分</Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flex:1}}>
+                <View style={styles.timetabout}>
                     <Button onPress={this.onClickTimeType.bind(this,"30分")}>
-                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        {this.state.selectedSegment == "30分" ? 
-                                    <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.tintColor,}}>30分</Text> : 
-                                            <Text style={{fontSize: ScreenUtil.setSpText(15), color: UColor.fontColor,}}>30分</Text>}
+                        <View style={styles.timeview}>
+                            <Text style={this.state.selectedSegment == "30分" ? styles.timeinitial : styles.timeSelect}>30分</Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flex:1}}>
+                <View style={styles.timetabout}>
                     <Button onPress={this.onClickMore.bind(this)}>
-                        <View style={{ flexDirection:"row", width: ScreenUtil.autowidth(50), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            {(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
-                            || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? 
-                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.tintColor,}}>{this.state.showMoreTitle}</Text> : 
-                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>{this.state.showMoreTitle}</Text>}
-                            <Image source={ UImage.txbtn_more } style={ {flex:0,width: ScreenUtil.autowidth(10), height:ScreenUtil.autoheight(5),resizeMode:'contain'}}/>
+                        <View style={styles.timeview}>
+                            <Text style={(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
+                            || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? styles.timeinitial : styles.timeSelect }>
+                            {this.state.showMoreTitle}
+                            </Text> 
+                            <Image source={ UImage.txbtn_more } style={styles.triangleimg}/>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flex:1}}>
+                <View style={styles.timetabout}>
                     <Button disabled={true}>
-                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>    </Text>
+                        <View style={styles.timeview}>
+                            <Text style={styles.timeinitial}></Text>
                         </View>
                     </Button> 
                 </View>
             </View> 
 
             {this.state.showMore &&       
-            <View style={{width:ScreenWidth,height:ScreenUtil.autoheight(25),flexDirection:'row',justifyContent: 'center',alignItems:'center',backgroundColor: UColor.inash,}}>
-                <View style={{flexDirection:"column",flex:1,}}>
+            <View style={styles.timeout}>
+                <View style={styles.timetabout}>
                     <Button disabled={true}>
-                        <View style={{ marginLeft: ScreenUtil.autowidth(2),width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>    </Text>
+                        <View style={styles.timeview} >
+                            <Text style={styles.timeinitial}></Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flex:1,}}>
+                <View style={styles.timetabout}>
                     <Button onPress={this.onClickTimeType.bind(this,"1小时")}>
-                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>1小时</Text>
+                        <View style={styles.timeview} >
+                            <Text style={styles.timeinitial}>1小时</Text>
                         </View>
                     </Button> 
                 </View>
                 <View style={{flexDirection:"column",flex:1}}>
                     <Button onPress={this.onClickTimeType.bind(this,"1天")}>
-                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>1天</Text>
+                        <View style={styles.timeview} >
+                            <Text style={styles.timeinitial}>1天</Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flex:1}}>
+                <View style={styles.timetabout}>
                     <Button onPress={this.onClickTimeType.bind(this,"1周")}>
-                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>1周</Text>
+                        <View style={styles.timeview} >
+                            <Text style={styles.timeinitial}>1周</Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flex:1}}>
-                <Button onPress={this.onClickTimeType.bind(this,"1月")}>
-                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>1月</Text>
+                <View style={styles.timetabout}>
+                    <Button onPress={this.onClickTimeType.bind(this,"1月")}>
+                        <View style={styles.timeview} >
+                            <Text style={styles.timeinitial}>1月</Text>
                         </View>
                     </Button> 
                 </View>
-                <View style={{flexDirection:"column",flex:1}}>
-                <Button disabled={true}>
-                        <View style={{ width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{fontSize: ScreenUtil.setSpText(15),color: UColor.fontColor,}}>    </Text>
+                <View style={styles.timetabout}>
+                    <Button disabled={true}>
+                        <View style={styles.timeview} >
+                            <Text style={styles.timeinitial}></Text>
                         </View>
                     </Button> 
                 </View>
@@ -943,11 +934,12 @@ class Ram extends BaseComponent {
                 <View style={{flex: 1,}}>
                     {(this.state.newramTradeLog  != null &&  this.state.newramTradeLog.length == 0) ? <View style={{paddingTop: ScreenUtil.autoheight(50), justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: ScreenUtil.setSpText(16), color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                     <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                            renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: ScreenUtil.autowidth(5),marginVertical: ScreenUtil.autoheight(2),marginHorizontal: ScreenUtil.autowidth(5),}}>
-                            <Text style={{ flex: 3,paddingLeft: ScreenUtil.autowidth(8), textAlign: 'left',color: UColor.lightgray}}>账号</Text>
-                            <Text style={{ flex: 4,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>数量(EOS)</Text>
-                            <Text style={{ flex: 3.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>价格(KB)</Text>
-                            <Text style={{ flex: 2.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>时间</Text>
+                            renderHeader = {()=>
+                            <View style={styles.formout}>
+                                <Text style={styles.formName}>账号</Text>
+                                <Text style={styles.formNumber}>数量(EOS)</Text>
+                                <Text style={styles.formPrice}>价格(KB)</Text>
+                                <Text style={styles.formTime}>时间</Text>
                             </View>
                         }
                         dataSource={this.state.dataSource.cloneWithRows(this.state.newramTradeLog == null ? [] : this.state.newramTradeLog)} 
@@ -980,12 +972,13 @@ class Ram extends BaseComponent {
                     <View style={{flex: 1,}}>
                         {(this.props.ramBigTradeLog != null &&  this.props.ramBigTradeLog.length == 0) ? <View style={{paddingTop: ScreenUtil.autoheight(50), justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: ScreenUtil.setSpText(16), color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                             <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                                renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: ScreenUtil.autowidth(5),marginVertical: ScreenUtil.autoheight(2),marginHorizontal: ScreenUtil.autowidth(5),}}>
-                                    <Text style={{ flex: 3,paddingLeft: ScreenUtil.autowidth(8), textAlign: 'left',color: UColor.lightgray}}>账号</Text>
-                                    <Text style={{ flex: 4,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>数量(EOS)</Text>
-                                    <Text style={{ flex: 3.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>价格(KB)</Text>
-                                    <Text style={{ flex: 2.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>时间</Text>
-                                    </View>
+                                renderHeader = {()=>
+                                <View style={styles.formout}>
+                                    <Text style={styles.formname}>账号</Text>
+                                    <Text style={styles.formNumber}>数量(EOS)</Text>
+                                    <Text style={styles.formPrice}>价格(KB)</Text>
+                                    <Text style={styles.buytime}>时间</Text>
+                                </View>
                                 }
                                 dataSource={this.state.dataSource.cloneWithRows(this.props.ramBigTradeLog == null ? [] : this.props.ramBigTradeLog)} 
                                 renderRow={(rowData, sectionID, rowID) => (                 
@@ -1023,14 +1016,10 @@ class Ram extends BaseComponent {
                                             <Text style={styles.numtext}>排名 {rowData.num}</Text>
                                         </View>
                                         <View style={styles.Rankcenterout}>
-                                            <Text style={{fontSize: ScreenUtil.setSpText(14),color: UColor.arrow,}}>盈亏 
-                                            {rowData.profit.indexOf('-') != -1 ?
-                                            <Text style={{fontSize: ScreenUtil.setSpText(14), color: UColor.riseColor,}}> {rowData.profit}</Text>
-                                            :
-                                            <Text style={{fontSize: ScreenUtil.setSpText(14), color: UColor.fallColor,}}> {rowData.profit}</Text>
-                                            }
+                                            <Text style={styles.profitLoss}>盈亏 
+                                                <Text style={rowData.profit.indexOf('-') != -1 ? styles.profittext : styles.Losstext}> {rowData.profit}</Text>
                                             </Text>
-                                            <Text style={{fontSize: ScreenUtil.setSpText(14),color: UColor.arrow,}}>成本价<Text style={{ fontSize: ScreenUtil.setSpText(14),color: UColor.fontColor,}}> {rowData.historyAverageCost}</Text></Text>
+                                            <Text style={styles.costout}>成本价<Text style={styles.costtext}> {rowData.historyAverageCost}</Text></Text>
                                         </View>
                                         <View style={styles.Rankrightout}>
                                             <Text style={styles.pertext}>{rowData.per}</Text>
@@ -1066,7 +1055,7 @@ class Ram extends BaseComponent {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        {this.state.error&&<Text style={{width: ScreenWidth, paddingHorizontal: 40, fontSize: ScreenUtil.setSpText(12), color: UColor.showy, textAlign: 'right', }}>{this.state.errortext}</Text>}
+                        {this.state.error&&<Text style={styles.errortext}>{this.state.errortext}</Text>}
                         {this.state.isBuy?<View>
                             <View style={styles.greeninptout}>
                                 <Text style={styles.greenText}>单价: {this.props.ramInfo ? (this.props.ramInfo.price * 1).toFixed(4) : '0.0000'} EOS/KB</Text>
@@ -1207,6 +1196,223 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
+    incup:{
+        fontSize: ScreenUtil.setSpText(20),
+        color: UColor.riseColor,
+        textAlign:'center',
+    },
+    incdo:{
+        fontSize: ScreenUtil.setSpText(20),
+        color: UColor.fallColor,
+        textAlign:'center',
+    },
+    Increasetext: {
+        color:UColor.arrow,
+        fontSize: ScreenUtil.setSpText(13),
+        marginTop: ScreenUtil.autoheight(2),
+        textAlign:'center', 
+        marginLeft: ScreenUtil.autowidth(5)
+    },
+
+    timeout: {
+        width:ScreenWidth,
+        height:ScreenUtil.autoheight(25),
+        flexDirection:'row',
+        justifyContent: 'center',
+        alignItems:'center',
+        backgroundColor: UColor.inash,
+    },
+    timetabout: {
+        flexDirection:"column",
+        flex:1,
+    },
+    timeview: { 
+        marginLeft: ScreenUtil.autowidth(2),
+        width: ScreenUtil.autowidth(40), 
+        height: ScreenUtil.autoheight(25),
+        borderRadius: 3, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    timeinitial: {
+        fontSize: ScreenUtil.setSpText(15), 
+        color: UColor.tintColor,
+    },
+    timeSelect: {
+        fontSize: ScreenUtil.setSpText(15), 
+        color: UColor.fontColor,
+    },
+    triangleimg: {
+        width: ScreenUtil.autowidth(10), 
+        height:ScreenUtil.autoheight(5),
+        resizeMode:'contain'
+    },
+
+    echartsout: {
+        // flex: 1,
+    },
+
+    toptabout: {
+        paddingHorizontal: ScreenUtil.autowidth(10),
+        paddingTop:ScreenUtil.autoheight(10),
+        paddingBottom: ScreenUtil.autoheight(5),
+    },
+
+    formout: { 
+        flexDirection: "row", 
+        paddingHorizontal: ScreenUtil.autowidth(5),
+        marginVertical: ScreenUtil.autoheight(2),
+        marginHorizontal: ScreenUtil.autowidth(5),
+    },
+    formName: { 
+        flex: 3,
+        paddingLeft: ScreenUtil.autowidth(8), 
+        textAlign: 'left',
+        color: UColor.lightgray
+    },
+    formNumber: { 
+        flex: 4,
+        paddingLeft: ScreenUtil.autowidth(8),
+        textAlign: 'left',
+        color: UColor.lightgray
+    },
+    formPrice: { 
+        flex: 3.5,
+        paddingLeft: ScreenUtil.autowidth(8),
+        textAlign: 'left',
+        color: UColor.lightgray
+    },
+    formTime: { 
+        flex: 2.5,
+        paddingLeft: ScreenUtil.autowidth(8),
+        textAlign: 'left',
+        color: UColor.lightgray
+    },
+
+    businessout: {
+        height: ScreenUtil.autoheight(40),
+        backgroundColor: UColor.mainColor,
+        flexDirection: "row",
+        paddingHorizontal: ScreenUtil.autowidth(5),
+        borderRadius: 5,
+        marginVertical: ScreenUtil.autoheight(2),
+        marginHorizontal: ScreenUtil.autowidth(5),
+    },
+    liststrip: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: 'center',
+    },
+    payertext: {
+        flex: 3,
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.fontColor,
+        textAlign: 'left'
+    },
+    selltext: {
+        flex: 4,
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.riseColor,
+        textAlign: 'left',
+        paddingLeft: ScreenUtil.autowidth(8),
+    },
+    selltime: {
+        flex: 2.5,
+        fontSize: ScreenUtil.setSpText(12),
+        color: UColor.riseColor,
+        textAlign: 'left'
+    },
+    buytext: {
+        flex: 4,
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.fallColor,
+        textAlign: 'left',
+        paddingLeft: ScreenUtil.autowidth(8),
+    },
+    buytime: {
+        flex: 2.5,
+        fontSize: ScreenUtil.setSpText(12),
+        color: UColor.fallColor,
+        textAlign: 'left'
+    },
+    sellpricetext: {
+        flex: 3.5,
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.riseColor,
+        textAlign: 'left',
+        paddingLeft: ScreenUtil.autowidth(8),
+    },
+    buypricetext: {
+        flex: 3.5,
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.fallColor,
+        textAlign: 'left',
+        paddingLeft: ScreenUtil.autowidth(8),
+    },
+
+    businessRan: {
+        height: ScreenUtil.autoheight(50),
+        backgroundColor: UColor.mainColor,
+        flexDirection: "row",
+        paddingHorizontal: ScreenUtil.autowidth(5),
+        borderRadius: 5,
+        marginVertical: ScreenUtil.autoheight(2),
+        marginHorizontal: ScreenUtil.autowidth(5),
+    },
+    Rankleftout: {
+        flex: 4.5,
+        flexDirection: "column",
+        justifyContent: "space-around",
+    },
+    accounttext: {
+        fontSize: ScreenUtil.setSpText(15),
+        color: UColor.fontColor,
+    },
+    numtext: {
+        fontSize: ScreenUtil.setSpText(15),
+        color: UColor.arrow,
+    },
+    Rankcenterout: {
+        flex: 4.5,
+        flexDirection: "column",
+        justifyContent: "space-around",
+    },
+    profitLoss: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.arrow,
+    },
+    profittext: {
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.riseColor,
+    },
+    Losstext: {
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.fallColor,
+    },
+    costout: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.arrow,
+    },
+    costtext: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.fontColor,
+    },
+    Rankrightout: {
+        flex: 3,
+        flexDirection: "column",
+        justifyContent: "space-around",
+    },
+    pertext: {
+        fontSize: ScreenUtil.setSpText(15),
+        color: UColor.fontColor,
+        textAlign: 'right',
+    },
+    quotatext: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.arrow,
+        textAlign: 'right',
+    },
+
     presentprice: {
         flex: 1,
         flexDirection: 'row',
@@ -1225,43 +1431,7 @@ const styles = StyleSheet.create({
         fontSize: ScreenUtil.setSpText(20),
         textAlign:'center'
     },
-
-    row:{
-      flex:1,
-      backgroundColor:UColor.mainColor,
-      flexDirection:"row",
-      padding: ScreenUtil.autowidth(20),
-      borderBottomColor: UColor.secdColor,
-      borderBottomWidth: 0.6,
-    },
-    left:{
-      width:'25%',
-      flex:1,
-      flexDirection:"column"
-    },
-    right:{
-      width:'85%',
-      flex:1,
-      flexDirection:"column"
-    },
-    incup:{
-      fontSize: ScreenUtil.setSpText(20),
-      color: UColor.riseColor,
-      textAlign:'center',
-    },
-    incdo:{
-      fontSize: ScreenUtil.setSpText(20),
-      color: UColor.fallColor,
-      textAlign:'center',
-    },
-    toptabout: {
-        paddingHorizontal: ScreenUtil.autowidth(10),
-        paddingTop:ScreenUtil.autoheight(10),
-        paddingBottom: ScreenUtil.autoheight(5),
-    },
-    echartsout: {
-        // flex: 1,
-    },
+   
     tablayout: {   
         flex: 1,
         height: ScreenUtil.autoheight(35),
@@ -1327,6 +1497,13 @@ const styles = StyleSheet.create({
         fontSize: ScreenUtil.setSpText(12),
         color: UColor.arrow
     },
+    errortext: {
+        width: ScreenWidth, 
+        paddingHorizontal: ScreenUtil.autowidth(40), 
+        fontSize: ScreenUtil.setSpText(12), 
+        color: UColor.showy, 
+        textAlign: 'right', 
+    },
     greeninptout: {
         height: ScreenUtil.autoheight(50),
         flexDirection: 'column',
@@ -1339,21 +1516,18 @@ const styles = StyleSheet.create({
         color: UColor.fallColor,
         textAlign: "left"
     },
-
     redText: {
         flex: 1,
         fontSize: ScreenUtil.setSpText(14),
         color: UColor.showy,
         textAlign: "left"
     },
-
     inptTitle: {
         flex: 1,
         fontSize: ScreenUtil.setSpText(14),
         color: UColor.fontColor,
         textAlign: "right"
     },
-
     inputout: {
         height: ScreenUtil.autoheight(30),
         marginHorizontal: ScreenUtil.autowidth(18),
@@ -1388,112 +1562,6 @@ const styles = StyleSheet.create({
     botText: {
       fontSize: ScreenUtil.setSpText(17), 
       color: UColor.fontColor,
-    },
-
-    businessout: {
-        height: ScreenUtil.autoheight(40),
-        backgroundColor: UColor.mainColor,
-        flexDirection: "row",
-        paddingHorizontal: ScreenUtil.autowidth(5),
-        borderRadius: 5,
-        marginVertical: ScreenUtil.autoheight(2),
-        marginHorizontal: ScreenUtil.autowidth(5),
-    },
-    liststrip: {
-        flex: 1,
-        flexDirection: "row",
-        alignItems: 'center',
-    },
-    sellpricetext: {
-        flex: 3.5,
-        fontSize: ScreenUtil.setSpText(14),
-        color: UColor.riseColor,
-        textAlign: 'left',
-        paddingLeft: ScreenUtil.autowidth(8),
-    },
-    buypricetext: {
-        flex: 3.5,
-        fontSize: ScreenUtil.setSpText(14),
-        color: UColor.fallColor,
-        textAlign: 'left',
-        paddingLeft: ScreenUtil.autowidth(8),
-    },
-
-    payertext: {
-        flex: 3,
-        fontSize: ScreenUtil.setSpText(14),
-        color: UColor.fontColor,
-        textAlign: 'left'
-    },
-    selltext: {
-        flex: 4,
-        fontSize: ScreenUtil.setSpText(14),
-        color: UColor.riseColor,
-        textAlign: 'left',
-        paddingLeft: ScreenUtil.autowidth(8),
-    },
-    selltime: {
-        flex: 2.5,
-        fontSize: ScreenUtil.setSpText(12),
-        color: UColor.riseColor,
-        textAlign: 'left'
-    },
-    buytext: {
-        flex: 4,
-        fontSize: ScreenUtil.setSpText(14),
-        color: UColor.fallColor,
-        textAlign: 'left',
-        paddingLeft: ScreenUtil.autowidth(8),
-    },
-    buytime: {
-        flex: 2.5,
-        fontSize: ScreenUtil.setSpText(12),
-        color: UColor.fallColor,
-        textAlign: 'left'
-    },
-
-    businessRan: {
-        height: ScreenUtil.autoheight(50),
-        backgroundColor: UColor.mainColor,
-        flexDirection: "row",
-        paddingHorizontal: ScreenUtil.autowidth(5),
-        borderRadius: 5,
-        marginVertical: ScreenUtil.autoheight(2),
-        marginHorizontal: ScreenUtil.autowidth(5),
-    },
-    Rankleftout: {
-        flex: 4.5,
-        flexDirection: "column",
-        justifyContent: "space-around",
-    },
-    accounttext: {
-        fontSize: ScreenUtil.setSpText(15),
-        color: UColor.fontColor,
-    },
-    numtext: {
-        fontSize: ScreenUtil.setSpText(15),
-        color: UColor.arrow,
-    },
-    Rankcenterout: {
-        flex: 4.5,
-        flexDirection: "column",
-        justifyContent: "space-around",
-    },
-
-    Rankrightout: {
-        flex: 3,
-        flexDirection: "column",
-        justifyContent: "space-around",
-    },
-    pertext: {
-        fontSize: ScreenUtil.setSpText(15),
-        color: UColor.fontColor,
-        textAlign: 'right',
-    },
-    quotatext: {
-        fontSize: ScreenUtil.setSpText(14),
-        color: UColor.arrow,
-        textAlign: 'right',
     },
 
     businesmodal: {
@@ -1572,6 +1640,25 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 
+    transactiontou: { 
+        position:'absolute', 
+        bottom: ScreenUtil.autoheight(45), 
+        right: 0, 
+        zIndex: 999, 
+    },
+    transactionout: {
+        height: ScreenUtil.autoheight(35),
+        width: ScreenUtil.autowidth(90),
+        backgroundColor: UColor.tintColor,
+        justifyContent: "center", 
+        alignItems: "center",
+        borderTopLeftRadius: 25,
+        borderBottomLeftRadius: 25,
+    },
+    paneltext: {
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.fontColor
+    },
 
     systemSettingTip: {
         width: ScreenWidth,

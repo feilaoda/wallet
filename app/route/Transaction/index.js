@@ -899,6 +899,7 @@ class Transaction extends BaseComponent {
     }
     return ret
   }
+
   //小数点位数大于指定位数,强制显示指定位数,少于则按实际位数显示
   precisionTransfer(data,pos){
     try {
@@ -916,6 +917,7 @@ class Transaction extends BaseComponent {
         return data;
     }
   }
+
   openQuery =(payer) => {
       if(payer == 'busines'){
         if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
@@ -951,17 +953,7 @@ class Transaction extends BaseComponent {
   openbusiness() { 
     const view = 
     <View style={styles.passoutsource}>
-      <Text　
-        style={ 
-            {
-                height: 45,
-                width: ScreenWidth-100,
-                paddingBottom: 5,
-                fontSize: 16,
-            }
-        }>
-        TEST币仅用于测试,没有投资价值,请不要大量购买!
-        </Text>  
+      <Text　style={{height: 45,width: ScreenWidth-100,paddingBottom: 5,fontSize: 16,}}>TEST币仅用于测试,没有投资价值,请不要大量购买!</Text>  
     </View>
     EasyShowLD.dialogShow("警示", view, "确认", "取消", () => {
         EasyShowLD.dialogClose();
@@ -999,9 +991,9 @@ class Transaction extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-    <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 30 : 50, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
-        <View style={{height: 28,width: 70,backgroundColor: UColor.tintColor,justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
-            <Text style={{fontSize: 12, color: UColor.fontColor}}>交易面板</Text>
+    <TouchableOpacity style={styles.transactiontou}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
+        <View style={styles.transactionout}>
+            <Text style={styles.paneltext}>交易面板1</Text>
         </View>
     </TouchableOpacity>
     <View style={styles.headerTitle}>  
@@ -1053,108 +1045,98 @@ class Transaction extends BaseComponent {
                     <Text style={(this.props.etinfo && this.props.etinfo.increase>=0)?styles.incdo:styles.incup}> 
                         {this.props.etinfo ? (this.props.etinfo.increase > 0 ? '+' + (this.props.etinfo.increase * 100).toFixed(2) : 
                         (this.props.etinfo.increase * 100).toFixed(2)): '0.00'}%</Text>
-                    <Text style={{color:UColor.arrow,fontSize:13,marginTop:2,textAlign:'center', marginLeft:5}}>涨幅</Text>
+                    <Text style={styles.Increasetext}>涨幅</Text>
                 </View>
             </View>
           </View>
-          <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: UColor.inash,}}>
-            <View style={{flexDirection:"column",flex:1,}}>
+          <View style={styles.timeout}>
+            <View style={styles.timetabout}>
                 <Button onPress={this.onClickTimeType.bind(this,"时分")}>
-                    <View style={{ marginLeft: 2,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        {this.state.selectedSegment == "时分" ? 
-                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>时分</Text> : 
-                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>时分</Text>}
+                    <View style={styles.timeview} >
+                        <Text style={this.state.selectedSegment == "时分"? styles.timeinitial : styles.timeSelect}>时分</Text>
                     </View>
                 </Button>   
             </View>
-            <View style={{flexDirection:"column",flex:1,}}>
+            <View style={styles.timetabout}>
                 <Button onPress={this.onClickTimeType.bind(this,"5分")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        {this.state.selectedSegment == "5分" ? 
-                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>5分</Text> : 
-                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>5分</Text>}
+                    <View style={styles.timeview} >
+                        <Text style={this.state.selectedSegment == "5分" ? styles.timeinitial : styles.timeSelect}>5分</Text>     
                     </View>
                 </Button> 
             </View>
-            <View style={{flexDirection:"column",flex:1}}>
+            <View style={styles.timetabout}>
                 <Button onPress={this.onClickTimeType.bind(this,"15分")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        {this.state.selectedSegment == "15分" ? 
-                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>15分</Text> : 
-                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>15分</Text>}
+                    <View style={styles.timeview} >
+                        <Text style={this.state.selectedSegment == "15分" ? styles.timeinitial : styles.timeSelect}>15分</Text> 
                     </View>
                 </Button> 
             </View>
-            <View style={{flexDirection:"column",flex:1}}>
+            <View style={styles.timetabout}>
                 <Button onPress={this.onClickTimeType.bind(this,"30分")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                       {this.state.selectedSegment == "30分" ? 
-                                <Text style={{fontSize: 15, color: UColor.tintColor,}}>30分</Text> : 
-                                        <Text style={{fontSize: 15, color: UColor.fontColor,}}>30分</Text>}
+                    <View style={styles.timeview} >
+                        <Text style={this.state.selectedSegment == "30分" ? styles.timeinitial : styles.timeSelect}>30分</Text>
                     </View>
                 </Button> 
             </View>
-            <View style={{flexDirection:"column",flex:1}}>
+            <View style={styles.timetabout}>
                 <Button onPress={this.onClickMore.bind(this)}>
-                    <View style={{ flexDirection:"row",marginLeft: 0,width: 50, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        {(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
-                           || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? 
-                         <Text style={{fontSize: 15,color: UColor.tintColor,}}>{this.state.showMoreTitle}</Text> : 
-                          <Text style={{fontSize: 15,color: UColor.fontColor,}}>{this.state.showMoreTitle}</Text>}
-                         <Image source={ UImage.txbtn_more } style={ {flex:0,width: 10, height:5,resizeMode:'contain'}}/>
+                    <View style={styles.timeview} >
+                         <Text style={(this.state.selectedSegment == "更多" || this.state.selectedSegment == "1小时" || this.state.selectedSegment == "1天"
+                         || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? styles.timeinitial : styles.timeSelect}>{this.state.showMoreTitle}</Text>
+                         <Image source={ UImage.txbtn_more } style={styles.triangleimg}/>
                     </View>
                 </Button> 
 
             </View>
-            <View style={{flexDirection:"column",flex:1}}>
+            <View style={styles.timetabout}>
                 <Button disabled={true}>
-                    <View style={{ marginLeft: 0,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                    <View style={styles.timeview} >
+                        <Text style={styles.timeinitial}></Text>
                     </View>
                 </Button> 
             </View>
          </View> 
         {this.state.showMore &&       
-            <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: UColor.inash,}}>
-            <View style={{flexDirection:"column",flex:1,}}>
+        <View style={styles.timeout}>
+            <View style={styles.timetabout}>
                 <Button disabled={true}>
-                    <View style={{ marginLeft: 2,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                    <View style={styles.timeview} >
+                        <Text style={styles.timeinitial}></Text>
                     </View>
                 </Button> 
             </View>
-            <View style={{flexDirection:"column",flex:1,}}>
+            <View style={styles.timetabout}>
                 <Button onPress={this.onClickTimeType.bind(this,"1小时")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1小时</Text>
+                    <View style={styles.timeview} >
+                        <Text style={styles.timeinitial}>1小时</Text>
                     </View>
                 </Button> 
             </View>
-            <View style={{flexDirection:"column",flex:1}}>
+            <View style={styles.timetabout}>
                 <Button onPress={this.onClickTimeType.bind(this,"1天")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1天</Text>
+                    <View style={styles.timeview} >
+                        <Text style={styles.timeinitial}>1天</Text>
                     </View>
                 </Button> 
             </View>
-            <View style={{flexDirection:"column",flex:1}}>
+            <View style={styles.timetabout}>
                 <Button onPress={this.onClickTimeType.bind(this,"1周")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1周</Text>
+                    <View style={styles.timeview} >
+                        <Text style={styles.timeinitial}>1周</Text>
                     </View>
                 </Button> 
             </View>
-            <View style={{flexDirection:"column",flex:1}}>
+            <View style={styles.timetabout}>
                <Button onPress={this.onClickTimeType.bind(this,"1月")}>
-                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>1月</Text>
+                    <View style={styles.timeview} >
+                        <Text style={styles.timeinitial}>1月</Text>
                     </View>
                 </Button> 
             </View>
-            <View style={{flexDirection:"column",flex:1}}>
+            <View style={styles.timetabout}>
                <Button disabled={true}>
-                    <View style={{ marginLeft: 0,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
-                        <Text style={{fontSize: 15,color: UColor.fontColor,}}>    </Text>
+                    <View style={styles.timeview} >
+                        <Text style={styles.timeinitial}></Text>
                     </View>
                 </Button> 
             </View>
@@ -1183,11 +1165,12 @@ class Transaction extends BaseComponent {
                     <View style={{flex: 1,}}>
                         {(this.props.etTradeLog  != null &&  this.props.etTradeLog .length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                         <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                                renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 5,marginHorizontal: 5,}}>
-                                <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: UColor.lightgray}}>账号</Text>
-                                <Text style={{ flex: 4,textAlign: 'left',color: UColor.lightgray}}>数量(EOS)</Text>
-                                <Text style={{ flex: 3.5,textAlign: 'left',color: UColor.lightgray}}>价格(EOS)</Text>
-                                <Text style={{ flex: 2.5,textAlign: 'left',color: UColor.lightgray}}>时间</Text>
+                                renderHeader = {()=>
+                                <View style={styles.formout}>
+                                    <Text style={styles.formName}>账号</Text>
+                                    <Text style={styles.formNumber}>数量(EOS)</Text>
+                                    <Text style={styles.formPrice}>价格(EOS)</Text>
+                                    <Text style={styles.formTime}>时间</Text>
                                 </View>
                             }
                             dataSource={this.state.dataSource.cloneWithRows(this.state.newetTradeLog == null ? [] : this.state.newetTradeLog)} 
@@ -1216,17 +1199,17 @@ class Transaction extends BaseComponent {
                         }
                     </View>: 
             <View style={{flex: 1,}}>
-                
                 {this.state.selectedTransactionRecord == transactionOption[2] ? 
                   <View style={{flex: 1,}}>
                     {(this.props.etBigTradeLog != null &&  this.props.etBigTradeLog.length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                     <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
-                    renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
-                        <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: UColor.lightgray}}>账号</Text>
-                        <Text style={{ flex: 4,textAlign: 'left',color: UColor.lightgray}}>数量(EOS)</Text>
-                        <Text style={{ flex: 3.5,textAlign: 'left',color: UColor.lightgray}}>价格(EOS)</Text>
-                        <Text style={{ flex: 2.5,textAlign: 'left',color: UColor.lightgray}}>时间</Text>
-                        </View>
+                    renderHeader = {()=>
+                    <View style={styles.formout}>
+                        <Text style={styles.formName}>账号</Text>
+                        <Text style={styles.formNumber}>数量(EOS)</Text>
+                        <Text style={styles.formPrice}>价格(EOS)</Text>
+                        <Text style={styles.formTime}>时间</Text>
+                    </View>
                     }
                       dataSource={this.state.dataSource.cloneWithRows(this.props.etBigTradeLog == null ? [] : this.props.etBigTradeLog)} 
                       renderRow={(rowData, sectionID, rowID) => (                 
@@ -1264,14 +1247,10 @@ class Transaction extends BaseComponent {
                                         <Text style={styles.numtext}>排名 {rowData.num}</Text>
                                     </View>
                                     <View style={styles.Rankcenterout}>
-                                        <Text style={{fontSize: 12,color: UColor.arrow,}}>盈亏 
-                                        {rowData.profit.indexOf('-') != -1 ?
-                                        <Text style={{fontSize: 12, color: UColor.riseColor,}}> {rowData.profit}</Text>
-                                        :
-                                        <Text style={{fontSize: 12, color: UColor.fallColor,}}> {rowData.profit}</Text>
-                                        }
+                                        <Text style={styles.profitLoss}>盈亏 
+                                            <Text style={rowData.profit.indexOf('-') != -1 ? styles.profittext : styles.Losstext}> {rowData.profit}</Text>
                                         </Text>
-                                        <Text style={{fontSize: 12,color: UColor.arrow,}}>成本价<Text style={{ fontSize: 12,color: UColor.fontColor,}}> {rowData.historyAverageCost}</Text></Text>
+                                        <Text style={styles.costout}>成本价<Text style={styles.costtext}> {rowData.historyAverageCost}</Text></Text>
                                     </View>
                                     <View style={styles.Rankrightout}>
                                         <Text style={styles.pertext}>{rowData.per}</Text>
@@ -1284,7 +1263,6 @@ class Transaction extends BaseComponent {
                   </View>
                 }
             </View>}
-        
       </ScrollView>  
     </KeyboardAvoidingView> 
 
@@ -1413,7 +1391,7 @@ class Transaction extends BaseComponent {
                     <View style={styles.greeninptout}>
                         <Text style={styles.greenText}>单价: {this.props.etinfo ? this.precisionTransfer(this.props.etinfo.price,8) : '0'} EOS</Text>
                         <Text style={styles.inptTitle}>余额: {this.state.balance==""? "0" : this.state.balance} EOS</Text>
-                        {this.state.error&&<Text style={{flex: 1, fontSize: 12, color: UColor.showy, textAlign: 'left', }}>{this.state.errortext}</Text>}
+                        {this.state.error&&<Text style={styles.errortext}>{this.state.errortext}</Text>}
                     </View>
                     <View style={styles.inputout}>
                         <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyETAmount + ''} returnKeyType="go" 
@@ -1450,7 +1428,6 @@ class Transaction extends BaseComponent {
                         </View>
                     </View>
                 </View>
-                
                 :
                 <View>
                     <View style={styles.greeninptout}>
@@ -1501,61 +1478,20 @@ class Transaction extends BaseComponent {
 }
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      flexDirection:'column',
-      backgroundColor: UColor.secdColor,
+        flex: 1,
+        flexDirection:'column',
+        backgroundColor: UColor.secdColor,
     },
-    headerTitle: {
-        flexDirection: "row",
-        alignItems: 'center',
-        justifyContent: "space-between",
-        width: ScreenWidth,
-        paddingTop:Platform.OS == 'ios' ? 30 : 20,
-        paddingLeft: 10,
-        paddingRight: 10,
-        backgroundColor: UColor.mainColor,
-      },
-      headerTitleText: {
-        height: Platform.OS == 'ios' ? 65 : 50,
-        lineHeight: Platform.OS == 'ios' ? 65 : 50,
-        textAlign: "center",
-        fontSize: 18,
-        color: UColor.fontColor,
-      },
-    leftoutTitle: {
-        paddingLeft: 15
-      },
-    HeadImg: {
-        width: 25,
-        height:15,
-        marginHorizontal:1,
-    },
-    Rightout: {
-        paddingRight: 15
-      },
-    imgTeOy: {
-        width: 25,
-        height: 15,
-        marginHorizontal:5,
-      },
-
-    HeadTitle: {
-    flex: 1,
-    paddingLeft: 60,
-    paddingHorizontal: 20,
-    justifyContent: 'center', 
-    },
-    
     header: {
-      width: ScreenWidth,
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 6,
+        width: ScreenWidth,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: ScreenUtil.autowidth(6),
     },
     leftout: {
         flexDirection: "row",
         flex: 9,
-        height: 50,
+        height: ScreenUtil.autoheight(50),
     },
     nameout: {
         flexDirection: 'column',
@@ -1563,24 +1499,65 @@ const styles = StyleSheet.create({
     },
     nametext: {
         color: UColor.arrow,
-        fontSize: 10,
+        fontSize: ScreenUtil.setSpText(13),
     },
+
+    headerTitle: {
+        flexDirection: "row",
+        alignItems: 'center',
+        justifyContent: "space-between",
+        width: ScreenWidth,
+        paddingTop: ScreenUtil.autoheight(20),
+        paddingHorizontal: ScreenUtil.autowidth(10),
+        backgroundColor: UColor.mainColor,
+    },
+    headerTitleText: {
+        height: ScreenUtil.autoheight(60),
+        lineHeight: ScreenUtil.autoheight(60),
+        textAlign: "center",
+        fontSize: ScreenUtil.setSpText(18),
+        color: UColor.fontColor,
+    },
+    leftoutTitle: {
+        paddingLeft: ScreenUtil.autowidth(15),
+    },
+    HeadImg: {
+        width: ScreenUtil.autowidth(25),
+        height: ScreenUtil.autoheight(15),
+        marginHorizontal:1,
+    },
+    Rightout: {
+        paddingRight: ScreenUtil.autowidth(15),
+    },
+    imgTeOy: {
+        width: ScreenUtil.autowidth(25),
+        height: ScreenUtil.autowidth(15),
+        marginHorizontal: ScreenUtil.autowidth(5),
+    },
+
+    HeadTitle: {
+        flex: 1,
+        paddingLeft: ScreenUtil.autowidth(60),
+        paddingHorizontal: 20,
+        justifyContent: 'center', 
+    },
+  
     recordout: {
         flex: 1,
         flexDirection: "column",
         justifyContent: 'space-around',
-        paddingLeft: 5,
+        paddingLeft: ScreenUtil.autowidth(5),
     },
     recordtext: {
         color: UColor.fontColor,
-        fontSize: 11,
+        fontSize: ScreenUtil.setSpText(13),
     },
     rowout: {
         flexDirection: "row",
     },
     ashtext: {
         color: UColor.arrow,
-        fontSize: 11,
+        fontSize: ScreenUtil.setSpText(13),
     },
     rightout: {
         flexDirection:'column',
@@ -1599,67 +1576,142 @@ const styles = StyleSheet.create({
     },
     toptext: {
         color: UColor.arrow, 
-        fontSize: 13, 
-        marginTop: 2, 
+        fontSize: ScreenUtil.setSpText(13), 
+        marginTop: ScreenUtil.autoheight(2), 
         textAlign: 'center', 
-        marginLeft: 5, 
-        marginRight: 2
+        marginLeft: ScreenUtil.autowidth(5), 
+        marginRight: ScreenUtil.autowidth(2),
     },
     present: {
         color: UColor.fontColor,
-        fontSize: 18,
+        fontSize: ScreenUtil.setSpText(20),
         textAlign:'center'
     },
 
     row:{
-      flex:1,
-      backgroundColor:UColor.mainColor,
-      flexDirection:"row",
-      padding: 20,
-      borderBottomColor: UColor.secdColor,
-      borderBottomWidth: 0.6,
+        flex:1,
+        backgroundColor:UColor.mainColor,
+        flexDirection:"row",
+        padding: ScreenUtil.autowidth(20),
+        borderBottomColor: UColor.secdColor,
+        borderBottomWidth: 0.6,
     },
     left:{
-      width:'25%',
-      flex:1,
-      flexDirection:"column"
+        width:'25%',
+        flex:1,
+        flexDirection:"column"
     },
     right:{
-      width:'85%',
-      flex:1,
-      flexDirection:"column"
+        width:'85%',
+        flex:1,
+        flexDirection:"column"
     },
     incup:{
-      fontSize:18,
-      color: UColor.riseColor,
-      textAlign:'center',
+        fontSize: ScreenUtil.setSpText(20),
+        color: UColor.riseColor,
+        textAlign:'center',
     },
     incdo:{
-      fontSize:18,
-      color: UColor.fallColor,
-      textAlign:'center',
+        fontSize: ScreenUtil.setSpText(20),
+        color: UColor.fallColor,
+        textAlign:'center',
     },
-    toptabout: {
-        paddingHorizontal: 10,
-        paddingTop:10,
-        paddingBottom: 5,
+    Increasetext: {
+        color:UColor.arrow,
+        fontSize: ScreenUtil.setSpText(13),
+        marginTop: ScreenUtil.autoheight(2),
+        textAlign:'center', 
+        marginLeft: ScreenUtil.autowidth(5)
     },
+
+    timeout: {
+        width:ScreenWidth,
+        height:ScreenUtil.autoheight(25),
+        flexDirection:'row',
+        justifyContent: 'center',
+        alignItems:'center',
+        backgroundColor: UColor.inash,
+    },
+    timetabout: {
+        flexDirection:"column",
+        flex:1,
+    },
+    timeview: { 
+        marginLeft: ScreenUtil.autowidth(2),
+        width: ScreenUtil.autowidth(40), 
+        height: ScreenUtil.autoheight(25),
+        borderRadius: 3, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    timeinitial: {
+        fontSize: ScreenUtil.setSpText(15), 
+        color: UColor.tintColor,
+    },
+    timeSelect: {
+        fontSize: ScreenUtil.setSpText(15), 
+        color: UColor.fontColor,
+    },
+    triangleimg: {
+        width: ScreenUtil.autowidth(10), 
+        height:ScreenUtil.autoheight(5),
+        resizeMode:'contain'
+    },
+
     echartsout: {
         // flex: 1,
     },
+
+    toptabout: {
+        paddingHorizontal: ScreenUtil.autowidth(10),
+        paddingTop: ScreenUtil.autoheight(10),
+        paddingBottom: ScreenUtil.autoheight(5),
+    },
+
+    formout: { 
+        flexDirection: "row", 
+        paddingHorizontal: ScreenUtil.autowidth(5),
+        marginVertical: ScreenUtil.autoheight(2),
+        marginHorizontal: ScreenUtil.autowidth(5),
+    },
+    formName: { 
+        flex: 3,
+        paddingLeft: ScreenUtil.autowidth(8), 
+        textAlign: 'left',
+        color: UColor.lightgray
+    },
+    formNumber: { 
+        flex: 4,
+        paddingLeft: ScreenUtil.autowidth(8),
+        textAlign: 'left',
+        color: UColor.lightgray
+    },
+    formPrice: { 
+        flex: 3.5,
+        paddingLeft: ScreenUtil.autowidth(8),
+        textAlign: 'left',
+        color: UColor.lightgray
+    },
+    formTime: { 
+        flex: 2.5,
+        paddingLeft: ScreenUtil.autowidth(8),
+        textAlign: 'left',
+        color: UColor.lightgray
+    },
+   
     tablayout: {   
         flex: 1,
-        height: 35,
+        height: ScreenUtil.autoheight(35),
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',  
-        paddingVertical: 5,
-        paddingHorizontal: 10,
+        paddingVertical: ScreenUtil.autoheight(5),
+        paddingHorizontal: ScreenUtil.autowidth(10),
         backgroundColor: UColor.secdColor,
     },
     txRecordtab: {
         flex: 1,
-        height: 26,
+        height: ScreenUtil.autoheight(26),
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
         borderColor: UColor.tintColor,
@@ -1669,7 +1721,7 @@ const styles = StyleSheet.create({
     },
     trackRecordtab: {
         flex: 1,
-        height: 26,
+        height: ScreenUtil.autoheight(26),
         borderTopRightRadius: 5,
         borderBottomRightRadius: 5,
         borderColor: UColor.tintColor,
@@ -1679,71 +1731,77 @@ const styles = StyleSheet.create({
     },
    
     inptoutsource: {
-      marginTop: 10,
-      paddingHorizontal: 20,
-      paddingBottom: 5,
-      justifyContent: 'center',
-      flexDirection: 'row',  
-      alignItems: 'center',
+        marginTop: ScreenUtil.autoheight(10),
+        paddingHorizontal: ScreenUtil.autowidth(20),
+        paddingBottom: ScreenUtil.autoheight(5),
+        justifyContent: 'center',
+        flexDirection: 'row',  
+        alignItems: 'center',
     },
     outsource: {
-      flexDirection: 'row',  
-      alignItems: 'center',
+        flexDirection: 'row',  
+        alignItems: 'center',
     },
     progressbar: {
         flex: 1,
-        paddingRight: 20,
+        paddingRight: ScreenUtil.autowidth(20),
     },
     inpt: {
-      flex: 1, 
-      color: UColor.fontColor, 
-      fontSize: 15, 
-      height: 45, 
-      paddingLeft: 10, 
+        flex: 1, 
+        color: UColor.fontColor, 
+        fontSize: ScreenUtil.setSpText(15), 
+        height: ScreenUtil.autoheight(45), 
+        paddingLeft: ScreenUtil.autowidth(10), 
     },
     paragraph: {
-        height: 30,
+        height: ScreenUtil.autoheight(30),
         flexDirection: 'row',
         paddingHorizontal: Platform.OS == 'ios' ? 0 : 15,
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     subsection: {
-        fontSize: 12,
+        fontSize: ScreenUtil.setSpText(12),
         color: UColor.arrow
     },
     greeninptout: {
-      height: 50,
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      paddingHorizontal: 20,
+        height: ScreenUtil.autoheight(50),
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        paddingHorizontal: ScreenUtil.autowidth(20),
     },
     greenText: {
-      flex: 1,
-      fontSize: 14, 
-      color: UColor.fallColor, 
-      textAlign: "left"
+        flex: 1,
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.fallColor, 
+        textAlign: "left"
     },
 
     redText: {
-      flex: 1,
-      fontSize: 14, 
-      color: UColor.showy, 
-      textAlign: "left"
+        flex: 1,
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.showy, 
+        textAlign: "left"
     },
 
     inptTitle: {
-      flex: 1,
-      fontSize: 14, 
-      color: UColor.fontColor, 
-      textAlign: "right"
+        flex: 1,
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.fontColor, 
+        textAlign: "right"
+    },
+    errortext: {
+        flex: 1, 
+        fontSize: ScreenUtil.setSpText(12), 
+        color: UColor.showy, 
+        textAlign: 'left', 
     },
 
     inputout: {
-        height: 30,
-        marginHorizontal: 18,
-        marginBottom: 10,
-        paddingHorizontal: 10,
+        height: ScreenUtil.autoheight(30),
+        marginHorizontal: ScreenUtil.autowidth(18),
+        marginBottom: ScreenUtil.autoheight(10),
+        paddingHorizontal: ScreenUtil.autowidth(10),
         justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center',
@@ -1753,36 +1811,36 @@ const styles = StyleSheet.create({
     conversion: {
         flex: 1,
         color: UColor.arrow,
-        fontSize: 15,
-        paddingLeft: 10,
+        fontSize: ScreenUtil.setSpText(15),
+        paddingLeft: ScreenUtil.autowidth(10),
     },
     unittext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.fontColor,
     },
 
     botn: {
-      marginLeft: 10, 
-      width: 70, 
-      height: 30,  
-      borderRadius: 3, 
-      justifyContent: 'center', 
-      alignItems: 'center' 
+        marginLeft: ScreenUtil.autowidth(10), 
+        width: ScreenUtil.autowidth(70), 
+        height: ScreenUtil.autoheight(30),  
+        borderRadius: 3, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
     },
 
     botText: {
-      fontSize: 17, 
-      color: UColor.fontColor,
+        fontSize: ScreenUtil.setSpText(17), 
+        color: UColor.fontColor,
     },
 
     businessout: {
-        height: Platform.OS == 'ios' ? 41 : 34,
+        height: ScreenUtil.autoheight(40),
         backgroundColor: UColor.mainColor,
         flexDirection: "row",
-        paddingHorizontal: 5,
+        paddingHorizontal: ScreenUtil.autowidth(5),
         borderRadius: 5,
-        marginVertical: 2,
-        marginHorizontal: 5,
+        marginVertical: ScreenUtil.autoheight(2),
+        marginHorizontal: ScreenUtil.autowidth(5),
     },
     liststrip: {
         flex: 1,
@@ -1791,14 +1849,14 @@ const styles = StyleSheet.create({
     },
     sellpricetext: {
         flex: 3.5,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.riseColor,
         textAlign: 'left',
-        paddingLeft: 8,
+        paddingLeft: ScreenUtil.autowidth(8),
     },
     buypricetext: {
         flex: 3.5,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.fallColor,
         textAlign: 'left',
         paddingLeft: 8,
@@ -1806,45 +1864,45 @@ const styles = StyleSheet.create({
 
     payertext: {
         flex: 3,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.fontColor,
         textAlign: 'left'
     },
     selltext: {
         flex: 4,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.riseColor,
         textAlign: 'left',
-        paddingLeft: 8,
+        paddingLeft: ScreenUtil.autowidth(8),
     },
     selltime: {
         flex: 2.5,
-        fontSize: 12,
+        fontSize: ScreenUtil.setSpText(12),
         color: UColor.riseColor,
         textAlign: 'left'
     },
     buytext: {
         flex: 4,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.fallColor,
         textAlign: 'left',
-        paddingLeft: 8,
+        paddingLeft: ScreenUtil.autowidth(8),
     },
     buytime: {
         flex: 2.5,
-        fontSize: 12,
+        fontSize: ScreenUtil.setSpText(12),
         color: UColor.fallColor,
         textAlign: 'left'
     },
 
     businessRan: {
-        height: Platform.OS == 'ios' ? 52 : 45,
+        height: ScreenUtil.autoheight(50),
         backgroundColor: UColor.mainColor,
         flexDirection: "row",
-        paddingHorizontal: 5,
+        paddingHorizontal: ScreenUtil.autowidth(5),
         borderRadius: 5,
-        marginVertical: 2,
-        marginHorizontal: 5,
+        marginVertical: ScreenUtil.autoheight(2),
+        marginHorizontal: ScreenUtil.autowidth(5),
     },
     Rankleftout: {
         flex: 4.5,
@@ -1852,17 +1910,37 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
     },
     accounttext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.fontColor,
     },
     numtext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.arrow,
     },
     Rankcenterout: {
         flex: 4.5,
         flexDirection: "column",
         justifyContent: "space-around",
+    },
+    profitLoss: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.arrow,
+    },
+    profittext: {
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.riseColor,
+    },
+    Losstext: {
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.fallColor,
+    },
+    costout: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.arrow,
+    },
+    costtext: {
+        fontSize: ScreenUtil.setSpText(14),
+        color: UColor.fontColor,
     },
 
     Rankrightout: {
@@ -1871,12 +1949,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
     },
     pertext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.fontColor,
         textAlign: 'right',
     },
     quotatext: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.arrow,
         textAlign: 'right',
     },
@@ -1886,7 +1964,7 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         borderBottomColor: UColor.inash,
         borderBottomWidth: 0.6,
-        height: 40, 
+        height: ScreenUtil.autoheight(40), 
       },
     touchableouts: {
         flex: 1,
@@ -1903,7 +1981,7 @@ const styles = StyleSheet.create({
         height: ScreenHeight, 
         backgroundColor: UColor.inash, 
         alignItems: 'center', 
-        paddingTop: 40,
+        paddingTop: ScreenUtil.autoheight(40),
     },
     touchablelist: {
         width: '100%', 
@@ -1911,51 +1989,49 @@ const styles = StyleSheet.create({
         borderBottomColor: UColor.inash, 
     },
 
-  imgBtn: {
-    width: 30,
-    height: 30,
-    margin:5,
-  },
+    imgBtn: {
+        width: ScreenUtil.autowidth(30),
+        height: ScreenUtil.autowidth(30),
+        margin: ScreenUtil.autowidth(5),
+    },
   
-  ebhbtnout: {
-    width: '100%', 
-    height: 30, 
-    flexDirection: "row", 
-    alignItems: 'flex-start', 
-    borderTopWidth: 1, 
-    borderTopColor: UColor.mainColor, 
-    backgroundColor:'#586888',
-   },
-   ebhbtnout2: {
-    width: '100%', 
-    height: 40, 
-    flexDirection: "column", 
-    alignItems: 'flex-start', 
-    borderTopWidth: 1, 
-    borderTopColor: UColor.mainColor, 
-    backgroundColor: UColor.inash,
-   },
+    ebhbtnout: {
+        width: '100%', 
+        height: ScreenUtil.autoheight(30), 
+        flexDirection: "row", 
+        alignItems: 'flex-start', 
+        borderTopWidth: 1, 
+        borderTopColor: UColor.mainColor, 
+        backgroundColor: UColor.secdColor,
+    },
+    ebhbtnout2: {
+        width: '100%', 
+        height: ScreenUtil.autoheight(40), 
+        flexDirection: "column", 
+        alignItems: 'flex-start', 
+        borderTopWidth: 1, 
+        borderTopColor: UColor.mainColor, 
+        backgroundColor: UColor.inash,
+    },
     establishout: {
-      flex: 1, 
-      flexDirection: "row",
-      alignItems: 'center', 
-      height: 30, 
+        flex: 1, 
+        flexDirection: "row",
+        alignItems: 'center', 
+        height: ScreenUtil.autoheight(30), 
     },
     establishimg:{
-      width: 25, 
-      height: 25, 
+        width: ScreenUtil.autowidth(25), 
+        height: ScreenUtil.autowidth(25), 
     },
 
     greenincup:{
-        fontSize:15,
+        fontSize:ScreenUtil.setSpText(15),
         color: UColor.fallColor,
-      },
+    },
     redincdo:{
-        fontSize:15,
+        fontSize:ScreenUtil.setSpText(15),
         color: UColor.riseColor,
     },
-
-
 
     businesmodal: {
         flex: 1,
@@ -1970,8 +2046,7 @@ const styles = StyleSheet.create({
     },
     busines: {
         width: ScreenWidth , 
-        height: Platform.OS == 'ios' ? 260:245.5,
-        // paddingBottom:Platform.OS == 'ios' ? 49:49.5,
+        height: ScreenUtil.autoheight(280),
     },
     businesout: {
         flex: 1,
@@ -1980,16 +2055,16 @@ const styles = StyleSheet.create({
     },
     businestab: {
         flex: 1,
-        height: 40,
+        height: ScreenUtil.autoheight(40),
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',  
-        paddingLeft: 20,
+        paddingLeft: ScreenUtil.autowidth(20),
         backgroundColor: UColor.secdColor,
     },
     buytab: {
         flex: 1,
-        height: 26,
+        height: ScreenUtil.autoheight(26),
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
         borderColor: UColor.tintColor,
@@ -1999,7 +2074,7 @@ const styles = StyleSheet.create({
     },
     selltab: {
         flex: 1,
-        height: 26,
+        height: ScreenUtil.autoheight(26),
         borderTopRightRadius: 5,
         borderBottomRightRadius: 5,
         borderColor: UColor.tintColor,
@@ -2014,47 +2089,63 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     busrecordimg: {
-        width: 12,
-        height: 16,
+        width: ScreenUtil.autowidth(12),
+        height: ScreenUtil.autoheight(16),
         
     },
     busrecordtext: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.tintColor,
     },
     redclose: {
-        width: 40,
-        height: 40,
+        width: ScreenUtil.autowidth(40),
+        height: ScreenUtil.autowidth(40),
        
     },
     headbusines: {
         width: ScreenWidth,
-        height: 40,
+        height: ScreenUtil.autoheight(40),
         flexDirection: 'row',
         justifyContent: "center",
     },
 
+    transactiontou: { 
+        position:'absolute', 
+        bottom: ScreenUtil.autoheight(45), 
+        right: 0, 
+        zIndex: 999, 
+    },
+    transactionout: {
+        height: ScreenUtil.autoheight(35),
+        width: ScreenUtil.autowidth(90),
+        backgroundColor: UColor.tintColor,
+        justifyContent: "center", 
+        alignItems: "center",
+        borderTopLeftRadius: 25,
+        borderBottomLeftRadius: 25,
+    },
+    paneltext: {
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.fontColor
+    },
 
     systemSettingTip: {
-        // flex: 1,
         width: ScreenWidth,
-        height:40,
+        height: ScreenUtil.autoheight(40),
         flexDirection: "row",
         alignItems: 'center', 
         backgroundColor: UColor.showy,
-      },
-      systemSettingText: {
-        color: UColor.fontColor,
-        textAlign: 'center',
-        fontSize: 15
-      },
-      systemSettingArrow: {
+    },
+    systemSettingText: {
         flex: 1,
         color: UColor.fontColor,
-        textAlign: 'right',
-        fontSize: 30,
-        marginBottom:6
-      },
+        textAlign: 'center',
+        fontSize: ScreenUtil.setSpText(14)
+    },
+    systemSettingArrow: {
+        color: UColor.fontColor,
+        marginRight: ScreenUtil.autowidth(5)
+    },
 });
 
 var upColor = '#f44961';
@@ -2108,7 +2199,7 @@ function combineETKLine(data) {
             axisPointer: {
                 type: 'cross',
                 crossStyle: {
-                    color: UColor.fontColor,
+                    color: '#fff',
                     width: 0.5,
                 },
             },
@@ -2117,7 +2208,7 @@ function combineETKLine(data) {
             borderColor: '#ccc',
             padding: 10,
             textStyle: {
-                color: UColor.blackColor,
+                color: '#000',
             },
             position: function (pos, params, el, elRect, size) {
                 var obj = {top: 10};

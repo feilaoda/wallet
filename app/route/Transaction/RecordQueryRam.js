@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TouchableOpacity, TextInput, RefreshControl } from 'react-native';
+import moment from 'moment';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from "../../components/Toast"
-import moment from 'moment';
 var dismissKeyboard = require('dismissKeyboard');
 
 @connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
