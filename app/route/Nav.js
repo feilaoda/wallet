@@ -628,7 +628,7 @@ class Route extends React.Component {
 
   handleConnectivityChange(status){
     // alert("111:" + status)
-    if(status == "NONE"){
+    if(status == "NONE"||status=='none'){
       Constants.netTimeoutFlag = true;
     }else{
       Constants.netTimeoutFlag = false;

@@ -72,9 +72,9 @@ class AuthChange extends BaseComponent {
             return
         }
 
-        if(this.state.inputText.length<1){
-            EasyToast.show("请先输入账号或者公钥");
-            return
+        if(this.state.inputText.length<53){
+            EasyToast.show("请先输入完整公钥");
+            return//暂不支持账号先
         }
 
         var authTempActive=this.state.activeAuth;
@@ -419,7 +419,7 @@ delInputBox(delKey){
             <TextInput ref={(ref) => this._lphone = ref} value={rowData.item.value} returnKeyType="next" editable={true}
                 selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
                 onChangeText={(inputText) => this.setState({ inputText: this.inputValue(rowID,inputText)})}   keyboardType="default" 
-                placeholder="输入账号或Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
+                placeholder="输入Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
 
             {/* {rowData.key<this.state.inputCount && */}
             {/* {rowData.key>0 && */}
