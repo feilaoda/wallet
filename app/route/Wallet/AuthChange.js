@@ -437,7 +437,7 @@ delInputBox(delKey){
 
     return (<View style={styles.container}>
       <ScrollView keyboardShouldPersistTaps="always">
-
+      <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
         {this.state.activePk != '' && 
         <View style={styles.inptoutgo} >
             <View style={styles.titleStyle}>
@@ -475,7 +475,7 @@ delInputBox(delKey){
                 <Text style={styles.delText}>添加更多</Text>
             </View>
         </TouchableHighlight>
-
+</KeyboardAvoidingView>
       </ScrollView>
     </View>);
   }
