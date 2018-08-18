@@ -71,7 +71,8 @@ class ExportPublicKey extends BaseComponent {
                         </TouchableHighlight>
                     </View>
                     <View style={styles.inptgo}>
-                        <Text style={styles.inptext}>{this.state.ownerPk}</Text>
+                        <Text style={styles.inptext}>{this.state.ownerPk.substr(0, 26)}</Text>
+                        <Text style={styles.inptext}>{this.state.ownerPk.substr(26, 27)}</Text>
                     </View>
                 </View>
                 }
@@ -85,7 +86,8 @@ class ExportPublicKey extends BaseComponent {
                         </TouchableHighlight>
                     </View>
                     <View style={styles.inptgo}>
-                        <Text style={styles.inptext}>{this.state.activePk}</Text>
+                        <Text style={styles.inptext}>{this.state.activePk.substr(0, 26)}</Text>
+                        <Text style={styles.inptext}>{this.state.activePk.substr(26, 27)}</Text>
                     </View>
                 </View>
                 }
@@ -155,10 +157,10 @@ const styles = StyleSheet.create({
     inptext: {
         flexWrap: 'wrap',
         color: UColor.arrow,
-        height: ScreenUtil.autoheight(60),
+        // height: ScreenUtil.autoheight(60),
         fontSize: ScreenUtil.setSpText(14),
         lineHeight: ScreenUtil.autoheight(25),
-        width: ScreenWidth - ScreenUtil.autowidth(60),
+        // width: ScreenWidth - ScreenUtil.autowidth(60),
     },
     textout: {
         paddingHorizontal: ScreenUtil.autowidth(16),

@@ -166,16 +166,18 @@ class BackupsPkey extends BaseComponent {
                     {this.state.activePk != ''&& 
                     <View style={styles.inptoutgo} >
                         <Text style={styles.inptitle}>Active私钥</Text>
-                        <TouchableHighlight style={styles.inptgo}  underlayColor={UColor.secdColor}>
-                            <Text style={styles.inptext}>{this.state.activePk}</Text>
-                        </TouchableHighlight>
+                        <View style={styles.inptgo}  underlayColor={UColor.secdColor}>
+                            <Text style={styles.inptext}>{this.state.activePk.substr(0, 25)}</Text>
+                            <Text style={styles.inptext}>{this.state.activePk.substr(25, 26)}</Text>
+                        </View>
                     </View>}  
                     {this.state.ownerPk != ''&&
                     <View style={styles.inptoutgo} >
                         <Text style={styles.inptitle}>Owner私钥</Text>
-                        <TouchableHighlight style={styles.inptgo}  underlayColor={UColor.secdColor}>
-                            <Text style={styles.inptext}>{this.state.ownerPk}</Text>
-                        </TouchableHighlight>
+                        <View style={styles.inptgo}  underlayColor={UColor.secdColor}>
+                            <Text style={styles.inptext}>{this.state.ownerPk.substr(0, 25)}</Text>
+                            <Text style={styles.inptext}>{this.state.ownerPk.substr(25, 26)}</Text>
+                        </View>
                     </View>}
                 </View>
                 <Button onPress={this.prot.bind(this, 'problem')}>
@@ -274,10 +276,10 @@ const styles = StyleSheet.create({
     inptext: {
         flexWrap: 'wrap',
         color: UColor.arrow,
-        height: ScreenUtil.autoheight(60),
+        // height: ScreenUtil.autoheight(60),
         fontSize: ScreenUtil.setSpText(14),
         lineHeight: ScreenUtil.autoheight(25),
-        width: ScreenWidth - ScreenUtil.autowidth(60),
+        // width: ScreenWidth - ScreenUtil.autowidth(60),
     },
     readtext: {
         textAlign: 'right',
