@@ -941,7 +941,7 @@ class Ram extends BaseComponent {
             </View>
             {this.state.selectedTransactionRecord == transactionOption[0] || this.state.selectedTransactionRecord == transactionOption[1] ? 
                 <View style={{flex: 1,}}>
-                    {(this.props.ramTradeLog  != null &&  this.props.ramTradeLog .length == 0) ? <View style={{paddingTop: ScreenUtil.autoheight(50), justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: ScreenUtil.setSpText(16), color: UColor.fontColor}}>还没有交易哟~</Text></View> :
+                    {(this.state.newramTradeLog  != null &&  this.state.newramTradeLog.length == 0) ? <View style={{paddingTop: ScreenUtil.autoheight(50), justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: ScreenUtil.setSpText(16), color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                     <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                             renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: ScreenUtil.autowidth(5),marginVertical: ScreenUtil.autoheight(2),marginHorizontal: ScreenUtil.autowidth(5),}}>
                             <Text style={{ flex: 3,paddingLeft: ScreenUtil.autowidth(8), textAlign: 'left',color: UColor.lightgray}}>账号</Text>
