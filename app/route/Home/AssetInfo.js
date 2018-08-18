@@ -53,13 +53,20 @@ class AssetInfo extends BaseComponent {
     }
 
     componentDidMount() {
-        //加载地址数据
-        // EasyShowLD.loadingShow();
-        this.props.dispatch({ type: 'wallet/getDefaultWallet' });
+        try {
+            this.setState({logRefreshing: true});
+            //加载地址数据
+            // EasyShowLD.loadingShow();
+            this.props.dispatch({ type: 'wallet/getDefaultWallet' });
 
-        this.props.dispatch({ type: 'assets/getTradeDetails', payload: { account_name : this.props.defaultWallet.name, contract_account : this.state.asset.asset.contractAccount,  code : this.state.asset.asset.name, last_id: "-1", countPerPage: 10}, callback: (resp) => {
-            this.processResult();
-        }});     
+            this.props.dispatch({ type: 'assets/getTradeDetails', payload: { account_name : this.props.defaultWallet.name, contract_account : this.state.asset.asset.contractAccount,  code : this.state.asset.asset.name, last_id: "-1", countPerPage: 10}, callback: (resp) => {
+                this.setState({logRefreshing: false});
+                this.processResult();
+            }});  
+        } catch (error) {
+            this.setState({logRefreshing: false});
+        }
+   
     }
 
     componentWillUnmount(){
