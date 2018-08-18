@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, Image, View, RefreshControl, Text, Platform, TextInput, ScrollView, TouchableHighlight, Animated,  Easing, TouchableOpacity, Modal  } from 'react-native';
+import { Dimensions, DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TextInput, TouchableHighlight, TouchableOpacity, Modal  } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
@@ -11,34 +11,28 @@ import { Eos } from "react-native-eosjs";
 import UImage from '../../utils/Img';
 import BaseComponent from "../../components/BaseComponent";
 import Constants from '../../utils/Constants'
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var dismissKeyboard = require('dismissKeyboard');
 
 @connect(({ wallet }) => ({ ...wallet }))
 class ImportEosKey extends BaseComponent {
 
   static navigationOptions = {
-    title: '导入EOS私钥'
+    title: '导入EOS私钥',
+    headerStyle: {
+      paddingTop: ScreenUtil.autoheight(20),
+      backgroundColor: UColor.mainColor,
+      borderBottomWidth:0,
+    },
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      bounceValue: new Animated.Value(1), 
-      rotateValue: new Animated.Value(0),
-      index: 0,
       reWalletpwd: '',
       walletpwd: '',
-      ownerPk: '',
       activePk: '',
-      words_owner: '',
-      words_active: '',
-      dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }),
-      routes: [
-        // { key: '0', title: '助记词' },
-        { key: '2', title: '私钥' },
-      ],
       isChecked: this.props.isChecked || true,
       weak: UColor.arrow,
       medium: UColor.arrow,
@@ -53,64 +47,18 @@ class ImportEosKey extends BaseComponent {
       keyObj:{},       //导入密钥对象
     };
   }
+
   //组件加载完成
   componentDidMount() {
     const { dispatch } = this.props;
-
   }
-
-
-  startAnimation() {
-    this.state.bounceValue.setValue(1);
-    this.state.rotateValue.setValue(0);
-        Animated.timing(this.state.rotateValue, {
-            toValue: 1,  //角度从0变1
-            duration: 800,  //从0到1的时间
-            easing: Easing.linear,//线性变化，匀速旋转
-        }).start();
-  }
-
-  refresh () {
-    this.startAnimation(); 
-  }
-
 
   componentWillUnmount() {
      //结束页面前，资源释放操作
-     super.componentWillUnmount();
-    // if (timer) {
-    //   clearInterval(timer);
-    // }
+    super.componentWillUnmount();
     DeviceEventEmitter.removeListener('changeTab');
   }
 
-  //获得typeid坐标
-  getRouteIndex(typeId) {
-    for (let i = 0; i < this.state.routes.length; i++) {
-      if (this.state.routes[i].key == typeId) {
-        return i;
-      }
-    }
-  }
-
-  //点击
-  onPress = (coins) => {
-    // const { navigate } = this.props.navigation;
-    // navigate('Coin', { coins });
-  };
-
-  //切换tab
-  _handleIndexChange = index => {
-    // this.startTick(index);
-    this.setState({ index });
-    _index = index;
-  };
-
-  _handleTabItemPress = ({ route }) => {
-    const index = this.getRouteIndex(route.key);
-    this.setState({ index });
-  };
-  
   prot(data = {}, key){
     const { navigate } = this.props.navigation;
     if (key == 'clause') {
@@ -122,8 +70,6 @@ class ImportEosKey extends BaseComponent {
     }else  if (key == 'howImportPrivatekey') {
     navigate('Web', { title: "如何导入私钥", url: "http://static.eostoken.im/html/importPrivatekey.html" });
     }
-
-
   }
 
   checkClick() {
@@ -166,8 +112,6 @@ class ImportEosKey extends BaseComponent {
     });
   }
 
-
-
   opendelay(owner_publicKey ,data) {
     var pthis = this;
     this.tm=setTimeout(function(){
@@ -179,7 +123,8 @@ class ImportEosKey extends BaseComponent {
       });
         clearTimeout(pthis.tm);
     },500);
-}
+  }
+
   createWalletByPrivateKey(owner_privateKey, active_privatekey){
     EasyShowLD.loadingShow('正在请求');
     try {
@@ -295,6 +240,7 @@ class ImportEosKey extends BaseComponent {
       show: !isShow,
     });
   }
+
   _onPressListItem() {
     this.setState((previousState) => {
         return ({
@@ -395,24 +341,6 @@ class ImportEosKey extends BaseComponent {
                     onChangeText={(activePk) => this.setState({ activePk })}  onChange={this.intensity()} keyboardType="default"
                     placeholder="粘贴或输入active私钥" underlineColorAndroid="transparent"  multiline={true}  maxLength={90}/>
                 </View>
-                {/* <View style={styles.inptout}>
-                  <Text style={styles.inptitle}>账号名称</Text>
-                  <View style={{flexDirection: 'row',}}>
-                      <TextInput ref={(ref) => this._lpass = ref} value={this.state.walletName}  returnKeyType="go"
-                      selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}
-                      onChangeText={(walletName) => this.setState({ walletName })} autoFocus={false} editable={true}
-                      placeholder="输入账号或者点击刷新按钮" underlineColorAndroid="transparent" secureTextEntry={true} maxLength={20}
-                      />
-                      <Button onPress={() => this.refresh()}>
-                        <Animated.Image source={UImage.refresh} style={{width:30,height: 30, 
-                                    transform: [{scale: this.state.bounceValue},
-                                    {rotateZ: this.state.rotateValue.interpolate({ inputRange: [0,1], outputRange: ['0deg', '360deg'],})},
-                            ]}}>
-                        </Animated.Image>
-                      </Button>   
-                  </View>
-                </View> */}
-              
               <View style={styles.inptout}>
                   <View style={{flexDirection: 'row',}}>
                     <Text style={styles.inptitle}>设置密码</Text>
@@ -463,7 +391,6 @@ class ImportEosKey extends BaseComponent {
               </View>
             </View>
         </TouchableOpacity>
-        {/* </ScrollView>  */}
         <Modal style={styles.touchableout} animationType={'slide'} transparent={true}  visible={this.state.show} onRequestClose={()=>{}}>
             <TouchableOpacity style={styles.pupuo} activeOpacity={1.0}>
               <View style={styles.modalStyle}>
@@ -546,7 +473,7 @@ const styles = StyleSheet.create({
     backgroundColor: UColor.secdColor,
   },
   headout: {
-    backgroundColor: '#4F617D',
+    backgroundColor: UColor.arrow,
     paddingHorizontal: ScreenUtil.autowidth(25),
     paddingTop: ScreenUtil.autoheight(10),
     paddingBottom: ScreenUtil.autoheight(15),
@@ -683,7 +610,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalStyle: {
-    width: maxWidth - 20,
+    width: ScreenWidth - 20,
     backgroundColor: UColor.fontColor,
     borderRadius: 5,
     paddingHorizontal: ScreenUtil.autowidth(25),
@@ -737,7 +664,7 @@ const styles = StyleSheet.create({
   },
   copytext: {
     fontSize: ScreenUtil.setSpText(14),
-    color: '#808080',
+    color: UColor.lightgray,
     textAlign: 'left'
   },
 

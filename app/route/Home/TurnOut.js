@@ -8,8 +8,8 @@ import Button from '../../components/Button'
 import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 import { EasyShowLD } from '../../components/EasyShow'
 import { EasyToast } from '../../components/Toast';
 import { Eos } from "react-native-eosjs";
@@ -26,7 +26,7 @@ class TurnOut extends BaseComponent {
         return {
             headerTitle: '转出EOS',
             headerStyle: {
-                paddingTop:Platform.OS == 'ios' ? 30 : 20,
+                paddingTop: ScreenUtil.autoheight(20),
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
@@ -351,7 +351,7 @@ class TurnOut extends BaseComponent {
             <View style={styles.pupuo}>
                 <Modal animationType={'slide'} transparent={true} visible={this.state.show} onShow={() => { }} onRequestClose={() => { }} >
                     <TouchableOpacity style={styles.modalStyle} activeOpacity={1.0}>  
-                        <View style={{ width: maxWidth,  height: maxHeight*4/6,  backgroundColor: UColor.fontColor,}}>
+                        <View style={{ width: ScreenWidth,  height: ScreenHeight*4/6,  backgroundColor: UColor.fontColor,}}>
                             <View style={styles.subView}>
                                 <Text style={styles.buttontext}/>
                                 <Text style={styles.titleText}>订单详情</Text>
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
     inptpass: {
         color: UColor.tintColor,
         height:  ScreenUtil.autoheight(45),
-        width: maxWidth-100,
+        width: ScreenWidth-100,
         paddingBottom:  ScreenUtil.autoheight(5),
         fontSize: ScreenUtil.setSpText(16),
         backgroundColor: UColor.fontColor,
@@ -484,20 +484,20 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: ScreenUtil.setSpText(18),
         fontWeight: 'bold',
-        color:'#4d4d4d', 
+        color: UColor.blackColor, 
         textAlign:'center'
     },
     // 内容  
     explainText: {
         fontSize: ScreenUtil.setSpText(18),
         textAlign: 'left',
-        color: '#4D4D4D',
+        color: UColor.secdColor,
     },
     contentText: {
         flex: 1,
         fontSize: ScreenUtil.setSpText(18),
         textAlign: 'right',
-        color: '#4D4D4D',
+        color: UColor.secdColor,
     },
 
     //转帐信息提示分隔线
@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: ScreenUtil.autowidth(20),
         flexDirection: "row",
         borderBottomWidth: 0.5,
-        borderBottomColor: '#e5e5e5',
+        borderBottomColor: UColor.lightgray,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -628,7 +628,7 @@ const styles = StyleSheet.create({
 
     warningoutShow: {
         marginHorizontal: ScreenUtil.autowidth(20),
-        width: maxWidth-40,
+        width: ScreenWidth-40,
         marginTop: ScreenUtil.autoheight(10),
         flexDirection: "row",
         alignItems: 'center', 

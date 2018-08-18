@@ -2,16 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Modal, Text, Platform, TouchableHighlight, KeyboardAvoidingView, TouchableWithoutFeedback, View, Dimensions, ActivityIndicator} from 'react-native';
 import { material } from 'react-native-typography';
-const { height } = Dimensions.get('window');
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
 import ProgressBar from "./ProgressBar";
 import UColor from '../utils/Colors'
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-
-
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 const prs = 0;
 const tk = null;
 const LoadingShow=true;
@@ -71,7 +65,7 @@ export class EasyShowLD {
 
     static progress(total, current) {
       let p = current / total;
-      prs = parseInt((SCREEN_WIDTH - 32) * p);
+      prs = parseInt((ScreenWidth - 32) * p);
     }
 
 
@@ -209,7 +203,7 @@ export class LoadingDialog extends React.Component {
                           ):null
                         }
                         {this.state.showProgress?<ProgressBar
-                            style={{marginTop:47,width:SCREEN_WIDTH-32}}
+                            style={{marginTop:47,width:ScreenWidth-32}}
                             progress={this.state.progress}
                           />:null}
                         </View>
@@ -231,13 +225,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    backgroundColor: UColor.mask,
   },
   modalContainer: {
     marginHorizontal: 10,
     padding: 10,
     marginVertical: 106,
-    minWidth: maxWidth - 30,
+    minWidth: ScreenWidth - 30,
     borderRadius: 2,
     elevation: 24,
     overflow: 'hidden',
@@ -254,15 +248,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  titleContainerScrolled: {
-    paddingHorizontal: 24,
-    paddingBottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: "#DCDCDC",
-  },
   contentContainer: {
     flex: -1,
   },
@@ -276,19 +261,10 @@ const styles = StyleSheet.create({
   },
   contentContainerScrolled: {
     flex: -1,
-    maxHeight: height - 264, // (106px vertical margin * 2) + 52px
+    maxHeight: ScreenHeight - 264, // (106px vertical margin * 2) + 52px
   },
   contentContainerScrolledPadding: {
     paddingHorizontal: 24,
-  },
-  actionsContainerScrolled: {
-    height: 52,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    paddingLeft: 8,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: "#DCDCDC",
   },
   actionsContainer: {
     marginTop: 20,
@@ -299,7 +275,7 @@ const styles = StyleSheet.create({
   disactionContainer: {
     paddingHorizontal: 8,
     paddingVertical: 12,
-    minWidth: (maxWidth - 80)/2,
+    minWidth: (ScreenWidth - 80)/2,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -309,7 +285,7 @@ const styles = StyleSheet.create({
   okactionContainer: {
     paddingHorizontal: 8,
     paddingVertical: 12,
-    minWidth: (maxWidth - 80)/2,
+    minWidth: (ScreenWidth - 80)/2,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -323,8 +299,8 @@ load_box: {
     height: 100,
     backgroundColor: UColor.blackColor,
     alignItems: 'center',
-    marginLeft: SCREEN_WIDTH / 2 - 50,
-    marginTop: SCREEN_HEIGHT / 2 - 50,
+    marginLeft: ScreenWidth / 2 - 50,
+    marginTop: ScreenHeight / 2 - 50,
     borderRadius: 10
 },
 load_progress: {

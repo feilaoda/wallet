@@ -1,34 +1,21 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 import React, { Component } from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    DeviceEventEmitter,
-    View,
-    Alert
-} from 'react-native';
+import { StyleSheet, DeviceEventEmitter, View,} from 'react-native';
+import UColor from '../../utils/Colors'
+import ScreenUtil from '../../utils/ScreenUtil'
 import Barcode from 'react-native-smart-barcode'
-
 import { EasyToast } from '../../components/Toast';
-
-import PropTypes from 'prop-types'
-
 import BaseComponent from "../../components/BaseComponent";
 
 export default class App extends BaseComponent {
 
-    static navigationOptions = ({ navigation }) => {
-    }
-
     static navigationOptions = {
         title: '扫码',
+        headerStyle:{
+            paddingTop: ScreenUtil.autoheight(20),
+            backgroundColor: UColor.mainColor,
+            borderBottomWidth:0,
+        }    
       };
-
 
     //构造方法
     constructor(props) {
@@ -76,53 +63,6 @@ export default class App extends BaseComponent {
             return this._errExit();
         }
 
-        // var length = data.length;
-        // var index = "activeWallet:".length; //"eos:"
-        // var point = data.lastIndexOf("?");
-        // if(point <= index || point >= length)
-        // {
-        //     return this._errExit();
-        // }
-        // var account = data.substring(index,point);
-        // if(account == undefined || account == null || account == ""){
-        //     return this._errExit();
-        // }
-        // index = point + 1; //"?"
-        // var ownerIndex = data.lastIndexOf("owner=");    
-        // if(index != ownerIndex || ownerIndex >= length){
-        //     return this._errExit();
-        // }
-        // index += 6; //"owner="
-        // var andIndex = data.lastIndexOf("&");    
-        // if(andIndex <= index || andIndex >= length){
-        //     return this._errExit();
-        // }
-        // var owner = data.substring(index,andIndex);
-        // if(owner == undefined || owner == null || owner == ""){
-        //     return this._errExit();
-        // }
-        // index = andIndex + 1; //"&"
-        // var activeIndex = data.lastIndexOf("active=");   
-        // if(index != activeIndex || activeIndex >= length){
-        //     return this._errExit();
-        // } 
-        // index += 7; //"active="
-        // var active = data.substring(index,length);
-        // if(active == null || active == undefined || active == "") 
-        // {
-        //     return this._errExit();
-        // }
-        // index += length; //"&"
-        // var activeIndex = data.lastIndexOf("active=");   
-        // if(index != activeIndex || activeIndex >= length){
-        //     return this._errExit();
-        // } 
-        // index += 7; //"active="
-        // var active = data.substring(index,length);
-        // if(active == null || active == undefined || active == "") 
-        // {
-        //     return this._errExit();
-        // }
         var jsoncode = '{"account":"' + account + '","owner":"' + owner + '","active":"' + active  + '","cpu":"' + cpu  + '","net":"' + net  + '","ram":"' + ram + '"}';
         var jdata = JSON.parse(jsoncode);
         this.props.navigation.goBack();  //正常返回上一个页面
@@ -132,15 +72,12 @@ export default class App extends BaseComponent {
     }
 
     _onBarCodeRead = (e) => {
-        // console.log(`e.nativeEvent.data.type = ${e.nativeEvent.data.type}, e.nativeEvent.data.code = ${e.nativeEvent.data.code}`)
         this._stopScan();
         try {
             var strcoins = e.nativeEvent.data.code;
             if(strcoins == undefined || strcoins == null){
                 return this._errExit();
             }
-            // alert("1" + strcoins);
-            // var actionData = strcoins.replace(/\\/g,'');
             try{
                 var jActionData = JSON.parse(strcoins);
                 if(jActionData != null && jActionData.action != null && jActionData.action == "activeWallet"){
@@ -239,28 +176,11 @@ export default class App extends BaseComponent {
                         onBarCodeRead={this._onBarCodeRead} />
                     : null
                 }
-                        
-
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+   
 });

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Dimensions, DeviceEventEmitter,NativeModules, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar, Switch,Linking, } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import Item from '../../components/Item'
@@ -11,7 +10,6 @@ import UImage from '../../utils/Img'
 import Constants from '../../utils/Constants'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from '../../components/EasyShow'
-
 const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
 var DeviceInfo = require('react-native-device-info');
@@ -23,7 +21,6 @@ class Setting extends React.Component {
     title: '我的'
   };
   
-
   constructor(props) {
     super(props);
     this.config = [
@@ -117,7 +114,6 @@ class Setting extends React.Component {
   }
 
   openSystemSetting(){
-    // console.log("go to set net!")
     if (Platform.OS == 'ios') {
       Linking.openURL('app-settings:')
         .catch(err => console.log('error', err))
@@ -131,59 +127,55 @@ class Setting extends React.Component {
 
   render() {
     return <View style={styles.container}>
-            
-
       <ScrollView style={styles.scrollView}>
-
-      {Constants.netTimeoutFlag==true &&
-      <Button onPress={this.openSystemSetting.bind(this)}>
-        <View style={styles.systemSettingTip}>
-            <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
-            <Ionicons style={styles.systemSettingArrow} name="ios-arrow-forward-outline" size={20} />
-        </View>
-      </Button>}
-
-      <View>
-          <Button onPress={this.goProfile.bind(this)}>
-            <View style={styles.userHead} >
-              <View style={styles.headout}>
-                <Image source={UImage.logo} style={styles.headimg} />
-                <Text style={styles.headtext}>{(this.props.loginUser) ? this.props.loginUser.nickname : "登陆"}</Text>
-              </View>
-              <View style={styles.signedout}>
-                {
-                  <Button onPress={this.signIn.bind(this)} style={styles.signedbtn}>
-                    <Image source={UImage.signed} style={styles.signedimg} />
-                  </Button>
-                }
-              </View>
-            </View>
-          </Button>
-          <Button style={styles.eosbtn}>
-            <View style={styles.eosbtnout}>
-              <View style={styles.eosout}>
-                <Text style={styles.eosbtntext}>活动奖励</Text>
-                <Text style={styles.eostext}>{(this.props.loginUser) ? this.props.loginUser.eost : "0"} EOS</Text>
-              </View>
-              <View style={styles.Withdrawout}>
-                {
-                  this.props.loginUser && <Button onPress={() => { EasyShowLD.dialogShow("温馨提示", "暂未开放，敬请期待！", "知道了", null, () => { EasyShowLD.dialogClose() }); }} style={styles.Withdrawbtn}>
-                    <Text style={styles.Withdrawtext}>领取</Text>
-                  </Button>
-                }
-              </View>
-            </View>
-          </Button>
-          <View>
-            {this._renderListItem()}
+        {Constants.netTimeoutFlag==true &&
+        <Button onPress={this.openSystemSetting.bind(this)}>
+          <View style={styles.systemSettingTip}>
+              <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
+              <Ionicons style={styles.systemSettingArrow} name="ios-arrow-forward-outline" size={20} />
           </View>
-          
-          <View style={styles.footer}>
-            <Text style={styles.foottext}>© 2018 eostoken all rights reserved </Text>
-            <Text style={styles.foottext}>EOS专业版钱包 V{DeviceInfo.getVersion()}</Text>
-            {/* <Text style={styles.foottext}>EOS专业版钱包 V2.1.9.3</Text> */}
+        </Button>}
+        <View>
+            <Button onPress={this.goProfile.bind(this)}>
+              <View style={styles.userHead} >
+                <View style={styles.headout}>
+                  <Image source={UImage.logo} style={styles.headimg} />
+                  <Text style={styles.headtext}>{(this.props.loginUser) ? this.props.loginUser.nickname : "登陆"}</Text>
+                </View>
+                <View style={styles.signedout}>
+                  {
+                    <Button onPress={this.signIn.bind(this)} style={styles.signedbtn}>
+                      <Image source={UImage.signed} style={styles.signedimg} />
+                    </Button>
+                  }
+                </View>
+              </View>
+            </Button>
+            <Button style={styles.eosbtn}>
+              <View style={styles.eosbtnout}>
+                <View style={styles.eosout}>
+                  <Text style={styles.eosbtntext}>活动奖励</Text>
+                  <Text style={styles.eostext}>{(this.props.loginUser) ? this.props.loginUser.eost : "0"} EOS</Text>
+                </View>
+                <View style={styles.Withdrawout}>
+                  {
+                    this.props.loginUser && <Button onPress={() => { EasyShowLD.dialogShow("温馨提示", "暂未开放，敬请期待！", "知道了", null, () => { EasyShowLD.dialogClose() }); }} style={styles.Withdrawbtn}>
+                      <Text style={styles.Withdrawtext}>领取</Text>
+                    </Button>
+                  }
+                </View>
+              </View>
+            </Button>
+            <View>
+              {this._renderListItem()}
+            </View>
+            
+            <View style={styles.footer}>
+              <Text style={styles.foottext}>© 2018 eostoken all rights reserved </Text>
+              <Text style={styles.foottext}>EOS专业版钱包 V{DeviceInfo.getVersion()}</Text>
+              {/* <Text style={styles.foottext}>EOS专业版钱包 V2.1.9.3</Text> */}
+            </View>
           </View>
-        </View>
       </ScrollView>
     </View>
   }

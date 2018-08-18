@@ -10,7 +10,9 @@ import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
 import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
-const {width, height} = Dimensions.get('window');
+import ScreenUtil from '../../utils/ScreenUtil'
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 import { EasyShowLD } from '../../components/EasyShow'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
@@ -21,7 +23,7 @@ class addressManage extends BaseComponent {
     static navigationOptions = {
         title: 'EOS地址薄',  
         headerStyle:{
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+            paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
         }    
@@ -360,7 +362,7 @@ const styles = StyleSheet.create({
 
     selout: {
         flex: 1, 
-        width: width-20,
+        width: ScreenWidth-20,
         height: 60,
         backgroundColor: UColor.mainColor,
         marginBottom: 10,
@@ -375,7 +377,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     outlabelname:{
-        color:'#EFEFEF',
+        color: UColor.fontColor,
         fontSize:15,
     },
     outaddress: {
@@ -390,21 +392,21 @@ const styles = StyleSheet.create({
         paddingTop: 5,
     },
     replace: {
-        width: width,
+        width: ScreenWidth,
         backgroundColor: UColor.secdColor,
         justifyContent: "space-between",
         flexDirection: 'column',
         alignItems: "center"
     },
     alternate: {
-        width: width,
+        width: ScreenWidth,
         backgroundColor: UColor.secdColor,
         justifyContent: "space-between",
         flexDirection: 'column',
         alignItems: "center"
     },
     added: {
-        width: width - 20,
+        width: ScreenWidth - 20,
         height: 45,
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
@@ -417,7 +419,7 @@ const styles = StyleSheet.create({
         color:UColor.fontColor
     },
     editClickout: {
-        width: width - 20,
+        width: ScreenWidth - 20,
         height: 45,
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
@@ -427,9 +429,9 @@ const styles = StyleSheet.create({
     },
 
     deleteItemout: {
-        width: width - 20,
+        width: ScreenWidth - 20,
         height: 45,
-        backgroundColor: '#EF4F4F',
+        backgroundColor: UColor.riseColor,
         justifyContent: 'center',
         alignItems: 'center',
         margin: 10,
@@ -437,7 +439,7 @@ const styles = StyleSheet.create({
     },
     completeout: {
         flexDirection:'row',
-        width: width - 20,
+        width: ScreenWidth - 20,
         height: 45,
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
@@ -471,7 +473,7 @@ const styles = StyleSheet.create({
       
       // modal上子View的样式  
       subView:{  
-        width:width-20,
+        width:ScreenWidth-20,
         marginHorizontal:10,  
         backgroundColor: UColor.fontColor,  
         alignSelf: 'stretch',  
@@ -488,16 +490,16 @@ const styles = StyleSheet.create({
         textAlign:'center',  
       }, 
       inptout: {
-          width:width-40,
+          width:ScreenWidth-40,
           height: 40,
           paddingHorizontal: 10,
-          backgroundColor: '#F3F3F3',
+          backgroundColor: UColor.riceWhite,
           marginBottom: 10,
           marginHorizontal: 10,
           justifyContent: 'center',
       },
       inpt: {
-          color: '#999999',
+          color: UColor.arrow,
           fontSize: 14,
           height: 50,
           paddingLeft: 2
@@ -516,10 +518,10 @@ const styles = StyleSheet.create({
       },
 
       inptoutsource: {
-        width:width-40,
+        width:ScreenWidth-40,
         height: 40,
         paddingHorizontal: 10,
-        backgroundColor: '#F3F3F3',
+        backgroundColor: UColor.riceWhite,
         marginBottom: 10,
         marginHorizontal: 10,
         // justifyContent: 'center',

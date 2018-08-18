@@ -15,7 +15,6 @@ import NavigationUtil from '../../utils/NavigationUtil'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Constants from '../../utils/Constants'
 require('moment/locale/zh-cn');
-
 var WeChat = require('react-native-wechat');
 
 const pages = [];
@@ -141,17 +140,6 @@ class News extends React.Component {
     }
   };
 
-  //长按复制新闻内容
-  copy = (news) => {
-    
-    // let route = this.getCurrentRoute();
-    // alert(route.type);
-    // if (route.type == 2) {
-    //   Clipboard.setString(news.title + news.content);
-    //   EasyToast.show("复制成功");
-    // }
-  }
-
   onDown = (news) => {
     this.props.dispatch({ type: 'news/down', payload: { news: news } });
     AnalyticsUtil.onEvent('step_on');
@@ -209,9 +197,7 @@ class News extends React.Component {
         console.log('call back data', data)
       })
     }
-
   }
-
 
   //渲染页面
   renderScene = ({ route }) => {
@@ -334,7 +320,7 @@ class News extends React.Component {
             renderScene={this.renderScene.bind(this)}
             renderHeader={(props) => <TabBar onTabPress={this._handleTabItemPress} labelStyle={{ fontSize: ScreenUtil.setSpText(15), margin: 0, marginBottom: ScreenUtil.autoheight(12), paddingTop: ScreenUtil.autoheight(18), color: UColor.arrow }} indicatorStyle={{ backgroundColor: UColor.tintColor, width: ScreenWidth / 3 - 40, marginLeft: 20 }} style={{ backgroundColor: UColor.secdColor }} tabStyle={{ width: ScreenWidth / 3, padding: 0, margin: 0 }} scrollEnabled={true} {...props} />}
             onIndexChange={this._handleIndexChange}
-            initialLayout={{ height: 0, width: Dimensions.get('window').width }}
+            initialLayout={{ height: 0, width: ScreenWidth }}
           />
         }
       </View>

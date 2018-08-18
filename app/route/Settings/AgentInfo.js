@@ -1,36 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,StatusBar, Modal,TextInput,TouchableOpacity,ImageBackground} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import { StyleSheet, View, Text, ScrollView, Image, ImageBackground } from 'react-native';
 import UColor from '../../utils/Colors'
-import Button from  '../../components/Button'
-import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
-
-import { EasyToast } from '../../components/Toast';
-import { EasyShowLD } from "../../components/EasyShow"
+import ScreenUtil from '../../utils/ScreenUtil'
 import BaseComponent from "../../components/BaseComponent";
-
-var AES = require("crypto-js/aes");
-var CryptoJS = require("crypto-js");
 
 @connect(({wallet}) => ({...wallet}))
 class AgentInfo extends BaseComponent {
 
-  
-    static navigationOptions = ({ navigation }) => {
-    
-        const params = navigation.state.params || {};
-       
-        return {    
-          title: "代理人信息",
-          headerStyle: {
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+    static navigationOptions =  {
+        title: "代理人信息",
+        headerStyle: {
+            paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
-          },
-        };
-      };
+        },
+    };
 
     constructor(props) {
         super(props);
@@ -39,25 +25,21 @@ class AgentInfo extends BaseComponent {
             isNotDealSelected: false,        
         };
     }
+
     componentWillUnmount(){
         //结束页面前，资源释放操作
         super.componentWillUnmount();
-        
     }
  
     prot = () => {
         const { navigate } = this.props.navigation;
         navigate('Web', { title: this.props.navigation.state.params.coins.name, url: this.props.navigation.state.params.coins.url });
       }
-   
-
 
     render() {
         const agent = this.props.navigation.state.params.coins;
         return (
             <View style={styles.container}> 
-                    
-
                 <ScrollView>
                     <View style={styles.outsource}>
                         <ImageBackground style={styles.AgentInfo} source={UImage.AgentInfo_bg} resizeMode="stretch">                  
@@ -181,7 +163,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column', 
         alignItems: 'center', 
         justifyContent: 'center', 
-        backgroundColor: '#61708E',
+        backgroundColor: UColor.secdColor,
     },
     numbers: {
         fontSize: 12, 
@@ -195,7 +177,7 @@ const styles = StyleSheet.create({
 
     state: {  
         fontSize: 12, 
-        color: UColor.arrow, 
+        color: UColor.lightgray, 
     },
 
     tablayout: {   
@@ -245,7 +227,7 @@ const styles = StyleSheet.create({
 
     spstext: {  
        fontSize: 14,
-       color: '#010101',
+       color: UColor.blackColor,
        lineHeight: 25,
     },  
 

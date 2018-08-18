@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, StyleSheet, View, Text, ScrollView, Image, Platform, ImageBackground } from 'react-native';
+import { Dimensions, StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import UImage from '../../utils/Img'
@@ -10,7 +10,8 @@ import { EasyShowLD } from "../../components/EasyShow"
 import { kapimg } from '../../utils/Api'
 import Constants from '../../utils/Constants'
 import BaseComponent from "../../components/BaseComponent";
-var ScreenWidth = Dimensions.get('window').width;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 
 @connect(({ login }) => ({ ...login }))
 class SignIn extends BaseComponent {
@@ -18,7 +19,7 @@ class SignIn extends BaseComponent {
   static navigationOptions = {
     title: '用户积分',
     headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
+      paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.secdColor,
       borderBottomWidth:0,
     },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView,NativeModules, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing, Clipboard, ImageBackground, ScrollView, RefreshControl,Linking, } from 'react-native';
+import { Dimensions, DeviceEventEmitter, ListView,NativeModules, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing, Clipboard, ImageBackground, ScrollView, RefreshControl,Linking, } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter' 
 import store from 'react-native-simple-store';
@@ -11,9 +11,8 @@ import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import QRCode from 'react-native-qrcode-svg';
-var Dimensions = require('Dimensions')
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 import { EasyToast } from "../../components/Toast"
 import { EasyShowLD } from '../../components/EasyShow'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -27,7 +26,7 @@ class Home extends React.Component {
     title: '钱包',
     header: null,
     headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
+      paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
     },
@@ -589,7 +588,6 @@ class Home extends React.Component {
                   <Text style={styles.headbtntext}>更多</Text>
                 </View>
               </Button>
-              
             </View>
           </ImageBackground>
           <View style={styles.addto}>
@@ -650,7 +648,7 @@ class Home extends React.Component {
 
         <Modal style={styles.touchableouts} animationType={'none'} transparent={true}  visible={this.props.tipFlagIOS==false?false:this.isTipShow()  } onRequestClose={()=>{}}>
             <TouchableOpacity style={styles.pupuoBackup} activeOpacity={1.0}>
-              <View style={{ width: maxWidth-20, backgroundColor: UColor.fontColor, borderRadius: 5, position: 'absolute', }}>
+              <View style={{ width: ScreenWidth-20, backgroundColor: UColor.fontColor, borderRadius: 5, position: 'absolute', }}>
                 <View style={styles.subViewBackup}> 
                   <Button onPress={this._disableTipVisible.bind(this) } style={styles.buttonView2}>
                       <Ionicons style={{ color: UColor.baseline}} name="ios-close-outline" size={30} />
@@ -661,12 +659,12 @@ class Home extends React.Component {
                     <Image source={UImage.warning_h} style={styles.imgBtn} />
                     <Text style={styles.headtitle}>亲爱的eostoken用户：由于App Store平台自身存在证书授权过期问题导致app无法打开的情况发生，造成数据丢失。当前系统检测到您尚未备份钱包，为了避免资产损失，请您及时备份。</Text>
                 </View>
-                  <Button onPress={this.WalletDetailBackup.bind(this,this.props.defaultWallet)}>
-                      <View style={styles.deleteout}>
-                          <Text style={styles.deletetext}>立即备份</Text>
-                      </View>
-                  </Button>  
-                </View> 
+                <Button onPress={this.WalletDetailBackup.bind(this,this.props.defaultWallet)}>
+                    <View style={styles.deleteout}>
+                        <Text style={styles.deletetext}>立即备份</Text>
+                    </View>
+                </Button> 
+              </View> 
             </TouchableOpacity>
         </Modal>
 
@@ -679,7 +677,7 @@ class Home extends React.Component {
                   enableEmptySections={true} dataSource={this.state.dataSource.cloneWithRows(this.props.walletList == null ? [] : this.props.walletList)}
                   renderRow={(rowData) => (
                     <Button onPress={this.changeWallet.bind(this, rowData)}>
-                      <View style={styles.walletlist} backgroundColor={(this.props.defaultWallet == null || this.props.defaultWallet.name == rowData.account) && '#4D607E'}>
+                      <View style={styles.walletlist} backgroundColor={(this.props.defaultWallet == null || this.props.defaultWallet.name == rowData.account) && UColor.inash}>
                         <View style={styles.topout}>
                           <Text style={styles.outname}>{rowData.name}</Text>
                           {(!rowData.isactived || !rowData.hasOwnProperty('isactived')) ? <View style={styles.notactivedout}><Text style={styles.notactived} onPress={this.WalletDetail.bind(this, rowData)}>未激活</Text></View>:(rowData.isBackups ? null :  <View style={styles.stopoutBackupsout}><Text style={styles.stopoutBackups} onPress={this.WalletDetail.bind(this, rowData)}>未备份</Text></View>)}  
@@ -777,7 +775,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: 'center',
     justifyContent: "space-between",
-    width: Dimensions.get('window').width,
+    width: ScreenWidth,
     paddingTop: ScreenUtil.autoheight(30),
     paddingHorizontal: ScreenUtil.autowidth(10),
     backgroundColor: UColor.mainColor, 
@@ -878,8 +876,8 @@ const styles = StyleSheet.create({
     backgroundColor: UColor.mask,
   },
   touchableout: {
-    width: maxWidth / 2, 
-    height: maxHeight, 
+    width: ScreenWidth / 2, 
+    height: ScreenHeight, 
     backgroundColor: UColor.secdColor, 
     alignItems: 'center', 
     paddingTop: ScreenUtil.autoheight(50),
@@ -956,7 +954,7 @@ const styles = StyleSheet.create({
 
  ebhbtnout: {
   width: '100%', 
-  height: maxHeight / 2.5, 
+  height: ScreenHeight / 2.5, 
   flexDirection: "column", 
   alignItems: 'center',  
   paddingVertical: ScreenUtil.autoheight(10),
@@ -993,8 +991,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalStyle: {
-      width: maxWidth,
-      height: maxHeight * 2 / 3,
+      width: ScreenWidth,
+      height: ScreenHeight * 2 / 3,
       backgroundColor: UColor.fontColor,
   },
   subView: {
@@ -1041,7 +1039,7 @@ const styles = StyleSheet.create({
   },
   copytext: {
     fontSize: ScreenUtil.setSpText(15),
-    color: '#4D4D4D'
+    color: UColor.secdColor,
   },
 
   lefts: {
@@ -1093,8 +1091,8 @@ const styles = StyleSheet.create({
   },
 
   imgTop: {
-    width: maxWidth,
-    height: maxWidth*0.72,
+    width: ScreenWidth,
+    height: ScreenWidth*0.72,
  },
  btnestablish: {
    height: ScreenUtil.autoheight(50),
@@ -1127,7 +1125,7 @@ tabview: {
   width: ScreenUtil.autowidth(24),
   height: ScreenUtil.autowidth(24),
   margin: ScreenUtil.autowidth(5),
-  borderColor: '#D2D2D2',
+  borderColor: UColor.lightgray,
   borderWidth: 1,
 },
 tabimg: {
@@ -1161,7 +1159,7 @@ headout: {
   paddingBottom: ScreenUtil.autoheight(15),
 },
 warningout: {
-  width: maxWidth-50,
+  width: ScreenWidth-50,
   marginHorizontal: ScreenUtil.autowidth(15),
   flexDirection: "row",
   alignItems: 'center', 
@@ -1199,7 +1197,7 @@ headtitle: {
   subViewBackup: {
     alignItems: 'flex-end',
     justifyContent: 'center',
-    width: maxWidth-20,
+    width: ScreenWidth-20,
     height: ScreenUtil.autoheight(30),
   },
   buttonView2: {
@@ -1212,7 +1210,7 @@ headtitle: {
 
     
   systemSettingTip: {
-    width: maxWidth,
+    width: ScreenWidth,
     height: ScreenUtil.autoheight(40),
     flexDirection: "row",
     alignItems: 'center', 

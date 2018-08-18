@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, TouchableOpacity, TextInput, } from 'react-native';
+import { Dimensions, DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TouchableOpacity, TextInput, } from 'react-native';
 import UImage from '../../utils/Img'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
@@ -12,10 +12,9 @@ import { Eos } from "react-native-eosjs"
 import {formatEosQua} from '../../utils/FormatUtil'
 var AES = require("crypto-js/aes")
 var CryptoJS = require("crypto-js")
-var Dimensions = require('Dimensions')
 var dismissKeyboard = require('dismissKeyboard')
-const maxWidth = Dimensions.get('window').width
-const maxHeight = Dimensions.get('window').height
+const ScreenWidth = Dimensions.get('window').width
+const ScreenHeight = Dimensions.get('window').height
 
 @connect(({wallet, vote}) => ({...wallet, ...vote}))
 class MortgageRecord extends React.Component {
@@ -23,7 +22,7 @@ class MortgageRecord extends React.Component {
   static navigationOptions = {
     title: "抵押记录",
     headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
+      paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
     },
@@ -174,7 +173,7 @@ class MortgageRecord extends React.Component {
           <View style={styles.inptout} >
               <Image source={UImage.Magnifier_ash} style={styles.headleftimg}></Image>
               <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
-                  selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor="#b3b3b3" maxLength={12} 
+                  selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} maxLength={12} 
                   placeholder="输入Eos账号(查询他人抵押信息)" underlineColorAndroid="transparent" keyboardType="default"
                   onChangeText={(labelname) => this.setState({ labelname })}  numberOfLines={1} 
                   />    
@@ -214,7 +213,6 @@ class MortgageRecord extends React.Component {
             </View>
         )}                   
       />  
-         
     </View>
     );
   }
@@ -255,7 +253,7 @@ const styles = StyleSheet.create({
     },
     inpt: {
       flex: 1,
-      color: '#999999',
+      color: UColor.arrow,
       height: ScreenUtil.autoheight(45),
       fontSize: ScreenUtil.setSpText(14),
     },
@@ -317,7 +315,7 @@ const styles = StyleSheet.create({
     warningout: {
       borderWidth: 1,
       borderRadius: 5,
-      width: maxWidth-80,
+      width: ScreenWidth-80,
       flexDirection: "row",
       alignItems: 'center', 
       borderColor: UColor.showy,
@@ -342,7 +340,7 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     inptpass: {
-      width: maxWidth-100,
+      width: ScreenWidth-100,
       borderBottomWidth: 1,
       color: UColor.tintColor,
       height: ScreenUtil.autoheight(45),
@@ -352,14 +350,14 @@ const styles = StyleSheet.create({
       borderBottomColor: UColor.baseline,
     },
     inptpasstext: {
-      color: '#808080',
+      color: UColor.lightgray,
       marginTop: ScreenUtil.autoheight(5),
       fontSize: ScreenUtil.setSpText(14),
       lineHeight: ScreenUtil.autoheight(25),
     },
 
     subViewBackup: {
-      width: maxWidth-20,
+      width: ScreenWidth-20,
       alignItems: 'flex-end',
       justifyContent: 'center',
       height: ScreenUtil.autoheight(20),

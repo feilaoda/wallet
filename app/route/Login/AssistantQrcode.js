@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image, Platform, Clipboard,} from 'react-native';
+import {StyleSheet, View, Text, Image, Clipboard,} from 'react-native';
 import UImage from '../../utils/Img';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
@@ -12,7 +12,7 @@ class AssistantQrcode extends BaseComponent {
   static navigationOptions = {
     headerTitle: '小助手二维码',
     headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
+      paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
     }

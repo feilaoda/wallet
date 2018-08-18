@@ -10,7 +10,8 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import { SegmentedControls } from 'react-native-radio-buttons'
 import Echarts from 'native-echarts'
-var ScreenWidth = Dimensions.get('window').width;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 import {formatterNumber,formatterUnit} from '../../utils/FormatUtil'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";

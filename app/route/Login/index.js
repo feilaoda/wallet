@@ -1,13 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, Image, ScrollView, KeyboardAvoidingView, Platform, ListView, StyleSheet, View, RefreshControl, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
-import Swiper from 'react-native-swiper';
 import ScreenUtil from '../../utils/ScreenUtil'
-import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import moment from 'moment';
 import UImage from '../../utils/Img';
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import { EasyToast } from '../../components/Toast';
@@ -16,15 +13,21 @@ import { EasyShowLD } from "../../components/EasyShow"
 import Constants from '../../utils/Constants'
 import BaseComponent from "../../components/BaseComponent";
 import {encryptedMsg} from '../../utils/AlgoUtil';
-
-var ScreenWidth = Dimensions.get('window').width;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var tick = 60;
 var dismissKeyboard = require('dismissKeyboard');
+
 @connect(({ login }) => ({ ...login }))
 class Login extends BaseComponent {
 
   static navigationOptions = {
     title: '登陆',
+    headerStyle: {
+      paddingTop: ScreenUtil.autoheight(20),
+      backgroundColor: UColor.mainColor,
+      borderBottomWidth:0,
+    },
   };
 
   constructor(props) {
@@ -412,7 +415,7 @@ class Login extends BaseComponent {
           style={{ backgroundColor: UColor.mainColor, }} tabStyle={{ width: ScreenWidth / 2, padding: 0, margin: 0 }} 
           scrollEnabled={true} {...props} />}
           onIndexChange={this._handleIndexChange}
-          initialLayout={{ height: 0, width: Dimensions.get('window').width }}
+          initialLayout={{ height: 0, width: ScreenWidth }}
         />
       </View>
     );
@@ -430,7 +433,7 @@ const styles = StyleSheet.create({
     width: ScreenUtil.autowidth(120),
     height: ScreenUtil.autoheight(45),
     fontSize: ScreenUtil.setSpText(15),
-    backgroundColor: '#EFEFEF'
+    backgroundColor: UColor.fontColor,
   },
 
   container: {

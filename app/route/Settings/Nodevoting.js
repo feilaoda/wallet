@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Dimensions,ListView,StyleSheet,View,Text,Image,Platform,TextInput,TouchableOpacity} from 'react-native';
+import { Dimensions, ListView, StyleSheet, View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
 import UImage from '../../utils/Img'
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
@@ -11,9 +11,8 @@ import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from "../../components/EasyShow"
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import BaseComponent from "../../components/BaseComponent";
-
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 
@@ -23,7 +22,7 @@ class Nodevoting extends BaseComponent {
     static navigationOptions =  {
         title: "投票",
         headerStyle: {
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+            paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
           },
@@ -65,8 +64,7 @@ class Nodevoting extends BaseComponent {
     componentWillUnmount(){
         //结束页面前，资源释放操作
         super.componentWillUnmount();
-        
-      }
+    }
 
     addvote = (rowData) => { // 选中用户
         if(!this.props.defaultWallet){
@@ -100,10 +98,7 @@ class Nodevoting extends BaseComponent {
                 EasyToast.show('密码长度至少4位,请重输');
                 return;
             }
-            // if(Platform.OS == 'android' ){
-            //     EasyShowLD.loadingShow();
-            // }
-
+    
             var privateKey = this.props.defaultWallet.activePrivate;
             try {
                 var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.defaultWallet.salt);
@@ -130,7 +125,6 @@ class Nodevoting extends BaseComponent {
                         ]
                     }, plaintext_privateKey, (r) => {
                         EasyShowLD.loadingClose();
-                        // alert(JSON.stringify(r.data));
                         if(r.data && r.data.transaction_id){
                             AnalyticsUtil.onEvent('vote');
                             EasyToast.show("投票成功");
@@ -147,7 +141,6 @@ class Nodevoting extends BaseComponent {
                 EasyShowLD.loadingClose();
                 EasyToast.show('密码错误');
             }
-            // EasyShowLD.dialogClose();
         }, () => { EasyShowLD.dialogClose() });
     };
 
@@ -189,47 +182,44 @@ class Nodevoting extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
-                    
-
                  <View style={styles.headout}>         
                     <Text style={styles.nodename}>节点名称</Text>           
                     <Text style={styles.rankingticket}>排名/票数</Text>           
                     <Text style={styles.choice}>选择</Text>          
                 </View>
                 <ListView style={styles.btn} renderRow={this.renderRow} enableEmptySections={true} 
-                        dataSource={this.state.dataSource.cloneWithRows(this.props.voteData == null ? [] : this.props.voteData)} 
-                        renderRow={(rowData, sectionID, rowID) => (                  
-                        <View>
-                            <Button onPress={this._openAgentInfo.bind(this,rowData)}> 
-                                <View style={styles.outsource} backgroundColor={(parseInt(rowID)%2 == 0) ? UColor.secdColor : '#4D607E'}>
-                                    <View style={styles.logview}>
-                                        <Image source={rowData.icon==null ? UImage.eos : {uri: rowData.icon}} style={styles.logimg}/>
+                    dataSource={this.state.dataSource.cloneWithRows(this.props.voteData == null ? [] : this.props.voteData)} 
+                    renderRow={(rowData, sectionID, rowID) => (                  
+                    <View>
+                        <Button onPress={this._openAgentInfo.bind(this,rowData)}> 
+                            <View style={styles.outsource} backgroundColor={(parseInt(rowID)%2 == 0) ? UColor.secdColor : UColor.inash}>
+                                <View style={styles.logview}>
+                                    <Image source={rowData.icon==null ? UImage.eos : {uri: rowData.icon}} style={styles.logimg}/>
+                                </View>
+                                <View style={styles.nameregion}>
+                                    <Text style={styles.nameranking} numberOfLines={1}>{rowData.name}</Text>
+                                    <Text style={styles.regiontotalvotes} numberOfLines={1}>地区：{rowData.region==null ? "未知" : rowData.region}</Text>                                    
+                                </View>
+                                <View style={styles.rankvote}>
+                                    <Text style={styles.nameranking}>{rowData.ranking}</Text>
+                                    <Text style={styles.regiontotalvotes}>{parseInt(rowData.total_votes)}</Text> 
+                                </View>
+                                {this.isvoted(rowData) ? 
+                                <TouchableOpacity style={styles.taboue}>
+                                    <View style={styles.tabview} >
+                                        <Image source={UImage.Tick_h} style={styles.tabimg} />
                                     </View>
-                                    <View style={styles.nameregion}>
-                                        <Text style={styles.nameranking} numberOfLines={1}>{rowData.name}</Text>
-                                        <Text style={styles.regiontotalvotes} numberOfLines={1}>地区：{rowData.region==null ? "未知" : rowData.region}</Text>                                    
-                                    </View>
-                                    <View style={styles.rankvote}>
-                                        <Text style={styles.nameranking}>{rowData.ranking}</Text>
-                                        <Text style={styles.regiontotalvotes}>{parseInt(rowData.total_votes)}</Text> 
-                                    </View>
-                                    {this.isvoted(rowData) ? 
-                                    <TouchableOpacity style={styles.taboue}>
-                                        <View style={styles.tabview} >
-                                            <Image source={UImage.Tick_h} style={styles.tabimg} />
-                                        </View>
-                                    </TouchableOpacity> : <TouchableOpacity style={styles.taboue} onPress={ () => this.selectItem(rowData)}>
-                                        <View style={styles.tabview} >
-                                            <Image source={rowData.isChecked ? UImage.Tick:null} style={styles.tabimg} />
-                                        </View>  
-                                    </TouchableOpacity> 
-                                    }     
-                                </View> 
-                            </Button>  
-                        </View>             
-                        )}                                   
-                    /> 
-              
+                                </TouchableOpacity> : <TouchableOpacity style={styles.taboue} onPress={ () => this.selectItem(rowData)}>
+                                    <View style={styles.tabview} >
+                                        <Image source={rowData.isChecked ? UImage.Tick:null} style={styles.tabimg} />
+                                    </View>  
+                                </TouchableOpacity> 
+                                }     
+                            </View> 
+                        </Button>  
+                    </View>             
+                    )}                                   
+                /> 
                 <View style={styles.footer}>
                     <Button style={styles.btn}>
                         <View style={styles.btnnode}>
@@ -245,14 +235,10 @@ class Nodevoting extends BaseComponent {
                     </Button>
                 </View>         
             </View>
-        
-            );
-        }
-    };
+        );
+    }
+};
     
-
-
-
 const styles = StyleSheet.create({
     passoutsource: {
         flexDirection: 'column', 
@@ -261,7 +247,7 @@ const styles = StyleSheet.create({
     inptpass: {
         color: UColor.tintColor,
         height: ScreenUtil.autoheight(45),
-        width: maxWidth-100,
+        width: ScreenWidth-100,
         fontSize: ScreenUtil.setSpText(16),
         backgroundColor: UColor.fontColor,
         borderBottomColor: UColor.baseline,
@@ -394,7 +380,7 @@ const styles = StyleSheet.create({
     votetext: {
         marginLeft: ScreenUtil.autowidth(20),
         fontSize: ScreenUtil.setSpText(18),
-        color: UColor.fontColor
+        color: UColor.fontColor,
     },
 });
 

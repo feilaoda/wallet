@@ -1,19 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { StyleSheet, View, Text, Image, Platform, Clipboard, TouchableHighlight} from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions, Clipboard, TouchableHighlight} from 'react-native';
 import UColor from '../../utils/Colors'
 import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var dismissKeyboard = require('dismissKeyboard');
+
 @connect(({login}) => ({...login}))
 class ExportPublicKey extends BaseComponent {
 
   static navigationOptions = {
     headerTitle: '导出公钥',
     headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
+      paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
     },
@@ -26,6 +29,7 @@ class ExportPublicKey extends BaseComponent {
         activePk: '',
       }
   }
+
     //组件加载完成
     componentDidMount() {
         this.setState({
@@ -143,14 +147,18 @@ const styles = StyleSheet.create({
     },
 
     inptgo: {
-        backgroundColor: UColor.secdColor,
         height: ScreenUtil.autoheight(60),
+        backgroundColor: UColor.secdColor,
+        width: ScreenWidth - ScreenUtil.autowidth(40),
         paddingHorizontal: ScreenUtil.autowidth(10),
     },
     inptext: {
+        flexWrap: 'wrap',
         color: UColor.arrow,
+        height: ScreenUtil.autoheight(60),
         fontSize: ScreenUtil.setSpText(14),
         lineHeight: ScreenUtil.autoheight(25),
+        width: ScreenWidth - ScreenUtil.autowidth(60),
     },
     textout: {
         paddingHorizontal: ScreenUtil.autowidth(16),

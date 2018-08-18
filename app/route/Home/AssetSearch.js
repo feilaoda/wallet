@@ -1,27 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {NativeModules,StatusBar,BackHandler,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,Image,ScrollView,View,RefreshControl,Text, TextInput,Platform,Dimensions,Modal,TouchableHighlight,Switch,TouchableOpacity  } from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
-import store from 'react-native-simple-store';
+import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TextInput, Modal, Switch, TouchableOpacity  } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
-import Item from '../../components/Item'
-import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
-import QRCode from 'react-native-qrcode-svg';
-const maxHeight = Dimensions.get('window').height;
 import { EasyShowLD } from '../../components/EasyShow'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 var dismissKeyboard = require('dismissKeyboard');
+
 @connect(({wallet, assets}) => ({...wallet, ...assets}))
 class AssetSearch extends BaseComponent {
 
   static navigationOptions = {
     title: '资产搜索',
     headerStyle:{
-        paddingTop:Platform.OS == 'ios' ? 30 : 20,
+        paddingTop: ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
         borderBottomWidth:0,
     }    
@@ -198,7 +193,7 @@ class AssetSearch extends BaseComponent {
                     <View style={styles.inptout} >
                         <Image source={UImage.Magnifier_ash} style={styles.headleftimg} />
                         <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
-                            selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor="#b3b3b3" autoCorrect={true}
+                            selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} autoCorrect={true}
                             placeholder="输入token名称或合约账户搜索" underlineColorAndroid="transparent" keyboardType="default"
                             onChangeText={(labelname) => this.setState({ labelname })} 
                             />
@@ -251,12 +246,12 @@ class AssetSearch extends BaseComponent {
                         <Text style={styles.titleText}>手动添加</Text>
                         <View style={styles.passoutsource}>
                             <TextInput ref={(ref) => this._raccount = ref} value={this.state.tokenname}  returnKeyType="next" 
-                                selectionColor={UColor.tintColor}  style={styles.inptpass}  placeholderTextColor="#b3b3b3" 
+                                selectionColor={UColor.tintColor}  style={styles.inptpass}  placeholderTextColor={UColor.arrow} 
                                 placeholder="输入Token名称" underlineColorAndroid="transparent" keyboardType="default"   
                                 onChangeText={(tokenname) => this.setState({ tokenname })}/>
                                 
                             <TextInput ref={(ref) => this._raccount = ref} value={this.state.address}   returnKeyType="go" 
-                                selectionColor={UColor.tintColor}  style={styles.inptpass} placeholderTextColor="#b3b3b3" 
+                                selectionColor={UColor.tintColor}  style={styles.inptpass} placeholderTextColor={UColor.arrow} 
                                 placeholder="输入合约账户" underlineColorAndroid="transparent"  keyboardType="default"  
                                 onChangeText={(address) => this.setState({ address })} maxLength = {12}/>
                         </View>
@@ -310,7 +305,7 @@ const styles = StyleSheet.create({
       flex: 1,
       height: ScreenUtil.autoheight(45),
       fontSize: ScreenUtil.setSpText(14),
-      color: '#999999',
+      color: UColor.arrow,
     },
 
     listItem: {
@@ -393,7 +388,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: ScreenUtil.autowidth(15),
         marginVertical: ScreenUtil.autoheight(10),
         fontSize: ScreenUtil.setSpText(16),
-        backgroundColor: '#f3f3f3',
+        backgroundColor: UColor.fontColor,
     },
     copyout: {
       margin: ScreenUtil.autowidth(10), 

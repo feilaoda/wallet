@@ -197,7 +197,7 @@ class Coins extends React.Component {
         renderScene={this.renderScene.bind(this)}
         renderHeader={(props)=><TabBar onTabPress={this._handleTabItemPress} labelStyle={{fontSize:ScreenUtil.setSpText(15),margin:0,marginBottom:10,paddingTop:10,color:UColor.lightgray}} indicatorStyle={{backgroundColor:UColor.tintColor,width:60,marginLeft:20}} style={{backgroundColor:UColor.secdColor,}} tabStyle={{width:100,padding:0,margin:0,}} scrollEnabled={true} {...props}/>}
         onIndexChange={this._handleIndexChange}
-        initialLayout={{height:0,width:Dimensions.get('window').width}}
+        initialLayout={{height:0,width:ScreenWidth}}
         />
       </View>
     );

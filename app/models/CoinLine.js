@@ -66,7 +66,7 @@ export default {
 
 function combine(data) {
     return  {
-        color: ['#556E95','#6CDAFF'],
+        color: ['#556E95',UColor.tintColor],
         grid: {
             top: '3%',
             left: '2%',
@@ -151,7 +151,7 @@ function combine(data) {
                 type: 'line',
                 itemStyle: {
                     borderWidth: 0,
-                    color: '#6CDAFF'
+                    color: UColor.tintColor
                 },
             }
         ]

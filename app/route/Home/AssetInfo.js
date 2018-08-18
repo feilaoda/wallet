@@ -1,19 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { NativeModules, StatusBar, BackHandler, Clipboard, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, Image, ScrollView, View, RefreshControl, Text, TextInput, Platform, Dimensions, Modal, TouchableHighlight, } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
+import { DeviceEventEmitter, ListView, StyleSheet, Image, View, RefreshControl, Text, } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
-import AnalyticsUtil from '../../utils/AnalyticsUtil';
-import QRCode from 'react-native-qrcode-svg';
-const maxHeight = Dimensions.get('window').height;
 import { EasyShowLD } from '../../components/EasyShow'
-import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 import moment from 'moment';
 
@@ -24,7 +17,7 @@ class AssetInfo extends BaseComponent {
         return {
             headerTitle: params.asset.asset.name,
             headerStyle: {
-                paddingTop:Platform.OS == 'ios' ? 30 : 20,
+                paddingTop: ScreenUtil.autoheight(20),
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
@@ -351,7 +344,7 @@ const styles = StyleSheet.create({
     },
     typeout: {
         fontSize: ScreenUtil.setSpText(14),
-        color: "#4ed694",
+        color: UColor.fallColor,
         textAlign: 'center'
     },
 

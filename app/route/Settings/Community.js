@@ -1,28 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Clipboard,Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,StatusBar, ImageBackground, FlatList, TouchableHighlight} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import { Clipboard, Dimensions, StyleSheet, View, Text, Image, ImageBackground, TouchableHighlight} from 'react-native';
 import UColor from '../../utils/Colors'
-import Button from  '../../components/Button'
-import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
-import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import ScreenUtil from '../../utils/ScreenUtil'
+import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
-
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 
 @connect(({login}) => ({...login}))
 class Community extends BaseComponent {
 
-
   static navigationOptions = {
     title: 'EOS社区',
     headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
+      paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
       },
@@ -42,7 +36,6 @@ class Community extends BaseComponent {
   componentWillUnmount(){
     //结束页面前，资源释放操作
     super.componentWillUnmount();
-    
   }
   
   logout = () =>{
@@ -62,11 +55,9 @@ class Community extends BaseComponent {
     if (key == 'microblog') {
         navigate('Web', { title: "官网微博", url: "http://weibo.com/eostoken" });   
     } else if(key == 'wechat'){
-        // let wechat = this.state.wechat;
         Clipboard.setString(this.state.wechat);
         EasyToast.show('微信号已复制成功');
     } else if(key == 'qq'){
-      // let qq = this.state.qq;
       Clipboard.setString(this.state.qq);
       EasyToast.show('QQ号已复制成功');
     }else if(key == 'public'){
@@ -133,8 +124,8 @@ const styles = StyleSheet.create({
     backgroundColor: UColor.secdColor,
   },
   headimg: {
-    width: maxWidth,
-    height: maxWidth * 0.2213,
+    width: ScreenWidth,
+    height: ScreenWidth * 0.2213,
     marginTop: ScreenUtil.autoheight(5),
   },
   texts: {
@@ -145,15 +136,15 @@ const styles = StyleSheet.create({
     flexDirection:'row',
   },
   wechatqq: {
-    width: (maxWidth - 15) / 2,
-    height: (maxWidth - 15) / 2 * 0.6572,
+    width: (ScreenWidth - 15) / 2,
+    height: (ScreenWidth - 15) / 2 * 0.6572,
     paddingHorizontal: ScreenUtil.autowidth(10),
     paddingTop: ScreenUtil.autoheight(10),
   },
   publicout: {
     justifyContent:'center',
-    width: maxWidth - 10,
-    height: (maxWidth - 10) * 0.3664,
+    width: ScreenWidth - 10,
+    height: (ScreenWidth - 10) * 0.3664,
     marginTop: ScreenUtil.autoheight(5),
     paddingHorizontal: ScreenUtil.autowidth(10),
     paddingTop: ScreenUtil.autoheight(10),
@@ -161,8 +152,8 @@ const styles = StyleSheet.create({
   sourceout: {
     justifyContent: "space-between",
     alignItems: 'flex-start',
-    width: maxWidth - 10,
-    height: (maxWidth - 10) * 0.1444,
+    width: ScreenWidth - 10,
+    height: (ScreenWidth - 10) * 0.1444,
     marginTop: ScreenUtil.autoheight(5),
     paddingVertical: ScreenUtil.autoheight(5),
     paddingHorizontal: ScreenUtil.autowidth(10),

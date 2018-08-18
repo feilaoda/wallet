@@ -1,38 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,StatusBar, Modal,TextInput,TouchableOpacity,KeyboardAvoidingView} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
-import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from "../../components/EasyShow"
 import { Eos } from "react-native-eosjs";
 import {formatEosQua} from '../../utils/FormatUtil';
 import BaseComponent from "../../components/BaseComponent";
 import Constants from '../../utils/Constants'
-const maxWidth = Dimensions.get('window').width;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
+
 @connect(({wallet, vote}) => ({...wallet, ...vote}))
 class Nodevoting extends BaseComponent {
 
-    static navigationOptions = ({ navigation }) => {
-    
-        const params = navigation.state.params || {};
-       
-        return {    
-          title: "投票锁仓",
-          headerStyle: {
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+    static navigationOptions = {
+        title: "投票锁仓",
+        headerStyle: {
+            paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
-          },
-        };
-      };
+        }
+    };
 
     constructor(props) {
         super(props);
@@ -70,7 +65,6 @@ class Nodevoting extends BaseComponent {
         this.props.dispatch({
             type: 'wallet/getDefaultWallet', callback: (data) => {
                 this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: data.defaultWallet.account},callback: (data) => {
-                    // alert("----------" + JSON.stringify(data));
                     this.setState({
                         delegate_net:data.total_resources.net_weight.replace("EOS", ""),
                         delegate_cpu:data.total_resources.cpu_weight.replace("EOS", ""),
@@ -78,7 +72,6 @@ class Nodevoting extends BaseComponent {
                 } });
 
                 this.props.dispatch({ type: 'vote/getundelegatebwInfo', payload: { page:1,username: data.defaultWallet.account},callback: (data) => {
-                    // alert("getundelegatebwInfo1: " + (data.rows.length));
                     if(data.rows.length > 0){
                         this.setState({
                             undelegate_net:data.rows[0].net_amount.replace("EOS", ""),
@@ -122,11 +115,6 @@ class Nodevoting extends BaseComponent {
           })
         } else {
           this.setState({ balance: '0'})
-          // this.props.defaultWallet.name = 'xxxx';
-          //   EasyShowLD.dialogShow("温馨提示", "您还没有创建钱包", "创建一个", "取消", () => {
-          //   this.createWallet();
-          //   EasyShowLD.dialogClose()
-          // }, () => { EasyShowLD.dialogClose() });
         }
       }
 
@@ -324,7 +312,7 @@ class Nodevoting extends BaseComponent {
         let BTN_SELECTED_STATE_ARRAY = ['isAllSelected', 'isNotDealSelected'];  
         return(  
             <View style={[style, selectedSate ? {backgroundColor: UColor.tintColor} : {backgroundColor: UColor.mainColor}]}>  
-                <Text style={[styles.tabText, selectedSate ? {color: UColor.fontColor} : {color: '#7787A3'}]}  onPress={ () => {this._updateBtnSelectedState(stateType, BTN_SELECTED_STATE_ARRAY)}}>  
+                <Text style={[styles.tabText, selectedSate ? {color: UColor.fontColor} : {color: UColor.lightgray}]}  onPress={ () => {this._updateBtnSelectedState(stateType, BTN_SELECTED_STATE_ARRAY)}}>  
                     {buttonTitle}  
                 </Text>  
             </View>  
@@ -336,12 +324,8 @@ class Nodevoting extends BaseComponent {
     }
 
     render() {
-        // balance = balance.replace("EOS", "");
-
         return (
             <View style={styles.container}> 
-                    
-
                 <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
                     <ScrollView keyboardShouldPersistTaps="always">
                         <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
@@ -399,7 +383,7 @@ const styles = StyleSheet.create({
     inptpass: {
         color: UColor.tintColor,
         height: 45,
-        width: maxWidth-100,
+        width: ScreenWidth-100,
         paddingBottom: 5,
         fontSize: 16,
         backgroundColor: UColor.fontColor,
@@ -408,7 +392,7 @@ const styles = StyleSheet.create({
     },
     inptpasstext: {
         fontSize: 14,
-        color: '#808080',
+        color: UColor.lightgray,
         lineHeight: 25,
         marginTop: 5,
     },
@@ -417,7 +401,6 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection:'column',
       backgroundColor: UColor.secdColor,
-      paddingBottom: 40,
     },
 
     frame: {
@@ -439,7 +422,7 @@ const styles = StyleSheet.create({
     state: {
         flex: 1, 
         fontSize: 14, 
-        color: '#7787A3', 
+        color: UColor.lightgray, 
         textAlign: 'right', 
         paddingRight: 5,
     },
@@ -478,7 +461,7 @@ const styles = StyleSheet.create({
     },
     inptext: {
         fontSize: 14,
-        color: '#7787A3',
+        color: UColor.lightgray,
         lineHeight: 30,
     },
 

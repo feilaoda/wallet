@@ -5,8 +5,8 @@ import NavigationUtil from '../utils/NavigationUtil';
 import UImage from '../utils/Img'
 import UColor from '../utils/Colors'
 import Swiper from 'react-native-swiper';
-const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 import store from 'react-native-simple-store';
 
 class Boot extends React.Component {
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection:'column',
-        backgroundColor: "#21232E",
+        backgroundColor: UColor.startup,
     }
 });  
 export default Boot;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { StyleSheet,View,Text,ScrollView,Image,Platform,TextInput,TouchableOpacity,KeyboardAvoidingView} from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Image, TextInput, TouchableOpacity, } from 'react-native';
 import UImage from '../../utils/Img';
 import UColor from '../../utils/Colors'
 import ScreenUtil from '../../utils/ScreenUtil'
@@ -18,7 +18,12 @@ var dismissKeyboard = require('dismissKeyboard');
 class Forget extends BaseComponent {
 
   static navigationOptions = {
-    title: '忘记密码'
+    title: '忘记密码',
+    headerStyle: {
+      paddingTop: ScreenUtil.autoheight(20),
+      backgroundColor: UColor.mainColor,
+      borderBottomWidth:0,
+    },
   };
 
   state = {
@@ -70,14 +75,12 @@ class Forget extends BaseComponent {
     }})
   }
 
-
   refresh = () =>{
     EasyShowLD.dialogClose();
     this.kcaptrue();
   }
 
   loaderror = () =>{
-    // EasyToast.show('操作过于频繁，为保障用户安全，请一小时后尝试');
     EasyToast.show('未能获取图形验证码，请检查网络！');
   }
 
@@ -131,15 +134,10 @@ class Forget extends BaseComponent {
       EasyToast.show('请输入验证码');
       return;
     }
-    // if(this.state.capture!="获取验证码"){
-    //   return;
-    // }
     if(this.state.captureState){
       return;
     }
-
     var th = this;
-
     EasyShowLD.loadingShow('获取中...');
     this.props.dispatch({type:'login/getCapture',payload:{phone:this.state.phone,code:this.state.kcode},callback:(data)=>{
         EasyShowLD.loadingClose();
@@ -156,7 +154,6 @@ class Forget extends BaseComponent {
         }
     }});
   }
-
 
   doTick = () =>{
     var th = this;
@@ -252,7 +249,7 @@ const styles = StyleSheet.create({
     width: ScreenUtil.autowidth(120),
     height: ScreenUtil.autoheight(45),
     fontSize: ScreenUtil.setSpText(15),
-    backgroundColor: '#EFEFEF'
+    backgroundColor: UColor.fontColor,
   },
 
   container: {

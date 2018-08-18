@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {StyleSheet,View,Text,Image,Platform,TextInput,TouchableOpacity} from 'react-native';
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import UImage from "../../utils/Img";
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
@@ -16,10 +16,10 @@ class ProblemFeedback extends BaseComponent {
   static navigationOptions = {
     title: '问题反馈',
     headerStyle: {
-        paddingTop:Platform.OS == 'ios' ? ScreenUtil.autoheight(30) : ScreenUtil.autoheight(20),
+        paddingTop: ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
         borderBottomWidth:0,
-      },
+    },
   };
 
   constructor(props) {
@@ -60,7 +60,7 @@ class ProblemFeedback extends BaseComponent {
             <View style={styles.textinptoue}>
                 <View style={styles.inptout}>
                     <TextInput ref={(ref) => this._rrpass = ref} value={this.state.delegatebw} 
-                    selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor="#B3B3B3" 
+                    selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}
                     onChangeText={(delegatebw) => this.setState({ delegatebw })} autoFocus={false} editable={true}
                     placeholder="请详细描述您的问题......" underlineColorAndroid="transparent"   
                     multiline={true}  maxLength={300}/>

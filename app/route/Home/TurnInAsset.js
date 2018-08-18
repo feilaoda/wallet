@@ -1,42 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  NativeModules,
-  StatusBar,
-  BackHandler,
-  DeviceEventEmitter,
-  InteractionManager,
-  Clipboard,
-  ListView,
-  StyleSheet,
-  Image,
-  ScrollView,
-  View,
-  RefreshControl,
-  Text,
-  TextInput,
-  Platform,
-  Dimensions,
-  Modal,
-  TouchableHighlight,
-  TouchableOpacity
-} from "react-native";
-import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
-import store from "react-native-simple-store";
+import { DeviceEventEmitter, Clipboard, StyleSheet, Image, ScrollView, View, Text, TextInput, TouchableOpacity } from "react-native";
 import UColor from "../../utils/Colors";
 import Button from "../../components/Button";
 import UImage from "../../utils/Img";
-import AnalyticsUtil from "../../utils/AnalyticsUtil";
 import QRCode from "react-native-qrcode-svg";
-const maxHeight = Dimensions.get("window").height;
-
 import { EasyToast } from "../../components/Toast";
-
 import BaseComponent from "../../components/BaseComponent";
+let dismissKeyboard = require("dismissKeyboard");
 
-var AES = require("crypto-js/aes");
-var CryptoJS = require("crypto-js");
-var dismissKeyboard = require("dismissKeyboard");
 @connect(({ wallet }) => ({ ...wallet }))
 class TurnInAsset extends BaseComponent {
   static navigationOptions = ({ navigation }) => {
@@ -44,7 +16,7 @@ class TurnInAsset extends BaseComponent {
     return {
       headerTitle: "收款信息",
       headerStyle: {
-        paddingTop: Platform.OS == "ios" ? 30 : 20,
+        paddingTop: ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
         borderBottomWidth:0,
       },
@@ -159,11 +131,8 @@ class TurnInAsset extends BaseComponent {
   }
 
   render() {
-    // const c = this.props.navigation.state.params.coins;
     return (
       <View style={styles.container}>
-              
-
         <ScrollView keyboardShouldPersistTaps="always">
           <TouchableOpacity
             activeOpacity={1.0}

@@ -19,8 +19,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Eos } from "react-native-eosjs";
 import {formatEosQua} from '../../utils/FormatUtil';
 import Constants from '../../utils/Constants';
-var ScreenWidth = Dimensions.get('window').width;
-var ScreenHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
@@ -35,7 +35,7 @@ class Ram extends BaseComponent {
           title: '交易',
           headerTitle: "内存交易",
           headerStyle: {
-            paddingTop: Platform.OS == "ios" ? 30 : 20,
+            paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
           },
@@ -438,7 +438,7 @@ class Ram extends BaseComponent {
 
   transformColor(currentPressed) {
       if(currentPressed == 'isBuy'){
-        return '#42B324';
+        return UColor.fallColor;
       }else if(currentPressed == 'isSell'){
         return UColor.showy;
       }else{
@@ -791,7 +791,7 @@ class Ram extends BaseComponent {
     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
       <ScrollView scrollEnabled={this.state.scrollEnabled} keyboardShouldPersistTaps="always"refreshControl={
             <RefreshControl refreshing={this.state.logRefreshing} onRefresh={() => this.onRefreshing()}
-            tintColor={UColor.fontColor} colors={['#ddd', UColor.tintColor]} progressBackgroundColor={UColor.fontColor}/>}
+            tintColor={UColor.fontColor} colors={[UColor.riceWhite, UColor.tintColor]} progressBackgroundColor={UColor.fontColor}/>}
             >
             <View style={styles.header}>
                 <View style={styles.leftout}>
@@ -823,7 +823,7 @@ class Ram extends BaseComponent {
                 </View>
             </View>
           
-            <View style={{width:ScreenWidth,height:ScreenUtil.autoheight(25),flexDirection:'row',justifyContent: 'center',alignItems:'center',backgroundColor: '#4D607E',}}>
+            <View style={{width:ScreenWidth,height:ScreenUtil.autoheight(25),flexDirection:'row',justifyContent: 'center',alignItems:'center',backgroundColor: UColor.inash,}}>
                 <View style={{flexDirection:"column",flex:1,}}>
                     <Button onPress={this.onClickTimeType.bind(this,"时分")}>
                         <View style={{ marginLeft: ScreenUtil.autowidth(2),width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(25),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
@@ -881,7 +881,7 @@ class Ram extends BaseComponent {
             </View> 
 
             {this.state.showMore &&       
-            <View style={{width:ScreenWidth,height:ScreenUtil.autoheight(25),flexDirection:'row',justifyContent: 'center',alignItems:'center',backgroundColor: '#4D607E',}}>
+            <View style={{width:ScreenWidth,height:ScreenUtil.autoheight(25),flexDirection:'row',justifyContent: 'center',alignItems:'center',backgroundColor: UColor.inash,}}>
                 <View style={{flexDirection:"column",flex:1,}}>
                     <Button disabled={true}>
                         <View style={{ marginLeft: ScreenUtil.autowidth(2),width: ScreenUtil.autowidth(40), height: ScreenUtil.autoheight(35),borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
@@ -944,10 +944,10 @@ class Ram extends BaseComponent {
                     {(this.props.ramTradeLog  != null &&  this.props.ramTradeLog .length == 0) ? <View style={{paddingTop: ScreenUtil.autoheight(50), justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: ScreenUtil.setSpText(16), color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                     <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                             renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: ScreenUtil.autowidth(5),marginVertical: ScreenUtil.autoheight(2),marginHorizontal: ScreenUtil.autowidth(5),}}>
-                            <Text style={{ flex: 3,paddingLeft: ScreenUtil.autowidth(8), textAlign: 'left',color: '#7382a1'}}>账号</Text>
-                            <Text style={{ flex: 4,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                            <Text style={{ flex: 3.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
-                            <Text style={{ flex: 2.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                            <Text style={{ flex: 3,paddingLeft: ScreenUtil.autowidth(8), textAlign: 'left',color: UColor.lightgray}}>账号</Text>
+                            <Text style={{ flex: 4,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>数量(EOS)</Text>
+                            <Text style={{ flex: 3.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>价格(KB)</Text>
+                            <Text style={{ flex: 2.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>时间</Text>
                             </View>
                         }
                         dataSource={this.state.dataSource.cloneWithRows(this.state.newramTradeLog == null ? [] : this.state.newramTradeLog)} 
@@ -981,10 +981,10 @@ class Ram extends BaseComponent {
                         {(this.props.ramBigTradeLog != null &&  this.props.ramBigTradeLog.length == 0) ? <View style={{paddingTop: ScreenUtil.autoheight(50), justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: ScreenUtil.setSpText(16), color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                             <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                                 renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: ScreenUtil.autowidth(5),marginVertical: ScreenUtil.autoheight(2),marginHorizontal: ScreenUtil.autowidth(5),}}>
-                                    <Text style={{ flex: 3,paddingLeft: ScreenUtil.autowidth(8), textAlign: 'left',color: '#7382a1'}}>账号</Text>
-                                    <Text style={{ flex: 4,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                                    <Text style={{ flex: 3.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>价格(KB)</Text>
-                                    <Text style={{ flex: 2.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                                    <Text style={{ flex: 3,paddingLeft: ScreenUtil.autowidth(8), textAlign: 'left',color: UColor.lightgray}}>账号</Text>
+                                    <Text style={{ flex: 4,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>数量(EOS)</Text>
+                                    <Text style={{ flex: 3.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>价格(KB)</Text>
+                                    <Text style={{ flex: 2.5,paddingLeft: ScreenUtil.autowidth(8),textAlign: 'left',color: UColor.lightgray}}>时间</Text>
                                     </View>
                                 }
                                 dataSource={this.state.dataSource.cloneWithRows(this.props.ramBigTradeLog == null ? [] : this.props.ramBigTradeLog)} 
@@ -1025,9 +1025,9 @@ class Ram extends BaseComponent {
                                         <View style={styles.Rankcenterout}>
                                             <Text style={{fontSize: ScreenUtil.setSpText(14),color: UColor.arrow,}}>盈亏 
                                             {rowData.profit.indexOf('-') != -1 ?
-                                            <Text style={{fontSize: ScreenUtil.setSpText(14), color: '#FF4C4C',}}> {rowData.profit}</Text>
+                                            <Text style={{fontSize: ScreenUtil.setSpText(14), color: UColor.riseColor,}}> {rowData.profit}</Text>
                                             :
-                                            <Text style={{fontSize: ScreenUtil.setSpText(14), color: '#5BD91E',}}> {rowData.profit}</Text>
+                                            <Text style={{fontSize: ScreenUtil.setSpText(14), color: UColor.fallColor,}}> {rowData.profit}</Text>
                                             }
                                             </Text>
                                             <Text style={{fontSize: ScreenUtil.setSpText(14),color: UColor.arrow,}}>成本价<Text style={{ fontSize: ScreenUtil.setSpText(14),color: UColor.fontColor,}}> {rowData.historyAverageCost}</Text></Text>
@@ -1100,7 +1100,7 @@ class Ram extends BaseComponent {
                                         </View>    
                                     </View>
                                     <Button onPress={this.buyram.bind(this)}>
-                                        <View style={styles.botn} backgroundColor={'#42B324'}>
+                                        <View style={styles.botn} backgroundColor={UColor.fallColor}>
                                             <Text style={styles.botText}>买入</Text>
                                         </View>
                                     </Button> 
@@ -1246,12 +1246,12 @@ const styles = StyleSheet.create({
     },
     incup:{
       fontSize: ScreenUtil.setSpText(20),
-      color:'#F25C49',
+      color: UColor.riseColor,
       textAlign:'center',
     },
     incdo:{
       fontSize: ScreenUtil.setSpText(20),
-      color:'#25B36B',
+      color: UColor.fallColor,
       textAlign:'center',
     },
     toptabout: {
@@ -1336,7 +1336,7 @@ const styles = StyleSheet.create({
     greenText: {
         flex: 1,
         fontSize: ScreenUtil.setSpText(14),
-        color: "#42B324",
+        color: UColor.fallColor,
         textAlign: "left"
     },
 
@@ -1362,7 +1362,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#38465C',
+        backgroundColor: UColor.inash,
         borderRadius: 5,
     },
     conversion: {
@@ -1407,14 +1407,14 @@ const styles = StyleSheet.create({
     sellpricetext: {
         flex: 3.5,
         fontSize: ScreenUtil.setSpText(14),
-        color: '#F25C49',
+        color: UColor.riseColor,
         textAlign: 'left',
         paddingLeft: ScreenUtil.autowidth(8),
     },
     buypricetext: {
         flex: 3.5,
         fontSize: ScreenUtil.setSpText(14),
-        color: "#4ed694",
+        color: UColor.fallColor,
         textAlign: 'left',
         paddingLeft: ScreenUtil.autowidth(8),
     },
@@ -1428,27 +1428,27 @@ const styles = StyleSheet.create({
     selltext: {
         flex: 4,
         fontSize: ScreenUtil.setSpText(14),
-        color: '#F25C49',
+        color: UColor.riseColor,
         textAlign: 'left',
         paddingLeft: ScreenUtil.autowidth(8),
     },
     selltime: {
         flex: 2.5,
         fontSize: ScreenUtil.setSpText(12),
-        color: "#F25C49",
+        color: UColor.riseColor,
         textAlign: 'left'
     },
     buytext: {
         flex: 4,
         fontSize: ScreenUtil.setSpText(14),
-        color: "#4ed694",
+        color: UColor.fallColor,
         textAlign: 'left',
         paddingLeft: ScreenUtil.autowidth(8),
     },
     buytime: {
         flex: 2.5,
         fontSize: ScreenUtil.setSpText(12),
-        color: "#4ed694",
+        color: UColor.fallColor,
         textAlign: 'left'
     },
 
@@ -1643,7 +1643,7 @@ function combineRamKLine(data) {
             axisPointer: {
                 type: 'cross',
                 crossStyle: {
-                    color: "#fff",
+                    color: UColor.fontColor,
                     width: 0.5,
                 },
             },

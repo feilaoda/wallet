@@ -5,9 +5,8 @@ import moment from 'moment';
 import Button from '../components/Button'
 import ViewShot from "react-native-view-shot";
 require('moment/locale/zh-cn');
-var ScreenWidth = Dimensions.get('window').width;
-var ScreenHeight = Dimensions.get('window').height;
-const { width } = Dimensions.get('window')
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 import { EasyToast } from "../components/Toast"
 import { EasyShowLD } from "../components/EasyShow"
 import UImage from '../utils/Img'
@@ -60,7 +59,7 @@ export default class Web extends BaseComponent {
 
   _onLoad() {
     Animated.timing(this.state.progress, {
-      toValue: width,
+      toValue: ScreenWidth,
       duration: 200
     }).start(() => {
       setTimeout(() => {
@@ -72,7 +71,7 @@ export default class Web extends BaseComponent {
   _onLoadStart() {
     this.state.progress.setValue(0);
     Animated.timing(this.state.progress, {
-      toValue: width * .7,
+      toValue: ScreenWidth * .7,
       duration: 5000
     }).start()
     this.__onLoadStart()
@@ -131,7 +130,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     alignItems: "center",
     transform: [
-      { translateX: width }
+      { translateX: ScreenWidth }
     ],
     backgroundColor: UColor.secdColor
   },

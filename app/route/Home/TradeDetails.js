@@ -1,23 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,Clipboard,TextInput,TouchableOpacity} from 'react-native';
-import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
+import { StyleSheet, View, Text, Image, Clipboard, } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
-import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import ViewShot from "react-native-view-shot";
 import ScreenUtil from '../../utils/ScreenUtil'
-import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from '../../components/EasyShow'
 import BaseComponent from "../../components/BaseComponent";
 import moment from 'moment';
 var WeChat = require('react-native-wechat');
-let {width, height} = Dimensions.get('window');
-var dismissKeyboard = require('dismissKeyboard');
+
 @connect(({login}) => ({...login}))
 class TradeDetails extends BaseComponent {
     static navigationOptions = ({ navigation }) => {
@@ -25,13 +20,13 @@ class TradeDetails extends BaseComponent {
         return {
             headerTitle: '交易详情',
             headerStyle: {
-                paddingTop:Platform.OS == 'ios' ? 30 : 20,
+                paddingTop: ScreenUtil.autoheight(20),
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
             headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
-            <View style={{ padding: 15 }}>
-            <Image source={UImage.share_i} style={{ width: 22, height: 22 }}></Image>
+            <View style={{ padding: ScreenUtil.autowidth(15) }}>
+            <Image source={UImage.share_i} style={{ width: ScreenUtil.autowidth(22), height: ScreenUtil.autowidth(22) }}></Image>
             </View>
           </Button>),   
         };
@@ -222,9 +217,9 @@ class TradeDetails extends BaseComponent {
             <Text style={styles.blocktext}>{moment(this.state.trade.blockTime).add(8,'hours').format('YYYY/MM/DD HH:mm')}</Text>
           </View>
         </View>
-        <View style={{flex: 1,alignItems: 'center',justifyContent: 'flex-end',paddingBottom: ScreenUtil.autoheight(20),}}>
-          <Image source={UImage.bottom_log} style={{width:50,height:50}}/>
-          <Text style={{ fontSize: ScreenUtil.setSpText(14),color: UColor.arrow,}}>EosToken 专注柚子生态</Text>
+        <View style={styles.logout}>
+            <Image source={UImage.bottom_log} style={styles.logimg}/>
+            <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
         </View>
       </ViewShot>
     </View>
@@ -324,6 +319,21 @@ const styles = StyleSheet.create({
     paddingVertical: ScreenUtil.autowidth(5),
     marginBottom: ScreenUtil.autoheight(10),
   },
+  logout:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: ScreenUtil.autoheight(20),
+  },
+  logimg: {
+    width: ScreenUtil.autowidth(50), 
+    height: ScreenUtil.autowidth(50)
+  },
+  logtext: {
+    fontSize: ScreenUtil.setSpText(14),
+    color: UColor.arrow,
+    lineHeight: ScreenUtil.autoheight(30),
+  }
 });
 
 export default TradeDetails;

@@ -1,24 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, TextInput, Clipboard, ImageBackground, ScrollView } from 'react-native';
+import { Dimensions, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, TextInput, Clipboard, ImageBackground, ScrollView } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import UImage from '../../utils/Img'
-import AnalyticsUtil from '../../utils/AnalyticsUtil';
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import { EasyToast } from "../../components/Toast"
 import { EasyShowLD } from '../../components/EasyShow'
 import ScreenUtil from '../../utils/ScreenUtil'
-var Dimensions = require('Dimensions')
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
+
 @connect(({ vote, wallet}) => ({ ...vote, ...wallet}))
 class FreeMortgage extends React.Component {
 
   static navigationOptions = {
     title: 'EOS免费抵押',  
     headerStyle:{
-        paddingTop:Platform.OS == 'ios' ? 30 : 20,
+        paddingTop: ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
         borderBottomWidth:0,
     }    
@@ -99,8 +97,8 @@ const styles = StyleSheet.create({
     },
 
     bgout: {
-        width: maxWidth - ScreenUtil.autowidth(20),
-        height: (maxWidth - ScreenUtil.autowidth(20))*0.8437,
+        width: ScreenWidth - ScreenUtil.autowidth(20),
+        height: (ScreenWidth - ScreenUtil.autowidth(20))*0.8437,
         paddingTop: ScreenUtil.autoheight(70),
         paddingHorizontal: ScreenUtil.autowidth(20),
     },

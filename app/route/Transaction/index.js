@@ -9,14 +9,15 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import { SegmentedControls } from 'react-native-radio-buttons'
 import Echarts from 'native-echarts'
-var ScreenWidth = Dimensions.get('window').width;
-var ScreenHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 import {formatterNumber,formatterUnit} from '../../utils/FormatUtil'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from '../../components/EasyShow'
 import BaseComponent from "../../components/BaseComponent";
 import ProgressBar from '../../components/ProgressBar';
 import moment from 'moment';
+import ScreenUtil from '../../utils/ScreenUtil'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Eos } from "react-native-eosjs";
 import {formatEosQua} from '../../utils/FormatUtil';
@@ -35,7 +36,7 @@ class Transaction extends BaseComponent {
           title: 'ET交易所',
           header:null,  //隐藏顶部导航栏
           headerStyle: {
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+            paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
           },
@@ -475,7 +476,7 @@ class Transaction extends BaseComponent {
 
   transformColor(currentPressed) {
       if(currentPressed == 'isBuy'){
-        return '#42B324';
+        return UColor.fallColor;
       }else if(currentPressed == 'isSell'){
         return UColor.showy;
       }else{
@@ -999,8 +1000,8 @@ class Transaction extends BaseComponent {
   render() {
     return <View style={styles.container}>
     <TouchableOpacity style={{ position:'absolute', bottom:Platform.OS == 'ios' ? 30 : 50, right: 0, zIndex: 999, }}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
-        <View style={{height: 28,width: 70,backgroundColor: '#65CAFF',justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
-            <Text style={{fontSize: 12, color: '#fff'}}>交易面板</Text>
+        <View style={{height: 28,width: 70,backgroundColor: UColor.tintColor,justifyContent: "center", alignItems: "center",borderTopLeftRadius: 15,borderBottomLeftRadius: 15,}}>
+            <Text style={{fontSize: 12, color: UColor.fontColor}}>交易面板</Text>
         </View>
     </TouchableOpacity>
     <View style={styles.headerTitle}>  
@@ -1030,7 +1031,7 @@ class Transaction extends BaseComponent {
     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
       <ScrollView scrollEnabled={this.state.scrollEnabled} keyboardShouldPersistTaps="always"refreshControl={
             <RefreshControl refreshing={this.state.logRefreshing} onRefresh={() => this.onRefreshing()}
-            tintColor={UColor.fontColor} colors={['#ddd', UColor.tintColor]} progressBackgroundColor={UColor.fontColor}/>}
+            tintColor={UColor.fontColor} colors={[UColor.riceWhite, UColor.tintColor]} progressBackgroundColor={UColor.fontColor}/>}
             >
           <View style={styles.header}>
             <View style={styles.leftout}>
@@ -1052,11 +1053,11 @@ class Transaction extends BaseComponent {
                     <Text style={(this.props.etinfo && this.props.etinfo.increase>=0)?styles.incdo:styles.incup}> 
                         {this.props.etinfo ? (this.props.etinfo.increase > 0 ? '+' + (this.props.etinfo.increase * 100).toFixed(2) : 
                         (this.props.etinfo.increase * 100).toFixed(2)): '0.00'}%</Text>
-                    <Text style={{color:'#8696B0',fontSize:13,marginTop:2,textAlign:'center', marginLeft:5}}>涨幅</Text>
+                    <Text style={{color:UColor.arrow,fontSize:13,marginTop:2,textAlign:'center', marginLeft:5}}>涨幅</Text>
                 </View>
             </View>
           </View>
-          <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
+          <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: UColor.inash,}}>
             <View style={{flexDirection:"column",flex:1,}}>
                 <Button onPress={this.onClickTimeType.bind(this,"时分")}>
                     <View style={{ marginLeft: 2,width: 40, height: 25,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
@@ -1114,7 +1115,7 @@ class Transaction extends BaseComponent {
             </View>
          </View> 
         {this.state.showMore &&       
-            <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: '#4D607E',}}>
+            <View style={{width:ScreenWidth,height:25,flexDirection:'row',justifyContent: 'center',alignItems:'center',marginLeft: 0,marginRight: 0,backgroundColor: UColor.inash,}}>
             <View style={{flexDirection:"column",flex:1,}}>
                 <Button disabled={true}>
                     <View style={{ marginLeft: 2,width: 40, height: 35,borderRadius: 3, justifyContent: 'center', alignItems: 'center' }} >
@@ -1183,10 +1184,10 @@ class Transaction extends BaseComponent {
                         {(this.props.etTradeLog  != null &&  this.props.etTradeLog .length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                         <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                                 renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 5,marginHorizontal: 5,}}>
-                                <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
-                                <Text style={{ flex: 4,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                                <Text style={{ flex: 3.5,textAlign: 'left',color: '#7382a1'}}>价格(EOS)</Text>
-                                <Text style={{ flex: 2.5,textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                                <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: UColor.lightgray}}>账号</Text>
+                                <Text style={{ flex: 4,textAlign: 'left',color: UColor.lightgray}}>数量(EOS)</Text>
+                                <Text style={{ flex: 3.5,textAlign: 'left',color: UColor.lightgray}}>价格(EOS)</Text>
+                                <Text style={{ flex: 2.5,textAlign: 'left',color: UColor.lightgray}}>时间</Text>
                                 </View>
                             }
                             dataSource={this.state.dataSource.cloneWithRows(this.state.newetTradeLog == null ? [] : this.state.newetTradeLog)} 
@@ -1221,10 +1222,10 @@ class Transaction extends BaseComponent {
                     {(this.props.etBigTradeLog != null &&  this.props.etBigTradeLog.length == 0) ? <View style={{paddingTop: 50, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, color: UColor.fontColor}}>还没有交易哟~</Text></View> :
                     <ListView style={{flex: 1,}} renderRow={this.renderRow} enableEmptySections={true} 
                     renderHeader = {()=><View style={{ flexDirection: "row", paddingHorizontal: 5,marginVertical: 2,marginHorizontal: 5,}}>
-                        <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: '#7382a1'}}>账号</Text>
-                        <Text style={{ flex: 4,textAlign: 'left',color: '#7382a1'}}>数量(EOS)</Text>
-                        <Text style={{ flex: 3.5,textAlign: 'left',color: '#7382a1'}}>价格(EOS)</Text>
-                        <Text style={{ flex: 2.5,textAlign: 'left',color: '#7382a1'}}>时间</Text>
+                        <Text style={{ flex: 3,paddingLeft: 8, textAlign: 'left',color: UColor.lightgray}}>账号</Text>
+                        <Text style={{ flex: 4,textAlign: 'left',color: UColor.lightgray}}>数量(EOS)</Text>
+                        <Text style={{ flex: 3.5,textAlign: 'left',color: UColor.lightgray}}>价格(EOS)</Text>
+                        <Text style={{ flex: 2.5,textAlign: 'left',color: UColor.lightgray}}>时间</Text>
                         </View>
                     }
                       dataSource={this.state.dataSource.cloneWithRows(this.props.etBigTradeLog == null ? [] : this.props.etBigTradeLog)} 
@@ -1265,9 +1266,9 @@ class Transaction extends BaseComponent {
                                     <View style={styles.Rankcenterout}>
                                         <Text style={{fontSize: 12,color: UColor.arrow,}}>盈亏 
                                         {rowData.profit.indexOf('-') != -1 ?
-                                        <Text style={{fontSize: 12, color: '#FF4C4C',}}> {rowData.profit}</Text>
+                                        <Text style={{fontSize: 12, color: UColor.riseColor,}}> {rowData.profit}</Text>
                                         :
-                                        <Text style={{fontSize: 12, color: '#5BD91E',}}> {rowData.profit}</Text>
+                                        <Text style={{fontSize: 12, color: UColor.fallColor,}}> {rowData.profit}</Text>
                                         }
                                         </Text>
                                         <Text style={{fontSize: 12,color: UColor.arrow,}}>成本价<Text style={{ fontSize: 12,color: UColor.fontColor,}}> {rowData.historyAverageCost}</Text></Text>
@@ -1442,7 +1443,7 @@ class Transaction extends BaseComponent {
                                 </View>    
                             </View>
                             <Button onPress={this.buy.bind(this)}>
-                                <View style={styles.botn} backgroundColor={'#42B324'}>
+                                <View style={styles.botn} backgroundColor={UColor.fallColor}>
                                     <Text style={styles.botText}>买入</Text>
                                 </View>
                             </Button> 
@@ -1508,7 +1509,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: 'center',
         justifyContent: "space-between",
-        width: Dimensions.get('window').width,
+        width: ScreenWidth,
         paddingTop:Platform.OS == 'ios' ? 30 : 20,
         paddingLeft: 10,
         paddingRight: 10,
@@ -1561,7 +1562,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     },
     nametext: {
-        color: '#8696B0',
+        color: UColor.arrow,
         fontSize: 10,
     },
     recordout: {
@@ -1571,14 +1572,14 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
     },
     recordtext: {
-        color: '#fff',
+        color: UColor.fontColor,
         fontSize: 11,
     },
     rowout: {
         flexDirection: "row",
     },
     ashtext: {
-        color: '#8696B0',
+        color: UColor.arrow,
         fontSize: 11,
     },
     rightout: {
@@ -1597,7 +1598,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     toptext: {
-        color: '#8696B0', 
+        color: UColor.arrow, 
         fontSize: 13, 
         marginTop: 2, 
         textAlign: 'center', 
@@ -1605,7 +1606,7 @@ const styles = StyleSheet.create({
         marginRight: 2
     },
     present: {
-        color: '#fff',
+        color: UColor.fontColor,
         fontSize: 18,
         textAlign:'center'
     },
@@ -1630,12 +1631,12 @@ const styles = StyleSheet.create({
     },
     incup:{
       fontSize:18,
-      color:'#F25C49',
+      color: UColor.riseColor,
       textAlign:'center',
     },
     incdo:{
       fontSize:18,
-      color:'#25B36B',
+      color: UColor.fallColor,
       textAlign:'center',
     },
     toptabout: {
@@ -1720,7 +1721,7 @@ const styles = StyleSheet.create({
     greenText: {
       flex: 1,
       fontSize: 14, 
-      color: "#42B324", 
+      color: UColor.fallColor, 
       textAlign: "left"
     },
 
@@ -1746,7 +1747,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#38465C',
+        backgroundColor: UColor.inash,
         borderRadius: 5,
     },
     conversion: {
@@ -1791,14 +1792,14 @@ const styles = StyleSheet.create({
     sellpricetext: {
         flex: 3.5,
         fontSize: 14,
-        color: '#F25C49',
+        color: UColor.riseColor,
         textAlign: 'left',
         paddingLeft: 8,
     },
     buypricetext: {
         flex: 3.5,
         fontSize: 14,
-        color: "#4ed694",
+        color: UColor.fallColor,
         textAlign: 'left',
         paddingLeft: 8,
     },
@@ -1812,27 +1813,27 @@ const styles = StyleSheet.create({
     selltext: {
         flex: 4,
         fontSize: 14,
-        color: '#F25C49',
+        color: UColor.riseColor,
         textAlign: 'left',
         paddingLeft: 8,
     },
     selltime: {
         flex: 2.5,
         fontSize: 12,
-        color: "#F25C49",
+        color: UColor.riseColor,
         textAlign: 'left'
     },
     buytext: {
         flex: 4,
         fontSize: 14,
-        color: "#4ed694",
+        color: UColor.fallColor,
         textAlign: 'left',
         paddingLeft: 8,
     },
     buytime: {
         flex: 2.5,
         fontSize: 12,
-        color: "#4ed694",
+        color: UColor.fallColor,
         textAlign: 'left'
     },
 
@@ -1883,7 +1884,7 @@ const styles = StyleSheet.create({
     sliderow:{
         flex:1,
         flexDirection:"row",
-        borderBottomColor: '#4D607E',
+        borderBottomColor: UColor.inash,
         borderBottomWidth: 0.6,
         height: 40, 
       },
@@ -1900,14 +1901,14 @@ const styles = StyleSheet.create({
     touchableout: {
         width: (ScreenWidth * 2)/ 3, 
         height: ScreenHeight, 
-        backgroundColor: '#4D607E', 
+        backgroundColor: UColor.inash, 
         alignItems: 'center', 
         paddingTop: 40,
     },
     touchablelist: {
         width: '100%', 
         borderBottomWidth: 1, 
-        borderBottomColor: '#4D607E', 
+        borderBottomColor: UColor.inash, 
     },
 
   imgBtn: {
@@ -1932,7 +1933,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start', 
     borderTopWidth: 1, 
     borderTopColor: UColor.mainColor, 
-    backgroundColor:'#4D607E',
+    backgroundColor: UColor.inash,
    },
     establishout: {
       flex: 1, 
@@ -1947,11 +1948,11 @@ const styles = StyleSheet.create({
 
     greenincup:{
         fontSize:15,
-        color:'#25B36B',
+        color: UColor.fallColor,
       },
     redincdo:{
         fontSize:15,
-        color:'#F25C49',
+        color: UColor.riseColor,
     },
 
 
@@ -1974,7 +1975,7 @@ const styles = StyleSheet.create({
     },
     businesout: {
         flex: 1,
-        backgroundColor: '#43536D', 
+        backgroundColor: UColor.secdColor, 
         alignItems: 'center', 
     },
     businestab: {
@@ -2019,7 +2020,7 @@ const styles = StyleSheet.create({
     },
     busrecordtext: {
         fontSize: 14,
-        color: '#65CAFF',
+        color: UColor.tintColor,
     },
     redclose: {
         width: 40,
@@ -2107,7 +2108,7 @@ function combineETKLine(data) {
             axisPointer: {
                 type: 'cross',
                 crossStyle: {
-                    color: "#fff",
+                    color: UColor.fontColor,
                     width: 0.5,
                 },
             },
@@ -2116,7 +2117,7 @@ function combineETKLine(data) {
             borderColor: '#ccc',
             padding: 10,
             textStyle: {
-                color: '#000'
+                color: UColor.blackColor,
             },
             position: function (pos, params, el, elRect, size) {
                 var obj = {top: 10};

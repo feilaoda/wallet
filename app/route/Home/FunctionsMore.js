@@ -1,24 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing, Clipboard, ImageBackground, ScrollView } from 'react-native';
+import { Dimensions, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing, Clipboard, ImageBackground, ScrollView } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import UImage from '../../utils/Img'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { EasyToast } from "../../components/Toast"
 import { EasyShowLD } from '../../components/EasyShow'
 import ScreenUtil from '../../utils/ScreenUtil'
-var Dimensions = require('Dimensions')
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
+
 @connect(({ vote }) => ({ ...vote}))
 class FunctionsMore extends React.Component {
 
   static navigationOptions = {
     title: '全部',  
     headerStyle:{
-        paddingTop:Platform.OS == 'ios' ? 30 : 20,
+        paddingTop: ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
         borderBottomWidth:0,
     }    
@@ -122,7 +121,7 @@ class FunctionsMore extends React.Component {
         </View>
         <Modal style={styles.touchableouts} animationType={'none'} transparent={true}  visible={this.state.Tokenissue} onRequestClose={()=>{}}>
             <TouchableOpacity style={styles.pupuoBackup} activeOpacity={1.0}>
-              <View style={{ width: maxWidth-30, backgroundColor: UColor.fontColor, borderRadius: 5, position: 'absolute', }}>
+              <View style={{ width: ScreenWidth-30, backgroundColor: UColor.fontColor, borderRadius: 5, position: 'absolute', }}>
                 <View style={styles.subViewBackup}> 
                   <Button onPress={this._setModalVisible.bind(this) } style={styles.buttonView2}>
                       <Ionicons style={{ color: UColor.baseline}} name="ios-close-outline" size={30} />
@@ -133,7 +132,7 @@ class FunctionsMore extends React.Component {
                     <Image source={UImage.warning_h} style={styles.imgBtnBackup} />
                     <Text style={styles.headtitle}>免责声明：本功能由第三方平台提供，不属于EosToken官方出品，《用户协议》和《应用风险》由该平台单独向您承担责任！</Text>
                 </View>
-                <View style={{ width: maxWidth-70,marginHorizontal: ScreenUtil.autowidth(20), marginVertical: ScreenUtil.autoheight(10),}}>
+                <View style={{ width: ScreenWidth-70,marginHorizontal: ScreenUtil.autowidth(20), marginVertical: ScreenUtil.autoheight(10),}}>
                     <Text style={styles.centertext}>3分钟，3EOS！最方便，最便宜的EOS自助发币DAPP。</Text>
                     <Text style={styles.centertext}>开发：清华大学计算机专业博士生莫与独立编写。</Text>
                     <Text style={styles.centertext}>功能：帮助大家自助地发行基于EOS代币。价格比大家自己发币便宜了13倍！</Text>
@@ -167,10 +166,10 @@ const styles = StyleSheet.create({
         height: ScreenUtil.autoheight(70), 
         paddingBottom: ScreenUtil.autoheight(10),
         flexDirection: "row",
-        backgroundColor: "#3B4F6A", 
+        backgroundColor: UColor.inash, 
     },
     headbtn: {
-        width: maxWidth/4,
+        width: ScreenWidth/4,
         justifyContent: "center", 
         alignItems: 'center',
     },
@@ -185,7 +184,7 @@ const styles = StyleSheet.create({
         margin: ScreenUtil.autowidth(5),
     },
     headbtntext: {
-        color: UColor.arrow,
+        color: UColor.lightgray,
         fontSize: ScreenUtil.setSpText(14),
     },
 
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
     subViewBackup: {
         alignItems: 'flex-end',
         justifyContent: 'center',
-        width: maxWidth - 30,
+        width: ScreenWidth - 30,
         height: ScreenUtil.autoheight(30),
     },
     buttonView2: {
@@ -235,7 +234,7 @@ const styles = StyleSheet.create({
         paddingBottom: ScreenUtil.autoheight(15),
     },
     warningout: {
-        width: maxWidth - 60,
+        width: ScreenWidth - 60,
         marginHorizontal: ScreenUtil.autowidth(15),
         flexDirection: "row",
         alignItems: 'center',
@@ -246,7 +245,7 @@ const styles = StyleSheet.create({
     centertext: {
         fontSize: ScreenUtil.setSpText(12),
         lineHeight: ScreenUtil.autoheight(20),
-        color: '#666666',
+        color: UColor.secdColor,
     },
     deleteout: {
         height: ScreenUtil.autoheight(40),

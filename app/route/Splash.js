@@ -5,11 +5,11 @@ import SplashScreen from 'react-native-splash-screen';
 import NavigationUtil from '../utils/NavigationUtil';
 import UImage from '../utils/Img'
 import UColor from '../utils/Colors'
-const maxHeight = Dimensions.get('window').height;
-const maxWidth = Dimensions.get('window').width;
 import Constants from '../utils/Constants';
 import { connect } from 'react-redux'
 import JPush from '../utils/JPush'
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 
 @connect(({common}) => ({...common}))
 class Splash extends React.Component {

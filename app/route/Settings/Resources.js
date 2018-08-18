@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Easing,Animated,NativeModules,StatusBar,BackHandler,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,Image,ScrollView,View,RefreshControl,Text, TextInput,Platform,Dimensions,Modal,TouchableHighlight,Switch,ImageBackground,TouchableOpacity,KeyboardAvoidingView,BVLinearGradient} from 'react-native';
+import {DeviceEventEmitter,StyleSheet,Image,ScrollView,View,Text, TextInput,Platform,Dimensions,ImageBackground,TouchableOpacity,KeyboardAvoidingView,BVLinearGradient} from 'react-native';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -13,6 +13,7 @@ import CountDownReact from '../../components/CountDownReact'
 import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
 import QRCode from 'react-native-qrcode-svg';
+import ScreenUtil from '../../utils/ScreenUtil'
 const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
 import { EasyShowLD } from '../../components/EasyShow'
@@ -27,6 +28,7 @@ var dismissKeyboard = require('dismissKeyboard');
 const _index = 0;
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
+
 @connect(({wallet, vote}) => ({...wallet, ...vote}))
 class Resources extends BaseComponent {
     static navigationOptions = ({ navigation }) => {
@@ -34,7 +36,7 @@ class Resources extends BaseComponent {
         return {    
           title: "资源管理",
           headerStyle: {
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+            paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
           }, 
@@ -317,7 +319,7 @@ class Resources extends BaseComponent {
     resourceButton(style, selectedSate, stateType, buttonTitle) {  
         let BTN_SELECTED_STATE_ARRAY = ['isMemory', 'isCalculation','isNetwork', ];  
         return(  
-            <TouchableOpacity style={[style, selectedSate ? {backgroundColor: UColor.tintColor} : {backgroundColor: '#4f617d'}]}  onPress={ () => {this._updateBtnState(stateType, BTN_SELECTED_STATE_ARRAY)}}>  
+            <TouchableOpacity style={[style, selectedSate ? {backgroundColor: UColor.tintColor} : {backgroundColor: UColor.mainColor,}]}  onPress={ () => {this._updateBtnState(stateType, BTN_SELECTED_STATE_ARRAY)}}>  
                 <Text style={[styles.tabText, selectedSate ? {color: UColor.fontColor} : {color: UColor.tintColor}]}>{buttonTitle}</Text>  
             </TouchableOpacity>  
         );  
@@ -860,7 +862,7 @@ class Resources extends BaseComponent {
                                 <View style={styles.inptoutsource}>
                                     <View style={{flexDirection: 'row', alignItems: 'center',}}>
                                         <Text style={styles.inptTitle}>购买内存（{this.state.currency_surplus}EOS）</Text>
-                                        <Text style={{fontSize:12, color: '#7787A3',}}>≈{(this.state.currency_surplus == null || this.state.Currentprice == null || this.state.currency_surplus == '' || this.state.currency_surplus == '' || this.state.Currentprice == '0') ? '0.000' : (this.state.currency_surplus/this.state.Currentprice).toFixed(3)}kb</Text>
+                                        <Text style={{fontSize:12, color: UColor.arrow,}}>≈{(this.state.currency_surplus == null || this.state.Currentprice == null || this.state.currency_surplus == '' || this.state.currency_surplus == '' || this.state.Currentprice == '0') ? '0.000' : (this.state.currency_surplus/this.state.Currentprice).toFixed(3)}kb</Text>
                                     </View>
                                     <View style={styles.outsource}>
                                         <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyRamAmount} returnKeyType="go" 
@@ -878,7 +880,7 @@ class Resources extends BaseComponent {
                                 {this.state.isOthers ? null:<View style={styles.inptoutsource}>
                                     <View style={{flexDirection: 'row', alignItems: 'center',}}>
                                         <Text style={styles.inptTitle}>出售内存（{this.state.ram_available}KB）</Text>
-                                        <Text style={{fontSize:12, color: '#7787A3',}}>≈{(this.state.ram_available*this.state.Currentprice).toFixed(3)}EOS</Text>
+                                        <Text style={{fontSize:12, color: UColor.arrow,}}>≈{(this.state.ram_available*this.state.Currentprice).toFixed(3)}EOS</Text>
                                     </View>
                                     <View style={styles.outsource}>
                                         <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellRamBytes} returnKeyType="go" 
@@ -977,7 +979,7 @@ const styles = StyleSheet.create({
     },
     inptpasstext: {
         fontSize: 14,
-        color: '#808080',
+        color: UColor.lightgray,
         lineHeight: 25,
         marginTop: 5,
     },
@@ -1007,7 +1009,7 @@ const styles = StyleSheet.create({
     },
     inptTitle1: {
         fontSize: 14, 
-        color: '#7787A3', 
+        color: UColor.arrow,
         lineHeight: 35,
     },
     botnimg1: {
@@ -1050,7 +1052,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',  
         paddingVertical: 5,
         paddingHorizontal: 15,
-        backgroundColor: '#4f617d',
+        backgroundColor: UColor.mainColor,
     },  
     memorytab: {
         flex: 1,
@@ -1137,7 +1139,7 @@ const styles = StyleSheet.create({
     },
 
     nhaaout: {
-          backgroundColor: '#4f617d',
+          backgroundColor: UColor.mainColor,
       },
       wterout: {
           flexDirection: 'row',
@@ -1216,11 +1218,11 @@ const styles = StyleSheet.create({
     tetleout: {
         paddingHorizontal: 15,
         paddingBottom: 10,
-        backgroundColor: '#4f617d',
+        backgroundColor: UColor.mainColor,
     },
     tetletext: {
         fontSize: 15,
-        color: '#7787A3',
+        color: UColor.arrow,
         paddingVertical: 5
     },
 
@@ -1245,7 +1247,7 @@ const styles = StyleSheet.create({
     },
     recordtext: {
         fontSize: 12,
-        color: '#7787A3'
+        color: UColor.arrow,
     },
     record: {
         flexDirection: 'row',
@@ -1330,7 +1332,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     textContent: {
-        color: '#999999',
+        color: UColor.arrow,
         fontSize: 14,
         textAlign: 'left',
         lineHeight: 25,

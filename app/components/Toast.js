@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Dimensions, Text, View,Animated,Keyboard} from 'react-native';
 import PropTypes from 'prop-types';
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 
 export class EasyToast {
     
@@ -133,7 +133,7 @@ export class Toast extends React.Component {
     
     render() {
         const view = this.state.isShow ?
-        <View style={[styles.container, { top: SCREEN_HEIGHT-this.state.keyboardHeight-((this.state.keyboardHeight==0)?150:43) }]} pointerEvents="none">
+        <View style={[styles.container, { top: ScreenHeight-this.state.keyboardHeight-((this.state.keyboardHeight==0)?150:43) }]} pointerEvents="none">
             <Animated.View style={[styles.content,{opacity:this.state.opacityValue}]}>
                 <Text style={styles.text}>{this.state.text}</Text>
             </Animated.View>

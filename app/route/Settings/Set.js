@@ -15,7 +15,9 @@ import JPushModule from 'jpush-react-native';
 import BaseComponent from "../../components/BaseComponent";
 var DeviceInfo = require('react-native-device-info');
 const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 const Font = { Ionicons }
+
 @connect(({login,jPush}) => ({...login,...JPush}))
 class Set extends BaseComponent {
 

@@ -1,25 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, Clipboard, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar, TextInput, TouchableOpacity,TouchableHighlight,KeyboardAvoidingView,Modal } from 'react-native';
+import { Dimensions, DeviceEventEmitter, StyleSheet, View,  Text, ScrollView, Platform, TextInput, TouchableOpacity, KeyboardAvoidingView, Modal } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
-import UImage from '../../utils/Img'
-import AnalyticsUtil from '../../utils/AnalyticsUtil';
-
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyShowLD } from "../../components/EasyShow"
 import { EasyToast } from '../../components/Toast';
 import { Eos } from "react-native-eosjs";
 import {formatEosQua} from '../../utils/FormatUtil';
-import { english } from '../../utils/english';
 import BaseComponent from "../../components/BaseComponent";
 import Constants from '../../utils/Constants'
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 
 @connect(({ wallet }) => ({ ...wallet }))
 class APactivation extends BaseComponent {
@@ -27,7 +22,7 @@ class APactivation extends BaseComponent {
   static navigationOptions = {
     title: '账号支付激活',
     headerStyle:{
-        paddingTop:Platform.OS == 'ios' ? 30 : 20,
+        paddingTop: ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
         borderBottomWidth:0,
     }    
@@ -59,20 +54,15 @@ class APactivation extends BaseComponent {
       activePuk: accountInfo.active ? accountInfo.active : "",
     });
   }
+
   componentWillUnmount(){
     //结束页面前，资源释放操作
-    super.componentWillUnmount();
-    
+    super.componentWillUnmount() 
   }
 
-  check(){
-
-  }
-  
   confirm(){
     // this.setState({isComplete: true});
     this._setModalVisible();
-    //
   }
 
   onShareFriend() {
@@ -139,12 +129,10 @@ class APactivation extends BaseComponent {
         // EasyShowLD.dialogClose();
     }, () => { EasyShowLD.dialogClose() });
   }
+
    // 显示/隐藏 modal  
    _setModalVisible() {
     let isShow = this.state.show;
-    // if(!isShow){
-    //   this.setState({isComplete: false});
-    // }
     this.setState({
         show: !isShow,
     });
@@ -156,8 +144,6 @@ class APactivation extends BaseComponent {
 
   render() {
     return <View style={styles.container}>
-            
-
     <ScrollView  keyboardShouldPersistTaps="always">
       <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
         <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
@@ -232,7 +218,6 @@ class APactivation extends BaseComponent {
                 </View>
           </View>}
 
-
           <View style={styles.inptoutbg}>
             <View style={styles.inptoutgo} >
                 <Text style={styles.inptitle}>owner公钥</Text>
@@ -254,9 +239,9 @@ class APactivation extends BaseComponent {
           <View style={styles.pupuo}>
             <Modal animationType={'slide'} transparent={true} visible={this.state.show} onShow={() => { }} onRequestClose={() => { }} >
                 <TouchableOpacity style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', }} activeOpacity={1.0}>
-                <View style={{ width: maxWidth,  height: maxHeight*1/2,  backgroundColor: UColor.fontColor,}}>
+                <View style={{ width: ScreenWidth,  height: ScreenHeight*1/2,  backgroundColor: UColor.fontColor,}}>
                         <View style={{flexDirection: "row",padding: 15,justifyContent: "center",}}>
-                            <Text style={{flex: 1,paddingVertical: 5,marginLeft: 135,fontSize: 18,fontWeight: 'bold',color:'#4d4d4d'}}>订单详情</Text>
+                            <Text style={{flex: 1,paddingVertical: 5,marginLeft: 135,fontSize: 18,fontWeight: 'bold',color: UColor.mainColor}}>订单详情</Text>
                             <Button  onPress={this._setModalVisible.bind(this)}>
                                 <Text style={styles.buttontext}>×</Text>
                             </Button>
@@ -513,7 +498,7 @@ contentText: {
     paddingVertical: 15,
     fontSize: 18,
     textAlign: 'left',
-    color: '#4D4D4D',
+    color: UColor.mainColor,
 },
 
 rowInfo: {
@@ -528,7 +513,7 @@ separationline: {
     height: 50,
     marginBottom: 10,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#e5e5e5',
+    borderBottomColor: UColor.lightgray,
     justifyContent: 'center',
 },
 

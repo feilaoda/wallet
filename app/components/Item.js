@@ -6,7 +6,8 @@ import UColor from '../utils/Colors'
 import Button from './Button'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-let {width, height} = Dimensions.get('window')
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 const itemHeight = ScreenUtil.autoheight(56)
 
 const Font = {
@@ -22,7 +23,7 @@ class ItemButton extends Component {
       return (
         <Button style={{marginTop: this.props.first?10:0}} onPress={this.props.onPress}>
           <View style={styles.button}>
-            <Text style={{color: this.props.color || "#f00"}}>{this.props.name}</Text>
+            <Text style={{color: this.props.color || UColor.riseColor}}>{this.props.name}</Text>
           </View>
         </Button>
       )
@@ -59,7 +60,7 @@ export default class Item extends Component {
  
     return (
       <View style={[styles.listItem,{marginTop: first?ScreenUtil.autoheight(15):0}]}>
-        {icon?(<Icon name={icon} size={iconSize||ScreenUtil.setSpText(20)} style={{width: ScreenUtil.autowidth(22), marginRight:ScreenUtil.autowidth(5), textAlign:"center"}} color={color || "#4da6f0"} />):null}
+        {icon?(<Icon name={icon} size={iconSize||ScreenUtil.setSpText(20)} style={{width: ScreenUtil.autowidth(22), marginRight:ScreenUtil.autowidth(5), textAlign:"center"}} color={color || UColor.blueDeep} />):null}
         <View style={[styles.listInfo, {borderTopWidth: !first?0.5:0}]}>
           {avatar?(<Image source={avatar} style={{width: ScreenUtil.autowidth(28), height: ScreenUtil.autowidth(28), resizeMode: "cover", overflow:"hidden",marginRight:ScreenUtil.autowidth(10),}}/>):null}
           <View style={{flex: 1}}><Text style={{color:UColor.fontColor, fontSize:ScreenUtil.autowidth(16)}}>{name}</Text></View>

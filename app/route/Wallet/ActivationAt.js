@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, StyleSheet, View, Text, ScrollView, Image, Platform, TextInput, TouchableOpacity, } from 'react-native';
+import { Dimensions, DeviceEventEmitter, StyleSheet, View, Text, ScrollView, TextInput, TouchableOpacity, } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtil'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
@@ -13,6 +13,7 @@ import Constants from '../../utils/Constants';
 import {NavigationActions} from 'react-navigation';
 import JPushModule from 'jpush-react-native';
 const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
@@ -24,7 +25,7 @@ class ActivationAt extends BaseComponent {
         return {                       
           headerTitle:'激活账户',
           headerStyle:{
-                paddingTop:Platform.OS == 'ios' ? 30 : 20,
+                paddingTop: ScreenUtil.autoheight(20),
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
@@ -55,11 +56,6 @@ class ActivationAt extends BaseComponent {
 
      //组件加载完成
    componentDidMount() {
-        // alert(JSON.stringify(this.props.navigation.state.params.parameter))
-        // this.props.dispatch({
-        //   type: "wallet/getDefaultWallet",
-        //   callback: data => {}
-        // });
         var params = this.props.navigation.state.params.parameter;
         this.setState({
         name:  params.name,
@@ -85,7 +81,6 @@ class ActivationAt extends BaseComponent {
             immediate: immediate,
         });
         this.props.navigation.dispatch(action);
-    
     }
 
      //未激活账号直接删除

@@ -1,24 +1,15 @@
 import React from 'react';
-import {
-    StyleSheet,
-    Animated,
-    Easing,
-    Platform,
-    TouchableHighlight,
-    KeyboardAvoidingView,
-    TouchableWithoutFeedback,
-    View,
-    Dimensions,
-} from 'react-native';
-  
+import { StyleSheet, Animated,  View, Dimensions,} from 'react-native';
+import UColor from '../utils/Colors'
+
 var styles = StyleSheet.create({
     background: {
-        backgroundColor: '#bbbbbb',
+        backgroundColor: UColor.baseline,
         height: 5,
         overflow: 'hidden'
     },
     fill: {
-        backgroundColor: '#51BC78',
+        backgroundColor: UColor.fallColor,
         height: 5
     }
 });

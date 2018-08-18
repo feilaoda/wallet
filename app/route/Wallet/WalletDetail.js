@@ -12,7 +12,8 @@ import { EasyShowLD } from '../../components/EasyShow'//CGP TEST
 import JPushModule from 'jpush-react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import BaseComponent from "../../components/BaseComponent";
-const maxWidth = Dimensions.get('window').width;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 
@@ -23,7 +24,7 @@ class WalletDetail extends BaseComponent {
     return {
       headerTitle: params.data.name,
       headerStyle: {
-        paddingTop:Platform.OS == 'ios' ? 30 : 20,
+        paddingTop: ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
         borderBottomWidth:0,
       },
@@ -36,7 +37,7 @@ class WalletDetail extends BaseComponent {
     super(props);
     this.config = [
       { avatar:UImage.lock, name: "修改密码", onPress: this.goPage.bind(this, "ModifyPassword") },
-      { avatar:UImage.privatekey, name: "备份私钥", onPress: this.goPage.bind(this, "ExportPrivateKey") },
+      { avatar:UImage.privatekey, name: "备份私钥", onPress: this.goPage.bind(this, "BackupsPkey") },
       { avatar:UImage.publickey, name: "导出公钥", onPress: this.goPage.bind(this, "ExportPublicKey") },
       { avatar:UImage.resources_f, name: "资源管理", onPress: this.goPage.bind(this, "Resources") },
       { avatar:UImage.details, name: "账户详细信息", onPress: this.goPage.bind(this, "SeeBlockBrowser") },
@@ -81,7 +82,7 @@ class WalletDetail extends BaseComponent {
 
   goPage(key, data) {
     const { navigate } = this.props.navigation;
-    if (key == 'ExportPrivateKey' || key == 'AuthManage') {
+    if (key == 'BackupsPkey' || key == 'AuthManage') {
       const view =
         <View style={styles.passoutsource}>
           <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
@@ -185,13 +186,9 @@ class WalletDetail extends BaseComponent {
   }
 
   deleteWarning(c,data){
-    // EasyShowLD.dialogShow("免责声明",  (<View>
     EasyShowLD.dialogShow("免责声明",  (<View> 
-    
       <Text style={{color: UColor.arrow,fontSize: 14,}}>删除过程中会检测您的账号是否已激活，如果您没有备份私钥，删除后将无法找回！请确保该账号不再使用后再删除！</Text>
     </View>),"下一步","返回钱包",  () => {
-      // EasyShowLD.dialogClose();
-      // EasyShowLD.loadingShow();
       EasyShowLD.loadingShow();
        //检测账号是否已经激活
       this.props.dispatch({
@@ -369,7 +366,7 @@ class WalletDetail extends BaseComponent {
               //                 } else {
               //                   EasyShowLD.dialogShow("创建账号成功", (<View>
               //                     <Text style={{fontSize: 20, color: UColor.showy, textAlign: 'center',}}>{name}</Text>
-              //                     <Text style={{fontSize: 16, color: '#808080',}}>恭喜！您的EosToken账号积分获得免费创建账号权益，该账号已完成激活，建议您在使用转账功能时先小额尝试，成功后再正常使用钱包。</Text>
+              //                     <Text style={{fontSize: 16, color: UColor.lightgray,}}>恭喜！您的EosToken账号积分获得免费创建账号权益，该账号已完成激活，建议您在使用转账功能时先小额尝试，成功后再正常使用钱包。</Text>
               //                 </View>), "确认", null,  () => { EasyShowLD.dialogClose() });
               //                   return true;
               //                 }
@@ -503,11 +500,6 @@ class WalletDetail extends BaseComponent {
             </View>
           </View>
           <View>{this._renderListItem()}</View>
-          {/* <Button onPress={() => this.backupWords()} style={{ flex: 1 }}>
-            <View style={{ height: 45, backgroundColor: UColor.tintColor, justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
-              <Text style={{ fontSize: 15, color: UColor.fontColor }}>备份助记词</Text>b
-            </View>
-          </Button> */}
           {(!c.isactived || !c.hasOwnProperty('isactived')) ? 
           <Button onPress={this.activeWallet.bind(this, c)} style={{ flex: 1 }}>
             <View style={styles.acttiveout}>
@@ -570,7 +562,7 @@ const styles = StyleSheet.create({
   },
   inptpass: {
     color: UColor.tintColor,
-    width: maxWidth-100,
+    width: ScreenWidth-100,
     height: ScreenUtil.autoheight(45),
     paddingBottom: ScreenUtil.autoheight(5),
     fontSize: ScreenUtil.setSpText(16),

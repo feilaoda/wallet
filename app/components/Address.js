@@ -1,24 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  StyleSheet,
-  Modal,
-  Text,
-  Platform,
-  TouchableHighlight,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  View,
-  Dimensions,
-} from 'react-native';
+import {StyleSheet,Modal,Text,Platform,TouchableHighlight,KeyboardAvoidingView,TouchableWithoutFeedback,View,Dimensions,} from 'react-native';
 import { material } from 'react-native-typography';
-const { height } = Dimensions.get('window');
-var ScreenWidth = Dimensions.get('window').width;
 import ProgressBar from "../components/ProgressBar";
 import UColor from '../utils/Colors'
-
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 const prs = 0;
-
 const tk = null;
 
 export class EasyAddress {
@@ -102,7 +90,7 @@ export class Address extends React.Component {
                     <TouchableWithoutFeedback>
                       <View>
                         <View style={styles.titleContainer}>
-                            <Text style={[material.title,{color:UColor.tintColor,}]}>{this.state.title}</Text>
+                            <Text style={[material.title,{color: UColor.tintColor,}]}>{this.state.title}</Text>
                         </View>
                         <View style={[styles.contentContainer,styles.contentContainerPadding]}>
                           {
@@ -114,7 +102,7 @@ export class Address extends React.Component {
                             <TouchableHighlight
                               testID="dialog-cancel-button"
                               style={styles.actionContainer}
-                              underlayColor="#F0F0F0"
+                              underlayColor={UColor.arrow}
                               onPress={()=>{this.setState({visible:false})}}>
                               <Text style={[material.button, { color: UColor.tintColor, }]}>{this.state.disLabel}</Text>
                             </TouchableHighlight>
@@ -124,7 +112,7 @@ export class Address extends React.Component {
                             <TouchableHighlight
                               testID="dialog-ok-button"
                               style={styles.actionContainer}
-                              underlayColor="#F0F0F0"
+                              underlayColor={UColor.arrow}
                               onPress={this.state.okHandler}>
                               <Text style={[material.button, { color: UColor.tintColor, }]}>{this.state.okLable}</Text>
                             </TouchableHighlight>
@@ -172,15 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
-  titleContainerScrolled: {
-    paddingHorizontal: 24,
-    paddingBottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: "#DCDCDC",
-  },
+  
   contentContainer: {
     flex: -1,
   },
@@ -190,7 +170,7 @@ const styles = StyleSheet.create({
   },
   contentContainerScrolled: {
     flex: -1,
-    maxHeight: height - 264, // (106px vertical margin * 2) + 52px
+    maxHeight: ScreenHeight - 264, // (106px vertical margin * 2) + 52px
   },
   contentContainerScrolledPadding: {
     paddingHorizontal: 24,
@@ -202,15 +182,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 8,
   },
-  actionsContainerScrolled: {
-    height: 52,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    paddingLeft: 8,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: "#DCDCDC",
-  },
+
   actionContainer: {
     marginRight: 8,
     paddingHorizontal: 8,

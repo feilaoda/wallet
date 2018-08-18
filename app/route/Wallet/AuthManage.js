@@ -7,7 +7,7 @@ import Button from  '../../components/Button'
 import Item from '../../components/Item'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
-
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 var dismissKeyboard = require('dismissKeyboard');
@@ -17,7 +17,7 @@ class AuthManage extends BaseComponent {
   static navigationOptions = {
     headerTitle: '权限管理',
     headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
+        paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
     },
@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
     imgBtn: {
         width: 20,
         height: 20,
-        lineHeight:30,
         marginBottom: 5,
         marginHorizontal:5,
       },

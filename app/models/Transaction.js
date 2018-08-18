@@ -311,7 +311,7 @@ export default {
 
   function combine(data) {
     return  {
-        // color: ['#556E95','#6CDAFF'],
+        // color: ['#556E95',UColor.tintColor],
         backgroundColor: "#2f3b50",
         grid: {
             top: '15%',
@@ -399,7 +399,7 @@ export default {
 
 function combineET(data) {
     return  {
-        // color: ['#556E95','#6CDAFF'],
+        // color: ['#556E95',UColor.tintColor],
         backgroundColor: "#2f3b50",
         grid: {
             top: '15%',

@@ -6,15 +6,15 @@ import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 import { EasyShowLD } from '../../components/EasyShow'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 import Constants from '../../utils/Constants'
 var dismissKeyboard = require('dismissKeyboard');
-var ScreenWidth = Dimensions.get('window').width;
 
 class Warning extends BaseComponent {
     static navigationOptions = ({ navigation }) => {
@@ -23,7 +23,7 @@ class Warning extends BaseComponent {
             // headerTitle: '转出' + params.coins.name,
             headerTitle: '价格预警',
             headerStyle: {
-                paddingTop:Platform.OS == 'ios' ? 30 : 20,
+                paddingTop: ScreenUtil.autoheight(20),
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     inptpass: {
         color: UColor.tintColor,
         height: 45,
-        width: maxWidth-100,
+        width: ScreenWidth-100,
         paddingBottom: 5,
         fontSize: 16,
         backgroundColor: UColor.fontColor,
@@ -283,7 +283,6 @@ const styles = StyleSheet.create({
     },
     btnnextstep: {
         height: 85,
-        // width:ScreenWidth-120,
         marginTop: 60,
     },
     nextstep: {

@@ -1,17 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, Clipboard, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar, TextInput, TouchableOpacity,TouchableHighlight,KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Image, Platform, TextInput, TouchableOpacity, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import Item from '../../components/Item'
-import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyShowLD } from "../../components/EasyShow"
 import { EasyToast } from '../../components/Toast';
 import { Eos } from "react-native-eosjs";
-import {formatEosQua} from '../../utils/FormatUtil';
 import { english } from '../../utils/english';
 import BaseComponent from "../../components/BaseComponent";
 import Constants from '../../utils/Constants'
@@ -22,7 +19,7 @@ class createWallet extends BaseComponent {
   static navigationOptions = {
     title: '创建钱包',
     headerStyle:{
-        paddingTop:Platform.OS == 'ios' ? 30 : 20,
+      paddingTop: ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
         borderBottomWidth:0,
     }    
@@ -387,7 +384,7 @@ const styles = StyleSheet.create({
     marginVertical: ScreenUtil.autoheight(16),
     padding: ScreenUtil.autowidth(5),
     backgroundColor: UColor.mainColor,
-    borderColor: '#FF4F4F',
+    borderColor: UColor.riseColor,
     borderWidth: 1,
     borderRadius: 5,
   },
@@ -397,7 +394,7 @@ const styles = StyleSheet.create({
     margin: ScreenUtil.autowidth(5),
   },
   significanttext: {
-    color: '#FF4F4F',
+    color: UColor.riseColor,
     fontSize: ScreenUtil.setSpText(12), 
   },
 

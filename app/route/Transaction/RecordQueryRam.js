@@ -1,26 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, TextInput, KeyboardAvoidingView, ImageBackground, ScrollView, RefreshControl } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
-import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter' 
-import store from 'react-native-simple-store';
+import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TouchableOpacity, TextInput, RefreshControl } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
-import AnalyticsUtil from '../../utils/AnalyticsUtil';
-import QRCode from 'react-native-qrcode-svg';
 import { EasyToast } from "../../components/Toast"
 import moment from 'moment';
 var dismissKeyboard = require('dismissKeyboard');
-var Dimensions = require('Dimensions')
+
 @connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
 class RecordQueryRam extends React.Component {
   static navigationOptions = {
     title: "搜索交易记录",
     headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
+      paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
     },
@@ -209,7 +203,7 @@ class RecordQueryRam extends React.Component {
           <View style={styles.inptout} >
               <Image source={UImage.Magnifier_ash} style={styles.headleftimg} />
               <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
-                  selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor="#b3b3b3" maxLength={12} 
+                  selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} maxLength={12} 
                   placeholder="输入EOS账号名" underlineColorAndroid="transparent" keyboardType="default"
                   onChangeText={(labelname) => this.setState({ labelname })}   
                   />  
@@ -295,7 +289,7 @@ const styles = StyleSheet.create({
     },
     inpt: {
       flex: 1,
-      color: '#999999',
+      color: UColor.arrow,
       height: ScreenUtil.autoheight(45),
       fontSize: ScreenUtil.setSpText(14),
     },

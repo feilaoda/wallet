@@ -1,22 +1,16 @@
-import React, {
-  Component,
-} from 'react';
+import React, { Component, } from 'react';
 import PropTypes from 'prop-types'
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-} from 'react-native';
+import { StyleSheet, View, Text, Image,} from 'react-native';
+import UColor from '../utils/Colors'
 
 const styles = StyleSheet.create({
 cardItemTimeRemainTxt: {
   fontSize: 20,
-  color: '#ee394b'
+  color: UColor.riseColor,
 },
 text: {
   fontSize: 30,
-  color: '#FFF',
+  color: UColor.fontColor,
   marginLeft: 7,
 },
 container: {
@@ -25,7 +19,7 @@ container: {
 //时间文字
 defaultTime: {
   paddingHorizontal: 3,
-  backgroundColor: 'rgba(85, 85, 85, 1)',
+  backgroundColor: UColor.arrow,
   fontSize: 12,
   color: 'white',
   marginHorizontal: 3,
@@ -33,7 +27,7 @@ defaultTime: {
 },
 //冒号
 defaultColon: {
-  fontSize: 12, color: 'rgba(85, 85, 85, 1)'
+  fontSize: 12, color: UColor.arrow,
 }
 });
 

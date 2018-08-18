@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Clipboard, Dimensions, StyleSheet, View, Text, Image, Platform, TextInput, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { Clipboard, Dimensions, StyleSheet, View, Text, Image, TextInput, TouchableOpacity, TouchableHighlight } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import UImage from '../../utils/Img'
@@ -10,7 +10,8 @@ import { EasyShowLD } from "../../components/EasyShow"
 import BaseComponent from "../../components/BaseComponent";
 import Constants from '../../utils/Constants';
 import {NavigationActions} from 'react-navigation';
-const maxWidth = Dimensions.get('window').width;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
@@ -18,15 +19,13 @@ var dismissKeyboard = require('dismissKeyboard');
 @connect(({ wallet }) => ({ ...wallet }))
 class BackupsPkey extends BaseComponent {
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerTitle: '备份私钥',
-            headerStyle: {
-                paddingTop:Platform.OS == 'ios' ? 30 : 20,
-                backgroundColor: UColor.mainColor,
-                borderBottomWidth:0,
-            },
-        };
+    static navigationOptions =  {
+        headerTitle: '备份私钥',
+        headerStyle: {
+            paddingTop: ScreenUtil.autoheight(20),
+            backgroundColor: UColor.mainColor,
+            borderBottomWidth:0,
+        },
     };
 
     constructor(props) {
@@ -206,7 +205,7 @@ const styles = StyleSheet.create({
     inptpass: {
         color: UColor.tintColor,
         height: ScreenUtil.autoheight(45),
-        width: maxWidth-100,
+        width: ScreenWidth-100,
         paddingBottom: ScreenUtil.autoheight(5),
         fontSize: ScreenUtil.setSpText(16),
         backgroundColor: UColor.fontColor,
@@ -242,7 +241,7 @@ const styles = StyleSheet.create({
         color: UColor.fontColor,
     },
     warningout: {
-        width: maxWidth-40,
+        width: ScreenWidth-40,
         flexDirection: "row",
         alignItems: 'center', 
         paddingHorizontal: ScreenUtil.autowidth(10),
@@ -267,14 +266,18 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.mainColor,
     },
     inptgo: {
-        height: ScreenUtil.autoheight(60),
-        paddingHorizontal: ScreenUtil.autowidth(10),
         backgroundColor: UColor.secdColor,
+        height: ScreenUtil.autoheight(60),
+        width: ScreenWidth - ScreenUtil.autowidth(40),
+        paddingHorizontal: ScreenUtil.autowidth(10),
     },
     inptext: {
+        flexWrap: 'wrap',
+        color: UColor.arrow,
+        height: ScreenUtil.autoheight(60),
         fontSize: ScreenUtil.setSpText(14),
         lineHeight: ScreenUtil.autoheight(25),
-        color: UColor.arrow,
+        width: ScreenWidth - ScreenUtil.autowidth(60),
     },
     readtext: {
         textAlign: 'right',

@@ -10,7 +10,6 @@ import BaseComponent from "../../components/BaseComponent";
 const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
 
-
 @connect(({vote, wallet}) => ({...vote, ...wallet}))
 class Bvote extends BaseComponent {
 
@@ -18,7 +17,7 @@ class Bvote extends BaseComponent {
         return {    
           title: "节点投票",
           headerStyle: {
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+            paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
           },

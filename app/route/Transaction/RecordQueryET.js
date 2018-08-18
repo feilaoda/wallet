@@ -1,18 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {  ListView, StyleSheet, Image, View, Text, Platform,  TouchableOpacity, TextInput, KeyboardAvoidingView, ImageBackground, ScrollView, RefreshControl } from 'react-native';
+import {  ListView, StyleSheet, Image, View, Text, Platform,  TouchableOpacity, TextInput, RefreshControl } from 'react-native';
 import UColor from '../../utils/Colors'
 import UImage from '../../utils/Img'
 import Button from '../../components/Button'
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from "../../components/Toast"
 import moment from 'moment';
 var dismissKeyboard = require('dismissKeyboard');
+
 @connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
 class RecordQueryET extends React.Component {
   static navigationOptions = {
     title: "搜索交易记录",
     headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
+      paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
     },
@@ -208,7 +210,7 @@ class RecordQueryET extends React.Component {
           <View style={styles.inptout} >
               <Image source={UImage.Magnifier_ash} style={styles.headleftimg}></Image>
               <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
-                  selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor="#b3b3b3" maxLength={12} 
+                  selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} maxLength={12} 
                   placeholder="输入账号名" underlineColorAndroid="transparent" keyboardType="default"
                   onChangeText={(labelname) => this.setState({ labelname })}   
                   />      
@@ -226,9 +228,9 @@ class RecordQueryET extends React.Component {
           <RefreshControl
             refreshing={this.state.logRefreshing}
             onRefresh={() => this.onRefresh()}
-            tintColor="#fff"
-            colors={['#ddd', UColor.tintColor]}
-            progressBackgroundColor="#ffffff"
+            tintColor={UColor.fontColor}
+            colors={[UColor.lightgray, UColor.tintColor]}
+            progressBackgroundColor={UColor.fontColor}
           />
         }
         dataSource={this.state.dataSource.cloneWithRows(this.state.newetTradeLog == null ? [] : this.state.newetTradeLog)} 
@@ -294,7 +296,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 45,
         fontSize: 14,
-        color: '#999999',
+        color: UColor.arrow,
     },
     canceltext: {
       color: UColor.fontColor,
@@ -352,13 +354,13 @@ const styles = StyleSheet.create({
     selltext: {
       flex: 5,
       fontSize: 15,
-      color: '#F25C49',
+      color: UColor.riseColor,
       textAlign: 'right',
     },
     buytext: {
       flex: 5,
       fontSize: 15,
-      color: "#4ed694",
+      color: UColor.fallColor,
       textAlign: 'right',
     },
     presentprice: {

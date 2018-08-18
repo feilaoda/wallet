@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {DeviceEventEmitter,ListView,StyleSheet,Image,ScrollView,View,RefreshControl,Text, TextInput,Platform,Dimensions,Modal,TouchableHighlight,Switch} from 'react-native';
+import {DeviceEventEmitter,ListView,StyleSheet,Image,View,Text,Switch} from 'react-native';
+import UImage from '../../utils/Img'
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
-import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyShowLD } from '../../components/EasyShow'
 import BaseComponent from "../../components/BaseComponent";
@@ -15,10 +15,10 @@ class AddAssets extends BaseComponent {
         return {                       
           headerTitle:'添加资产',
           headerStyle:{
-                  paddingTop:Platform.OS == 'ios' ? 30 : 20,
-                  backgroundColor: UColor.mainColor,
-                  borderBottomWidth:0,
-                },
+              paddingTop: ScreenUtil.autoheight(20),
+              backgroundColor: UColor.mainColor,
+              borderBottomWidth:0,
+          },
           headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
             <View style={{ padding: 15 }}>
                 <Image source={UImage.Magnifier} style={{ width: 30, height: 30 }}></Image>
@@ -127,42 +127,41 @@ class AddAssets extends BaseComponent {
             return true;
         } 
     }
-
     return false;
- }
+  }
   
- render() {
-        return (
-            <View style={styles.container}>
-                <ListView style={styles.tab} renderRow={this.renderRow} enableEmptySections={true} 
-                  dataSource={this.state.dataSource.cloneWithRows(this.props.assetsList == null ? [] : this.props.assetsList)} 
-                  renderRow={(rowData, sectionID, rowID) => (      
-                  <View style={styles.listItem}>
-                      <View style={styles.listInfo}>
-                        <Image source={rowData.icon==null ? UImage.eos : { uri: rowData.icon }} style={{width: ScreenUtil.autowidth(28), height: ScreenUtil.autowidth(28), resizeMode: "cover", overflow:"hidden", borderRadius: 10, marginRight: ScreenUtil.autowidth(10),}}/>
-                        <View style={styles.scrollView}>
-                          <Text style={styles.listInfoTitle}>{rowData.name}</Text>
-                          <Text style={styles.quantity}>合约账户 : {rowData.contractAccount == null ? "" : rowData.contractAccount}</Text>
-                        </View>
-                        <View style={styles.listInfoRight}>
-                          <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor={UColor.fontColor}
-                              value={this.isMyAsset(rowData)} onValueChange={(value)=>{
-                                if(this.state.isAdding){
-                                  return;
-                                }
-                                this.setState({isAdding: true});
-                                this.setState({selectasset: rowData, value: value});
-                                this.addAsset(rowData, value);
-                              }}/>
-                        </View>
-                      </View>
-                      
+  render() {
+    return (
+      <View style={styles.container}>
+          <ListView style={styles.tab} renderRow={this.renderRow} enableEmptySections={true} 
+            dataSource={this.state.dataSource.cloneWithRows(this.props.assetsList == null ? [] : this.props.assetsList)} 
+            renderRow={(rowData, sectionID, rowID) => (      
+            <View style={styles.listItem}>
+                <View style={styles.listInfo}>
+                  <Image source={rowData.icon==null ? UImage.eos : { uri: rowData.icon }} style={styles.logimg}/>
+                  <View style={styles.scrollView}>
+                    <Text style={styles.listInfoTitle}>{rowData.name}</Text>
+                    <Text style={styles.quantity}>合约账户 : {rowData.contractAccount == null ? "" : rowData.contractAccount}</Text>
                   </View>
-                  )}                
-                /> 
+                  <View style={styles.listInfoRight}>
+                    <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor={UColor.fontColor}
+                        value={this.isMyAsset(rowData)} onValueChange={(value)=>{
+                          if(this.state.isAdding){
+                            return;
+                          }
+                          this.setState({isAdding: true});
+                          this.setState({selectasset: rowData, value: value});
+                          this.addAsset(rowData, value);
+                        }}/>
+                  </View>
+                </View>
+                
             </View>
-        )
-    }
+            )}                
+          /> 
+      </View>
+    )
+  }
 }
 const styles = StyleSheet.create({
     container: {
@@ -186,6 +185,14 @@ const styles = StyleSheet.create({
       alignItems: "center",
       borderTopWidth:1,
       borderTopColor: UColor.secdColor
+    },
+    logimg: {
+      width: ScreenUtil.autowidth(28), 
+      height: ScreenUtil.autowidth(28), 
+      resizeMode: "cover", 
+      overflow:"hidden", 
+      borderRadius: 10, 
+      marginRight: ScreenUtil.autowidth(10),
     },
     scrollView: {
       flex: 1,

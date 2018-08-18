@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { StyleSheet, Image, View, Text, TextInput, Platform, Dimensions, TouchableOpacity, } from 'react-native';
+import { StyleSheet, Image, View, Text, TextInput, Dimensions, TouchableOpacity, } from 'react-native';
 import UColor from '../../utils/Colors'
 import UImage from '../../utils/Img'
 import Button from  '../../components/Button'
@@ -22,10 +22,10 @@ class BackupsAOkey extends BaseComponent {
         return {                       
           headerTitle:'备份私钥',
           headerStyle:{
-                  paddingTop:Platform.OS == 'ios' ? 30 : 20,
-                  backgroundColor: UColor.mainColor,
-                  borderBottomWidth:0,
-                },
+                paddingTop: ScreenUtil.autoheight(20),
+                backgroundColor: UColor.mainColor,
+                borderBottomWidth:0,
+          },
           headerRight: (<Button  onPress={navigation.state.params.onPress}>  
                 <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>跳过</Text>
           </Button>),                  
@@ -335,6 +335,7 @@ const styles = StyleSheet.create({
         lineHeight: ScreenUtil.autoheight(25),
     },
     inptoutgo: {
+        width: ScreenWidth - ScreenUtil.autowidth(40),
         paddingBottom: ScreenUtil.autoheight(15),
         backgroundColor: UColor.mainColor,
     },
@@ -355,13 +356,14 @@ const styles = StyleSheet.create({
         color: UColor.showy,
     },
     inptgo: {
-        height: ScreenUtil.autoheight(60),
-        fontSize: ScreenUtil.setSpText(14),
-        lineHeight: ScreenUtil.autoheight(25),
+        flexWrap: 'wrap',
         color: UColor.arrow,
-        paddingHorizontal: ScreenUtil.autowidth(10),
         textAlignVertical: 'top',
         backgroundColor: UColor.secdColor,
+        fontSize: ScreenUtil.setSpText(14),
+        lineHeight: ScreenUtil.autoheight(25),
+        width: ScreenWidth - ScreenUtil.autowidth(60),
+        paddingHorizontal: ScreenUtil.autowidth(10),
     },
 
     importPriout: {

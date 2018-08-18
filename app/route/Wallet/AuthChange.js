@@ -7,6 +7,7 @@ import Button from  '../../components/Button'
 import Item from '../../components/Item'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyShowLD } from "../../components/EasyShow"
 import { Eos } from "react-native-eosjs";
 import { EasyToast } from '../../components/Toast';
@@ -14,8 +15,8 @@ import BaseComponent from "../../components/BaseComponent";
 import Assets from '../../models/Assets';
 import EosUpdateAuth from '../../utils/EosUtil'
 import Constants from '../../utils/Constants'
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var dismissKeyboard = require('dismissKeyboard');
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
@@ -28,10 +29,10 @@ class AuthChange extends BaseComponent {
         return {
             headerTitle: params.wallet.name,
             headerStyle: {
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
-            backgroundColor: UColor.mainColor,
-            borderBottomWidth:0,
-        },
+                paddingTop: ScreenUtil.autoheight(20),
+                backgroundColor: UColor.mainColor,
+                borderBottomWidth:0,
+            },
         headerRight: (<Button  onPress={navigation.state.params.onPress}>  
             <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>提交</Text>
         </Button>),    
@@ -628,7 +629,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         padding: 5,
         backgroundColor: UColor.mainColor,
-        borderColor: '#FF4F4F',
+        borderColor: UColor.riseColor,
         borderWidth: 1,
         borderRadius: 5,
       },
@@ -638,7 +639,7 @@ const styles = StyleSheet.create({
         margin:5,
       },
       significanttext: {
-        color: '#FF4F4F',
+        color: UColor.riseColor,
         fontSize: 15, 
       },
     
@@ -675,7 +676,7 @@ const styles = StyleSheet.create({
     inptpass: {
         color: UColor.tintColor,
         height: 45,
-        width: maxWidth-100,
+        width: ScreenWidth-100,
         paddingBottom: 5,
         fontSize: 16,
         backgroundColor: UColor.fontColor,

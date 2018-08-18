@@ -6,13 +6,13 @@ import ScreenUtil from '../utils/ScreenUtil'
 import UColor from '../utils/Colors'
 import UImage from '../utils/Img'
 import Button from '../components/Button'
-const maxHeight = Dimensions.get('window').height;
-const maxWidth = Dimensions.get('window').width;
 import { EasyToast } from '../components/Toast';
 import { EasyShowLD } from "../components/EasyShow"
 import Constants from '../utils/Constants'
 import ViewShot from "react-native-view-shot";
 var WeChat = require('react-native-wechat');
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 
 @connect(({ invite, login }) => ({ ...invite, ...login }))
 class ShareInvite extends React.Component {
@@ -50,7 +50,7 @@ class ShareInvite extends React.Component {
     //   type: "invite/getBind", payload: { uid: Constants.uid }, callback: function (data) {
         // if (data.code == "0") {
         //   if (data.data == "" || data.data == "null" || data.data == null) {
-        //     const view = <TextInput autoFocus={true} onChangeText={(code) => th.setState({ code })} returnKeyType="go" selectionColor={UColor.tintColor} style={{ color: UColor.tintColor, width: maxWidth - 100, fontSize: 15, backgroundColor: '#EFEFEF' }} placeholderTextColor={UColor.arrow} placeholder="输入邀请码" underlineColorAndroid="transparent" keyboardType="phone-pad" maxLength={8} />
+        //     const view = <TextInput autoFocus={true} onChangeText={(code) => th.setState({ code })} returnKeyType="go" selectionColor={UColor.tintColor} style={{ color: UColor.tintColor, width: ScreenWidth - 100, fontSize: 15, backgroundColor: UColor.fontColor }} placeholderTextColor={UColor.arrow} placeholder="输入邀请码" underlineColorAndroid="transparent" keyboardType="phone-pad" maxLength={8} />
         //     EasyShowLD.dialogShow("未绑定，补填邀请码", view, "绑定", "取消", () => {
         //       th.setState({ focus: true })
         //       EasyShowLD.loadingShow("绑定中");
@@ -101,7 +101,7 @@ class ShareInvite extends React.Component {
       <View style={styles.container}>   
           <ScrollView> 
             <ViewShot ref="viewShot"> 
-                <Image style={{width: maxWidth, height: maxWidth*1.775,}} source={UImage.sharebg} resizeMode="cover"/>  
+                <Image style={{width: ScreenWidth, height: ScreenWidth*1.775,}} source={UImage.sharebg} resizeMode="cover"/>  
             </ViewShot>
           </ScrollView>
           <Button onPress={() => { this.invitation() }} >

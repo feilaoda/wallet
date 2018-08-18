@@ -1,16 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, TouchableOpacity, Image, Platform, StatusBar, TextInput, Clipboard } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import ScreenUtil from '../../utils/ScreenUtil'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import Item from '../../components/Item'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from '../../components/EasyShow'
-import store from 'react-native-simple-store';
 import BaseComponent from "../../components/BaseComponent";
 
 @connect(({ wallet }) => ({ ...wallet }))
@@ -46,7 +43,6 @@ class WalletManage extends BaseComponent {
 
   //组件加载完成
   componentDidMount() {
-    // alert(JSON.stringify(this.props.walletList));
     const { dispatch } = this.props;
     var th = this;
     this.props.dispatch({type:'wallet/getRevealWallet',callback:(reveal)=>{ this.setState({isEye:reveal.reveal,});}});
@@ -58,17 +54,19 @@ class WalletManage extends BaseComponent {
       this.props.dispatch({ type: 'wallet/walletList' });
     });
   }
+
   componentWillUnmount(){
     //结束页面前，资源释放操作
     super.componentWillUnmount();
-    
   }
+
   onPress = (data, sectionID, rowID) => {
     const { navigate } = this.props.navigation;
     var func = this.updateState;
     navigate('WalletDetail', { data, func });
   }
 
+  // 创建钱包
   createWallet() {
     if(this.props.walletList != null){
       for(var i = 0; i < this.props.walletList.length; i++){
@@ -78,19 +76,14 @@ class WalletManage extends BaseComponent {
         }
       }
     }
-
-    // 创建钱包
     const { navigate } = this.props.navigation;
     navigate('CreateWallet', {});
-    // EasyToast.show('该功能正在紧急开发中，敬请期待');
-
   }
-  
+
+  // 导入钱包
   importWallet() {
-    // 导入钱包
     const { navigate } = this.props.navigation;
     navigate('ImportEosKey');
-    // EasyToast.show('测试网络暂不开放');
   }
 
   updateState(state) {
@@ -101,8 +94,7 @@ class WalletManage extends BaseComponent {
     Clipboard.setString(data.name);
     EasyToast.show('账号复制成功');
   }
-  getAssertDisp(rowData)
-  {
+  getAssertDisp(rowData){
      if(!this.state.isEye){
        return "******";
      }
@@ -186,7 +178,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingTop:Platform.OS == 'ios' ? 30 : 20,
+    paddingTop: ScreenUtil.autoheight(20),
     paddingBottom: ScreenUtil.autoheight(5),
     backgroundColor: UColor.mainColor,
   },

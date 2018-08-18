@@ -8,17 +8,17 @@ import UImage from '../../utils/Img'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 import Constants from '../../utils/Constants'
-
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
+
 @connect(({ wallet }) => ({ ...wallet }))
 class ModifyPassword extends BaseComponent {
 
     static navigationOptions = {
         title: '更改密码',
         headerStyle: {
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+            paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
         },
@@ -137,9 +137,9 @@ class ModifyPassword extends BaseComponent {
         dismissKeyboard();
     }
 
+    // 导入钱包
     importEosKey() {
-        this.props.navigation.goBack();                                  
-        // 导入钱包
+        this.props.navigation.goBack();                                 
         const { navigate } = this.props.navigation;
         navigate('ImportEosKey');
     }

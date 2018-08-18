@@ -1,19 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import {DeviceEventEmitter,Clipboard,StyleSheet,Image,ScrollView,View,Text,TextInput,Platform,Dimensions,Modal,TouchableHighlight,TouchableOpacity} from "react-native";
+import { DeviceEventEmitter, Clipboard, StyleSheet, Image, View, Text, TextInput, TouchableOpacity } from "react-native";
 import UColor from "../../utils/Colors";
 import Button from "../../components/Button";
 import UImage from "../../utils/Img";
-import AnalyticsUtil from "../../utils/AnalyticsUtil";
 import ScreenUtil from '../../utils/ScreenUtil'
 import QRCode from "react-native-qrcode-svg";
-const maxHeight = Dimensions.get("window").height;
 import { EasyToast } from "../../components/Toast";
 import BaseComponent from "../../components/BaseComponent";
+let dismissKeyboard = require("dismissKeyboard");
 
-var AES = require("crypto-js/aes");
-var CryptoJS = require("crypto-js");
-var dismissKeyboard = require("dismissKeyboard");
 @connect(({ wallet }) => ({ ...wallet }))
 class TurnIn extends BaseComponent {
   static navigationOptions = ({ navigation }) => {
@@ -21,7 +17,7 @@ class TurnIn extends BaseComponent {
     return {
       headerTitle: "收款信息",
       headerStyle: {
-        paddingTop: Platform.OS == "ios" ? 30 : 20,
+        paddingTop: ScreenUtil.autoheight(20),
         backgroundColor: UColor.mainColor,
         borderBottomWidth:0,
       },

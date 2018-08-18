@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         padding: 5,
         backgroundColor: UColor.mainColor,
-        borderColor: '#FF4F4F',
+        borderColor: UColor.riseColor,
         borderWidth: 1,
         borderRadius: 5,
       },
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
         margin:5,
       },
       significanttext: {
-        color: '#FF4F4F',
+        color: UColor.riseColor,
         fontSize: 13, 
       },
     

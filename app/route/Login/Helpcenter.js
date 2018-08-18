@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, Platform, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableHighlight } from 'react-native';
 import UImage from "../../utils/Img";
 import UColor from '../../utils/Colors'
 import Item from '../../components/Item'
@@ -12,7 +12,7 @@ class Helpcenter extends BaseComponent {
   static navigationOptions = {
     title: '帮助中心',
     headerStyle: {
-      paddingTop:Platform.OS == 'ios' ? 30 : 20,
+      paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
     },

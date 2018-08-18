@@ -7,7 +7,8 @@ import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from '../../components/Toast';
 import { EasyShowLD } from "../../components/EasyShow"
-const maxWidth = Dimensions.get('window').width;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 import { Eos } from "react-native-eosjs";
 import BaseComponent from "../../components/BaseComponent";
 import Constants from '../../utils/Constants'
@@ -20,7 +21,7 @@ class Imvote extends BaseComponent {
     static navigationOptions =  {
         title: "我的投票",
         headerStyle: {
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
+            paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
             borderBottomWidth:0,
         },      
@@ -161,7 +162,7 @@ class Imvote extends BaseComponent {
                     renderRow={(rowData, sectionID, rowID) => (                 
                     <View>
                         <Button onPress={this._openAgentInfo.bind(this,rowData)}> 
-                            <View style={styles.outsource} backgroundColor={(parseInt(rowID)%2 == 0) ? UColor.secdColor : '#4D607E'}>
+                            <View style={styles.outsource} backgroundColor={(parseInt(rowID)%2 == 0) ? UColor.secdColor : UColor.inash}>
                                 <View style={styles.logview}>
                                    <Image source={rowData.icon==null ? UImage.eos : {uri: rowData.icon}} style={styles.logimg}/>
                                 </View>
@@ -200,7 +201,6 @@ class Imvote extends BaseComponent {
             </View>
         );
     }
-
 };
 
 
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     inptpass: {
         color: UColor.tintColor,
         height: ScreenUtil.autoheight(45),
-        width: maxWidth-100,
+        width: ScreenWidth-100,
         fontSize: ScreenUtil.setSpText(16),
         backgroundColor: UColor.fontColor,
         borderBottomColor: UColor.baseline,
