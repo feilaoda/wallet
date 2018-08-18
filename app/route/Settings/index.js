@@ -271,44 +271,6 @@ const styles = StyleSheet.create({
     color: UColor.fontColor,
   },
 
-
-  header: {
-    borderColor: UColor.secdColor,
-    borderWidth: 0.6,
-    paddingTop: (Platform.OS == 'ios' ? 33 : 14),
-    paddingBottom: ScreenUtil.autoheight(10),
-    backgroundColor: UColor.mainColor,
-    textAlign: "center",
-    fontSize: ScreenUtil.setSpText(18),
-    fontWeight: 'normal',
-    color: UColor.fontColor
-  },
-
-  listItem: {
-    backgroundColor: UColor.mainColor,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  listInfo: {
-    height: ScreenUtil.autoheight(55),
-    flex: 1,
-    paddingHorizontal: ScreenUtil.autowidth(16),
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderTopWidth:1,
-    borderTopColor: UColor.secdColor,
-  },
-  listInfoTitle: {
-    color: UColor.fontColor, 
-    fontSize: ScreenUtil.setSpText(16)
-  },
-  listInfoRight: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-
   footer: {
     flex: 1,
     marginTop: ScreenUtil.autoheight(30),
@@ -321,7 +283,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: ScreenUtil.autoheight(5),
   },
-
 
   systemSettingTip: {
     width: ScreenWidth,

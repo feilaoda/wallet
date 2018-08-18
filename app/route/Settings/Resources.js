@@ -767,165 +767,165 @@ class Resources extends BaseComponent {
     render() {
         const c = this.props.navigation.state.params.coinType;
         return (
-        <View style={styles.container}>
-          <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
-                <ScrollView keyboardShouldPersistTaps="always">
-                    <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
-                        <View style={styles.tetleout}>
-                            <Text style={styles.tetletext}>{this.state.tetletext}</Text>
-                            <ImageBackground source={UImage.line_bg} resizeMode="cover" style={styles.linebgout}>
-                                <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
-                                    <View style={styles.stripbg} height={this.state.column_One}/>
+            <View style={styles.container}>
+                <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null} style={styles.tab}>
+                    <ScrollView keyboardShouldPersistTaps="always">
+                        <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
+                            <View style={styles.tetleout}>
+                                <Text style={styles.tetletext}>{this.state.tetletext}</Text>
+                                <ImageBackground source={UImage.line_bg} resizeMode="cover" style={styles.linebgout}>
+                                    <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
+                                        <View style={styles.stripbg} height={this.state.column_One}/>
+                                    </ImageBackground>
+                                    <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
+                                        <View style={styles.stripbg} height={this.state.column_Two}/>
+                                    </ImageBackground>
+                                    <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
+                                        <View style={styles.stripbg} height={this.state.column_Three}/>
+                                    </ImageBackground>
+                                    {/* <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5, backgroundColor: UColor.secdColor,marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
+                                        <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,}} height={this.state.column_One}/>
+                                    </View>
+                                    <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5,backgroundColor: UColor.secdColor,marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
+                                        <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,}} height={this.state.column_Two}/>
+                                    </View>
+                                    <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5,backgroundColor: UColor.secdColor,marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
+                                        <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236}} height={this.state.column_Three}/>
+                                    </View> */}
                                 </ImageBackground>
-                                <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
-                                    <View style={styles.stripbg} height={this.state.column_Two}/>
-                                </ImageBackground>
-                                <ImageBackground source={UImage.strip_bg} resizeMode="cover"  style={styles.stripbgout}>
-                                    <View style={styles.stripbg} height={this.state.column_Three}/>
-                                </ImageBackground>
-                                {/* <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5, backgroundColor: UColor.secdColor,marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
-                                    <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,}} height={this.state.column_One}/>
-                                </View>
-                                <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5,backgroundColor: UColor.secdColor,marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
-                                    <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,}} height={this.state.column_Two}/>
-                                </View>
-                                <View style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236,height: (ScreenWidth - 30) * 0.307 - 5,backgroundColor: UColor.secdColor,marginBottom: Platform.OS == 'ios' ? 0.3 : 0.2,justifyContent: 'flex-end'}}>
-                                    <LinearGradient colors={['#FE3BE1', '#8585EF', '#06D4FE']} style={{width: ((ScreenWidth - 30) * 0.307 - 5) * 0.236}} height={this.state.column_Three}/>
-                                </View> */}
-                            </ImageBackground>
-                            <View style={styles.record}>
-                                <View style={styles.recordout}>
-                                    <Text style={styles.ratiotext}>{this.state.ContrastOne}</Text>
-                                    <Text style={styles.recordtext}>{this.state.percentageOne}</Text>
-                                </View>
-                                <View style={styles.recordout}>
-                                    <Text  style={styles.ratiotext}>{this.state.ContrastTwo}</Text>
-                                    <Text style={styles.recordtext}>{this.state.percentageTwo}</Text>
-                                </View>
-                                <View style={styles.recordout}>
-                                {this.state.isCalculation||this.state.isNetwork?<CountDownReact
-                                    date= {this.state.ContrastThree}
-                                    hours=':'
-                                    mins=':'
-                                    hoursStyle={styles.ratiotext}
-                                    minsStyle={styles.ratiotext}
-                                    secsStyle={styles.ratiotext}
-                                    firstColonStyle={styles.ratiotext}
-                                    secondColonStyle={styles.ratiotext}
-                                />:<Text  style={styles.ratiotext}>{this.state.ContrastThree}</Text>}
-                                    <Text style={styles.recordtext}>{this.state.percentageThree}</Text>
+                                <View style={styles.record}>
+                                    <View style={styles.recordout}>
+                                        <Text style={styles.ratiotext}>{this.state.ContrastOne}</Text>
+                                        <Text style={styles.recordtext}>{this.state.percentageOne}</Text>
+                                    </View>
+                                    <View style={styles.recordout}>
+                                        <Text  style={styles.ratiotext}>{this.state.ContrastTwo}</Text>
+                                        <Text style={styles.recordtext}>{this.state.percentageTwo}</Text>
+                                    </View>
+                                    <View style={styles.recordout}>
+                                    {this.state.isCalculation||this.state.isNetwork?<CountDownReact
+                                        date= {this.state.ContrastThree}
+                                        hours=':'
+                                        mins=':'
+                                        hoursStyle={styles.ratiotext}
+                                        minsStyle={styles.ratiotext}
+                                        secsStyle={styles.ratiotext}
+                                        firstColonStyle={styles.ratiotext}
+                                        secondColonStyle={styles.ratiotext}
+                                    />:<Text  style={styles.ratiotext}>{this.state.ContrastThree}</Text>}
+                                        <Text style={styles.recordtext}>{this.state.percentageThree}</Text>
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                        
-                        <View style={styles.tablayout}>  
-                            {this.resourceButton(styles.memorytab, this.state.isMemory, 'isMemory', '内存资源')}  
-                            {this.resourceButton(styles.calculationtab, this.state.isCalculation, 'isCalculation', '计算资源')}  
-                            {this.resourceButton(styles.networktab, this.state.isNetwork, 'isNetwork', '网络资源')}  
-                            {/* {this.resourceButton(styles.buttontab, this.state.isBuyForOther, 'isBuyForOther', '内存交易')}   */}
-                        </View> 
-                        {this.state.isBuyForOther?<View style={styles.nothave}><Text style={styles.copytext}>请稍候 ，程序猿玩命加班中...</Text></View>:
-                        <View style={styles.nhaaout}>
-                            {this.state.isMemory?<View style={styles.wterout}>
-                            <View style={styles.OwnOthers}>  
-                                    {this.ownOthersButton(styles.tabbutton, this.state.isOwn, 'isOwn', '自己')}  
-                                    {this.ownOthersButton(styles.tabbutton, this.state.isOthers, 'isOthers', '他人')}  
-                                </View></View>:
-                                <View style={styles.wterout}>
+                            <View style={styles.tablayout}>  
+                                {this.resourceButton(styles.memorytab, this.state.isMemory, 'isMemory', '内存资源')}  
+                                {this.resourceButton(styles.calculationtab, this.state.isCalculation, 'isCalculation', '计算资源')}  
+                                {this.resourceButton(styles.networktab, this.state.isNetwork, 'isNetwork', '网络资源')}  
+                                {/* {this.resourceButton(styles.buttontab, this.state.isBuyForOther, 'isBuyForOther', '内存交易')}   */}
+                            </View> 
+                            {this.state.isBuyForOther?<View style={styles.nothave}><Text style={styles.copytext}>请稍候 ，程序猿玩命加班中...</Text></View>:
+                            <View style={styles.nhaaout}>
+                                {this.state.isMemory?<View style={styles.wterout}>
                                 <View style={styles.OwnOthers}>  
-                                    {this.ownOthersButton(styles.tabbutton, this.state.isOwn, 'isOwn', '自己')}  
-                                    {this.ownOthersButton(styles.tabbutton, this.state.isOthers, 'isOthers', '他人')}  
-                                </View>
-                                {this.state.isOthers&&
-                                <View style={styles.LeaseTransfer}>  
-                                    {this.leaseTransferButton(styles.tabbutton, this.state.isLease, 'isLease', '租赁')}  
-                                    {this.leaseTransferButton(styles.tabbutton, this.state.isTransfer, 'isTransfer', '过户')}  
-                                </View>}
-                            </View> }
-                            {this.state.isOwn ? null:
-                            <View style={styles.inptoutsource}>
-                                {this.state.isMemory?<Text style={styles.inptTitlered}>注：帮他人购买，一旦送出将无法收回！</Text>:<Text style={styles.inptTitle}>设置接收者</Text>}
-                                <View style={styles.outsource}>
-                                    <TextInput ref={(ref) => this._account = ref} value={this.state.receiver} returnKeyType="go"
-                                        selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} maxLength={12}
-                                        placeholder="输入接收账号" underlineColorAndroid="transparent" keyboardType="default" 
-                                        onChangeText={(receiver) => this.setState({ receiver: this.chkAccount(receiver)})}
-                                    />
-                                    <Button onPress={() => this.scan()}>
-                                        <View style={styles.botnimg}>
-                                            <Image source={UImage.scan} style={{width: 26, height: 26, }} />
+                                        {this.ownOthersButton(styles.tabbutton, this.state.isOwn, 'isOwn', '自己')}  
+                                        {this.ownOthersButton(styles.tabbutton, this.state.isOthers, 'isOthers', '他人')}  
+                                    </View></View>:
+                                    <View style={styles.wterout}>
+                                    <View style={styles.OwnOthers}>  
+                                        {this.ownOthersButton(styles.tabbutton, this.state.isOwn, 'isOwn', '自己')}  
+                                        {this.ownOthersButton(styles.tabbutton, this.state.isOthers, 'isOthers', '他人')}  
+                                    </View>
+                                    {this.state.isOthers&&
+                                    <View style={styles.LeaseTransfer}>  
+                                        {this.leaseTransferButton(styles.tabbutton, this.state.isLease, 'isLease', '租赁')}  
+                                        {this.leaseTransferButton(styles.tabbutton, this.state.isTransfer, 'isTransfer', '过户')}  
+                                    </View>}
+                                </View> }
+                                {this.state.isOwn ? null:
+                                <View style={styles.inptoutsource}>
+                                    {this.state.isMemory?<Text style={styles.inptTitlered}>注：帮他人购买，一旦送出将无法收回！</Text>:<Text style={styles.inptTitle}>设置接收者</Text>}
+                                    <View style={styles.outsource}>
+                                        <TextInput ref={(ref) => this._account = ref} value={this.state.receiver} returnKeyType="go"
+                                            selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} maxLength={12}
+                                            placeholder="输入接收账号" underlineColorAndroid="transparent" keyboardType="default" 
+                                            onChangeText={(receiver) => this.setState({ receiver: this.chkAccount(receiver)})}
+                                        />
+                                        <Button onPress={() => this.scan()}>
+                                            <View style={styles.botnimg}>
+                                                <Image source={UImage.scan} style={{width: 26, height: 26, }} />
+                                            </View>
+                                        </Button> 
+                                    </View>
+                                </View>}  
+                                {this.state.isMemory?<View>
+                                    <View style={styles.inptoutsource}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center',}}>
+                                            <Text style={styles.inptTitle}>购买内存（{this.state.currency_surplus}EOS）</Text>
+                                            <Text style={{fontSize:12, color: UColor.arrow,}}>≈{(this.state.currency_surplus == null || this.state.Currentprice == null || this.state.currency_surplus == '' || this.state.currency_surplus == '' || this.state.Currentprice == '0') ? '0.000' : (this.state.currency_surplus/this.state.Currentprice).toFixed(3)}kb</Text>
                                         </View>
-                                    </Button> 
-                                </View>
-                            </View>}  
-                            {this.state.isMemory?<View>
-                                <View style={styles.inptoutsource}>
-                                    <View style={{flexDirection: 'row', alignItems: 'center',}}>
-                                        <Text style={styles.inptTitle}>购买内存（{this.state.currency_surplus}EOS）</Text>
-                                        <Text style={{fontSize:12, color: UColor.arrow,}}>≈{(this.state.currency_surplus == null || this.state.Currentprice == null || this.state.currency_surplus == '' || this.state.currency_surplus == '' || this.state.Currentprice == '0') ? '0.000' : (this.state.currency_surplus/this.state.Currentprice).toFixed(3)}kb</Text>
+                                        <View style={styles.outsource}>
+                                            <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyRamAmount} returnKeyType="go" 
+                                            selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow} 
+                                            placeholder="输入购买的额度(EOS)" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
+                                            onChangeText={(buyRamAmount) => this.setState({ buyRamAmount: this.chkPrice(buyRamAmount)})}
+                                            />
+                                            <Button onPress={this.buyram.bind(this)}>
+                                                <View style={styles.botn}>
+                                                    <Text style={styles.botText}>购买</Text>
+                                                </View>
+                                            </Button> 
+                                        </View>
                                     </View>
-                                    <View style={styles.outsource}>
-                                        <TextInput ref={(ref) => this._rrpass = ref} value={this.state.buyRamAmount} returnKeyType="go" 
-                                        selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow} 
-                                        placeholder="输入购买的额度(EOS)" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
-                                        onChangeText={(buyRamAmount) => this.setState({ buyRamAmount: this.chkPrice(buyRamAmount)})}
-                                        />
-                                        <Button onPress={this.buyram.bind(this)}>
-                                            <View style={styles.botn}>
-                                                <Text style={styles.botText}>购买</Text>
-                                            </View>
-                                        </Button> 
+                                    {this.state.isOthers ? null:<View style={styles.inptoutsource}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center',}}>
+                                            <Text style={styles.inptTitle}>出售内存（{this.state.ram_available}KB）</Text>
+                                            <Text style={{fontSize:12, color: UColor.arrow,}}>≈{(this.state.ram_available*this.state.Currentprice).toFixed(3)}EOS</Text>
+                                        </View>
+                                        <View style={styles.outsource}>
+                                            <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellRamBytes} returnKeyType="go" 
+                                            selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow}
+                                            placeholder="输入出售的数量(KB)" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
+                                            onChangeText={(sellRamBytes) => this.setState({ sellRamBytes: this.chkPrice(sellRamBytes)})}
+                                            />
+                                            <Button onPress={this.sellram.bind(this)}>
+                                                <View style={styles.botn}>
+                                                    <Text style={styles.botText1}>出售</Text>
+                                                </View>
+                                            </Button> 
+                                        </View>
+                                    </View>}
+                                </View>:
+                                <View>
+                                    <View style={styles.inptoutsource}>
+                                        <Text style={styles.inptTitle}>抵押（EOS）</Text>
+                                        <View style={styles.outsource}>
+                                            <TextInput ref={(ref) => this._rrpass = ref} value={this.state.delegateb} returnKeyType="go" 
+                                            selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
+                                            placeholder="输入抵押数量" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
+                                            onChangeText={(delegateb) => this.setState({ delegateb: this.chkPrice(delegateb)})}
+                                            />
+                                            <Button onPress={this.delegateb.bind()}>
+                                                <View style={styles.botn}>
+                                                    <Text style={styles.botText}>抵押</Text>
+                                                </View>
+                                            </Button> 
+                                        </View>
                                     </View>
-                                </View>
-                                {this.state.isOthers ? null:<View style={styles.inptoutsource}>
-                                    <View style={{flexDirection: 'row', alignItems: 'center',}}>
-                                        <Text style={styles.inptTitle}>出售内存（{this.state.ram_available}KB）</Text>
-                                        <Text style={{fontSize:12, color: UColor.arrow,}}>≈{(this.state.ram_available*this.state.Currentprice).toFixed(3)}EOS</Text>
-                                    </View>
-                                    <View style={styles.outsource}>
-                                        <TextInput ref={(ref) => this._rrpass = ref} value={this.state.sellRamBytes} returnKeyType="go" 
-                                        selectionColor={UColor.tintColor} style={styles.inpt}  placeholderTextColor={UColor.arrow}
-                                        placeholder="输入出售的数量(KB)" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
-                                        onChangeText={(sellRamBytes) => this.setState({ sellRamBytes: this.chkPrice(sellRamBytes)})}
-                                        />
-                                        <Button onPress={this.sellram.bind(this)}>
-                                            <View style={styles.botn}>
-                                                <Text style={styles.botText1}>出售</Text>
-                                            </View>
-                                        </Button> 
-                                    </View>
-                                </View>}
-                            </View>:
-                            <View>
-                                <View style={styles.inptoutsource}>
-                                    <Text style={styles.inptTitle}>抵押（EOS）</Text>
-                                    <View style={styles.outsource}>
-                                        <TextInput ref={(ref) => this._rrpass = ref} value={this.state.delegateb} returnKeyType="go" 
-                                        selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                                        placeholder="输入抵押数量" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
-                                        onChangeText={(delegateb) => this.setState({ delegateb: this.chkPrice(delegateb)})}
-                                        />
-                                        <Button onPress={this.delegateb.bind()}>
-                                            <View style={styles.botn}>
-                                                <Text style={styles.botText}>抵押</Text>
-                                            </View>
-                                        </Button> 
-                                    </View>
-                                </View>
-                                {!this.state.isTransfer&&<View style={styles.inptoutsource}>
-                                    <Text style={styles.inptTitle}>赎回（EOS）</Text>
-                                    <View style={styles.outsource}>
-                                        <TextInput ref={(ref) => this._rrpass = ref} value={this.state.undelegateb} returnKeyType="go" 
-                                        selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}
-                                        placeholder="输入赎回数量" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
-                                        onChangeText={(undelegateb) => this.setState({ undelegateb: this.chkPrice(undelegateb)})}   
-                                        />
-                                        <Button onPress={this.undelegateb.bind()}>
-                                            <View style={styles.botn}>
-                                                <Text style={styles.botText}>赎回</Text>
-                                            </View>
-                                        </Button> 
-                                    </View>
+                                    {!this.state.isTransfer&&<View style={styles.inptoutsource}>
+                                        <Text style={styles.inptTitle}>赎回（EOS）</Text>
+                                        <View style={styles.outsource}>
+                                            <TextInput ref={(ref) => this._rrpass = ref} value={this.state.undelegateb} returnKeyType="go" 
+                                            selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}
+                                            placeholder="输入赎回数量" underlineColorAndroid="transparent" keyboardType="numeric"  maxLength = {15}
+                                            onChangeText={(undelegateb) => this.setState({ undelegateb: this.chkPrice(undelegateb)})}   
+                                            />
+                                            <Button onPress={this.undelegateb.bind()}>
+                                                <View style={styles.botn}>
+                                                    <Text style={styles.botText}>赎回</Text>
+                                                </View>
+                                            </Button> 
+                                        </View>
+                                    </View>}
                                 </View>}
                             </View>}
                             {this.state.isMemory?
@@ -939,27 +939,26 @@ class Resources extends BaseComponent {
                                 <Text style={styles.basctext}>· 抵押的EOS可撤销抵押，并于3天后退回。</Text>
                                 <Text style={styles.basctext}>· 租赁抵押的EOS可自行赎回，过户抵押的EOS，将无法赎回。</Text>
                             </View>}
-                        </View>}
-                </TouchableOpacity>
-            </ScrollView>  
-        </KeyboardAvoidingView> 
-    </View>
+                        </TouchableOpacity>
+                    </ScrollView>  
+                </KeyboardAvoidingView>
+            </View>
         )
     }
 }
 const styles = StyleSheet.create({
     nothave: {
-        height: Platform.OS == 'ios' ? 84.5 : 65,
+        height: ScreenUtil.autoheight(80),
         backgroundColor: UColor.mainColor,
         flexDirection: "row",
         alignItems: 'center',
         justifyContent: "center",
-        paddingHorizontal: 20,
+        paddingHorizontal: ScreenUtil.autoheight(20),
         borderRadius: 5,
-        margin: 5,
+        margin: ScreenUtil.autowidth(5),
     },
     copytext: {
-        fontSize: 16, 
+        fontSize: ScreenUtil.setSpText(16), 
         color: UColor.fontColor
     },
     // 密码输入框
@@ -969,24 +968,24 @@ const styles = StyleSheet.create({
     },
     inptpass: {
         color: UColor.tintColor,
-        height: 45,
+        height: ScreenUtil.autoheight(45),
         width: ScreenWidth-100,
-        paddingBottom: 5,
-        fontSize: 16,
+        paddingBottom: ScreenUtil.autoheight(5),
+        fontSize: ScreenUtil.setSpText(16),
         backgroundColor: UColor.fontColor,
         borderBottomColor: UColor.baseline,
         borderBottomWidth: 1,
     },
     inptpasstext: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.lightgray,
-        lineHeight: 25,
-        marginTop: 5,
+        lineHeight: ScreenUtil.autoheight(25),
+        marginTop: ScreenUtil.autoheight(5),
     },
 
     inptoutsource1: {
-        paddingHorizontal: 20,
-        paddingBottom: 20,
+        paddingHorizontal: ScreenUtil.autowidth(20),
+        paddingBottom: ScreenUtil.autoheight(20),
         justifyContent: 'center',
     },
     outsource1: {
@@ -996,49 +995,49 @@ const styles = StyleSheet.create({
     inpt1: {
         flex: 1, 
         color: UColor.arrow, 
-        fontSize: 15, 
-        height: 40, 
-        paddingLeft: 10, 
+        fontSize: ScreenUtil.setSpText(15), 
+        height: ScreenUtil.autoheight(40), 
+        paddingLeft: ScreenUtil.autowidth(10), 
         backgroundColor: UColor.fontColor, 
         borderRadius: 5,
     },
     inptTitlered1: {
-        fontSize: 12, 
+        fontSize: ScreenUtil.setSpText(12), 
         color: UColor.showy, 
-        lineHeight: 35,
+        lineHeight: ScreenUtil.autoheight(35),
     },
     inptTitle1: {
-        fontSize: 14, 
+        fontSize: ScreenUtil.setSpText(14), 
         color: UColor.arrow,
-        lineHeight: 35,
+        lineHeight: ScreenUtil.autoheight(35),
     },
     botnimg1: {
-        marginLeft: 10, 
-        width: 86, 
-        height: 38, 
+        marginLeft: ScreenUtil.autowidth(10), 
+        width: ScreenUtil.autowidth(86), 
+        height: ScreenUtil.autoheight(38), 
         justifyContent: 'center', 
         alignItems: 'flex-start'
     },
     botn1: {
-        marginLeft: 10, 
-        width: 86, 
-        height: 38,  
+        marginLeft: ScreenUtil.autowidth(10), 
+        width: ScreenUtil.autowidth(86), 
+        height: ScreenUtil.autoheight(38),  
         borderRadius: 3, 
         backgroundColor: UColor.tintColor, 
         justifyContent: 'center', 
         alignItems: 'center' 
     },
     botText1: {
-        fontSize: 17, 
+        fontSize: ScreenUtil.setSpText(17), 
         color: UColor.fontColor,
     },
     basc1: {
-        padding: 20,
+        padding: ScreenUtil.autowidth(20),
     },
     basctext1 :{
-        fontSize: 12, 
+        fontSize: ScreenUtil.setSpText(12), 
         color: UColor.arrow, 
-        lineHeight: 25,
+        lineHeight: ScreenUtil.autoheight(25),
     },
 
     tabbutton: {  
@@ -1046,17 +1045,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
     },  
     tablayout: {   
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',  
-        paddingVertical: 5,
-        paddingHorizontal: 15,
+        paddingVertical: ScreenUtil.autoheight(5),
+        paddingHorizontal: ScreenUtil.autowidth(15),
         backgroundColor: UColor.mainColor,
     },  
     memorytab: {
         flex: 1,
-        height: 33,
+        height: ScreenUtil.autoheight(33),
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
         borderColor: UColor.tintColor,
@@ -1066,7 +1064,7 @@ const styles = StyleSheet.create({
     },
     calculationtab: {
         flex: 1,
-        height: 33,
+        height: ScreenUtil.autoheight(33),
         borderTopColor: UColor.tintColor,
         borderBottomColor: UColor.tintColor,
         borderTopWidth: 1,
@@ -1076,7 +1074,7 @@ const styles = StyleSheet.create({
     },
     networktab: {
         flex: 1,
-        height: 33,
+        height: ScreenUtil.autoheight(33),
         borderTopRightRadius: 5,
         borderBottomRightRadius: 5,
         borderColor: UColor.tintColor,
@@ -1085,7 +1083,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
     },
     tabText: {  
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
     }, 
 
     container: {
@@ -1096,16 +1094,16 @@ const styles = StyleSheet.create({
     nov: {
         alignItems: 'center', 
         flexDirection:'row', 
-        marginHorizontal: 6,
-        height: 80,  
+        marginHorizontal: ScreenUtil.autowidth(6),
+        height: ScreenUtil.autoheight(80),  
         backgroundColor:  UColor.mainColor, 
         borderRadius: 5, 
-        marginTop: 6,
+        marginTop: ScreenUtil.autoheight(6),
     },
     imgsize: {
-        width: 40, 
-        height: 40, 
-        marginHorizontal: 20,
+        width: ScreenUtil.autowidth(40), 
+        height: ScreenUtil.autowidth(40), 
+        marginHorizontal: ScreenUtil.autowidth(20),
     },
     novoutsource: {
         flex: 1, 
@@ -1114,26 +1112,26 @@ const styles = StyleSheet.create({
         flexDirection:'column',
     },
     headtextSize: {
-        fontSize:16, 
+        fontSize: ScreenUtil.setSpText(16), 
         color: UColor.fontColor,  
-        paddingBottom: 8,
+        paddingBottom: ScreenUtil.autoheight(8),
     },
     textoutsource: {
         flexDirection:'row', 
         alignItems: "center",
     },
     textSizeone: {
-        fontSize: 12, 
+        fontSize: ScreenUtil.setSpText(12), 
         color: UColor.arrow,
     },
     textSizetwo: {
-        marginLeft: 10,
-        fontSize: 12, 
+        marginLeft: ScreenUtil.autowidth(10),
+        fontSize: ScreenUtil.setSpText(12), 
         color: UColor.arrow,
     },
     arrow: {
-        width: 40, 
-        lineHeight: 80, 
+        width: ScreenUtil.autowidth(40), 
+        lineHeight: ScreenUtil.autoheight(80), 
         color: UColor.fontColor, 
         textAlign: 'center'
     },
@@ -1143,22 +1141,22 @@ const styles = StyleSheet.create({
       },
       wterout: {
           flexDirection: 'row',
-          paddingVertical: 10,
+          paddingVertical: ScreenUtil.autoheight(10),
       },
       OwnOthers: {
           flexDirection: 'row',
-          paddingHorizontal: 18,
+          paddingHorizontal: ScreenUtil.autowidth(18),
           width: (ScreenWidth - 20) / 2,
       },
       LeaseTransfer: {
           flexDirection: 'row',
-          paddingHorizontal: 18,
+          paddingHorizontal: ScreenUtil.autowidth(18),
           width: (ScreenWidth - 20) / 2,
       },
 
     inptoutsource: {
-        paddingHorizontal: 20,
-        paddingBottom: 10,
+        paddingHorizontal: ScreenUtil.autowidth(20),
+        paddingBottom: ScreenUtil.autoheight(10),
         justifyContent: 'center',
     },
     outsource: {
@@ -1170,60 +1168,61 @@ const styles = StyleSheet.create({
     inpt: {
         flex: 1, 
         color: UColor.arrow, 
-        fontSize: 15, 
-        height: 45, 
-        paddingLeft: 10, 
+        fontSize: ScreenUtil.setSpText(15), 
+        height: ScreenUtil.autoheight(40), 
+        paddingLeft: ScreenUtil.autowidth(10), 
     },
 
     inptTitle: {
-        fontSize: 14, 
+        fontSize: ScreenUtil.setSpText(14), 
         color: UColor.fontColor, 
-        lineHeight: 35,
+        lineHeight: ScreenUtil.autoheight(25),
     },
     inptTitlered: {
-        fontSize: 14, 
+        fontSize: ScreenUtil.setSpText(14), 
         color: UColor.showy, 
-        lineHeight: 35,
+        lineHeight: ScreenUtil.autoheight(35),
     },
     botnimg: {
-        width: 86, 
-        height: 38, 
-        paddingHorizontal: 10,
+        width: ScreenUtil.autowidth(86), 
+        height: ScreenUtil.autoheight(38), 
+        paddingHorizontal: ScreenUtil.autowidth(10),
         justifyContent: 'center', 
         alignItems: 'flex-end'
     },
     botn: {
-        marginLeft: 10, 
-        width: 70, 
-        height: 30,  
+        marginLeft: ScreenUtil.autowidth(10), 
+        width: ScreenUtil.autowidth(70), 
+        height: ScreenUtil.autoheight(30),  
         borderRadius: 3, 
         backgroundColor: UColor.tintColor, 
         justifyContent: 'center', 
         alignItems: 'center' 
     },
     botText: {
-        fontSize: 17, 
+        fontSize: ScreenUtil.setSpText(17), 
         color: UColor.fontColor,
     },
     basc: {
-        padding: 20,
+        flex: 1,
+        padding: ScreenUtil.autoheight(10),
         backgroundColor: UColor.secdColor,
     },
     basctext :{
-        fontSize: 12, 
+        fontSize: ScreenUtil.setSpText(12), 
         color: UColor.arrow, 
-        lineHeight: 25,
+        lineHeight: ScreenUtil.autoheight(25),
     },
 
     tetleout: {
-        paddingHorizontal: 15,
-        paddingBottom: 10,
+        paddingHorizontal: ScreenUtil.autowidth(15),
+        paddingBottom: ScreenUtil.autoheight(10),
         backgroundColor: UColor.mainColor,
     },
     tetletext: {
-        fontSize: 15,
+        fontSize: ScreenUtil.setSpText(15),
         color: UColor.arrow,
-        paddingVertical: 5
+        paddingVertical: ScreenUtil.autoheight(5),
     },
 
     linebgout: {
@@ -1242,11 +1241,11 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.secdColor,
     },
     ratiotext: {
-        fontSize: 12,
+        fontSize: ScreenUtil.setSpText(12),
         color: UColor.fontColor
     },
     recordtext: {
-        fontSize: 12,
+        fontSize: ScreenUtil.setSpText(12),
         color: UColor.arrow,
     },
     record: {
@@ -1264,7 +1263,7 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.fontColor,
     },
     labelout: {
-        fontSize: 12,
+        fontSize: ScreenUtil.setSpText(12),
         color: UColor.fontColor,
     },
     tabout: {
@@ -1276,13 +1275,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: UColor.tintColor,
         width: (ScreenWidth - 40) / 4,
-        height: 30,
-        marginVertical: 8,
-        marginHorizontal: 5,
+        height: ScreenUtil.autoheight(30),
+        marginVertical: ScreenUtil.autoheight(8),
+        marginHorizontal: ScreenUtil.autowidth(5),
     },
     tabbarout: {
-        height: 46,
-        paddingVertical: 8,
+        height: ScreenUtil.autoheight(46),
+        paddingVertical: ScreenUtil.autoheight(8),
         backgroundColor: UColor.secdColor
     },
 
@@ -1299,8 +1298,7 @@ const styles = StyleSheet.create({
     },
     // modal上子View的样式  
     subView: {
-        marginLeft: 10,
-        marginRight: 10,
+        marginHorizontal: ScreenUtil.autowidth(10),
         backgroundColor:  UColor.fontColor,
         alignSelf: 'stretch',
         justifyContent: 'center',
@@ -1309,23 +1307,23 @@ const styles = StyleSheet.create({
         borderColor: UColor.baseline,
     },
     closeText: {
-        width: 30,
-        height: 30,
+        width: ScreenUtil.autowidth(30),
+        height: ScreenUtil.autowidth(30),
         marginBottom: 0,
         color: UColor.baseline,
-        fontSize: 28,
+        fontSize: ScreenUtil.setSpText(28),
     },
     // 标题  
     titleText: {
         color: UColor.blackColor,
-        marginBottom: 5,
-        fontSize: 18,
+        marginBottom: ScreenUtil.autoheight(5),
+        fontSize: ScreenUtil.setSpText(18),
         fontWeight: 'bold',
         textAlign: 'center',
     },
     // 内容  
     contentText: {
-        margin: 20,
+        margin: ScreenUtil.autowidth(20),
         alignItems: 'center',
         justifyContent: 'center',
         alignItems: 'center',
@@ -1333,22 +1331,25 @@ const styles = StyleSheet.create({
     },
     textContent: {
         color: UColor.arrow,
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         textAlign: 'left',
-        lineHeight: 25,
+        lineHeight: ScreenUtil.autoheight(25),
     },
     // 按钮  
     buttonView: {
-        margin: 10,
-        height: 46,
+        margin: ScreenUtil.autowidth(10),
+        height: ScreenUtil.autoheight(46),
         borderRadius: 6,
         backgroundColor:  UColor.showy,
         justifyContent: 'center',
         alignItems: 'center'
     },
     buttonText: {
-        fontSize: 16,
+        fontSize: ScreenUtil.setSpText(16),
         color:  UColor.fontColor,
+    },
+    tab: {
+        flex: 1,
     }
 })
 export default Resources;

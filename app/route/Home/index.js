@@ -35,7 +35,6 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: 'rgba(255, 255, 255,0)',
       dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }),
       fadeAnim: new Animated.Value(15),  //设置初始值
       modal: false,
@@ -1156,7 +1155,7 @@ pupuoBackup: {
   flex: 1, 
   justifyContent: 'center', 
   alignItems: 'center',
-  backgroundColor: "rgba(0, 0, 0, 0.4)",
+  backgroundColor: UColor.mask,
 },
 
 headout: {
@@ -1168,8 +1167,6 @@ warningout: {
   marginHorizontal: ScreenUtil.autowidth(15),
   flexDirection: "row",
   alignItems: 'center', 
-  // paddingHorizontal: 5,
-  // paddingVertical: 5,
   borderColor: UColor.showy,
   borderWidth: 1,
   borderRadius: 5,

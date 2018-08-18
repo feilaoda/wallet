@@ -382,19 +382,19 @@ const styles = StyleSheet.create({
     },
     inptpass: {
         color: UColor.tintColor,
-        height: 45,
+        height: ScreenUtil.autoheight(45),
         width: ScreenWidth-100,
-        paddingBottom: 5,
-        fontSize: 16,
+        paddingBottom: ScreenUtil.autoheight(5),
+        fontSize: ScreenUtil.setSpText(16),
         backgroundColor: UColor.fontColor,
         borderBottomColor: UColor.baseline,
         borderBottomWidth: 1,
     },
     inptpasstext: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.lightgray,
-        lineHeight: 25,
-        marginTop: 5,
+        lineHeight: ScreenUtil.autoheight(25),
+        marginTop: ScreenUtil.autoheight(5),
     },
 
     container: {
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
     },
 
     frame: {
-        height:50, 
+        height: ScreenUtil.autoheight(50), 
         flexDirection: 'row', 
         alignItems: 'center', 
         borderBottomColor: UColor.mainColor, 
@@ -413,18 +413,18 @@ const styles = StyleSheet.create({
 
     number: {
         flex: 2, 
-        fontSize: 20, 
+        fontSize: ScreenUtil.setSpText(20), 
         color: UColor.fontColor, 
         textAlign: 'left', 
-        paddingLeft: 8,
+        paddingLeft:  ScreenUtil.autowidth(8),
     },
 
     state: {
         flex: 1, 
-        fontSize: 14, 
+        fontSize: ScreenUtil.setSpText(14), 
         color: UColor.lightgray, 
         textAlign: 'right', 
-        paddingRight: 5,
+        paddingRight:  ScreenUtil.autowidth(5),
     },
 
     tablayout: {   
@@ -432,70 +432,62 @@ const styles = StyleSheet.create({
     },  
 
     buttontab: {  
-        margin: 5,
-        width: 100,
-        height: 33,
+        margin:  ScreenUtil.autowidth(5),
+        width:  ScreenUtil.autowidth(100),
+        height: ScreenUtil.autoheight(33),
         borderRadius: 15,
         alignItems: 'center',   
         justifyContent: 'center', 
     },  
 
     tabText: {  
-       fontSize: 15,
+       fontSize: ScreenUtil.setSpText(15),
     },  
 
     outsource: {
-        paddingHorizontal: 15,
+        paddingHorizontal:  ScreenUtil.autowidth(15),
     },
-
-    showoutsource: {
-        paddingVertical: 10,
-    },
-
     inpoutsource: {
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingTop: 40,
-        paddingBottom: 60,
+        paddingHorizontal: ScreenUtil.autowidth(20),
+        paddingVertical: ScreenUtil.autoheight(40),
         justifyContent: 'center',
     },
     inptext: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color: UColor.lightgray,
-        lineHeight: 30,
+        lineHeight: ScreenUtil.autoheight(30),
     },
 
     inptoutsource: {
         flexDirection: 'row',
         alignItems: 'center',
     },
-
     inpt: {
         flex: 1,
         color: UColor.arrow,
-        fontSize: 15,
-        height: 40,
-        paddingLeft: 10,
+        fontSize: ScreenUtil.setSpText(15),
+        height: ScreenUtil.autoheight(40),
+        paddingLeft: ScreenUtil.autowidth(10),
         backgroundColor: UColor.fontColor,
         borderRadius: 5,
     },
 
     prompttext: {
-        fontSize: 14,
+        fontSize: ScreenUtil.setSpText(14),
         color:  UColor.arrow,
-        lineHeight: 25,
+        lineHeight: ScreenUtil.autoheight(25),
     },
 
     btnoutsource: {
-        margin: 10, 
-        height: 45,  
+        margin: ScreenUtil.autowidth(10), 
+        height: ScreenUtil.autoheight(45),  
         borderRadius: 6, 
         backgroundColor: UColor.tintColor, 
         justifyContent: 'center', 
         alignItems: 'center' 
     },
     btntext: {
-        fontSize: 16,
+        fontSize: ScreenUtil.setSpText(16),
         color: UColor.fontColor
     }
     

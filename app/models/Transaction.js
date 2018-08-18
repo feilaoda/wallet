@@ -353,7 +353,7 @@ export default {
 
   function combine(data) {
     return  {
-        // color: ['#556E95',UColor.tintColor],
+        // color: ['#556E95','#65CAFF'],
         backgroundColor: "#2f3b50",
         grid: {
             top: '15%',
@@ -375,7 +375,7 @@ export default {
                 },
                 axisLine: {
                     lineStyle: {
-                        color: UColor.arrow,
+                        color: '#8696B0',
                     }
                 },
                 axisLabel: {
@@ -398,7 +398,7 @@ export default {
                 },
                 axisLine: {
                     lineStyle: {
-                        color: UColor.arrow,
+                        color: '#8696B0',
                     }
                 },
                 axisTick: {
@@ -429,7 +429,7 @@ export default {
                 lineStyle: {
                     normal: {
                         width: 1,  //连线粗细
-                        color: UColor.tintColor //连线颜色
+                        color: '#65CAFF', //连线颜色
                     }
                 },
                 smooth: true,//折线图是趋缓的
@@ -441,11 +441,11 @@ export default {
 
 function combineET(data) {
     return  {
-        // color: ['#556E95',UColor.tintColor],
+        // color: ['#556E95','#65CAFF'],
         backgroundColor: "#2f3b50",
         grid: {
             top: '15%',
-            left: '0%',
+            left: '5%',
             right: '5%',
             bottom: '3%',
             containLabel: true
@@ -462,7 +462,7 @@ function combineET(data) {
                 },
                 axisLine: {
                     lineStyle: {
-                        color: UColor.arrow,
+                        color: '#8696B0',
                     }
                 },
                 axisLabel: {
@@ -485,7 +485,7 @@ function combineET(data) {
                 },
                 axisLine: {
                     lineStyle: {
-                        color: UColor.arrow,
+                        color: '#8696B0',
                     }
                 },
                 axisTick: {
@@ -521,8 +521,8 @@ function combineET(data) {
                 data: data.ps,
                 lineStyle: {
                     normal: {
-                        width: 2,  //连线粗细
-                        color:  UColor.tintColor, //连线颜色
+                        width: 1,  //连线粗细
+                        color:   '#65CAFF', //连线颜色
                     }
                 },
                 smooth: true,//折线图是趋缓的

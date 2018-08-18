@@ -95,41 +95,39 @@ const styles = StyleSheet.create({
       backgroundColor: UColor.fontColor,
     },
 
-    outsource: {
-        paddingLeft: 5, 
-        paddingRight: 5,  
-        paddingBottom: 10, 
+    outsource: { 
+        paddingHorizontal: ScreenUtil.autowidth(5),
+        paddingBottom: ScreenUtil.autoheight(10), 
         backgroundColor: UColor.secdColor,
     },
 
     AgentInfo: {
         justifyContent: "center", 
         alignItems: 'center', 
-        height:118, 
+        height: ScreenUtil.autoheight(118), 
         flexDirection:'column', 
-        marginTop: 3, 
-        marginBottom: 4,
+        marginVertical: ScreenUtil.autoheight(5),
     },
 
     bjoutsource: {
-        width: 50, 
-        height: 50, 
+        width: ScreenUtil.autowidth(50), 
+        height: ScreenUtil.autowidth(50), 
         backgroundColor: UColor.mainColor,
         justifyContent: "center", 
         alignItems: 'center', 
         borderRadius: 25, 
-        margin: 5,
+        margin: ScreenUtil.autowidth(5),
     },
 
     imgtext: {
-        width: 40, 
-        height: 40,
+        width: ScreenUtil.autowidth(40), 
+        height: ScreenUtil.autowidth(40),
     },
 
     nametext: {
-        width: 117, 
-        height: 24, 
-        lineHeight: 24, 
+        width: ScreenUtil.autowidth(117), 
+        height: ScreenUtil.autoheight(24), 
+        lineHeight: ScreenUtil.autoheight(24), 
         backgroundColor: UColor.tintColor, 
         textAlign: 'center', 
         color:  UColor.fontColor,
@@ -137,17 +135,17 @@ const styles = StyleSheet.create({
     },
 
     dasoutsource: {
-        padding: 5, 
+        padding: ScreenUtil.autowidth(5), 
         backgroundColor: UColor.mainColor, 
         borderRadius: 5,
     },
 
     dasimg: {
-        width: 35, 
-        height: 26, 
+        width: ScreenUtil.autowidth(35), 
+        height: ScreenUtil.autoheight(26), 
         position: 'absolute', 
         top: 0, 
-        left: 15, 
+        left: ScreenUtil.autowidth(15), 
         zIndex: 999
     },
 
@@ -157,26 +155,26 @@ const styles = StyleSheet.create({
 
     frame: {
         flex: 1,
-        height: 60,
-        margin: 2, 
-        padding:5,
+        height: ScreenUtil.autoheight(60),
+        margin: ScreenUtil.autowidth(2), 
+        paddingVertical: ScreenUtil.autowidth(10),
         flexDirection: 'column', 
         alignItems: 'center', 
-        justifyContent: 'center', 
+        justifyContent: 'space-between', 
         backgroundColor: UColor.secdColor,
     },
     numbers: {
-        fontSize: 12, 
+        fontSize: ScreenUtil.setSpText(12), 
         color: UColor.fontColor,   
     },
 
     number: {
-        fontSize: 18, 
+        fontSize: ScreenUtil.setSpText(18), 
         color: UColor.fontColor,   
     },
 
     state: {  
-        fontSize: 12, 
+        fontSize: ScreenUtil.setSpText(12), 
         color: UColor.lightgray, 
     },
 
@@ -185,50 +183,48 @@ const styles = StyleSheet.create({
     },  
 
     buttontab: {  
-        margin: 5,
-        width: 100,
-        height: 33,
+        margin: ScreenUtil.autowidth(5),
+        width: ScreenUtil.autowidth(100),
+        height: ScreenUtil.autoheight(33),
         borderRadius: 15,
         alignItems: 'center',   
         justifyContent: 'center', 
     },
 
     Official: {
-        height:35, 
+        height: ScreenUtil.autoheight(35), 
         flexDirection: "row", 
         justifyContent: 'flex-start', 
         alignItems: 'center'
     },
 
     Officialtitle: {
-        fontSize: 12, 
+        fontSize: ScreenUtil.setSpText(12), 
         color: UColor.arrow, 
-        marginTop: 5
+        marginTop: ScreenUtil.autoheight(5),
     },
 
     Officialtext: {
-        fontSize: 13, 
+        fontSize: ScreenUtil.setSpText(13), 
         color: UColor.tintColor, 
-        marginTop: 5
+        marginTop: ScreenUtil.autoheight(5),
     },
 
     synopsis: {
         flex: 1,  
         backgroundColor: UColor.fontColor, 
-        paddingTop: 5, 
-        paddingLeft: 35, 
-        paddingRight: 35,
+        paddingTop: ScreenUtil.autoheight(5), 
+        paddingHorizontal: ScreenUtil.autowidth(35),
     },
 
     spsoutsource: {
-        paddingTop: 20,
-        paddingBottom: 25,
+        paddingVertical: ScreenUtil.autoheight(25),
     },
 
     spstext: {  
-       fontSize: 14,
+       fontSize: ScreenUtil.setSpText(14),
        color: UColor.blackColor,
-       lineHeight: 25,
+       lineHeight: ScreenUtil.autoheight(25),
     },  
 
     

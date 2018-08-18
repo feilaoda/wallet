@@ -4,8 +4,8 @@ import { DeviceEventEmitter, Clipboard, StyleSheet, Image, ScrollView, View, Tex
 import UColor from "../../utils/Colors";
 import Button from "../../components/Button";
 import UImage from "../../utils/Img";
-import ScreenUtil from '../../utils/ScreenUtil'
 import QRCode from "react-native-qrcode-svg";
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from "../../components/Toast";
 import BaseComponent from "../../components/BaseComponent";
 let dismissKeyboard = require("dismissKeyboard");
@@ -134,133 +134,49 @@ class TurnInAsset extends BaseComponent {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView keyboardShouldPersistTaps="always">
-          <TouchableOpacity
-            activeOpacity={1.0}
-            onPress={this.dismissKeyboardClick.bind(this)}
-          >
-            <View style={styles.taboutsource}>
-              <View style={styles.outsource}>
-                <Text style={styles.accountText}>
-                  账户：{this.props.defaultWallet == null
-                    ? ""
-                    : this.props.defaultWallet.account}
-                </Text>
-                <View style={styles.codeout}>
-                  <View style={styles.qrcode}>
-                    <QRCode
-                      size={170}
-                      style={{ width: 170 }}
-                      value = {this.getQRCode()}
-                    />
-                  </View>
+        <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)} style={styles.tab}>
+          <View style={styles.taboutsource}>
+            <View style={styles.outsource}>
+              <Text style={styles.accountText}> 账户：{this.props.defaultWallet == null ? "" : this.props.defaultWallet.account}</Text>
+              <View style={styles.codeout}>
+                <View style={styles.qrcode}>
+                  <QRCode size={170} style={{ width: 170 }} value = {this.getQRCode()}/>
                 </View>
-                <Text style={styles.prompttext}>扫一扫，向我转账</Text>
-                <View style={styles.inptoutsource}>
-                <Text style={styles.tokenText} />
-                  <TextInput
-                    autoFocus={false}
-                    onChangeText={amount =>
-                      this.setState({ amount: this.chkPrice(amount) })
-                    }
-                    value = {this.state.amount}
-                    maxLength = {15}
-                    returnKeyType="go"
-                    selectionColor={UColor.tintColor}
-                    style={styles.inpt}
-                    placeholderTextColor={UColor.tintColor}
-                    placeholder="请输入金额(可不填)"
-                    underlineColorAndroid="transparent"
-                    secureTextEntry={false}
-                    keyboardType="numeric"
-                  />
-                  <Text style={styles.tokenText}>{this.state.symbol}</Text>
+              </View>
+              <Text style={styles.prompttext}>扫一扫，向我转账</Text>
+              <View style={styles.inptoutsource}>
+              <Text style={styles.tokenText} />
+                <TextInput autoFocus={false} onChangeText={amount => this.setState({ amount: this.chkPrice(amount) })}
+                  value = {this.state.amount} maxLength = {15} returnKeyType="go" selectionColor={UColor.tintColor}
+                  style={styles.inpt} placeholderTextColor={UColor.tintColor} placeholder="请输入金额(可不填)"
+                  underlineColorAndroid="transparent" secureTextEntry={false} keyboardType="numeric"
+                />
+                <Text style={styles.tokenText}>{this.state.symbol}</Text>
+              </View>
+              <Button onPress={this.copy.bind()} style={styles.btnnextstep}>
+                <View style={styles.nextstep}>
+                  <Text style={styles.nextsteptext}>复制账户</Text>
                 </View>
-                <Button onPress={this.copy.bind()} style={styles.btnnextstep}>
-                  <View style={styles.nextstep}>
-                    <Text style={styles.nextsteptext}>复制账户</Text>
-                  </View>
-                </Button>
+              </Button>
+              <View style={styles.logout}>
+                  <Image source={UImage.bottom_log} style={styles.logimg}/>
+                  <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
               </View>
             </View>
-          </TouchableOpacity>
-        </ScrollView>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  inptoutsource: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: UColor.mainColor,
-    marginBottom: 10,
-    paddingLeft: 10,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  accountoue: {
-    height: 40,
-    flex: 1,
-    justifyContent: "center",
-    flexDirection: "row"
-  },
-
-  passoutsource: {
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  inptpass: {
-    color: UColor.tintColor,
-    height: 45,
-    width: "100%",
-    paddingBottom: 5,
-    fontSize: 16,
-    backgroundColor: UColor.fontColor,
-    borderBottomColor: UColor.baseline,
-    borderBottomWidth: 1
-  },
-
-  container: {
+   container: {
     flex: 1,
     flexDirection: "column",
     backgroundColor: UColor.secdColor,
-    paddingTop: 5
+    paddingTop: ScreenUtil.autoheight(5)
   },
-
-  row: {
-    height: 90,
-    backgroundColor: UColor.mainColor,
-    flexDirection: "column",
-    padding: 10,
-    justifyContent: "space-between",
-    borderRadius: 5,
-    margin: 5
-  },
-  top: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  footer: {
-    height: 50,
-    flexDirection: "row",
-    position: "absolute",
-    backgroundColor: UColor.secdColor,
-    bottom: 0,
-    left: 0,
-    right: 0
-  },
-
-  // 标题
-  titleText: {
-    marginBottom: 10,
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-
   taboutsource: {
     flex: 1,
     flexDirection: "column"
@@ -268,30 +184,19 @@ const styles = StyleSheet.create({
   outsource: {
     backgroundColor: UColor.secdColor,
     flexDirection: "column",
-    padding: 20,
+    padding: ScreenUtil.autowidth(20),
     flex: 1
   },
-
-  // 内容
   accountText: {
     color: UColor.arrow,
-    fontSize: 15,
-    height: 40,
-    paddingLeft: 2,
+    fontSize: ScreenUtil.setSpText(15),
+    height: ScreenUtil.autoheight(40),
+    paddingLeft: ScreenUtil.autowidth(2),
     textAlign: "left",
-    lineHeight: 40
-  },
-  tokenText: {
-    color: UColor.arrow,
-    fontSize: 15,
-    width: 60,
-    height: 40,
-    paddingLeft: 2,
-    textAlign: "left",
-    lineHeight: 40
+    lineHeight: ScreenUtil.autoheight(40),
   },
   codeout: {
-    margin: 10,
+    margin: ScreenUtil.autowidth(10),
     alignItems: "center",
     justifyContent: "center",
     alignItems: "center",
@@ -299,59 +204,74 @@ const styles = StyleSheet.create({
   },
   qrcode: {
     backgroundColor: UColor.fontColor,
-    padding: 5
-  },
-  tab: {
-    flex: 1
+    padding: ScreenUtil.autowidth(5),
   },
   prompttext: {
-    marginTop: 5,
-    flex: 1,
+    marginTop: ScreenUtil.autoheight(5),
     color: UColor.fontColor,
-    fontSize: 15,
-    height: 30,
-    paddingLeft: 2,
+    fontSize: ScreenUtil.setSpText(15),
+    height: ScreenUtil.autoheight(30),
+    paddingLeft: ScreenUtil.autowidth(2),
     textAlign: "center"
   },
-  btnamount: {
-    height: 45,
-    marginTop: 5
-  },
-  amountstep: {
-    height: 25,
-    // backgroundColor: UColor.tintColor,
+  inptoutsource: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: UColor.mainColor,
+    marginBottom: ScreenUtil.autoheight(10),
+    paddingLeft: ScreenUtil.autowidth(10),
     justifyContent: "center",
-    alignItems: "center",
-    // margin: 20,
-    borderRadius: 5
+    alignItems: "center"
   },
-  amountsteptext: {
-    fontSize: 15,
-    color: UColor.tintColor
+  tokenText: {
+    color: UColor.arrow,
+    fontSize: ScreenUtil.setSpText(15),
+    width: ScreenUtil.autowidth(60),
+    height: ScreenUtil.autoheight(40),
+    paddingLeft: ScreenUtil.autowidth(2),
+    textAlign: "left",
+    lineHeight: ScreenUtil.autoheight(40),
   },
   inpt: {
     flex: 1,
     color: UColor.arrow,
-    fontSize: 15,
-    height: 40,
-    paddingLeft: 2,
+    fontSize: ScreenUtil.setSpText(15),
+    height: ScreenUtil.autoheight(40),
+    paddingLeft: ScreenUtil.autowidth(2),
     textAlign: "center"
   },
   btnnextstep: {
-    height: 85,
-    marginTop: 30
+    height: ScreenUtil.autoheight(85),
   },
   nextstep: {
-    height: 45,
+    height: ScreenUtil.autoheight(45),
     backgroundColor: UColor.tintColor,
     justifyContent: "center",
     alignItems: "center",
-    margin: 20,
+    margin: ScreenUtil.autowidth(20),
     borderRadius: 5
   },
   nextsteptext: {
-    fontSize: 15,
+    fontSize: ScreenUtil.setSpText(15),
     color: UColor.fontColor
-  }
+  },
+  logout:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: ScreenUtil.autoheight(20),
+  },
+  logimg: {
+    width: ScreenUtil.autowidth(50), 
+    height: ScreenUtil.autowidth(50)
+  },
+  logtext: {
+    fontSize: ScreenUtil.setSpText(14),
+    color: UColor.arrow,
+    lineHeight: ScreenUtil.autoheight(30),
+  },
+  tab: {
+    flex: 1
+  },
 });
 export default TurnInAsset;

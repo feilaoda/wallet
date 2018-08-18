@@ -113,7 +113,7 @@ class TurnIn extends BaseComponent {
   render() {
     return (
       <View style={styles.container}>     
-        <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)} style={{flex: 1,}}>
+        <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)} style={styles.tab}>
           <View style={styles.taboutsource}>
             <View style={styles.outsource}>
               <Text style={styles.accountText}>账户：{this.props.defaultWallet == null ? "" : this.props.defaultWallet.account}</Text>
@@ -150,76 +150,12 @@ class TurnIn extends BaseComponent {
 }
 
 const styles = StyleSheet.create({
-  inptoutsource: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: UColor.mainColor,
-    marginBottom: ScreenUtil.autoheight(10),
-    paddingLeft: ScreenUtil.autowidth(10),
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  accountoue: {
-    height: ScreenUtil.autoheight(40),
-    flex: 1,
-    justifyContent: "center",
-    flexDirection: "row"
-  },
-
-  passoutsource: {
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  inptpass: {
-    color: UColor.tintColor,
-    height: ScreenUtil.autoheight(45),
-    width: "100%",
-    paddingBottom: ScreenUtil.autoheight(5),
-    fontSize: ScreenUtil.setSpText(16),
-    backgroundColor: UColor.fontColor,
-    borderBottomColor: UColor.baseline,
-    borderBottomWidth: 1
-  },
-
   container: {
     flex: 1,
     flexDirection: "column",
     backgroundColor: UColor.secdColor,
     paddingTop: ScreenUtil.autoheight(5)
   },
-
-  row: {
-    height: ScreenUtil.autoheight(90),
-    backgroundColor: UColor.mainColor,
-    flexDirection: "column",
-    padding: ScreenUtil.autowidth(10),
-    justifyContent: "space-between",
-    borderRadius: 5,
-    margin: ScreenUtil.autowidth(5),
-  },
-  top: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  footer: {
-    height: ScreenUtil.autoheight(50),
-    flexDirection: "row",
-    position: "absolute",
-    backgroundColor: UColor.secdColor,
-    bottom: 0,
-    left: 0,
-    right: 0
-  },
-
-  // 标题
-  titleText: {
-    marginBottom: ScreenUtil.autoheight(10),
-    fontSize: ScreenUtil.setSpText(18),
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-
   taboutsource: {
     flex: 1,
     flexDirection: "column"
@@ -230,20 +166,9 @@ const styles = StyleSheet.create({
     padding: ScreenUtil.autowidth(20),
     flex: 1
   },
-
-  // 内容
   accountText: {
     color: UColor.arrow,
     fontSize: ScreenUtil.setSpText(15),
-    height: ScreenUtil.autoheight(40),
-    paddingLeft: ScreenUtil.autowidth(2),
-    textAlign: "left",
-    lineHeight: ScreenUtil.autoheight(40),
-  },
-  tokenText: {
-    color: UColor.arrow,
-    fontSize: ScreenUtil.setSpText(15),
-    width: ScreenUtil.autowidth(60),
     height: ScreenUtil.autoheight(40),
     paddingLeft: ScreenUtil.autowidth(2),
     textAlign: "left",
@@ -260,9 +185,6 @@ const styles = StyleSheet.create({
     backgroundColor: UColor.fontColor,
     padding: ScreenUtil.autowidth(5),
   },
-  tab: {
-    flex: 1
-  },
   prompttext: {
     marginTop: ScreenUtil.autoheight(5),
     color: UColor.fontColor,
@@ -271,21 +193,23 @@ const styles = StyleSheet.create({
     paddingLeft: ScreenUtil.autowidth(2),
     textAlign: "center"
   },
-  btnamount: {
-    height: ScreenUtil.autoheight(45),
-    marginTop: ScreenUtil.autoheight(5),
-  },
-  amountstep: {
-    height: ScreenUtil.autoheight(25),
-    // backgroundColor: UColor.tintColor,
+  inptoutsource: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: UColor.mainColor,
+    marginBottom: ScreenUtil.autoheight(10),
+    paddingLeft: ScreenUtil.autowidth(10),
     justifyContent: "center",
-    alignItems: "center",
-    // margin: 20,
-    borderRadius: 5
+    alignItems: "center"
   },
-  amountsteptext: {
+  tokenText: {
+    color: UColor.arrow,
     fontSize: ScreenUtil.setSpText(15),
-    color: UColor.tintColor
+    width: ScreenUtil.autowidth(60),
+    height: ScreenUtil.autoheight(40),
+    paddingLeft: ScreenUtil.autowidth(2),
+    textAlign: "left",
+    lineHeight: ScreenUtil.autoheight(40),
   },
   inpt: {
     flex: 1,
@@ -324,6 +248,9 @@ const styles = StyleSheet.create({
     fontSize: ScreenUtil.setSpText(14),
     color: UColor.arrow,
     lineHeight: ScreenUtil.autoheight(30),
-  }
+  },
+  tab: {
+    flex: 1
+  },
 });
 export default TurnIn;
