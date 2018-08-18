@@ -89,7 +89,7 @@ const requestO = (url,method, body, timeout=30000) => {
 };
 
 const request = (url,method,body, timeout = 30000)=>{
-   if(Constants.netTimeoutFlag){
+   if(Constants.isNetWorkOffline){
     return { code: 500, msg: '网络繁忙，请稍后再试' };
    }
    return getRootaddr().then(res=>{
@@ -102,7 +102,6 @@ const request = (url,method,body, timeout = 30000)=>{
       return requestO(okUrl, method, body, timeout)
    }).catch(e=>{
     console.log(e);
-    // Constants.netTimeoutFlag=true;
     return { code: 500, msg: '网络繁忙，请稍后再试' };
    })
 };
