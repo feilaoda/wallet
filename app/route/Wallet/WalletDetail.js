@@ -310,7 +310,7 @@ class WalletDetail extends BaseComponent {
       } catch (error) {
         EasyToast.show('您输入的密码不正确');
       }
-      // EasyShowLD.dialogClose();
+      EasyShowLD.dialogClose();
     }, () => { EasyShowLD.dialogClose() });
   }
 
