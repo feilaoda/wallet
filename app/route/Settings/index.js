@@ -14,7 +14,7 @@ const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
 var DeviceInfo = require('react-native-device-info');
 
-@connect(({ login}) => ({ ...login}))
+@connect(({ wallet, login}) => ({ ...wallet, ...login}))
 class Setting extends React.Component {
 
   static navigationOptions = {
@@ -37,6 +37,12 @@ class Setting extends React.Component {
     //组件加载完成
     componentDidMount() {
       const {dispatch}=this.props;
+      this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }});
+      DeviceEventEmitter.addListener('nativeCallRn', (msg) => {
+        title = "React Native界面,收到数据：" + msg;
+        // ToastAndroid.show("发送成功", ToastAndroid.SHORT);
+        alert(title);
+      })
     }
 
     
@@ -78,17 +84,6 @@ class Setting extends React.Component {
     })
   }
 
-    /** 
-   * 接收原生调用 
-   */
-  componentDidMount() {
-    DeviceEventEmitter.addListener('nativeCallRn', (msg) => {
-      title = "React Native界面,收到数据：" + msg;
-      // ToastAndroid.show("发送成功", ToastAndroid.SHORT);
-      alert(title);
-    })
-  }
-
   _renderListItem() {
     return this.config.map((item, i) => {
       return (<Item key={i} {...item} />)
@@ -127,14 +122,14 @@ class Setting extends React.Component {
 
   render() {
     return <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        {Constants.netTimeoutFlag==true &&
+    {Constants.netTimeoutFlag &&
         <Button onPress={this.openSystemSetting.bind(this)}>
           <View style={styles.systemSettingTip}>
               <Text style={styles.systemSettingText}> 您当前网络不可用，请检查系统网络设置是否正常。</Text>
               <Ionicons style={styles.systemSettingArrow} name="ios-arrow-forward-outline" size={20} />
           </View>
         </Button>}
+      <ScrollView style={styles.scrollView}>
         <View>
             <Button onPress={this.goProfile.bind(this)}>
               <View style={styles.userHead} >
