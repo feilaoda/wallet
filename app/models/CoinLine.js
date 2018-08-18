@@ -66,6 +66,7 @@ export default {
 
 function combine(data) {
     return  {
+        backgroundColor: "#2f3b50",
         color: ['#556E95', '#65CAFF'],
         grid: {
             top: '3%',
