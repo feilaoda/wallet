@@ -21,7 +21,7 @@ var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 
 @connect(({wallet, vote}) => ({...wallet, ...vote}))
-class AuthAransfer extends BaseComponent {
+class AuthTransfer extends BaseComponent {
 
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
@@ -568,4 +568,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AuthAransfer;
+export default AuthTransfer;

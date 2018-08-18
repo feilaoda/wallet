@@ -41,7 +41,7 @@ import ImportEosKey from './Wallet/ImportEosKey'
 import WalletManage from './Wallet/WalletManage'
 import WalletDetail from './Wallet/WalletDetail'
 import AuthChange from './Wallet/AuthChange'
-import AuthAransfer from './Wallet/AuthAransfer'
+import AuthTransfer from './Wallet/AuthTransfer'
 import ModifyPassword from './Wallet/ModifyPassword'
 import ExportPublicKey from './Wallet/ExportPublicKey'
 import AuthManage from './Wallet/AuthManage'
@@ -206,8 +206,8 @@ const Nav = StackNavigator(
     AuthChange: {
       screen: AuthChange
     },
-    AuthAransfer: {
-      screen: AuthAransfer
+    AuthTransfer: {
+      screen: AuthTransfer
     },
     ModifyPassword: {
       screen: ModifyPassword
