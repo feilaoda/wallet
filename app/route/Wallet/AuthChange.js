@@ -67,6 +67,9 @@ class AuthChange extends BaseComponent {
     //提交
     submission = () =>{  
 
+        EasyToast.show("考虑到安全性的原因，该功能暂末开放！");
+        return
+
         if(this.state.isAuth==false){
             EasyToast.show("找不到对应的公钥或账号");
             return
