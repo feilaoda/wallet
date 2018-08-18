@@ -43,7 +43,7 @@ class ImportEosKey extends BaseComponent {
       publicKey: '',
       ReturnData: '',
       dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }),
-      selectAccount: false,  //选择钱包
+      selectpromp: false,  //选择钱包
       walletList: [],  //获取到的账户
       keyObj:{},       //导入密钥对象
     };
@@ -162,7 +162,7 @@ class ImportEosKey extends BaseComponent {
               keyObj.owner_publicKey = owner_publicKey;
               keyObj.active_privatekey = active_privatekey;
               keyObj.active_publicKey = active_publicKey;
-              this.setState({selectAccount: true,walletList : array,keyObj:keyObj});  
+              this.setState({selectpromp: true,walletList : array,keyObj:keyObj});  
           }
         });
       });
@@ -293,7 +293,7 @@ class ImportEosKey extends BaseComponent {
   }
 
   _onRequestAccountClose() {
-    this.setState({selectAccount: false,});
+    this.setState({selectpromp: false,});
   }
   _onPressEnter() {
      this._onRequestAccountClose();
@@ -420,7 +420,7 @@ class ImportEosKey extends BaseComponent {
               </View>
             </TouchableOpacity>
         </Modal>  
-        <Modal style={styles.businesmodal} animationType={'slide'} transparent={true}  visible={this.state.selectAccount} onRequestClose={()=>{}}>
+        <Modal style={styles.businesmodal} animationType={'slide'} transparent={true}  visible={this.state.selectpromp} onRequestClose={()=>{}}>
             <TouchableOpacity style={styles.businestouchable} activeOpacity={1.0}>
               <View style={styles.modalStyle}>
                 <View style={styles.subView}> 
