@@ -77,7 +77,8 @@ class AuthManage extends BaseComponent {
                         </TouchableHighlight>
                     </View>
                     <View style={styles.inptgo}>
-                        <Text style={styles.inptext}>{this.state.activePk}</Text>
+                        <Text style={styles.inptext}>{this.state.activePk.substr(0, 26)}</Text>
+                        <Text style={styles.inptext}>{this.state.activePk.substr(26)}</Text>
                     </View>
                 </View>
                 }
@@ -100,7 +101,7 @@ class AuthManage extends BaseComponent {
             </View>
             <View style={styles.textout}>
                 <Text style={styles.titletext}>什么是拥有者权限？</Text>
-                <Text style={styles.explaintext}>Owner 代表了对账户的所有权，用于账号过户操作。</Text>
+                <Text style={styles.explaintext}>Owner 代表了对账户的所有权，可以对权限进行设置，管理Active和其他角色。</Text>
                 <Text style={styles.titletext}>什么是管理者权限？</Text>
                 <Text style={styles.explaintext}>Active 用于日常使用，比如转账，投票等。</Text>
                 <Text style={styles.titletext}>什么是权重阈值？</Text>
