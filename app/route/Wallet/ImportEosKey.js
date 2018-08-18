@@ -611,10 +611,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalStyle: {
-    width: ScreenWidth - 20,
+    // width: ScreenWidth - 20,
     backgroundColor: UColor.fontColor,
     borderRadius: 5,
-    paddingHorizontal: ScreenUtil.autowidth(25),
+    // paddingHorizontal: ScreenUtil.autowidth(25),
   },
   subView: {
     flexDirection: "row",
@@ -728,8 +728,8 @@ liststrip: {
 
 payertext: {
   flex: 3,
-  fontSize: ScreenUtil.setSpText(14),
-  color: UColor.tintColor,
+  fontSize: ScreenUtil.setSpText(18),
+  // color: UColor.tintColor,
   textAlign: 'left'
 },
 
