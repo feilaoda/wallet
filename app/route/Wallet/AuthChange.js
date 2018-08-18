@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,Clipboard,TextInput,KeyboardAvoidingView,TouchableOpacity,TouchableHighlight} from 'react-native';
+import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,Clipboard,TextInput,KeyboardAvoidingView,TouchableOpacity,TouchableHighlight,FlatList} from 'react-native';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
@@ -312,7 +312,9 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
 }  
 
 
-  _renderRow(rowData, sectionID, rowID){ // cell样式
+  _renderRow(rowData){ // cell样式
+
+    // console.log("_renderRow rowData=%s",JSON.stringify(rowData))
 
     return (
 
@@ -326,15 +328,15 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
 
                 <View style={styles.buttonView}>
                     <Text style={styles.weightText}>权阀值  </Text>
-                    <Text style={styles.buttonText}>{rowData.weight}</Text>
+                    <Text style={styles.buttonText}>{rowData.item.weight}</Text>
                 </View>
             </View>
 
             <View style={styles.titleStyle}>
-                <Text style={styles.pktext}>{rowData.key}</Text>
+                <Text style={styles.pktext}>{rowData.item.key}</Text>
             </View>
 
-            <TouchableHighlight onPress={() => { this.deleteUser(rowData.key) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
+            <TouchableHighlight onPress={() => { this.deleteUser(rowData.item.key) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
                 <View style={styles.delButton}>
                     <Text style={styles.delText}>删除</Text>
                 </View>
@@ -394,9 +396,11 @@ delInputBox(delKey){
 
 }
 
-  _renderRowInput(rowData, sectionID, rowID){ // cell样式
+  _renderRowInput(rowData){ // cell样式
     // console.log("sectionID=%s",sectionID)
-    // console.log("rowID=%s",rowID)
+    // console.log("rowData=%s",JSON.stringify(rowData))
+
+    rowID=rowData.index;
     return (
         
         <View style={styles.addUserTitle} >
@@ -413,7 +417,7 @@ delInputBox(delKey){
                 </View>
             </View>
 
-            <TextInput ref={(ref) => this._lphone = ref} value={rowData.value} returnKeyType="next" editable={true}
+            <TextInput ref={(ref) => this._lphone = ref} value={rowData.item.value} returnKeyType="next" editable={true}
                 selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
                 onChangeText={(inputText) => this.setState({ inputText: this.inputValue(rowID,inputText)})}   keyboardType="default" 
                 placeholder="输入账号或Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
@@ -462,13 +466,19 @@ delInputBox(delKey){
             </View>
         </View>
 
-        <ListView renderRow={this._renderRow.bind(this)}  
-            dataSource={this.state.dataSource.cloneWithRows(this.state.authKeys.length==null ?[]: this.state.authKeys)}> 
-        </ListView> 
+        <FlatList
+            data={this.state.authKeys.length==null ?[]: this.state.authKeys} 
+            extraData={this.state}
+            renderItem={this._renderRow.bind(this)} >
+        </FlatList>
 
-        <ListView renderRow={this._renderRowInput.bind(this)}  
-            dataSource={this.state.dataSource.cloneWithRows(this.state.inputText.length==null ?[]: this.state.inputText)}> 
-        </ListView> 
+        <FlatList
+            data={this.state.inputText.length==null ?[]: this.state.inputText} 
+            extraData={this.state}
+            renderItem={this._renderRowInput.bind(this)} >
+        </FlatList>
+
+
 
         <TouchableHighlight onPress={() => { this.addMoreUser(this) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
             <View style={styles.delButton}>
