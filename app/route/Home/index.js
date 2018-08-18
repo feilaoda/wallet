@@ -238,7 +238,7 @@ class Home extends React.Component {
     });
   }
 
-  // 显示/隐藏 modal  
+  // 显示/隐藏   
   _setModalInvalid() {
     this.props.dispatch({ type: 'wallet/updateInvalidState', payload: {Invalid: false}});
   }
@@ -368,6 +368,7 @@ class Home extends React.Component {
     this.setState({
       modal: false
     });
+    this._disableTipVisible();
   }
   importWallet() {
     const { navigate } = this.props.navigation;
@@ -375,6 +376,7 @@ class Home extends React.Component {
     this.setState({
       modal: false
     });
+    this._disableTipVisible();
   }
 
   changeWallet(data) {
@@ -433,14 +435,17 @@ class Home extends React.Component {
     this.setState({
       modal: false
     });
+    this._disableTipVisible();
   }
 
   Establish() {
+    this._disableTipVisible();
     const { navigate } = this.props.navigation;
     navigate('CreateWallet', {entry: "wallet_home"});
   }
   
   Import() {
+    this._disableTipVisible();
     const { navigate } = this.props.navigation;
     navigate('ImportEosKey', {});
   }
