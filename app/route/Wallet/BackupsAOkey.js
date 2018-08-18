@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
 
     logout:{
         flex: 1,
-        minHeight: ScreenUtil.autoheight(200),
+        minHeight: ScreenUtil.autoheight(160),
         alignItems: 'center',
         justifyContent: 'flex-end',
         paddingBottom: ScreenUtil.autoheight(20),
