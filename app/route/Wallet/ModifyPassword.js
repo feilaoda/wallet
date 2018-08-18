@@ -16,7 +16,7 @@ var dismissKeyboard = require('dismissKeyboard');
 class ModifyPassword extends BaseComponent {
 
     static navigationOptions = {
-        title: '更改密码',
+        title: '修改密码',
         headerStyle: {
             paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
@@ -47,11 +47,11 @@ class ModifyPassword extends BaseComponent {
             EasyToast.show('请输入旧密码');
             return;
         }
-        if (this.state.newPassword == "" || this.state.newPassword < 8) {
+        if (this.state.newPassword == "" || this.state.newPassword.length < 8) {
             EasyToast.show('密码长度至少8位，请重输');
             return;
         }
-        if (this.state.newRePassword == "" || this.state.newRePassword < 8) {
+        if (this.state.newRePassword == "" || this.state.newRePassword.length < 8) {
             EasyToast.show('密码长度至少8位，请重输');
             return;
         }
