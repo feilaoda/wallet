@@ -35,24 +35,25 @@ class RecordQueryRam extends React.Component {
   //加载地址数据
   componentDidMount() {
     this.setState({logRefreshing: true});
+    this.setState({logId: "-1"});
     this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: this.props.navigation.state.params.record, last_id: this.state.logId}, callback: (resp) => {
       try {
-        if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+        this.setState({logRefreshing: false});
+
+        if(this.props.personalRamTradeLog && this.props.personalRamTradeLog.length > 0){
           this.setState({
-            newramTradeLog: [],
-            show: true
-          })
+            newramTradeLog: this.props.personalRamTradeLog,
+            show: false,
+          });
         }else{
           this.setState({
-            newramTradeLog: resp.data,
-            show: false,
-          })
+            show: true
+          });
         }
       } catch (error) {
-        
+
       }
       this.processLogId();
-      this.setState({logRefreshing: false});
 
     }});   
     DeviceEventEmitter.addListener('scan_result', (data) => {
@@ -64,8 +65,9 @@ class RecordQueryRam extends React.Component {
   }
 
   processLogId(){
-    if(this.state.newramTradeLog && (this.state.newramTradeLog.length > 0)){
-        this.setState({logId: this.state.newramTradeLog[this.state.newramTradeLog.length - 1]._id});
+    if(this.props.personalRamTradeLog && (this.props.personalRamTradeLog.length > 0)){
+        this.setState({logId: this.props.personalRamTradeLog[this.props.personalRamTradeLog.length - 1]._id});
+        // logId = this.props.personalRamTradeLog[this.props.personalRamTradeLog.length - 1]._id;
     }else{
         this.setState({logId: "-1"});
     }
@@ -97,44 +99,34 @@ class RecordQueryRam extends React.Component {
       }
       this.setState({logRefreshing: true});
 
-      var repeatquery = this.checkIsRepeatQueryByAccount(labelname);
       var last_id;
-      if(repeatquery == false){
+      var repeatquery = this.checkIsRepeatQueryByAccount(labelname);
+      if(!repeatquery){
         //新的账户名，清除原记录
-        this.setState({newramTradeLog: [],logId:-1});
-        last_id = -1;
+        this.setState({newramTradeLog: []});
+        last_id = "-1";
       }else{
         last_id = this.state.logId;
       }
-
+      // alert(repeatquery+labelname + this.state.logId);
       this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: labelname.toLowerCase(), last_id: last_id}, callback: (resp) => {
         try {
-            if(resp.code != '0'){
-              this.setState({
-                newramTradeLog: [],
-                show: true
-              })
-            }else if((resp.code == '0') && (this.props.ramTradeLog.length == 0)){
-                 if(repeatquery){
-                   EasyToast.show("没有新交易记录");
-                 }else{
-                   //没有交易
-                  this.setState({
-                    newramTradeLog: [],
-                    show: true
-                  })
-                 }
-            }else{
-              this.setState({
-                  newramTradeLog: resp.data,
-                  show: false,
-              })
-            }
-          } catch (error) {
-
-          }
-          this.processLogId();
           this.setState({logRefreshing: false});
+  
+          if(this.props.personalRamTradeLog && this.props.personalRamTradeLog.length > 0){
+            this.setState({
+              newramTradeLog: this.props.personalRamTradeLog,
+              show: false,
+            });
+          }else{
+            this.setState({
+              show: true
+            });
+          }
+        } catch (error) {
+  
+        }
+        this.processLogId();
 
       }});  
     }  
@@ -151,10 +143,10 @@ class RecordQueryRam extends React.Component {
   dismissKeyboardClick() {
     dismissKeyboard();
   }
-
+  
   onRefresh(){
     //能进来刷新，列表肯定有交易记录
-    if(this.state.logRefreshing){
+    if(this.state.logRefreshing || this.state.logId == "-1"){
       return;
     }
     this.setState({logRefreshing: true});
@@ -165,25 +157,58 @@ class RecordQueryRam extends React.Component {
     
     this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: accountName.toLowerCase(), last_id: this.state.logId}, callback: (resp) => {
       try {
-          if(resp.code != '0'){
+          this.setState({logRefreshing: false});
+
+          if(this.props.personalRamTradeLog && this.props.personalRamTradeLog.length > 0){
             this.setState({
-              newramTradeLog: [],
-              show: true
-            })
-          }else if((resp.code == '0') && (this.props.ramTradeLog.length == 0)){
-            EasyToast.show("没有新交易记录");
+              newramTradeLog: this.props.personalRamTradeLog,
+              show: false,
+            });
           }else{
+            EasyToast.show("没有新交易记录");
             this.setState({
-                newramTradeLog: resp.data,
-                show: false,
-            })
+              show: true
+            });
           }
+
         } catch (error) {
 
         }
         this.processLogId();
-        this.setState({logRefreshing: false});
 
+    }}); 
+  }
+
+  onEndReached(){
+    if(this.state.logRefreshing || this.state.logId == "-1"){
+      return;
+    }
+    this.setState({logRefreshing: true});
+    var accountName = this.state.labelname;
+    if (this.state.labelname == ""||this.state.labelname == undefined||this.state.labelname==null) {
+      accountName = this.props.navigation.state.params.record;
+    }
+    
+    this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: accountName.toLowerCase(), last_id: this.state.logId}, callback: (resp) => {
+      try {
+        this.setState({logRefreshing: false});
+        if((resp.code == '0') && resp.data && resp.data.length == 0){
+                EasyToast.show("没有更多交易记录了哟");
+        }
+        if(this.props.personalRamTradeLog && this.props.personalRamTradeLog.length > 0){
+          this.setState({
+            newramTradeLog: this.props.personalRamTradeLog,
+            show: false,
+          });
+        }else{
+          this.setState({
+            show: true
+          });
+        }
+      } catch (error) {
+
+      }
+      this.processLogId();
     }}); 
   }
 
@@ -219,7 +244,8 @@ class RecordQueryRam extends React.Component {
           </TouchableOpacity> 
       </View>   
       {this.state.show && <View style={styles.nothave}><Text style={styles.copytext}>还没有交易记录哟~</Text></View>}       
-      <ListView style={styles.btn} renderRow={this.renderRow} enableEmptySections={true} 
+      <ListView style={styles.btn} renderRow={this.renderRow} enableEmptySections={true}  onEndReachedThreshold = {50}
+        onEndReached={() => this.onEndReached.bind(this)}
         refreshControl={
           <RefreshControl
             refreshing={this.state.logRefreshing}

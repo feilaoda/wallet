@@ -138,7 +138,7 @@ class Ram extends BaseComponent {
   }
   
   getRamTradeLog(){
-    this.props.dispatch({type: 'transaction/getRamTradeLog',payload: {}, callback: (resp) => {
+    this.props.dispatch({type: 'transaction/getRamTradeLog',payload: {last_id: -1}, callback: (resp) => {
         try {
             if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
                 this.setState({
@@ -341,9 +341,9 @@ class Ram extends BaseComponent {
             if(!onRefreshing){
                 this.setState({logRefreshing: true});
             }
-            this.props.dispatch({type: 'transaction/getRamTradeLogByAccount',payload: {account_name: this.props.defaultWallet.account, last_id: this.state.logId}, callback: (resp) => {
+            this.props.dispatch({type: 'transaction/getMyRamTradeLog',payload: {account_name: this.props.defaultWallet.account, last_id: "-1"}, callback: (resp) => {
                 try {
-                    if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
+                    if(resp.code != '0' || ((resp.code == '0') && (this.props.myRamTradeLog.length == 0))){
                         this.setState({
                           newramTradeLog: [],
                           logRefreshing: false,
@@ -365,7 +365,7 @@ class Ram extends BaseComponent {
         if(!onRefreshing){
             this.setState({logRefreshing: true});
         }
-        this.props.dispatch({type: 'transaction/getRamTradeLog',payload: {}, callback: (resp) => {
+        this.props.dispatch({type: 'transaction/getRamTradeLog',payload: {last_id: -1}, callback: (resp) => {
             try {
                 if(resp.code != '0' || ((resp.code == '0') && (this.props.ramTradeLog.length == 0))){
                     this.setState({

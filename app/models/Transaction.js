@@ -10,7 +10,9 @@ let newarr = new Array();
 export default {
     namespace: 'transaction',
     state: {
-
+    ramTradeLog:{},
+    personalRamTradeLog:{},
+    myRamTradeLog: {},
     },
     effects: {
         *getRamInfo({payload,callback},{call,put}) {
@@ -56,7 +58,7 @@ export default {
                 const resp = yield call(Request.request, getRamTradeLog, 'post', payload);
                 // alert('getRamTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
-                    yield put({ type: 'updateTradeLog', payload: { ramTradeLog:resp.data } });
+                    yield put({ type: 'updateTradeLog', payload: { data:resp.data, ...payload } });
                     Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
@@ -83,13 +85,29 @@ export default {
                 if (callback) callback({ code: 500, msg: "网络异常" });                
             }
         },
+        *getMyRamTradeLog({ payload, callback }, { call, put }) {
+            try{
+                const resp = yield call(Request.request, getRamTradeLogByAccount, 'post', payload);
+                // alert('getRamTradeLogByAccount: '+JSON.stringify(resp));
+                if(resp && resp.code=='0'){               
+                    yield put({ type: 'updateMyTradeLog', payload: { data:resp.data, ...payload  } });
+                    Constants.netTimeoutFlag=false;
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);                
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
+            }
+        },
         //个人交易记录查询
         *getRamTradeLogByAccount({ payload, callback }, { call, put }) {
             try{
                 const resp = yield call(Request.request, getRamTradeLogByAccount, 'post', payload);
                 // alert('getRamTradeLogByAccount: '+JSON.stringify(resp));
-                if(resp.code=='0'){               
-                    yield put({ type: 'updateTradeLog', payload: { ramTradeLog:resp.data } });
+                if(resp && resp.code=='0'){               
+                    yield put({ type: 'updatePersonalTradeLog', payload: { data:resp.data, ...payload  } });
                     Constants.netTimeoutFlag=false;
                 }else{
                     EasyToast.show(resp.msg);
@@ -282,7 +300,31 @@ export default {
             return { ...state, ramLineDatas };
         },
         updateTradeLog(state, action) {
-            return { ...state, ...action.payload };
+            let ramTradeLog = state.ramTradeLog;
+            if(action.payload.data == null || action.payload.last_id=="-1" || ramTradeLog == null){
+                ramTradeLog=action.payload.data;
+            }else{
+                ramTradeLog = ramTradeLog.concat(action.payload.data);
+            }
+            return {...state,ramTradeLog};
+        },
+        updatePersonalTradeLog(state, action) {
+            let personalRamTradeLog = state.personalRamTradeLog;
+            if(action.payload.data == null || action.payload.last_id=="-1" || personalRamTradeLog == null){
+                personalRamTradeLog=action.payload.data;
+            }else{
+                personalRamTradeLog = personalRamTradeLog.concat(action.payload.data);
+            }
+            return {...state,personalRamTradeLog};
+        },
+        updateMyTradeLog(state, action) {
+            let myRamTradeLog = state.myRamTradeLog;
+            if(action.payload.data == null || action.payload.last_id=="-1" || myRamTradeLog == null){
+                myRamTradeLog=action.payload.data;
+            }else{
+                myRamTradeLog = myRamTradeLog.concat(action.payload.data);
+            }
+            return {...state,myRamTradeLog};
         },
         updateBigTradeLog(state, action) {
             return { ...state, ...action.payload };
