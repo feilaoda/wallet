@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {  ListView, StyleSheet, Image, View, Text, Platform,  TouchableOpacity, TextInput, RefreshControl } from 'react-native';
+import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform,  TouchableOpacity, TextInput, RefreshControl } from 'react-native';
 import moment from 'moment';
 import UColor from '../../utils/Colors'
 import UImage from '../../utils/Img'
@@ -56,7 +56,13 @@ class RecordQueryET extends React.Component {
       this.processLogId();
       this.setState({logRefreshing: false});
 
-    }});    
+    }});  
+    DeviceEventEmitter.addListener('scan_result', (data) => {
+      if(data.toaccount){
+          this.setState({labelname:data.toaccount})
+          this.query(data.toaccount);
+      }
+    });   
   }
 
   processLogId(){
@@ -204,6 +210,11 @@ class RecordQueryET extends React.Component {
      navigate('TradeDetails', {transaction});
   }
 
+  Scan() {
+    const { navigate } = this.props.navigation;
+    navigate('BarCode', {isTurnOut:true,coinType:"EOS"});
+  }
+
   render() {
     return (<View style={styles.container}>
       <View style={styles.header}>  
@@ -213,7 +224,10 @@ class RecordQueryET extends React.Component {
                   selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} maxLength={12} 
                   placeholder="输入账号名" underlineColorAndroid="transparent" keyboardType="default"
                   onChangeText={(labelname) => this.setState({ labelname })}   
-                  />      
+                  />  
+              <TouchableOpacity onPress={this.Scan.bind(this,this.state.labelname)}>  
+                  <Image source={UImage.account_scan} style={styles.headleftimg} />
+              </TouchableOpacity>     
           </View>    
           <TouchableOpacity onPress={this.query.bind(this,this.state.labelname)}>  
               <Text style={styles.canceltext}>查询</Text>
@@ -260,18 +274,18 @@ class RecordQueryET extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: "column",
-        backgroundColor: UColor.secdColor,
-        paddingTop: 1,
+      flex: 1,
+      paddingTop: 1,
+      flexDirection: "column",
+      backgroundColor: UColor.secdColor,
     },
     header: {
       flexDirection: "row",
-      justifyContent: "center",
       alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: UColor.mainColor,
       paddingVertical: ScreenUtil.autoheight(7),
       marginBottom: ScreenUtil.autoheight(5),
-      backgroundColor: UColor.mainColor,
     },
     headleftout: {
       paddingLeft: ScreenUtil.autowidth(15),
@@ -279,29 +293,28 @@ const styles = StyleSheet.create({
     headleftimg: {
       width: ScreenUtil.autowidth(18),
       height: ScreenUtil.autowidth(18),
-      marginRight: ScreenUtil.autowidth(15),
+      marginHorizontal: ScreenUtil.autowidth(10),
     },
     inptout: {
       flex: 1,
-      height: ScreenUtil.autoheight(30),
       borderRadius: 5,
-      marginHorizontal: ScreenUtil.autowidth(15),
-      paddingHorizontal: ScreenUtil.autowidth(10),
       flexDirection: "row",
       alignItems: "center",
       justifyContent: 'center',
+      height: ScreenUtil.autoheight(30),
       backgroundColor: UColor.fontColor,
+      marginHorizontal: ScreenUtil.autowidth(10),
     },
     inpt: {
-        flex: 1,
-        height: ScreenUtil.autoheight(45),
-        fontSize: ScreenUtil.setSpText(14),
-        color: UColor.arrow,
+      flex: 1,
+      color: UColor.arrow,
+      height: ScreenUtil.autoheight(45),
+      fontSize: ScreenUtil.setSpText(14),
     },
     canceltext: {
+      textAlign: 'center',
       color: UColor.fontColor,
       fontSize: ScreenUtil.setSpText(15),
-      textAlign: 'center',
       paddingRight: ScreenUtil.autowidth(15),
     },
 
