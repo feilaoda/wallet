@@ -764,7 +764,7 @@ const styles = StyleSheet.create({
   row: {
     backgroundColor: UColor.mainColor,
     flexDirection: "row",
-    paddingVertical: ScreenUtil.autowidth(15),
+    paddingVertical: ScreenUtil.autowidth(5),
     paddingHorizontal: ScreenUtil.autowidth(20),
     justifyContent: "space-between",
   },
@@ -818,7 +818,7 @@ const styles = StyleSheet.create({
   },
 
   addto: {
-    height: ScreenUtil.autoheight(75), 
+    height: ScreenUtil.autoheight(90), 
     backgroundColor: UColor.mainColor, 
     flexDirection: "row",
     justifyContent: "space-between",
