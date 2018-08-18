@@ -61,6 +61,9 @@ export const formatEosQua = (amount, precision = 4) =>{
   if(e.length > 1 && e[1] == "IQ"){
     precision = 3;
   }
+  if(e.length > 1 && e[1] == "QB"){
+    return amount; // QB精度为1，这里不做精度转换
+  }
   r=e[0].split(".");
   if(r.length>1){
     if(r[1].length <= precision){
