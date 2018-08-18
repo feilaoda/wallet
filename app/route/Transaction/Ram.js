@@ -858,7 +858,6 @@ class Ram extends BaseComponent {
                             || this.state.selectedSegment == "1周" || this.state.selectedSegment == "1月") ? styles.timeinitial : styles.timeSelect }>
                             {this.state.showMoreTitle}
                             </Text> 
-                            <Image source={ UImage.txbtn_more } style={styles.triangleimg}/>
                             <Ionicons name={this.state.showMore ? "md-arrow-dropdown" : "md-arrow-dropright"} size={20} color={this.state.showMore ? UColor.tintColor : UColor.fontColor}/>
                         </View>
                     </Button> 
@@ -1228,6 +1227,7 @@ const styles = StyleSheet.create({
         flex:1,
     },
     timeview: { 
+        flexDirection:'row',
         marginLeft: ScreenUtil.autowidth(2),
         width: ScreenUtil.autowidth(40), 
         height: ScreenUtil.autoheight(30),
