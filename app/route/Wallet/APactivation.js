@@ -161,7 +161,7 @@ class APactivation extends BaseComponent {
                 <View style={styles.rankout}>
                     <TextInput ref={(ref) => this._raccount = ref} value={this.state.cpu} returnKeyType="next" 
                         selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                        placeholder="最低可输入0.1" underlineColorAndroid="transparent" onChange={this.check()} 
+                        placeholder="最低可输入0.1" underlineColorAndroid="transparent"
                         keyboardType="default" maxLength={12} onChangeText={(cpu) => this.setState({ cpu })} 
                     />
                     <Text style={styles.company}>EOS</Text>
@@ -175,7 +175,7 @@ class APactivation extends BaseComponent {
                 <View style={styles.rankout}>
                     <TextInput ref={(ref) => this._raccount = ref} value={this.state.net} returnKeyType="next" 
                         selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                        placeholder="最低可输入0.1" underlineColorAndroid="transparent" onChange={this.check()} 
+                        placeholder="最低可输入0.1" underlineColorAndroid="transparent"
                         keyboardType="default" maxLength={12} onChangeText={(net) => this.setState({ net })} 
                     />
                     <Text style={styles.company}>EOS</Text>
@@ -189,7 +189,7 @@ class APactivation extends BaseComponent {
                 <View style={styles.rankout}>
                     <TextInput ref={(ref) => this._raccount = ref} value={this.state.ram} returnKeyType="next" 
                         selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                        placeholder="最低可输入0.397" underlineColorAndroid="transparent" onChange={this.check()} 
+                        placeholder="最低可输入0.397" underlineColorAndroid="transparent"
                         keyboardType="default" maxLength={12} onChangeText={(ram) => this.setState({ ram })} 
                     />
                     <Text style={styles.company}>EOS</Text>
