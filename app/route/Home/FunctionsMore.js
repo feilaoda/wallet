@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing, Clipboard, ImageBackground, ScrollView } from 'react-native';
+import { Dimensions, ListView, StyleSheet, Image, View, Text, Linking, Modal, Animated, TouchableOpacity, Easing, Clipboard, ImageBackground, ScrollView } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import UImage from '../../utils/Img'
@@ -45,7 +45,7 @@ class FunctionsMore extends React.Component {
     }else if (key == 'Resources') {
       navigate('Resources', {account_name:this.props.navigation.state.params.account_name});
     }else if(key == 'candy'){
-      navigate('Web', { title: "糖果信息", url: "https://eosdrops.io/" });
+      Linking.openURL("https://eosdrops.io/");
     }else if(key == 'Bvote'){
       navigate('Bvote', {});
     }else if(key == 'Tokenissue'){
@@ -67,8 +67,7 @@ class FunctionsMore extends React.Component {
 
     openTokenissue() {
         this. _setModalVisible();
-        const { navigate } = this.props.navigation;
-        navigate('Web', { title: "发行代币", url: "https://coincreate.github.io/EOS_coincreate/coincreate.html" });
+        Linking.openURL("https://coincreate.github.io/EOS_coincreate/coincreate.html");
     }
   
   render() {

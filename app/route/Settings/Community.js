@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Clipboard, Dimensions, StyleSheet, View, Text, Image, ImageBackground, TouchableHighlight} from 'react-native';
+import { Clipboard, Dimensions, StyleSheet, View, Text, Image, ImageBackground, TouchableHighlight,Linking} from 'react-native';
 import UColor from '../../utils/Colors'
 import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
@@ -67,7 +67,8 @@ class Community extends BaseComponent {
       Clipboard.setString(this.state.telegraph);
       EasyToast.show('电报群号已复制成功');
     }else if (key == 'source') {
-      navigate('Web', { title: "代码开源地址", url: "https://github.com/eostoken/wallet" });   
+      // navigate('Web', { title: "代码开源地址", url: "https://github.com/eostoken/wallet" });   
+      Linking.openURL("https://github.com/eostoken/wallet");
     }
   }
   
