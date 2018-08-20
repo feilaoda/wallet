@@ -67,9 +67,6 @@ class AuthChange extends BaseComponent {
     //提交
     submission = () =>{  
 
-        EasyToast.show("考虑到安全性的原因，该功能暂末开放！");
-        return
-
         if(this.state.isAuth==false){
             EasyToast.show("找不到对应的公钥或账号");
             return
@@ -185,18 +182,18 @@ class AuthChange extends BaseComponent {
 
         //账户
         for(var i=0;i<authTempActive.data.auth.accounts.length;i++){
-            if(authTempActive.data.auth.accounts[i].permission.actor != this.props.navigation.state.params.wallet.name){
+            // if(authTempActive.data.auth.accounts[i].permission.actor != this.props.navigation.state.params.wallet.name){
                 temp.push({weight:authTempActive.data.auth.accounts[i].weight,key:authTempActive.data.auth.accounts[i].permission.actor+"@"+authTempActive.data.auth.accounts[i].permission.permission});
-            }
+            // }
         }
 
         //公钥
         for(var i=0;i<authTempActive.data.auth.keys.length;i++){
-            if(authTempActive.data.auth.keys[i].key != this.props.navigation.state.params.wallet.activePublic){
+            // if(authTempActive.data.auth.keys[i].key != this.props.navigation.state.params.wallet.activePublic){
                 temp.push({weight:authTempActive.data.auth.keys[i].weight,key:authTempActive.data.auth.keys[i].key});
-            }else{
+            // }else{
                 authFlag=true;
-            }
+            // }
         }
 
         this.setState({
@@ -207,7 +204,7 @@ class AuthChange extends BaseComponent {
             inputCount:0,
             inputText:[{key:0,value:''}],
         });
-        console.log("getaccountinfo=%s",JSON.stringify(data))
+        // console.log("getaccountinfo=%s",JSON.stringify(data))
     } });
 } 
 
@@ -444,7 +441,7 @@ delInputBox(delKey){
     return (<View style={styles.container}>
       <ScrollView keyboardShouldPersistTaps="handled" >
       <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "padding" : null}>
-        {this.state.activePk != '' && 
+        {/* {this.state.activePk != '' && 
         <View style={styles.inptoutgo} >
             <View style={styles.titleStyle}>
                 <Text style={styles.inptitle}>Active关联公钥（权阀总值:</Text>
@@ -459,7 +456,7 @@ delInputBox(delKey){
                 <Text style={styles.pktext}>{this.state.activePk}</Text>
             </View>
         </View>
-        }
+        } */}
 
         <View style={styles.significantout}>
             <Image source={UImage.warning} style={styles.imgBtnWarning} />
