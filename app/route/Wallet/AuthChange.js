@@ -72,48 +72,48 @@ class AuthChange extends BaseComponent {
             return
         }
 
-        if(this.state.inputText.length<2 && this.state.inputText[0].value==''){
+        if(this.state.inputText==''){
             EasyToast.show("输入不能为空");
             return//暂不支持账号先
         }
         
         var authTempActive=this.state.activeAuth;
 
-        for(var i=0;i<this.state.inputText.length;i++){
-            if (this.state.inputText[i].value.length > 12) {
-                Eos.checkPublicKey(this.state.inputText[i].value, (r) => {
-                    if (!r.isSuccess) {
-                        EasyToast.show('公钥格式不正确');
-                        return;
+        if (this.state.inputText.length > 12) {
+            Eos.checkPublicKey(this.state.inputText, (r) => {
+                if (!r.isSuccess) {
+                    EasyToast.show('公钥格式不正确');
+                    return;
+                }else{
+                    for (var j = 0; j < authTempActive.data.auth.keys.length; j++) {
+                        if (authTempActive.data.auth.keys[j].key ==this.state.inputText) {
+                            EasyToast.show('添加公钥已存在');
+                            return;
+                        }
                     }
-                });
-
-                for (var j = 0; j < authTempActive.data.auth.keys.length; j++) {
-                    if (authTempActive.data.auth.keys[j].key ==this.state.inputText[i].value) {
-                        EasyToast.show('添加公钥已存在');
-                        return;
-                    }
+                    authTempActive.data.auth.keys.push({weight:1,key:this.state.inputText})
+                    this.changeAuth(authTempActive);
                 }
-                authTempActive.data.auth.keys.push({weight:1,key:this.state.inputText[i].value})
-            }else if(this.state.inputText[i].value.length >= 1){
-                if(this.verifyAccount(this.state.inputText[i].value)==false){
-                    EasyToast.show('请输入正确的账号');
-                    return 
-                }
-
-                for (var j = 0; j < authTempActive.data.auth.accounts.length; j++) {
-                    if (authTempActive.data.auth.accounts[j].permission.actor ==this.state.inputText[i].value) {
-                        EasyToast.show('添加账号已存在');
-                        return;
-                    }
-                }
-                // {"weight":1,"permission":{"actor":this.state.inputContent,"permission":"eosio.code"}}
-                authTempActive.data.auth.accounts.push({"weight":1,"permission":{"actor":this.state.inputText[i].value,"permission":"active"}});
+            });
+        }else if(this.state.inputText.length >= 1){
+            if(this.verifyAccount(this.state.inputText)==false){
+                EasyToast.show('请输入正确的账号');
+                return 
             }
+
+            for (var j = 0; j < authTempActive.data.auth.accounts.length; j++) {
+                if (authTempActive.data.auth.accounts[j].permission.actor ==this.state.inputText) {
+                    EasyToast.show('添加账号已存在');
+                    return;
+                }
+            }
+            // {"weight":1,"permission":{"actor":this.state.inputContent,"permission":"eosio.code"}}
+            authTempActive.data.auth.accounts.push({"weight":1,"permission":{"actor":this.state.inputText,"permission":"active"}});
+            this.changeAuth(authTempActive);
+        }else{
+            EasyToast.show('输入数据长度不正确');
         }
 
-        this.changeAuth(authTempActive);
-       
     }  
 
     constructor(props) {
@@ -128,7 +128,7 @@ class AuthChange extends BaseComponent {
             authKeys:[],//授权的公钥组
             isAuth:false,//当前的公钥是否在授权公钥的范围内
             inputCount:0,
-            inputText:[{key:0,value:''}],
+            inputText:'',
             activeAuth:'',//更改的数据组
 
         }
@@ -202,7 +202,7 @@ class AuthChange extends BaseComponent {
             authKeys:temp,//授权的公钥组
             activeAuth:authTempActive,
             inputCount:0,
-            inputText:[{key:0,value:''}],
+            inputText:'',
         });
         // console.log("getaccountinfo=%s",JSON.stringify(data))
     } });
@@ -346,60 +346,9 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
   }
 
 
-
-//添加更多
-addMoreUser() {
-
-    var txt=this.state.inputText;
-    var cnt = this.state.inputCount;
-
-    if(txt.length){
-        cnt=txt.length;//从0开始数的
-    }else{
-        cnt=0;
-    }
-    txt.push({key:cnt,value:''});
-    this.setState({
-        inputCount: cnt, //输入账户组
-        inputText:txt,
-    });
-}
-    
-
-//输入值
-inputValue(inputKey,inputData){
-    this.state.inputText[inputKey].key=inputKey;
-    this.state.inputText[inputKey].value=inputData;
-    return this.state.inputText;
-}
-
-//删除输入框
-delInputBox(delKey){
-    var txt=this.state.inputText;
-    if(delKey<=this.state.inputCount){
-        for (var i = 0; i < txt.length; i++) {
-            if (txt[i].key ==delKey) {
-                txt.splice(i, 1);
-            }
-        }
-        for (var i = 0; i < txt.length; i++) {
-            txt[i].key = i;
-           
-        }
-
-        this.setState({
-            inputText:txt,
-            inputCount:txt.length
-        });
-    }
-
-}
-
   _renderRowInput(rowData){ // cell样式
     // console.log("sectionID=%s",sectionID)
-    // console.log("rowData=%s",JSON.stringify(rowData))
-
-    rowID=rowData.index;
+    console.log("rowData=%s",JSON.stringify(rowData))
     return (
         
         <View style={styles.addUserTitle} >
@@ -418,17 +367,8 @@ delInputBox(delKey){
 
             <TextInput ref={(ref) => this._lphone = ref} value={rowData.item.value} returnKeyType="next" editable={true}
                 selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
-                onChangeText={(inputText) => this.setState({ inputText: this.inputValue(rowData.index,inputText)})}   keyboardType="default" 
+                onChangeText={(inputText) => this.setState({ inputText: inputText})}   keyboardType="default" 
                 placeholder="输入Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
-
-            {/* {rowData.key<this.state.inputCount && */}
-            {/* {rowData.key>0 && */}
-            {this.state.inputText.length>1 &&
-            <TouchableHighlight onPress={() => { this.delInputBox(rowData.index) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
-                <View style={styles.delButton}>
-                    <Text style={styles.delText}>删除</Text>
-                </View>
-            </TouchableHighlight>}
 
         </View>
     )
@@ -440,61 +380,57 @@ delInputBox(delKey){
 
     return (<View style={styles.container}>
       <ScrollView keyboardShouldPersistTaps="handled" >
-      <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
-        {/* {this.state.activePk != '' && 
-        <View style={styles.inptoutgo} >
-            <View style={styles.titleStyle}>
-                <Text style={styles.inptitle}>Active关联公钥（权阀总值:</Text>
-                <Text style={styles.inptitle}>{this.state.threshold}</Text>
-                <Text style={styles.inptitle}>）</Text>
-                <View style={styles.buttonView}>
-                    <Text style={styles.weightText}>权阀值  </Text>
-                    <Text style={styles.buttonText}>{this.state.threshold}</Text>
+            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
+
+                <View style={styles.significantout}>
+                    <Image source={UImage.warning} style={styles.imgBtnWarning} />
+                    <View style={{flex: 1,paddingLeft: 5,}}>
+                        <Text style={styles.significanttext} >安全警告:Active公钥添加关联用户，关联用户添加成功后可对该账号进行转账，投票等操作！</Text>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.titleStyle}>
-                <Text style={styles.pktext}>{this.state.activePk}</Text>
-            </View>
-        </View>
-        } */}
 
-        <View style={styles.significantout}>
-            <Image source={UImage.warning} style={styles.imgBtnWarning} />
-            <View style={{flex: 1,paddingLeft: 5,}}>
-                <Text style={styles.significanttext} >安全警告:Active公钥添加关联用户，关联用户添加成功后可对该账号进行转账，投票等操作！</Text>
-            </View>
-        </View>
+                <FlatList
+                    data={this.state.authKeys.length==null ?[]: this.state.authKeys} 
+                    extraData={this.state}
+                    renderItem={this._renderRow.bind(this)} >
+                </FlatList>
 
-        <FlatList
-            data={this.state.authKeys.length==null ?[]: this.state.authKeys} 
-            extraData={this.state}
-            renderItem={this._renderRow.bind(this)} >
-        </FlatList>
+                {/* <FlatList
+                    data={this.state.inputText==''?['']:this.state.inputText} 
+                    extraData={this.state}
+                    renderItem={this._renderRowInput.bind(this)} >
+                </FlatList> */}
 
-        <FlatList
-            data={this.state.inputText.length==null ?[]: this.state.inputText} 
-            extraData={this.state}
-            renderItem={this._renderRowInput.bind(this)} >
-        </FlatList>
+                <View style={styles.inptoutgo} >
+                    <View style={styles.addUserTitle} >
+                        <View style={styles.titleStyle}>
+                            <View style={styles.userAddView}>
+                                <Image source={UImage.adminAddA} style={styles.imgBtn} />
+                                <Text style={styles.buttonText}>添加授权用户</Text>
+                                {/* <Text style={styles.buttonText}>{rowData.index+1}</Text> */}
+                            </View>
 
-        {/* <TouchableHighlight onPress={() => { this.addMoreUser(this) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
-            <View style={styles.delButton}>
-                <Text style={styles.delText}>添加更多</Text>
-            </View>
-        </TouchableHighlight> */}
+                            <View style={styles.buttonView}>
+                                <Text style={styles.weightText}>权阀值  </Text>
+                                <Text style={styles.buttonText}>1</Text>
+                            </View>
+                        </View>
 
-        {/* <Button  onPress={this.submission.bind(this)}>  
-            <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>提交</Text>
-        </Button> */}
+                        <TextInput ref={(ref) => this._lphone = ref} value={this.state.inputText} returnKeyType="next" editable={true}
+                            selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
+                            onChangeText={(inputText) => this.setState({ inputText: inputText})}   keyboardType="default" 
+                            placeholder="输入Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
+                        </View>
+                </View>
 
-        <Button onPress={ this.submission.bind(this) }>
-            <View style={styles.btnoutsource}>
-                <Text style={styles.btntext}>提交</Text>
-            </View>
-        </Button>
+                <Button onPress={ this.submission.bind(this) }>
+                    <View style={styles.btnoutsource}>
+                        <Text style={styles.btntext}>提交</Text>
+                    </View>
+                </Button>
 
-</KeyboardAvoidingView>
-      </ScrollView>
+            </KeyboardAvoidingView>
+        </ScrollView>
     </View>);
   }
 }
