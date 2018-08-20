@@ -53,7 +53,7 @@ class Ram extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSegment:"5分",
+      selectedSegment:"30分",
       selectedTransactionRecord: transactionOption[0],
       isBuy: true,
       isSell: false,

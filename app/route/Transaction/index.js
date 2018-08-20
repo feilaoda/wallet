@@ -55,7 +55,7 @@ class Transaction extends BaseComponent {
     super(props);
     this.state = {
         
-      selectedSegment:"5分",
+      selectedSegment:"30分",
       //selectedTrackSegment: trackOption[0],
       selectedTransactionRecord: transactionOption[0],
       isBuy: true,
