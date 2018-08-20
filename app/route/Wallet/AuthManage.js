@@ -44,9 +44,9 @@ class AuthManage extends BaseComponent {
   }
  
   transferByOwner() {
-    const { navigate } = this.props.navigation;
-    navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
-
+    // const { navigate } = this.props.navigation;
+    // navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
+    EasyToast.show("该功能暂末开放！");
   }
 
   manageByActive() {
@@ -67,7 +67,7 @@ class AuthManage extends BaseComponent {
             <View style={styles.inptoutbg}>
 
                 {this.state.activePk != '' && <View style={styles.addUserTitle} >
-                    <View style={{flexDirection:'row',flex:1}}>
+                    <View style={{flexDirection:'row',flex:1,paddingHorizontal: 10,paddingTop:10,}}>
                         <Text style={styles.inptitle}> Active关联公钥（管理者）</Text>
                         <TouchableHighlight onPress={() => { this.manageByActive() }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
                             <View style={styles.buttonView}>
@@ -85,7 +85,7 @@ class AuthManage extends BaseComponent {
                 }
 
                 {this.state.ownerPk != '' && <View style={styles.addUserTitle} >
-                    <View style={{flexDirection:'row',flex:1}}>
+                    <View style={{flexDirection:'row',flex:1,paddingHorizontal: 10,paddingTop:10,}}>
                         <Text style={styles.inptitle}> Owner关联公钥（拥有者）</Text>
                         <TouchableHighlight onPress={() => { this.transferByOwner() }} style={{flex: 1,}} activeOpacity={1} underlayColor={UColor.mainColor}>
                             <View style={styles.buttonView}>
@@ -194,6 +194,7 @@ const styles = StyleSheet.create({
         color: UColor.arrow,
     },
     textout: {
+            marginTop: 30,
             paddingHorizontal: 16,
             paddingVertical: 10,
     },

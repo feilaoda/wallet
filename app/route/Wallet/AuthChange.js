@@ -33,9 +33,9 @@ class AuthChange extends BaseComponent {
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
-        headerRight: (<Button  onPress={navigation.state.params.onPress}>  
-            <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>提交</Text>
-        </Button>),    
+        // headerRight: (<Button  onPress={navigation.state.params.onPress}>  
+        //     <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>提交</Text>
+        // </Button>),    
         };
     }
 
@@ -72,11 +72,11 @@ class AuthChange extends BaseComponent {
             return
         }
 
-        if(this.state.inputText.length<1){
-            EasyToast.show("请先输入公钥");
+        if(this.state.inputText.length<2 && this.state.inputText[0].value==''){
+            EasyToast.show("输入不能为空");
             return//暂不支持账号先
         }
-
+        
         var authTempActive=this.state.activeAuth;
 
         for(var i=0;i<this.state.inputText.length;i++){
@@ -192,10 +192,10 @@ class AuthChange extends BaseComponent {
             // if(authTempActive.data.auth.keys[i].key != this.props.navigation.state.params.wallet.activePublic){
                 temp.push({weight:authTempActive.data.auth.keys[i].weight,key:authTempActive.data.auth.keys[i].key});
             // }else{
-                authFlag=true;
+                
             // }
         }
-
+        authFlag=true;//获取账户成功后可以
         this.setState({
             threshold:data.permissions[0].required_auth.threshold,
             isAuth:authFlag,
@@ -334,13 +334,13 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
             <View style={styles.titleStyle}>
                 <Text style={styles.pktext}>{rowData.item.key}</Text>
             </View>
-
+            {(this.state.activeAuth.data.auth.keys.length>1 || rowData.item.key.length<50) &&
             <TouchableHighlight onPress={() => { this.deleteUser(rowData.item.key) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
                 <View style={styles.delButton}>
                     <Text style={styles.delText}>删除</Text>
                 </View>
             </TouchableHighlight>
-
+            }
        </View>
     )
   }
@@ -407,7 +407,7 @@ delInputBox(delKey){
                 <View style={styles.userAddView}>
                     <Image source={UImage.adminAddA} style={styles.imgBtn} />
                     <Text style={styles.buttonText}>添加授权用户</Text>
-                    <Text style={styles.buttonText}>{rowData.index+1}</Text>
+                    {/* <Text style={styles.buttonText}>{rowData.index+1}</Text> */}
                 </View>
 
                 <View style={styles.buttonView}>
@@ -461,7 +461,7 @@ delInputBox(delKey){
         <View style={styles.significantout}>
             <Image source={UImage.warning} style={styles.imgBtnWarning} />
             <View style={{flex: 1,paddingLeft: 5,}}>
-                <Text style={styles.significanttext} >安全警告:Active公钥添加关联用户，他们可对您的账号进行转账，投票等操作！</Text>
+                <Text style={styles.significanttext} >安全警告:Active公钥添加关联用户，关联用户添加成功后可对该账号进行转账，投票等操作！</Text>
             </View>
         </View>
 
@@ -477,11 +477,22 @@ delInputBox(delKey){
             renderItem={this._renderRowInput.bind(this)} >
         </FlatList>
 
-        <TouchableHighlight onPress={() => { this.addMoreUser(this) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
+        {/* <TouchableHighlight onPress={() => { this.addMoreUser(this) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
             <View style={styles.delButton}>
                 <Text style={styles.delText}>添加更多</Text>
             </View>
-        </TouchableHighlight>
+        </TouchableHighlight> */}
+
+        {/* <Button  onPress={this.submission.bind(this)}>  
+            <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>提交</Text>
+        </Button> */}
+
+        <Button onPress={ this.submission.bind(this) }>
+            <View style={styles.btnoutsource}>
+                <Text style={styles.btntext}>提交</Text>
+            </View>
+        </Button>
+
 </KeyboardAvoidingView>
       </ScrollView>
     </View>);
@@ -693,7 +704,20 @@ const styles = StyleSheet.create({
         borderBottomColor: UColor.baseline,
         borderBottomWidth: 1,
     },
-
+    // 按钮  
+    btnoutsource: {
+        marginHorizontal: ScreenUtil.autowidth(150),
+        height:  ScreenUtil.autoheight(45),
+        borderRadius: 6,
+        backgroundColor: UColor.tintColor,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    btntext: {
+        fontSize: ScreenUtil.setSpText(16),
+        color: UColor.fontColor
+    },
+   
 });
 
 export default AuthChange;
