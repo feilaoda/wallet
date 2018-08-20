@@ -40,9 +40,9 @@ class ActivationAt extends BaseComponent {
         super(props);
         this.props.navigation.setParams({ onPress: this.checkDeleteWallet });
         this.state = {
-            cpu:"0.5",
-            net:"0.5",
-            ram:"1.5",
+            cpu:"0",
+            net:"0",
+            ram:"5.5",
             name:"",
             password: "",
             ownerPk: '',
