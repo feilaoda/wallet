@@ -34,9 +34,9 @@ class APactivation extends BaseComponent {
       accountName: "",
       ownerPuk: "",
       activePuk: "",
-      cpu:"0.5",
-      net:"0.5",
-      ram:"1.5",
+      cpu:"0",
+      net:"0",
+      ram:"5.5",
       isComplete: false,
       hasErrorInput: false,
       show: false,
@@ -46,9 +46,9 @@ class APactivation extends BaseComponent {
   componentDidMount() {
     var accountInfo = this.props.navigation.state.params.accountInfo;
     this.setState({
-      cpu: accountInfo.cpu ? accountInfo.cpu : "0.5",
-      net: accountInfo.net ? accountInfo.net : "0.5",
-      ram: accountInfo.ram ? accountInfo.ram : "1.5",
+      cpu: accountInfo.cpu ? accountInfo.cpu : "0",
+      net: accountInfo.net ? accountInfo.net : "0",
+      ram: accountInfo.ram ? accountInfo.ram : "5.5",
       accountName: accountInfo.account ? accountInfo.account : "" ,
       ownerPuk: accountInfo.owner ? accountInfo.owner : "",
       activePuk: accountInfo.active ? accountInfo.active : "",
