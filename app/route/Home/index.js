@@ -1,16 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Dimensions, DeviceEventEmitter, ListView,NativeModules, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing, Clipboard, ImageBackground, ScrollView, RefreshControl,Linking, } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter' 
-import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
-import QRCode from 'react-native-qrcode-svg';
 const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
 import { EasyToast } from "../../components/Toast"
@@ -26,7 +22,7 @@ class Home extends React.Component {
     title: '钱包',
     header: null,
     headerStyle: {
-      paddingTop: ScreenUtil.autoheight(20),
+      // paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
     },
@@ -565,7 +561,7 @@ class Home extends React.Component {
           </Button>}
         <ImageBackground style={styles.bgout} source={UImage.home_bg} resizeMode="cover">
           <View style={styles.addto}>
-                <View style={styles.addtoout}>
+                <View style={styles.addtoouttop}>
                  <Text style={{fontSize: ScreenUtil.setSpText(32), color: UColor.fontColor}}>{this.state.isEye ? ((this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance)) : '****'}</Text>
                  <Text style={(this.state.increase>=0 || this.state.totalBalance == "0.00")?styles.incdo:styles.incup}>{this.state.isEye ? this.getTodayIncrease() : '****'}</Text>
                 </View>
@@ -789,13 +785,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: "space-between",
     width: ScreenWidth,
-    paddingTop: ScreenUtil.autoheight(30),
+    paddingTop: ScreenUtil.autoheight(10),
     paddingHorizontal: ScreenUtil.autowidth(10),
     backgroundColor: UColor.mainColor, 
   },
   toptext: {
-    height: ScreenUtil.autoheight(65),
-    lineHeight: ScreenUtil.autoheight(65),
+    height: ScreenUtil.autoheight(60),
+    lineHeight: ScreenUtil.autoheight(60),
     textAlign: "center",
     fontSize: ScreenUtil.setSpText(18),
     color: UColor.fontColor,
@@ -878,11 +874,19 @@ const styles = StyleSheet.create({
     height: ScreenUtil.autoheight(15),
     marginHorizontal: ScreenUtil.autowidth(5),
   },
+  addtoouttop: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: 'center', 
+    justifyContent: "center", 
+    marginTop: ScreenUtil.autoheight(15),
+  },
   addtoout: {
     flex: 1,
     flexDirection: "row",
     alignItems: 'center', 
     justifyContent: "center", 
+    marginTop: ScreenUtil.autoheight(5),
   },
   addtoouttext: {
     fontSize: ScreenUtil.setSpText(20), 
@@ -1121,7 +1125,7 @@ const styles = StyleSheet.create({
   incup:{
     backgroundColor: UColor.riseColor,
     // marginLeft: ScreenUtil.autowidth(5), 
-    fontSize: ScreenUtil.setSpText(16), 
+    fontSize: ScreenUtil.setSpText(12), 
     color: UColor.fontColor,
 
     borderRadius: 5,
@@ -1138,7 +1142,7 @@ const styles = StyleSheet.create({
   incdo:{
     backgroundColor:UColor.fallColor,
     // marginLeft: ScreenUtil.autowidth(5), 
-    fontSize: ScreenUtil.setSpText(16), 
+    fontSize: ScreenUtil.setSpText(12), 
     color: UColor.fontColor,
     
     borderRadius: 5,
