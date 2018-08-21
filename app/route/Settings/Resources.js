@@ -754,7 +754,10 @@ class Resources extends BaseComponent {
             // EasyShowLD.dialogClose();
         }, () => { EasyShowLD.dialogClose() });
     };
-
+    redemption = () => { 
+        const { navigate } = this.props.navigation;
+        navigate('undelegated', {});
+    }
     dismissKeyboardClick() {
         dismissKeyboard();
     }
@@ -935,6 +938,12 @@ class Resources extends BaseComponent {
                             </View>
                             :
                             <View style={styles.basc}>
+                                <Button onPress={this.redemption.bind()}>
+                                 <View style={{ height: ScreenUtil.autoheight(30),justifyContent: 'flex-end', 
+                                                alignItems: 'flex-end'  }}>
+                                    <Text style={styles.basctextright}>赎回遇到问题？</Text>
+                                 </View>
+                                 </Button>
                                 <Text style={styles.basctext}>· 获取资源需要抵押EOS。 </Text>
                                 <Text style={styles.basctext}>· 抵押的EOS可撤销抵押，并于3天后退回。</Text>
                                 <Text style={styles.basctext}>· 租赁抵押的EOS可自行赎回，过户抵押的EOS，将无法赎回。</Text>
@@ -1207,6 +1216,15 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: ScreenUtil.autoheight(10),
         backgroundColor: UColor.secdColor,
+    },
+    basctextright :{
+        flexDirection: 'row',  
+        fontSize: ScreenUtil.setSpText(14), 
+        color: UColor.tintColor, 
+        lineHeight: ScreenUtil.autoheight(20),
+        textAlign: 'right',
+        borderBottomColor: UColor.tintColor, 
+        borderBottomWidth: 1,
     },
     basctext :{
         fontSize: ScreenUtil.setSpText(12), 
