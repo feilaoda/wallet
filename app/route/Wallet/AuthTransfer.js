@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,Clipboard,TextInput,KeyboardAvoidingView,TouchableOpacity,TouchableHighlight} from 'react-native';
+import {Dimensions,DeviceEventEmitter,InteractionManager,ListView,StyleSheet,View,RefreshControl,Text,ScrollView,Image,Platform,Clipboard,TextInput,KeyboardAvoidingView,TouchableOpacity,TouchableHighlight,FlatList} from 'react-native';
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
 import Item from '../../components/Item'
 import Icon from 'react-native-vector-icons/Ionicons'
 import UImage from '../../utils/Img'
+import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyShowLD } from "../../components/EasyShow"
 import { Eos } from "react-native-eosjs";
 import { EasyToast } from '../../components/Toast';
@@ -14,8 +15,8 @@ import BaseComponent from "../../components/BaseComponent";
 import Assets from '../../models/Assets';
 import EosUpdateAuth from '../../utils/EosUtil'
 import Constants from '../../utils/Constants'
-const maxWidth = Dimensions.get('window').width;
-const maxHeight = Dimensions.get('window').height;
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 var dismissKeyboard = require('dismissKeyboard');
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
@@ -28,121 +29,119 @@ class AuthTransfer extends BaseComponent {
         return {
             headerTitle: params.wallet.name,
             headerStyle: {
-            paddingTop:Platform.OS == 'ios' ? 30 : 20,
-            backgroundColor: UColor.mainColor,
-            borderBottomWidth:0,
-        },
-        headerRight: (<Button  onPress={navigation.state.params.onPress}>  
-            <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>提交</Text>
-        </Button>),    
+                paddingTop: ScreenUtil.autoheight(20),
+                backgroundColor: UColor.mainColor,
+                borderBottomWidth:0,
+            },
+            headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
+            <View style={{ paddingHorizontal: ScreenUtil.autowidth(10), alignItems: 'center' }}>
+                <Image source={UImage.scan} style={{ width: ScreenUtil.autowidth(28), height: ScreenUtil.autowidth(28) }}></Image>
+            </View>
+          </Button>),
         };
+    }
+
+
+    verifyAccount(obj){
+        var ret = true;
+        var charmap = '.12345abcdefghijklmnopqrstuvwxyz';
+        if(obj == "" || obj.length > 12){
+            return false;
+        }
+        for(var i = 0 ; i < obj.length;i++){
+            var tmp = obj.charAt(i);
+            for(var j = 0;j < charmap.length; j++){
+                if(tmp == charmap.charAt(j)){
+                    break;
+                }
+            }
+
+            if(j >= charmap.length){
+                //非法字符
+                // obj = obj.replace(tmp, ""); 
+                ret = false;
+                break;
+            }
+        }
+        return ret;
     }
 
     //提交
     submission = () =>{  
 
-        EasyToast.show("考虑到安全性的原因，该功能暂末开放！");
-        return
-        
-
         if(this.state.isAuth==false){
-            EasyToast.show("找不到对应的公钥");
+            EasyToast.show("找不到对应的公钥或账号");
             return
         }
 
-        if(this.state.inputActivePK.length<1 && this.state.inputOwnerPK.length<1){
-            EasyToast.show("请输入正确的公钥");
-            return
+        if(this.state.inputText==''){
+            EasyToast.show("输入不能为空");
+            return//暂不支持账号先
         }
-
-        if(this.state.activeAuth==''||this.state.ownerAuth==''){
-            EasyToast.show("获取数据失败");
-            return
-        }
-
-
         
-        var authTempOwner=this.state.ownerAuth;
-        var authTempActive=this.state.activeAuth;
-
-        if(this.state.inputOwnerPK.length>0){
-            Eos.checkPublicKey(this.state.inputOwnerPK, (r) => {
-                if (!r.isSuccess) {
-                    EasyToast.show('Owner公钥格式不正确');
-                    return;
-                }
-            });
-
-            for (var j = 0; j < authTempOwner.data.auth.keys.length; j++) {
-                if (authTempOwner.data.auth.keys[j].key ==this.state.inputOwnerPK){
-                    EasyToast.show('Owner公钥已存在');
-                    return;
-                }
-            }
-            for (var j = 0; j < authTempOwner.data.auth.keys.length; j++) {
-                if (authTempOwner.data.auth.keys[j].key ==this.props.navigation.state.params.wallet.ownerPublic){
-                    authTempOwner.data.auth.keys[j].key=this.state.inputOwnerPK;//替换原公钥
-                }
+        for (var j = 0; j < this.state.authKeys.length; j++) {
+            if (this.state.authKeys[j].key ==this.state.inputText) {
+                EasyToast.show('授权公钥已存在');
+                return;
             }
         }
+        var authTemp=this.state.ownerAuth;
 
-        if(this.state.inputActivePK.length>0){
-
-            Eos.checkPublicKey(this.state.inputActivePK, (r) => {
+        if (this.state.inputText.length > 12) {
+            Eos.checkPublicKey(this.state.inputText, (r) => {
                 if (!r.isSuccess) {
-                    EasyToast.show('Active公钥格式不正确');
+                    EasyToast.show('公钥格式不正确');
                     return;
+                }else{
+                    authTemp.data.auth.keys.push({weight:1,key:this.state.inputText})
+                    this.changeAuth(authTemp);
                 }
             });
-
-            for (var j = 0; j < this.state.activeAuth.data.keys.length; j++) {
-                if (this.state.activeAuth.data.keys[j].key ==this.state.inputActivePK){
-                    EasyToast.show('Active公钥已存在');
-                    return;
-                }
-            }
-
-            for (var j = 0; j < authTempActive.data.auth.keys.length; j++) {
-                if (authTempActive.data.auth.keys[j].key ==this.props.navigation.state.params.wallet.activePublic){
-                    authTempActive.data.auth.keys[j].key=this.state.inputActivePK;//替换原公钥
-                }
-            }
+        }else {
+        // if(this.state.inputText.length >= 1){
+        //     if(this.verifyAccount(this.state.inputText)==false){
+        //         EasyToast.show('请输入正确的账号');
+        //         return 
+        //     }
+        //     authTemp.data.auth.accounts.push({"weight":1,"permission":{"actor":this.state.inputText,"permission":"owner"}});
+        //     this.changeAuth(authTemp);
+        // }else{
+            EasyToast.show('输入数据长度不正确');
         }
 
-        this.changeAuth(authTempActive,authTempOwner);
-       
     }  
 
     constructor(props) {
         super(props);
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.props.navigation.setParams({ onPress: this.submission});
+        this.props.navigation.setParams({ onPress: this._rightTopClick });
         this.state = {
             dataSource: ds.cloneWithRows([]),
             // dataSource: ds.cloneWithRows(['row1', 'row2']),
             ownerPk:'',
             threshold:'1',//权阀值
-            authKeys:'',//授权的owner公钥
+            authKeys:[],//授权的公钥组
             isAuth:false,//当前的公钥是否在授权公钥的范围内
-
-            inputOwnerPK:'',
-            inputActivePK:'',
-
-            ownerAuth:'',
-            activeAuth:'',
-
-
-
-
-
+            inputText:'',
+            ownerAuth:'',//更改的数据组
         }
     }
+
+    _rightTopClick = () =>{
+        const { navigate } = this.props.navigation;
+        navigate('BarCode', {isTurnOut:true,coinType:this.state.name});
+    }
+    
     //组件加载完成
     componentDidMount() {
         this.setState({
             ownerPk:this.props.navigation.state.params.wallet.ownerPublic,
         });
         this.getAccountInfo();
+        DeviceEventEmitter.addListener('scan_result', (data) => {
+            this.setState({inputText:data.toaccount})
+        });
+
     }
   
   componentWillUnmount(){
@@ -150,32 +149,14 @@ class AuthTransfer extends BaseComponent {
     super.componentWillUnmount();
   }
  
-
   //获取账户信息
   getAccountInfo(){
     EasyShowLD.loadingShow();
     this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.navigation.state.params.wallet.name},callback: (data) => {
         EasyShowLD.loadingClose();
-
-        var authTempActive={
-            account: "eosio",
-            name: "updateauth", 
-            authorization: [{
-            actor: '',//操作者 account
-            permission: 'active'// active
-            }], 
-            data: {
-                account: '',//操作者 account
-                permission: 'active',// active
-                parent: "",// owner
-                auth: {
-                    threshold: '',//总阀值 1
-                    keys: [],//公钥组 Keys
-                    accounts: [],//帐户组 Accounts
-                  }
-            }
-        };
-        var authTempOwner={
+        var temp=[];
+        var authFlag=false;
+        var authTemp={
             account: "eosio",
             name: "updateauth", 
             authorization: [{
@@ -193,75 +174,54 @@ class AuthTransfer extends BaseComponent {
                   }
             }
         };
-        // var retAcc=data.permissions[0].required_auth.accounts;
-        var retKeys=data.permissions[1].required_auth.keys;
-        var temp;
-        var authFlag=false;
 
         //active 
-        authTempActive.authorization[0].actor=this.props.navigation.state.params.wallet.name;
-        // authTempActive.authorization[0].permission="active";
-        authTempActive.data.account=this.props.navigation.state.params.wallet.name;
-        // authTempActive.data.permission="active";
-        authTempActive.data.parent=data.permissions[0].parent;
-        authTempActive.data.auth.threshold=data.permissions[0].required_auth.threshold;
-        authTempActive.data.auth.keys=data.permissions[0].required_auth.keys;
-        authTempActive.data.auth.accounts=data.permissions[0].required_auth.accounts;
+        authTemp.authorization[0].actor=this.props.navigation.state.params.wallet.name;
+        authTemp.data.account=this.props.navigation.state.params.wallet.name;
+        authTemp.data.parent=data.permissions[1].parent;
+        authTemp.data.auth.threshold=data.permissions[1].required_auth.threshold;
+        authTemp.data.auth.keys=data.permissions[1].required_auth.keys;
+        authTemp.data.auth.accounts=data.permissions[1].required_auth.accounts;
 
-        //owner
-        authTempOwner.authorization[0].actor=this.props.navigation.state.params.wallet.name;
-        // authTempOwner.authorization[0].permission="owner";
-        authTempOwner.data.account=this.props.navigation.state.params.wallet.name;
-        // authTempOwner.data.permission="owner";
-        authTempOwner.data.parent=data.permissions[1].parent;
-        authTempOwner.data.auth.threshold=data.permissions[1].required_auth.threshold;
-        authTempOwner.data.auth.keys=data.permissions[1].required_auth.keys;
-        authTempOwner.data.auth.accounts=data.permissions[1].required_auth.accounts;
-
-
-        //公钥
-        for(var i=0;i<authTempOwner.data.auth.keys.length;i++){
-            if(authTempOwner.data.auth.keys[i].key == this.props.navigation.state.params.wallet.ownerPublic){
-                temp=retKeys[i];
-                authFlag=true;
-            }
+        //账户
+        for(var i=0;i<authTemp.data.auth.accounts.length;i++){
+            temp.push({weight:authTemp.data.auth.accounts[i].weight,key:authTemp.data.auth.accounts[i].permission.actor+"@"+authTemp.data.auth.accounts[i].permission.permission});
         }
 
+        //公钥
+        for(var i=0;i<authTemp.data.auth.keys.length;i++){
+                temp.push({weight:authTemp.data.auth.keys[i].weight,key:authTemp.data.auth.keys[i].key});
+        }
+        authFlag=true;//获取账户成功后可以
         this.setState({
             threshold:data.permissions[1].required_auth.threshold,
             isAuth:authFlag,
-            authKeys:temp,//授权的公钥
-            activeAuth:authTempActive,
-            ownerAuth:authTempOwner,
-            
+            authKeys:temp,//授权的公钥组
+            ownerAuth:authTemp,
+            inputText:'',
         });
-        console.log("getaccountinfo=%s",JSON.stringify(data))
     } });
 } 
 
-EosUpdateAuth = (account, pvk,objActive,objOwner, callback) => { 
+EosUpdateAuth = (account, pvk,authArr, callback) => { 
     if (account == null) {
       if(callback) callback("无效账号");
       return;
     };
 
-    console.log("objActive=%s",JSON.stringify(objActive))
-    console.log("objOwner=%s",JSON.stringify(objOwner))
+    // console.log("authArr=%s",JSON.stringify(authArr))
 
-    //调试暂时屏蔽
-    // Eos.transaction({
-    //     actions: [
-    //         objActive,
-    //         objOwner
-    //     ]
-    // }, pvk, (r) => {
-    //   if(callback) callback(r);
-    // });
-
+    Eos.transaction({
+        actions: [
+            authArr,
+        ]
+    }, pvk, (r) => {
+      if(callback) callback(r);
+    });
   };
 
 
-  changeAuth(arrActive,arrOwner){
+  changeAuth(authTemp){
 
     const view =
         <View style={styles.passoutsource}>
@@ -277,18 +237,23 @@ EosUpdateAuth = (account, pvk,objActive,objOwner, callback) => {
         
         var privateKey = this.props.navigation.state.params.wallet.activePrivate;
         try {
+            EasyShowLD.loadingShow();
             var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.navigation.state.params.wallet.salt);
             var plaintext_privateKey = bytes_privateKey.toString(CryptoJS.enc.Utf8);
             if (plaintext_privateKey.indexOf('eostoken') != -1) {
-                EasyShowLD.loadingShow();
+                
                 plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
-                this.EosUpdateAuth(this.props.navigation.state.params.wallet.name, plaintext_privateKey,arrActive,arrOwner, (r) => {
+                this.EosUpdateAuth(this.props.navigation.state.params.wallet.name, plaintext_privateKey,authTemp,(r) => {
+                    EasyShowLD.loadingClose();
                         // alert(JSON.stringify(r));
-                        console.log("r=%s",JSON.stringify(r))
-                        EasyShowLD.loadingClose();
-                        this.getAccountInfo();//成功后刷新一下
+                        // console.log("r=%s",JSON.stringify(r))
+                        if(r.isSuccess==true){
+                            EasyToast.show('授权变更成功！');
+                        }else{
+                            EasyToast.show('授权变更失败！');
+                        }
+                        this.getAccountInfo();//刷新一下
                     });
-                EasyShowLD.loadingClose();
             } else {
                 EasyShowLD.loadingClose();
                 EasyToast.show('密码错误');
@@ -306,54 +271,161 @@ EosUpdateAuth = (account, pvk,objActive,objOwner, callback) => {
     dismissKeyboard();
   }
 
-  
+  //这个是用来删除当前行的
+  deleteUser = (delKey) =>{  
+
+    if(delKey.indexOf("@")!=-1){
+        delKey = delKey.replace( /([^@]+)$/, "");  //删除@后面的字符
+        delKey = delKey.replace( "@", "");  //删除@后面的字符
+    }
+
+    if(this.state.isAuth==false){
+        EasyToast.show("找不到对应的公钥或账号");
+        return
+    }
+
+    var authTemp=this.state.ownerAuth;
+
+    
+    if(delKey.length>12){
+        for (var i = 0; i < authTemp.data.auth.keys.length; i++) {
+            if (authTemp.data.auth.keys[i].key ==delKey) {
+                authTemp.data.auth.keys.splice(i, 1);
+            }
+        }
+    }else{
+        for (var i = 0; i < authTemp.data.auth.accounts.length; i++) {
+            if (authTemp.data.auth.accounts[i].permission.actor ==delKey) {
+                authTemp.data.auth.accounts.splice(i, 1);
+            }
+        }
+    }
+// arrAccounts.push({"weight":1,"permission":{"actor":this.state.inputContent}});
+    this.changeAuth(authTemp);
+   
+}  
+
+
+  _renderRow(rowData){ // cell样式
+
+    // console.log("_renderRow rowData=%s",JSON.stringify(rowData))
+
+    return (
+
+        <View style={styles.addUserTitle}>
+            
+            <View style={styles.titleStyle}>
+                <View style={styles.userAddView}>
+                    <Image source={UImage.adminAddA} style={styles.imgBtn} />
+                    <Text style={styles.buttonText}>已添加用户</Text>
+                </View>
+
+                <View style={styles.buttonView}>
+                    <Text style={styles.weightText}>权阀值  </Text>
+                    <Text style={styles.buttonText}>{rowData.item.weight}</Text>
+                </View>
+            </View>
+
+            <View style={styles.titleStyle}>
+                <Text style={styles.pktext}>{rowData.item.key}</Text>
+            </View>
+            {(this.state.ownerAuth.data.auth.keys.length>1 || rowData.item.key.length<50) &&
+            <TouchableHighlight onPress={() => { this.deleteUser(rowData.item.key) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
+                <View style={styles.delButton}>
+                    <Text style={styles.delText}>删除</Text>
+                </View>
+            </TouchableHighlight>
+            }
+       </View>
+    )
+  }
+
+
+  _renderRowInput(rowData){ // cell样式
+    // console.log("sectionID=%s",sectionID)
+    console.log("rowData=%s",JSON.stringify(rowData))
+    return (
+        
+        <View style={styles.addUserTitle} >
+            <View style={styles.titleStyle}>
+                <View style={styles.userAddView}>
+                    <Image source={UImage.adminAddA} style={styles.imgBtn} />
+                    <Text style={styles.buttonText}>添加授权用户</Text>
+                    {/* <Text style={styles.buttonText}>{rowData.index+1}</Text> */}
+                </View>
+
+                <View style={styles.buttonView}>
+                    <Text style={styles.weightText}>权阀值  </Text>
+                    <Text style={styles.buttonText}>1</Text>
+                </View>
+            </View>
+
+            <TextInput ref={(ref) => this._lphone = ref} value={rowData.item.value} returnKeyType="next" editable={true}
+                selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
+                onChangeText={(inputText) => this.setState({ inputText: inputText})}   keyboardType="default" 
+                placeholder="输入Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
+
+        </View>
+    )
+  }
+
+
 
   render() {
 
     return (<View style={styles.container}>
-      <ScrollView keyboardShouldPersistTaps="always">
+      <ScrollView keyboardShouldPersistTaps="handled" >
+            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
 
-        {this.state.ownerPk != '' && 
-        <View style={styles.inptoutgo} >
-            <View style={styles.titleStyle}>
-                <Text style={styles.inptitle}>Owner关联公钥（拥有者）</Text>
-            </View>
-            <View style={styles.titleStyle}>
-                <Text style={styles.pktext}>{this.state.ownerPk}</Text>
-            </View>
-        </View>
-        }
-
-        <View style={styles.significantout}>
-            <Image source={UImage.warning} style={styles.imgBtnWarning} />
-            <View style={{flex: 1,paddingLeft: 5,}}>
-                <Text style={styles.significanttext}>安全警告:</Text>
-                <Text style={styles.significanttext}>Owner公钥与Active公钥可独立变更，它将更改账号拥有者权限。</Text>
-                <Text style={styles.significanttext}>Owner与Active同时更改后原始私钥无法开启该账号！（请认真核对公钥无误后操作！）</Text>
-            </View>
-        </View>
-
-       <View style={styles.addUserTitle} >
-            <View style={styles.titleStyle}>
-                <View style={styles.userAddView}>
-                    <Image source={UImage.adminA} style={styles.imgBtn} />
-                    <Text style={styles.buttonText}>过户操作</Text>
+                <View style={styles.significantout}>
+                    <Image source={UImage.warning} style={styles.imgBtnWarning} />
+                    <View style={{flex: 1,paddingLeft: 5,}}>
+                        <Text style={styles.significanttext} >安全警告:请确保您清楚了解Active授权,并确保添加授权用户是您信任的用户，添加的用户将可进行账户权限变更和转账、投票等操作；授权非信任用户可能会导致账户权限被恶意变更，资产被转移。</Text>
+                    </View>
                 </View>
-            </View>
 
-            <TextInput ref={(ref) => this._lowner = ref} value={this.state.inputOwnerPK} returnKeyType="next" editable={true}
-                selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
-                onChangeText={(inputOwnerPK) => this.setState({ inputOwnerPK: inputOwnerPK})}   keyboardType="default" 
-                placeholder="粘贴或输入Owner公钥" underlineColorAndroid="transparent"  multiline={true}  />
+                <FlatList
+                    data={this.state.authKeys.length==null ?[]: this.state.authKeys} 
+                    extraData={this.state}
+                    renderItem={this._renderRow.bind(this)} >
+                </FlatList>
 
-            <TextInput ref={(ref) => this._lactive = ref} value={this.state.inputActivePK} returnKeyType="next" editable={true}
-                selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
-                onChangeText={(inputActivePK) => this.setState({ inputActivePK: inputActivePK})}   keyboardType="default" 
-                placeholder="粘贴或输入Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
+                {/* <FlatList
+                    data={this.state.inputText==''?['']:this.state.inputText} 
+                    extraData={this.state}
+                    renderItem={this._renderRowInput.bind(this)} >
+                </FlatList> */}
 
-        </View>
+                <View style={styles.inptoutgo} >
+                    <View style={styles.addUserTitle} >
+                        <View style={styles.titleStyle}>
+                            <View style={styles.userAddView}>
+                                <Image source={UImage.adminAddA} style={styles.imgBtn} />
+                                <Text style={styles.buttonText}>添加授权用户</Text>
+                                {/* <Text style={styles.buttonText}>{rowData.index+1}</Text> */}
+                            </View>
 
-      </ScrollView>
+                            <View style={styles.buttonView}>
+                                <Text style={styles.weightText}>权阀值  </Text>
+                                <Text style={styles.buttonText}>1</Text>
+                            </View>
+                        </View>
+
+                        <TextInput ref={(ref) => this._lphone = ref} value={this.state.inputText} returnKeyType="next" editable={true}
+                            selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
+                            onChangeText={(inputText) => this.setState({ inputText: inputText})}   keyboardType="default" 
+                            placeholder="输入Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
+                        </View>
+                </View>
+
+                <Button onPress={ this.submission.bind(this) }>
+                    <View style={styles.btnoutsource}>
+                        <Text style={styles.btntext}>提交</Text>
+                    </View>
+                </Button>
+
+            </KeyboardAvoidingView>
+        </ScrollView>
     </View>);
   }
 }
@@ -382,7 +454,7 @@ const styles = StyleSheet.create({
     inptoutgo: {
         marginTop: 10,
         marginBottom: 10,
-        paddingBottom: 20,
+        paddingBottom: 5,
         backgroundColor: UColor.mainColor,
         marginLeft:5,
         marginRight:5,
@@ -403,11 +475,11 @@ const styles = StyleSheet.create({
     },
 
     titleStyle:{
+        flex:1,
         marginTop: 5,
-        marginLeft:10,
-        marginRight:10,
+        marginLeft:20,
+        marginRight:20,
         flexDirection:'row',
-        flex:1
     },
     inptitle: {
         // flex: 1,
@@ -520,7 +592,7 @@ const styles = StyleSheet.create({
       },
       significanttext: {
         color: UColor.riseColor,
-        fontSize: 13, 
+        fontSize: 15, 
       },
     
       //添加用户框
@@ -543,8 +615,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         textAlignVertical: 'top',
         backgroundColor: UColor.secdColor,
-        marginTop:10,
-        marginBottom:10,
         marginLeft:15,
         marginRight:15,
         borderRadius: 5,
@@ -558,14 +628,27 @@ const styles = StyleSheet.create({
     inptpass: {
         color: UColor.tintColor,
         height: 45,
-        width: maxWidth-100,
+        width: ScreenWidth-100,
         paddingBottom: 5,
         fontSize: 16,
         backgroundColor: UColor.fontColor,
         borderBottomColor: UColor.baseline,
         borderBottomWidth: 1,
     },
-
+    // 按钮  
+    btnoutsource: {
+        marginHorizontal: ScreenUtil.autowidth(140),
+        height:  ScreenUtil.autoheight(40),
+        borderRadius: 6,
+        backgroundColor: UColor.tintColor,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    btntext: {
+        fontSize: ScreenUtil.setSpText(16),
+        color: UColor.fontColor
+    },
+   
 });
 
 export default AuthTransfer;

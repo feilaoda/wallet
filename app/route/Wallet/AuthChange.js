@@ -170,7 +170,7 @@ class AuthChange extends BaseComponent {
             data: {
                 account: '',//操作者 account
                 permission: 'active',// active
-                parent: "",// owner
+                parent: "owner",// owner
                 auth: {
                     threshold: '',//总阀值 1
                     keys: [],//公钥组 Keys
@@ -649,8 +649,8 @@ const styles = StyleSheet.create({
     },
     // 按钮  
     btnoutsource: {
-        marginHorizontal: ScreenUtil.autowidth(150),
-        height:  ScreenUtil.autoheight(45),
+        marginHorizontal: ScreenUtil.autowidth(130),
+        height:  ScreenUtil.autoheight(40),
         borderRadius: 6,
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
