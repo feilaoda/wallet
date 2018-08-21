@@ -1,13 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
-import { DeviceEventEmitter,  StyleSheet, Image, View, Text, } from "react-native";
+import { DeviceEventEmitter,  StyleSheet, Image, View, Text, TextInput} from "react-native";
 import UColor from "../../utils/Colors";
 import Button from "../../components/Button";
 import UImage from "../../utils/Img";
 import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from "../../components/Toast";
+import { EasyShowLD } from '../../components/EasyShow'
 import BaseComponent from "../../components/BaseComponent";
-
+import { Eos } from "react-native-eosjs";
+import {formatEosQua} from '../../utils/FormatUtil';
+import Constants from '../../utils/Constants';
+var AES = require("crypto-js/aes");
+var CryptoJS = require("crypto-js");
+var dismissKeyboard = require('dismissKeyboard');
 @connect(({ wallet }) => ({ ...wallet }))
 class undelegated extends BaseComponent {
   static navigationOptions = ({ navigation }) => {
@@ -51,8 +57,78 @@ class undelegated extends BaseComponent {
     };
   }
 
-  undelegated = () => {
-    EasyToast.show("待实现");
+  dismissKeyboardClick() {
+    dismissKeyboard();
+  }
+
+  undelegatedRefund = () => {
+    if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+       this.setState({ error: true,errortext: '请先创建并激活钱包' });
+       EasyToast.show("请先创建并激活钱包");
+       return;
+    }; 
+    this.dismissKeyboardClick();
+    const view =
+    <View style={styles.passoutsource}>
+        <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" 
+            selectionColor={UColor.tintColor} secureTextEntry={true}  keyboardType="ascii-capable" style={styles.inptpass} maxLength={Constants.PWD_MAX_LENGTH}
+            placeholderTextColor={UColor.arrow} placeholder="请输入密码" underlineColorAndroid="transparent" />
+        <Text style={styles.inptpasstext}></Text>  
+    </View>
+    EasyShowLD.dialogShow("请输入密码", view, "确认", "取消", () => {
+    if (this.state.password == "" || this.state.password.length < Constants.PWD_MIN_LENGTH) {
+        EasyToast.show('密码长度至少4位,请重输');
+        return;
+    }
+    var privateKey = this.props.defaultWallet.activePrivate;
+    try {
+        var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.defaultWallet.salt);
+        var plaintext_privateKey = bytes_privateKey.toString(CryptoJS.enc.Utf8);
+        if (plaintext_privateKey.indexOf('eostoken') != -1) {
+            plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
+            EasyShowLD.loadingShow();
+
+            Eos.transaction({
+                actions: [
+                    {
+                        account: "eosio",
+                        name: "refund", 
+                        authorization: [{
+                        actor: this.props.defaultWallet.account,
+                        permission: 'active'
+                        }], 
+                        data: {
+                            owner: this.props.defaultWallet.account,
+                        }
+                    },
+                ]
+            }, plaintext_privateKey, (r) => {
+                EasyShowLD.loadingClose();
+                if(r.isSuccess){
+                    EasyToast.show("赎回成功");
+                }else{
+                    if(r.data){
+                        if(r.data.msg){
+                            EasyToast.show(r.data.msg);
+                        }else{
+                            EasyToast.show("赎回失败");
+                        }
+                    }else{
+                        EasyToast.show("赎回失败");
+                    }
+                }
+            });
+
+        } else {
+            EasyShowLD.loadingClose();
+            EasyToast.show('密码错误');
+        }
+    } catch (e) {
+        EasyShowLD.loadingClose();
+        EasyToast.show('未知异常');
+    }
+    // EasyShowLD.dialogClose();
+    }, () => { EasyShowLD.dialogClose() });
   };
 
   render() {
@@ -63,7 +139,7 @@ class undelegated extends BaseComponent {
               <Text style={styles.accountText}>主网赎回EOS存在少量网络冲突问题，可能导致</Text>
               <Text style={styles.accountText}>您的EOS赎回中途卡顿，如遇此情况请点击下面</Text>
               <Text style={styles.accountText}>按钮再次激活赎回指令!</Text>
-              <Button onPress={this.undelegated.bind()} style={styles.btnnextstep}>
+              <Button onPress={this.undelegatedRefund.bind()} style={styles.btnnextstep}>
                 <View style={styles.nextstep}>
                   <Text style={styles.nextsteptext}>确认赎回</Text>
                 </View>
