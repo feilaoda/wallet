@@ -563,7 +563,8 @@ class Home extends React.Component {
                 <View style={styles.addtoouttop}>
                  <Text style={{fontSize: ScreenUtil.setSpText(32), color: UColor.fontColor}}>{this.state.isEye ? ((this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance)) : '****'}</Text>
                  <View style={(this.state.increase>=0 || this.state.totalBalance == "0.00")?styles.incdoout:styles.incupout}>
-                   <Text style={styles.cupcdo}>{this.state.isEye ? this.getTodayIncrease() : '****'}</Text>
+                   {/* <Text style={styles.cupcdo}>{this.state.isEye ? this.getTodayIncrease() : '****'}</Text> */}
+                   <Text style={styles.cupcdo}>{this.getTodayIncrease()}</Text>
                  </View>
                 </View>
                 <View style={styles.addtoout} >
