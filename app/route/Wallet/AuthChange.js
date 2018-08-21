@@ -77,6 +77,14 @@ class AuthChange extends BaseComponent {
             return//暂不支持账号先
         }
         
+        for (var j = 0; j < this.state.authKeys.length; j++) {
+            if (this.state.authKeys[j].key ==this.state.inputText) {
+                EasyToast.show('添加授权公钥或账户已存在');
+                return;
+            }
+        }
+
+
         var authTempActive=this.state.activeAuth;
 
         if (this.state.inputText.length > 12) {
@@ -85,12 +93,6 @@ class AuthChange extends BaseComponent {
                     EasyToast.show('公钥格式不正确');
                     return;
                 }else{
-                    for (var j = 0; j < authTempActive.data.auth.keys.length; j++) {
-                        if (authTempActive.data.auth.keys[j].key ==this.state.inputText) {
-                            EasyToast.show('添加公钥已存在');
-                            return;
-                        }
-                    }
                     authTempActive.data.auth.keys.push({weight:1,key:this.state.inputText})
                     this.changeAuth(authTempActive);
                 }
@@ -100,14 +102,6 @@ class AuthChange extends BaseComponent {
                 EasyToast.show('请输入正确的账号');
                 return 
             }
-
-            for (var j = 0; j < authTempActive.data.auth.accounts.length; j++) {
-                if (authTempActive.data.auth.accounts[j].permission.actor ==this.state.inputText) {
-                    EasyToast.show('添加账号已存在');
-                    return;
-                }
-            }
-            // {"weight":1,"permission":{"actor":this.state.inputContent,"permission":"eosio.code"}}
             authTempActive.data.auth.accounts.push({"weight":1,"permission":{"actor":this.state.inputText,"permission":"active"}});
             this.changeAuth(authTempActive);
         }else{
@@ -130,6 +124,7 @@ class AuthChange extends BaseComponent {
             inputCount:0,
             inputText:'',
             activeAuth:'',//更改的数据组
+            
 
         }
     }
@@ -385,7 +380,7 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
                 <View style={styles.significantout}>
                     <Image source={UImage.warning} style={styles.imgBtnWarning} />
                     <View style={{flex: 1,paddingLeft: 5,}}>
-                        <Text style={styles.significanttext} >安全警告:Active公钥添加关联用户，关联用户添加成功后可对该账号进行转账，投票等操作！</Text>
+                        <Text style={styles.significanttext} >安全警告:请确保您清楚了解Active授权,并确保添加授权用户是您信任的用户，添加的用户即可获得变更权限和转账、投票等操作。</Text>
                     </View>
                 </View>
 
@@ -480,11 +475,11 @@ const styles = StyleSheet.create({
     },
 
     titleStyle:{
+        flex:1,
         marginTop: 5,
-        marginLeft:10,
-        marginRight:10,
+        marginLeft:20,
+        marginRight:20,
         flexDirection:'row',
-        flex:1
     },
     inptitle: {
         // flex: 1,
