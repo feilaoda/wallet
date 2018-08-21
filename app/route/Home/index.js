@@ -1136,7 +1136,7 @@ const styles = StyleSheet.create({
     marginLeft:ScreenUtil.autowidth(5),
     // width:ScreenUtil.autowidth(70),
 
-    paddingHorizontal: ScreenUtil.autowidth(8),
+    paddingHorizontal: ScreenUtil.autowidth(4),
     paddingVertical: ScreenUtil.autoheight(2),
   },
   incdo:{
@@ -1153,7 +1153,7 @@ const styles = StyleSheet.create({
     marginLeft:ScreenUtil.autowidth(5),
     // width:ScreenUtil.autowidth(70),
 
-    paddingHorizontal: ScreenUtil.autowidth(8),
+    paddingHorizontal: ScreenUtil.autowidth(4),
     paddingVertical: ScreenUtil.autoheight(2),
   },
 
