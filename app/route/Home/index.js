@@ -14,7 +14,6 @@ import { EasyShowLD } from '../../components/EasyShow'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Constants from '../../utils/Constants'
 import { Eos } from "react-native-eosjs";
-
 @connect(({ wallet, assets }) => ({ ...wallet, ...assets }))
 class Home extends React.Component {
 
@@ -563,7 +562,9 @@ class Home extends React.Component {
           <View style={styles.addto}>
                 <View style={styles.addtoouttop}>
                  <Text style={{fontSize: ScreenUtil.setSpText(32), color: UColor.fontColor}}>{this.state.isEye ? ((this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance)) : '****'}</Text>
-                 <Text style={(this.state.increase>=0 || this.state.totalBalance == "0.00")?styles.incdo:styles.incup}>{this.state.isEye ? this.getTodayIncrease() : '****'}</Text>
+                 <View style={(this.state.increase>=0 || this.state.totalBalance == "0.00")?styles.incdoout:styles.incupout}>
+                   <Text style={styles.cupcdo}>{this.state.isEye ? this.getTodayIncrease() : '****'}</Text>
+                 </View>
                 </View>
                 <View style={styles.addtoout} >
                     <Text style={styles.addtotext}> 总资产</Text>
@@ -955,9 +956,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   stopoutBackups: {
-    fontSize: ScreenUtil.setSpText(10),
-    color: UColor.tintColor,
     textAlign: 'center',
+    color: UColor.tintColor,
+    fontSize: ScreenUtil.setSpText(10),
+    paddingHorizontal: ScreenUtil.autowidth(5),
+    paddingVertical: ScreenUtil.autoheight(3),
   },
 
   notactivedout: {
@@ -969,9 +972,11 @@ const styles = StyleSheet.create({
   },
 
   notactived: {
-    fontSize: ScreenUtil.setSpText(10),
     color: UColor.showy,
     textAlign: 'center', 
+    fontSize: ScreenUtil.setSpText(10),
+    paddingHorizontal: ScreenUtil.autowidth(5),
+    paddingVertical: ScreenUtil.autoheight(3),
   },
 
   walletaccount: {
@@ -1108,41 +1113,30 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginTop: ScreenUtil.autoheight(3),
   },
-  incup:{
+  incupout: {
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: UColor.riseColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: ScreenUtil.autoheight(10),
+    paddingHorizontal: ScreenUtil.autowidth(10),
     backgroundColor: UColor.riseColor,
-    // marginLeft: ScreenUtil.autowidth(5), 
-    fontSize: ScreenUtil.setSpText(12), 
-    color: UColor.fontColor,
-
+  },
+  incdoout: {
     borderRadius: 5,
     borderWidth: 1,
-    // borderColor: UColor.tintColor,
+    borderColor: UColor.fallColor,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft:ScreenUtil.autowidth(5),
-    // width:ScreenUtil.autowidth(70),
-
-    paddingHorizontal: ScreenUtil.autowidth(4),
-    paddingVertical: ScreenUtil.autoheight(2),
+    marginLeft: ScreenUtil.autoheight(10),
+    paddingHorizontal: ScreenUtil.autowidth(10),
+    backgroundColor: UColor.fallColor,
   },
-  incdo:{
-    backgroundColor:UColor.fallColor,
-    // marginLeft: ScreenUtil.autowidth(5), 
+  cupcdo:{
     fontSize: ScreenUtil.setSpText(12), 
     color: UColor.fontColor,
-    
-    borderRadius: 5,
-    borderWidth: 1,
-    // borderColor: UColor.tintColor,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft:ScreenUtil.autowidth(5),
-    // width:ScreenUtil.autowidth(70),
-
-    paddingHorizontal: ScreenUtil.autowidth(4),
-    paddingVertical: ScreenUtil.autoheight(2),
   },
-
   imgTop: {
     width: ScreenWidth,
     height: ScreenWidth*0.72,
