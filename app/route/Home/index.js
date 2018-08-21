@@ -1131,6 +1131,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft:ScreenUtil.autowidth(5),
     // width:ScreenUtil.autowidth(70),
+
+    paddingHorizontal: ScreenUtil.autowidth(8),
+    paddingVertical: ScreenUtil.autoheight(2),
   },
   incdo:{
     backgroundColor:UColor.fallColor,
@@ -1145,6 +1148,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft:ScreenUtil.autowidth(5),
     // width:ScreenUtil.autowidth(70),
+
+    paddingHorizontal: ScreenUtil.autowidth(8),
+    paddingVertical: ScreenUtil.autoheight(2),
   },
 
   imgTop: {
