@@ -106,7 +106,7 @@ class ImportEosKey extends BaseComponent {
     }
     Eos.checkPrivateKey(this.state.activePk, (r) => {
       if (!r.isSuccess) {
-        EasyToast.show('私钥格式不正确');
+        EasyToast.show('无效的私钥地址，请检查输入是否正确');
         return;
       }
       this.createWalletByPrivateKey("", this.state.activePk);
