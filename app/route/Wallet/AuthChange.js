@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
     inptoutgo: {
         marginTop: 10,
         marginBottom: 10,
-        paddingBottom: 20,
+        paddingBottom: 5,
         backgroundColor: UColor.mainColor,
         marginLeft:5,
         marginRight:5,

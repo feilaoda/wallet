@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     inptgo: {
         flex: 1,
         height: 50,
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
         // backgroundColor: UColor.secdColor,
     },
     inptext: {
