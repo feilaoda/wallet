@@ -28,7 +28,7 @@ class Setting extends React.Component {
       { avatar:UImage.account_manage,  name: "通讯录", onPress: this.goPage.bind(this, "AccountManage") },
       { avatar:UImage.my_share,  name: "邀请注册", onPress: this.goPage.bind(this, "share") },
       // { avatar:UImage.my_recovery, name: "密钥恢复", onPress: this.goPage.bind(this, "Test1") },
-      { avatar:UImage.my_community, name: "EOS社区", onPress: this.goPage.bind(this, "Community") },
+      { avatar:UImage.my_community, name: "ET社区", onPress: this.goPage.bind(this, "Community") },
       { avatar:UImage.my_help, name: "帮助中心", onPress: this.goPage.bind(this, "Helpcenter") },
       { avatar:UImage.my_system, name: "系统设置", onPress: this.goPage.bind(this, "set") },
     ];
@@ -167,8 +167,8 @@ class Setting extends React.Component {
             
             <View style={styles.footer}>
               <Text style={styles.foottext}>© 2018 eostoken all rights reserved </Text>
-              {/* <Text style={styles.foottext}>EOS专业版钱包 V{DeviceInfo.getVersion()}</Text> */}
-              <Text style={styles.foottext}>EOS专业版钱包 V2.3.0.5</Text>
+              <Text style={styles.foottext}>EOS专业版钱包 V{DeviceInfo.getVersion()}</Text>
+              {/* <Text style={styles.foottext}>EOS专业版钱包 V2.3.0.6</Text> */}
             </View>
           </View>
       </ScrollView>

@@ -2247,12 +2247,12 @@ function combineETKLine(data) {
         grid: [
             {
                 top: '8%',
-                left: '14%',
+                left: '0%',
                 right: '4%',
                 height: '60%'
             },
             {
-                left: '14%',
+                left: '0%',
                 right: '4%',
                 top: '70%',
                 height: '30%',
@@ -2324,12 +2324,16 @@ function combineETKLine(data) {
         ],
         yAxis: [
             {
-                // scale: true,
+                show: false,
+                scale: true,
+                min: 'dataMin',
+                max: 'dataMax',
                 splitArea: {
                     show: false
                 },
                 axisLabel: {
-                    show: true,
+                    show: false,
+                    showMaxLabel: true,
                     color: "#7382a1",
                     fontSize: 2,
                     formatter: function(value, index) {

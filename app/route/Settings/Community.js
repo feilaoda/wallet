@@ -14,7 +14,7 @@ const ScreenHeight = Dimensions.get('window').height;
 class Community extends BaseComponent {
 
   static navigationOptions = {
-    title: 'EOS社区',
+    title: 'ET社区',
     headerStyle: {
       paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,

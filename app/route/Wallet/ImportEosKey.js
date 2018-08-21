@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TextInput, TouchableHighlight, TouchableOpacity, Modal  } from 'react-native';
+import { Dimensions, DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TextInput, TouchableHighlight, TouchableOpacity, Modal,Platform  } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
@@ -126,89 +126,6 @@ class ImportEosKey extends BaseComponent {
     },500);
   }
 
-  createWalletByPrivateKey(owner_privateKey, active_privatekey){
-    EasyShowLD.loadingShow('正在请求');
-    try {
-      Eos.privateToPublic(active_privatekey, (r) => {
-        var active_publicKey = r.data.publicKey;
-        var owner_publicKey = "";//r.data.publicKey;
-        var pthis=this;
-        this.props.dispatch({
-          type: 'wallet/getAccountsByPuk',
-          payload: {
-            public_key: active_publicKey
-          },
-          callback: (data) => {
-              EasyShowLD.loadingClose();
-              if(data && data.code == 500 && data.msg){
-                EasyToast.show(data.msg);
-                return;
-              }
-              if (data == undefined || data.code != '0') {
-                pthis.opendelay(active_publicKey, data);
-                return;
-              }
-            var walletList = [];
-            var salt;
-            Eos.randomPrivateKey((r) => {
-              salt = r.data.ownerPrivate.substr(0, 18);
-              for (var i = 0; i < data.data.account_names.length; i++) {
-                var result = {
-                  data: {
-                    ownerPublic: '',
-                    activePublic: '',
-                    ownerPrivate: '',
-                    activePrivate: '',
-                    words_active: '',
-                    words: '',
-                  }
-                };
-                result.data.ownerPublic = owner_publicKey;
-                result.data.activePublic = active_publicKey;
-                result.data.words = '';
-                result.data.words_active = '';
-                result.data.ownerPrivate = owner_privateKey;
-                result.data.activePrivate = active_privatekey;
-                result.password = this.state.walletpwd;
-                result.name = data.data.account_names[i];
-                result.account = data.data.account_names[i];
-                result.isactived = true;
-                result.salt = salt;
-                walletList[i] = result;
-              }
-              // 保存钱包信息
-              this.props.dispatch({
-                type: 'wallet/saveWalletList',
-                walletList: walletList,
-                callback: (data) => {
-                  EasyShowLD.loadingClose();
-                  if (data.error != null) {
-                    EasyToast.show('导入私钥失败：' + data.error);
-                  } else {
-                    EasyToast.show('导入私钥成功！');
-                    this.props.dispatch({
-                      type: 'wallet/updateGuideState',
-                      payload: {
-                        guide: false
-                      }
-                    });
-                    DeviceEventEmitter.emit('updateDefaultWallet');
-                    DeviceEventEmitter.emit('modify_password');
-                    this.props.navigation.goBack();
-
-                  }
-                }
-              });
-            });
-          }
-        });
-      });
-    } catch (e) {
-      EasyShowLD.loadingClose();
-      EasyToast.show('privateToPublic err: ' + JSON.stringify(e));
-    }
-  }
-  
   // createWalletByPrivateKey(owner_privateKey, active_privatekey){
   //   EasyShowLD.loadingShow('正在请求');
   //   try {
@@ -231,21 +148,58 @@ class ImportEosKey extends BaseComponent {
   //               pthis.opendelay(active_publicKey, data);
   //               return;
   //             }
-  //             var array = new Array();
-  //             for(var i = 0;i < data.data.account_names.length;i++){
-  //               var obj = new Object();
-  //               obj.name = data.data.account_names[i];
-  //               obj.isChecked = false;
-
-  //               array[i] = obj;
+  //           var walletList = [];
+  //           var salt;
+  //           Eos.randomPrivateKey((r) => {
+  //             salt = r.data.ownerPrivate.substr(0, 18);
+  //             for (var i = 0; i < data.data.account_names.length; i++) {
+  //               var result = {
+  //                 data: {
+  //                   ownerPublic: '',
+  //                   activePublic: '',
+  //                   ownerPrivate: '',
+  //                   activePrivate: '',
+  //                   words_active: '',
+  //                   words: '',
+  //                 }
+  //               };
+  //               result.data.ownerPublic = owner_publicKey;
+  //               result.data.activePublic = active_publicKey;
+  //               result.data.words = '';
+  //               result.data.words_active = '';
+  //               result.data.ownerPrivate = owner_privateKey;
+  //               result.data.activePrivate = active_privatekey;
+  //               result.password = this.state.walletpwd;
+  //               result.name = data.data.account_names[i];
+  //               result.account = data.data.account_names[i];
+  //               result.isactived = true;
+  //               result.salt = salt;
+  //               walletList[i] = result;
   //             }
+  //             // 保存钱包信息
+  //             this.props.dispatch({
+  //               type: 'wallet/saveWalletList',
+  //               walletList: walletList,
+  //               callback: (data) => {
+  //                 EasyShowLD.loadingClose();
+  //                 if (data.error != null) {
+  //                   EasyToast.show('导入私钥失败：' + data.error);
+  //                 } else {
+  //                   EasyToast.show('导入私钥成功！');
+  //                   this.props.dispatch({
+  //                     type: 'wallet/updateGuideState',
+  //                     payload: {
+  //                       guide: false
+  //                     }
+  //                   });
+  //                   DeviceEventEmitter.emit('updateDefaultWallet');
+  //                   DeviceEventEmitter.emit('modify_password');
+  //                   this.props.navigation.goBack();
 
-  //             var keyObj = new Object();
-  //             keyObj.owner_privateKey = owner_privateKey;
-  //             keyObj.owner_publicKey = owner_publicKey;
-  //             keyObj.active_privatekey = active_privatekey;
-  //             keyObj.active_publicKey = active_publicKey;
-  //             this.setState({selectpromp: true,walletList : array,keyObj:keyObj});  
+  //                 }
+  //               }
+  //             });
+  //           });
   //         }
   //       });
   //     });
@@ -254,6 +208,61 @@ class ImportEosKey extends BaseComponent {
   //     EasyToast.show('privateToPublic err: ' + JSON.stringify(e));
   //   }
   // }
+  
+  createWalletByPrivateKey(owner_privateKey, active_privatekey){
+    EasyShowLD.loadingShow('正在请求');
+    try {
+      Eos.privateToPublic(active_privatekey, (r) => {
+        var active_publicKey = r.data.publicKey;
+        var owner_publicKey = "";//r.data.publicKey;
+        var pthis=this;
+        this.props.dispatch({
+          type: 'wallet/getAccountsByPuk',
+          payload: {
+            public_key: active_publicKey
+          },
+          callback: (data) => {
+              EasyShowLD.loadingClose();
+              if(data && data.code == 500 && data.msg){
+                EasyToast.show(data.msg);
+                return;
+              }
+              if (data == undefined || data.code != '0') {
+                pthis.opendelay(active_publicKey, data);
+                return;
+              }
+              var array = new Array();
+              for(var i = 0;i < data.data.account_names.length;i++){
+                var obj = new Object();
+                obj.name = data.data.account_names[i];
+                obj.isChecked = false;
+
+                array[i] = obj;
+              }
+
+              var keyObj = new Object();
+              keyObj.owner_privateKey = owner_privateKey;
+              keyObj.owner_publicKey = owner_publicKey;
+              keyObj.active_privatekey = active_privatekey;
+              keyObj.active_publicKey = active_publicKey;
+              
+              if (Platform.OS == 'ios') {
+                this.setState({walletList : array,keyObj:keyObj});  
+                var th = this;
+                this.handle = setTimeout(() => {
+                  th.setState({selectpromp: true}); 
+                }, 100);
+              }else{
+                this.setState({selectpromp: true,walletList : array,keyObj:keyObj});  
+              }
+          }
+        });
+      });
+    } catch (e) {
+      EasyShowLD.loadingClose();
+      EasyToast.show('privateToPublic err: ' + JSON.stringify(e));
+    }
+  }
   specifiedAccountToWallet(account_names){
     var walletList = [];
     var salt;
@@ -505,7 +514,7 @@ class ImportEosKey extends BaseComponent {
         </Modal>  
         <Modal style={styles.businesmodal} animationType={'slide'} transparent={true}  visible={this.state.selectpromp} onRequestClose={()=>{}}>
             <TouchableOpacity style={styles.businestouchable} activeOpacity={1.0}>
-              <View style={styles.modalStyle}>
+              <View style={styles.modalStyle1}>
                 <View style={styles.subView}> 
                   <Text style={styles.titleout}/>
                   <Text style={styles.titleText}>请选择导入钱包</Text>
@@ -694,10 +703,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalStyle: {
-    // width: ScreenWidth - 20,
+    width: ScreenWidth - 20,
     backgroundColor: UColor.fontColor,
     borderRadius: 5,
-    // paddingHorizontal: ScreenUtil.autowidth(25),
+    paddingHorizontal: ScreenUtil.autowidth(25),
+  },
+  modalStyle1: {
+    width: ScreenWidth,
+    backgroundColor: UColor.fontColor,
+    borderRadius: 5,
+    paddingHorizontal: ScreenUtil.autowidth(10),
   },
   subView: {
     flexDirection: "row",

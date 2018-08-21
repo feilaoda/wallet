@@ -1,16 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Dimensions, DeviceEventEmitter, ListView,NativeModules, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing, Clipboard, ImageBackground, ScrollView, RefreshControl,Linking, } from 'react-native';
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter' 
-import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
-import Echarts from 'native-echarts'
 import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
-import QRCode from 'react-native-qrcode-svg';
 const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
 import { EasyToast } from "../../components/Toast"
@@ -18,7 +14,6 @@ import { EasyShowLD } from '../../components/EasyShow'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Constants from '../../utils/Constants'
 import { Eos } from "react-native-eosjs";
-
 @connect(({ wallet, assets }) => ({ ...wallet, ...assets }))
 class Home extends React.Component {
 
@@ -26,7 +21,7 @@ class Home extends React.Component {
     title: '钱包',
     header: null,
     headerStyle: {
-      paddingTop: ScreenUtil.autoheight(20),
+      // paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
       borderBottomWidth:0,
     },
@@ -455,7 +450,7 @@ class Home extends React.Component {
     }else{
       ret = (this.state.totalBalance == null || this.state.increase == null) ? '0.00' : ((this.state.increase>=0? "+" : "") +(((this.state.totalBalance * this.state.increase) / 100).toFixed(2)))
     }
-    return ret;
+    return ret + '%';
   }
 
   copyname(wallet) {
@@ -563,59 +558,72 @@ class Home extends React.Component {
                 <Ionicons style={styles.systemSettingArrow} name="ios-arrow-forward-outline" size={20} />
             </View>
           </Button>}
-
-          <ImageBackground style={styles.bgout} source={UImage.home_bg} resizeMode="cover">
-            <View style={styles.head}>
-              <Button onPress={this.onPress.bind(this, 'Receivables')} style={styles.headbtn}>
-                <View style={styles.headbtnout}>
-                  <Image source={UImage.qr} style={styles.imgBtn} />
-                  <Text style={styles.headbtntext}>收币</Text>
-                </View>
-              </Button>
-              <Button onPress={this.onPress.bind(this, 'transfer')} style={styles.headbtn}>
-                <View style={styles.headbtnout}>
-                  <Image source={UImage.transfer} style={styles.imgBtn} />
-                  <Text style={styles.headbtntext}>转账</Text>
-                </View>
-              </Button>
-              <Button  onPress={this.onPress.bind(this, 'Resources')}  style={styles.headbtn}>
-                <View style={styles.headbtnout}>
-                  <Image source={UImage.resources} style={styles.imgBtn} />
-                  <Text style={styles.headbtntext}>资源管理</Text>
-                </View>
-              </Button>
-              <Button  onPress={this.onPress.bind(this, 'functionsMore')}  style={styles.headbtn}>
-                <View style={styles.headbtnout}>
-                  <Image source={UImage.more} style={styles.imgBtn} />
-                  <Text style={styles.headbtntext}>更多</Text>
-                </View>
-              </Button>
-            </View>
-          </ImageBackground>
+        <ImageBackground style={styles.bgout} source={UImage.home_bg} resizeMode="cover">
           <View style={styles.addto}>
-              <View style={styles.addout}>
-                  <View style={styles.topout} >
-                    <Button onPress={this.copyname.bind(this,this.props.defaultWallet)} >
-                        <Text style={styles.addtotext}>{(this.props.defaultWallet == null || this.props.defaultWallet.name == null) ? this.state.account : this.props.defaultWallet.name}</Text>
-                    </Button>
+                <View style={styles.addtoouttop}>
+                 <Text style={{fontSize: ScreenUtil.setSpText(32), color: UColor.fontColor}}>{this.state.isEye ? ((this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance)) : '****'}</Text>
+                 <View style={(this.state.increase>=0 || this.state.totalBalance == "0.00")?styles.incdoout:styles.incupout}>
+                   <Text style={styles.cupcdo}>{this.state.isEye ? this.getTodayIncrease() : '****'}</Text>
+                 </View>
+                </View>
+                <View style={styles.addtoout} >
                     <Text style={styles.addtotext}> 总资产</Text>
+                    <Text style={styles.addtoouttext}>(≈￥)</Text>
                     <TouchableOpacity onPress={this.onPressReveal.bind(this,this.state.isEye)}>
                         <Image source={this.state.isEye ? UImage.reveal_wallet : UImage.reveal_h_wallet} style={styles.imgTeOy}/>
                     </TouchableOpacity>
-                    {(this.props.defaultWallet != null && (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived'))) ? <View style={styles.notactivedout}><Text style={styles.notactived} onPress={this.WalletDetail.bind(this,this.props.defaultWallet)}>未激活</Text></View>:((this.props.defaultWallet == null || this.props.defaultWallet.name == null || (this.props.defaultWallet != null &&this.props.defaultWallet.isBackups)) ? null :  <View style={styles.stopoutBackupsout}><Text style={styles.stopoutBackups} onPress={this.WalletDetail.bind(this,this.props.defaultWallet)}>未备份</Text></View>) }   
-                  </View>
-                <View style={styles.addtoout}>
-                  <Text style={styles.addtoouttext}>≈{this.state.isEye ? ((this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance)) : '****'}(￥)</Text>
-                  <Text style={(this.state.increase>=0 || this.state.totalBalance == "0.00")?styles.incdo:styles.incup}>今日 {this.state.isEye ? this.getTodayIncrease() : '****'}</Text>
                 </View>
-              </View>
-              <Button onPress={this.onPress.bind(this, 'addAssets')} style={styles.addtobtn}>  
-                <View style={styles.addbtnout}>             
-                  <Image source={UImage.add} style={styles.imgBtn} />
-                  <Text style={styles.addbtnimg}>添加资产</Text>  
-                </View>               
-              </Button>
+                <View style={styles.addout} >
+                    <TouchableOpacity onPress={this.copyname.bind(this,this.props.defaultWallet)}>
+                       <Text style={styles.addtotext}>{(this.props.defaultWallet == null || this.props.defaultWallet.name == null) ? this.state.account : this.props.defaultWallet.name}</Text>
+                    </TouchableOpacity>
+                    {(this.props.defaultWallet != null && (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived'))) 
+                       ? 
+                       <View style={styles.backoractivestyle}>
+                          <Text style={styles.notactived} onPress={this.WalletDetail.bind(this,this.props.defaultWallet)}>未激活</Text>
+                       </View>
+                       :
+                       ((this.props.defaultWallet == null || this.props.defaultWallet.name == null || (this.props.defaultWallet != null &&this.props.defaultWallet.isBackups)) 
+                          ? null :  
+                            <View style={styles.backoractivestyle11}>
+                                <Text style={styles.stopoutBackups} onPress={this.WalletDetail.bind(this,this.props.defaultWallet)}>未备份</Text>
+                            </View>) }   
+                </View>
           </View>
+        </ImageBackground>
+          <View style={styles.head}>
+            <Button onPress={this.onPress.bind(this, 'addAssets')} style={styles.headbtn}>
+              <View style={styles.headbtnout}>
+                <Image source={UImage.add} style={styles.imgBtn} />
+                <Text style={styles.headbtntext}>添加资产</Text>
+              </View>
+            </Button>
+            <Button onPress={this.onPress.bind(this, 'Receivables')} style={styles.headbtn}>
+              <View style={styles.headbtnout}>
+                <Image source={UImage.qr} style={styles.imgBtn} />
+                <Text style={styles.headbtntext}>收币</Text>
+              </View>
+            </Button>
+            <Button onPress={this.onPress.bind(this, 'transfer')} style={styles.headbtn}>
+              <View style={styles.headbtnout}>
+                <Image source={UImage.transfer} style={styles.imgBtn} />
+                <Text style={styles.headbtntext}>转账</Text>
+              </View>
+            </Button>
+            <Button  onPress={this.onPress.bind(this, 'Resources')}  style={styles.headbtn}>
+              <View style={styles.headbtnout}>
+                <Image source={UImage.resources} style={styles.imgBtn} />
+                <Text style={styles.headbtntext}>资源管理</Text>
+              </View>
+            </Button>
+            <Button  onPress={this.onPress.bind(this, 'functionsMore')}  style={styles.headbtn}>
+              <View style={styles.headbtnout}>
+                <Image source={UImage.more} style={styles.imgBtn} />
+                <Text style={styles.headbtntext}>更多</Text>
+              </View>
+            </Button>
+          </View>
+          
         </View>   
         <ListView initialListSize={1} enableEmptySections={true} 
           refreshControl={
@@ -639,7 +647,7 @@ class Home extends React.Component {
                   <View style={styles.rights}>
                     <View style={styles.rightout}>
                         <Text style={styles.rightbalance}>{this.state.isEye ? (rowData.balance==null || rowData.balance=="" || (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')))? "0.0000" : rowData.balance.replace(rowData.asset.name, "") : '****'}</Text>
-                        <Text style={styles.rightmarket}>≈{this.state.isEye ? (rowData.balance==null || rowData.balance=="" || rowData.asset.value == null || rowData.asset.value == "" || (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')))? "0.00" : (rowData.balance.replace(rowData.asset.name, "")*rowData.asset.value).toFixed(2) : '****'}（￥）</Text>
+                        <Text style={styles.rightmarket}>≈（￥）{this.state.isEye ? (rowData.balance==null || rowData.balance=="" || rowData.asset.value == null || rowData.asset.value == "" || (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')))? "0.00" : (rowData.balance.replace(rowData.asset.name, "")*rowData.asset.value).toFixed(2) : '****'}</Text>
                     </View>
                   </View>
                 </View>
@@ -778,28 +786,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: "space-between",
     width: ScreenWidth,
-    paddingTop: ScreenUtil.autoheight(30),
+    paddingTop: ScreenUtil.autoheight(10),
     paddingHorizontal: ScreenUtil.autowidth(10),
     backgroundColor: UColor.mainColor, 
   },
   toptext: {
-    height: ScreenUtil.autoheight(65),
-    lineHeight: ScreenUtil.autoheight(65),
+    height: ScreenUtil.autoheight(60),
+    lineHeight: ScreenUtil.autoheight(60),
     textAlign: "center",
     fontSize: ScreenUtil.setSpText(18),
     color: UColor.fontColor,
   },
 
   bgout: {
-    justifyContent: "center" 
+    justifyContent: "center" ,
+    width:ScreenWidth,
+    height: ScreenWidth*0.38,
   },
   head: {
     height: ScreenUtil.autoheight(70), 
     flexDirection: "row",
     backgroundColor: UColor.secdColor, 
-    borderRadius: 5,  
-    marginVertical: ScreenUtil.autoheight(20),
-    marginHorizontal: ScreenUtil.autowidth(10),
+    // borderRadius: 5,  
+    // marginVertical: ScreenUtil.autoheight(20),
+    // marginHorizontal: ScreenUtil.autowidth(10),
+
+    borderBottomColor: UColor.tintColor, 
+    borderBottomWidth: 2,
   },
   headbtn: {
     flex: 1, 
@@ -818,20 +831,35 @@ const styles = StyleSheet.create({
   },
 
   addto: {
-    height: ScreenUtil.autoheight(90), 
-    backgroundColor: UColor.mainColor, 
-    flexDirection: "row",
+    flex: 1, 
+    flexDirection: "column",
     justifyContent: "space-between",
-    borderBottomColor: UColor.tintColor, 
-    borderBottomWidth: 2,
-    paddingHorizontal: ScreenUtil.autowidth(5),
+    paddingHorizontal: ScreenUtil.autowidth(20),
+    paddingVertical:  ScreenUtil.autoheight(15)
   },
   addout: {
-    flex: 1, 
-    flexDirection: "column", 
-    alignItems: 'flex-start', 
-    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: 'center',
+    marginTop: ScreenUtil.autoheight(20), 
   },
+
+  backoractivestyle: {
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: UColor.showy,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft:ScreenUtil.autowidth(5),
+  },
+  backoractivestyle11: {
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: UColor.tintColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft:ScreenUtil.autowidth(5),
+  },
+
   addtotext: { 
     fontSize: ScreenUtil.setSpText(16), 
     color: UColor.fontColor
@@ -841,8 +869,12 @@ const styles = StyleSheet.create({
     height: ScreenUtil.autoheight(15),
     marginHorizontal: ScreenUtil.autowidth(5),
   },
+  addtoouttop: {
+    flexDirection: "row",
+    alignItems: 'center', 
+    justifyContent: "center", 
+  },
   addtoout: {
-    flex: 1,
     flexDirection: "row",
     alignItems: 'center', 
     justifyContent: "center", 
@@ -924,11 +956,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   stopoutBackups: {
-    fontSize: ScreenUtil.setSpText(10),
-    color: UColor.tintColor,
     textAlign: 'center',
-    paddingHorizontal: ScreenUtil.autowidth(8),
-    paddingVertical: ScreenUtil.autoheight(2),
+    color: UColor.tintColor,
+    fontSize: ScreenUtil.setSpText(10),
+    paddingHorizontal: ScreenUtil.autowidth(5),
+    paddingVertical: ScreenUtil.autoheight(3),
   },
 
   notactivedout: {
@@ -940,11 +972,11 @@ const styles = StyleSheet.create({
   },
 
   notactived: {
-    fontSize: ScreenUtil.setSpText(10),
     color: UColor.showy,
     textAlign: 'center', 
-    paddingHorizontal: ScreenUtil.autowidth(8),
-    paddingVertical: ScreenUtil.autoheight(2),
+    fontSize: ScreenUtil.setSpText(10),
+    paddingHorizontal: ScreenUtil.autowidth(5),
+    paddingVertical: ScreenUtil.autoheight(3),
   },
 
   walletaccount: {
@@ -1081,17 +1113,30 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginTop: ScreenUtil.autoheight(3),
   },
-  incup:{
-    marginLeft: ScreenUtil.autowidth(5), 
-    fontSize: ScreenUtil.setSpText(16), 
-    color: UColor.riseColor,
+  incupout: {
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: UColor.riseColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: ScreenUtil.autoheight(10),
+    paddingHorizontal: ScreenUtil.autowidth(10),
+    backgroundColor: UColor.riseColor,
   },
-  incdo:{
-    marginLeft: ScreenUtil.autowidth(5), 
-    fontSize: ScreenUtil.setSpText(16), 
-    color: UColor.fallColor,
+  incdoout: {
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: UColor.fallColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: ScreenUtil.autoheight(10),
+    paddingHorizontal: ScreenUtil.autowidth(10),
+    backgroundColor: UColor.fallColor,
   },
-
+  cupcdo:{
+    fontSize: ScreenUtil.setSpText(12), 
+    color: UColor.fontColor,
+  },
   imgTop: {
     width: ScreenWidth,
     height: ScreenWidth*0.72,

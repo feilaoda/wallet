@@ -41,7 +41,7 @@ class WalletDetail extends BaseComponent {
       { avatar:UImage.publickey, name: "导出公钥", onPress: this.goPage.bind(this, "ExportPublicKey") },
       { avatar:UImage.resources_f, name: "资源管理", onPress: this.goPage.bind(this, "Resources") },
       { avatar:UImage.details, name: "账户详细信息", onPress: this.goPage.bind(this, "SeeBlockBrowser") },
-      // { avatar:UImage.adminA, name: "权限更改及过户", onPress: this.goPage.bind(this, "AuthManage") },
+      { avatar:UImage.adminA, name: "权限管理", onPress: this.goPage.bind(this, "AuthManage") },
     ];
     this.state = {
       password: '',
@@ -462,12 +462,14 @@ class WalletDetail extends BaseComponent {
   render() {
     const c = this.props.navigation.state.params.data
     const balance = this.props.navigation.state.params.balance
+    const isEye = this.props.navigation.state.params.isEye
+
     return <View style={styles.container}>    
       <ScrollView style={styles.scrollView}>
         <View>
           <View style={styles.walletout}>
             <View style={styles.accountout} >
-              <Text style={styles.accounttext}>{c.isactived && c.balance != null && c.balance != ""? c.balance : balance}</Text>
+              <Text style={styles.accounttext}>{isEye ? (c.isactived && c.balance != null && c.balance != ""? c.balance : balance) : "******"}</Text>
                <Text style={styles.company}> EOS</Text>
             </View>
             <View style={styles.topout}>

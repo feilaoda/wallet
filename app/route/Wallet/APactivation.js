@@ -34,9 +34,9 @@ class APactivation extends BaseComponent {
       accountName: "",
       ownerPuk: "",
       activePuk: "",
-      cpu:"0.5",
-      net:"0.5",
-      ram:"1.5",
+      cpu:"0.1",
+      net:"0.1",
+      ram:"1",
       isComplete: false,
       hasErrorInput: false,
       show: false,
@@ -46,9 +46,9 @@ class APactivation extends BaseComponent {
   componentDidMount() {
     var accountInfo = this.props.navigation.state.params.accountInfo;
     this.setState({
-      cpu: accountInfo.cpu ? accountInfo.cpu : "0.5",
-      net: accountInfo.net ? accountInfo.net : "0.5",
-      ram: accountInfo.ram ? accountInfo.ram : "1.5",
+      cpu: accountInfo.cpu ? accountInfo.cpu : "0.1",
+      net: accountInfo.net ? accountInfo.net : "0.1",
+      ram: accountInfo.ram ? accountInfo.ram : "1",
       accountName: accountInfo.account ? accountInfo.account : "" ,
       ownerPuk: accountInfo.owner ? accountInfo.owner : "",
       activePuk: accountInfo.active ? accountInfo.active : "",
@@ -161,7 +161,7 @@ class APactivation extends BaseComponent {
                 <View style={styles.rankout}>
                     <TextInput ref={(ref) => this._raccount = ref} value={this.state.cpu} returnKeyType="next" 
                         selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                        placeholder="最低可输入0.1" underlineColorAndroid="transparent" 
+                        placeholder="最低可输入0.1" underlineColorAndroid="transparent"
                         keyboardType="default" maxLength={12} onChangeText={(cpu) => this.setState({ cpu })} 
                     />
                     <Text style={styles.company}>EOS</Text>
@@ -175,7 +175,7 @@ class APactivation extends BaseComponent {
                 <View style={styles.rankout}>
                     <TextInput ref={(ref) => this._raccount = ref} value={this.state.net} returnKeyType="next" 
                         selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                        placeholder="最低可输入0.1" underlineColorAndroid="transparent" 
+                        placeholder="最低可输入0.1" underlineColorAndroid="transparent"
                         keyboardType="default" maxLength={12} onChangeText={(net) => this.setState({ net })} 
                     />
                     <Text style={styles.company}>EOS</Text>
@@ -189,7 +189,7 @@ class APactivation extends BaseComponent {
                 <View style={styles.rankout}>
                     <TextInput ref={(ref) => this._raccount = ref} value={this.state.ram} returnKeyType="next" 
                         selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} 
-                        placeholder="最低可输入0.397" underlineColorAndroid="transparent" 
+                        placeholder="最低可输入0.397" underlineColorAndroid="transparent"
                         keyboardType="default" maxLength={12} onChangeText={(ram) => this.setState({ ram })} 
                     />
                     <Text style={styles.company}>EOS</Text>

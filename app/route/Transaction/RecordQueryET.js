@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform,  TouchableOpacity, TextInput, RefreshControl } from 'react-native';
 import moment from 'moment';
 import UColor from '../../utils/Colors'
@@ -263,6 +264,9 @@ class RecordQueryET extends React.Component {
                 }
                 <Text style={styles.presentprice}>{(rowData.price == null || rowData.price == '0') ? '' : this.precisionTransfer(rowData.price,8)}{(rowData.price == null || rowData.price == '0') ? '' :  ' ' + this.state.tradename}</Text>
               </View>
+              <View style={styles.Ionicout}>
+                <Ionicons color={UColor.arrow} name="ios-arrow-forward-outline" size={20} /> 
+              </View>
             </View>
           </Button>
         )}                   
@@ -347,6 +351,7 @@ const styles = StyleSheet.create({
       marginVertical: ScreenUtil.autoheight(5),
     },
     leftout: {
+      flex: 1,
       flexDirection: "column",
       justifyContent: "space-between",
     },
@@ -368,18 +373,23 @@ const styles = StyleSheet.create({
       flex: 5,
       fontSize: ScreenUtil.setSpText(15),
       color: UColor.riseColor,
-      textAlign: 'right',
+      textAlign: 'left',
     },
     buytext: {
       flex: 5,
       fontSize: ScreenUtil.setSpText(15),
       color: UColor.fallColor,
-      textAlign: 'right',
+      textAlign: 'left',
     },
     presentprice: {
       fontSize: ScreenUtil.setSpText(14),
       color: UColor.arrow,
-      textAlign: 'right',
-    }
+      textAlign: 'left',
+    },
+    Ionicout: {
+      width: ScreenUtil.autowidth(30),
+      justifyContent: 'center',
+      alignItems: 'flex-end'
+    },
 });
 export default RecordQueryET;

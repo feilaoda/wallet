@@ -145,37 +145,37 @@ class CoinDetail extends BaseComponent {
           <View style={{flex:1,flexDirection:'row',marginTop: ScreenUtil.autoheight(30)}}>
             <View style={{flexDirection:"column",flexGrow:1}}>
               <Text style={{color:UColor.arrow,fontSize: ScreenUtil.setSpText(11),textAlign:'center'}}>开盘</Text>
-              <Text style={{color:UColor.fontColor,fontSize: ScreenUtil.setSpText(15),marginTop: ScreenUtil.autoheight(20),textAlign:'center'}}>{c.start}</Text>
+              <Text style={{color:UColor.fontColor,fontSize: ScreenUtil.setSpText(15),marginTop: ScreenUtil.autoheight(10),textAlign:'center'}}>{c.start}</Text>
             </View>
             <View style={{flexDirection:"column",flexGrow:1}}>
               <Text style={{color:UColor.arrow,fontSize: ScreenUtil.setSpText(11),textAlign:'center'}}>最高</Text>
-              <Text style={{color:UColor.fontColor,fontSize: ScreenUtil.setSpText(15),marginTop: ScreenUtil.autoheight(20),textAlign:'center'}}>{c.max}</Text>
+              <Text style={{color:UColor.fontColor,fontSize: ScreenUtil.setSpText(15),marginTop: ScreenUtil.autoheight(10),textAlign:'center'}}>{c.max}</Text>
             </View>
             <View style={{flexDirection:"column",flexGrow:1}}>
               <Text style={{color:UColor.arrow,fontSize: ScreenUtil.setSpText(11),textAlign:'center'}}>最低</Text>
-              <Text style={{color:UColor.fontColor,fontSize: ScreenUtil.setSpText(15),marginTop: ScreenUtil.autoheight(20),textAlign:'center'}}>{c.min}</Text>
+              <Text style={{color:UColor.fontColor,fontSize: ScreenUtil.setSpText(15),marginTop: ScreenUtil.autoheight(10),textAlign:'center'}}>{c.min}</Text>
             </View>
             <View style={{flexDirection:"column",flexGrow:1}}>
               <Text style={{color: UColor.arrow,fontSize: ScreenUtil.setSpText(11),textAlign:'center'}}>成交量</Text>
-              <Text style={{color:UColor.fontColor,fontSize: ScreenUtil.setSpText(15),marginTop: ScreenUtil.autoheight(20),textAlign:'center'}}>{formatterNumber(c.txs)}</Text>
+              <Text style={{color:UColor.fontColor,fontSize: ScreenUtil.setSpText(15),marginTop: ScreenUtil.autoheight(10),textAlign:'center'}}>{formatterNumber(c.txs)}</Text>
             </View>
           </View>
           </View>
           )
         }
-        <View style={{padding: ScreenUtil.autowidth(20),paddingTop:ScreenUtil.autoheight(30)}}>
+        <View style={{padding: ScreenUtil.autowidth(20),paddingTop:ScreenUtil.autoheight(10), backgroundColor: UColor.bgEchar}}>
           <SegmentedControls 
-          tint= {UColor.tintColor} selectedTint= {UColor.fontColor}
+          tint= {UColor.mainColor} selectedTint= {UColor.fontColor}
           onSelection={this.setSelectedOption.bind(this) }
           selectedOption={ this.state.selectedSegment }
-          backTint= {UColor.secdColor} options={['5分钟','1小时','6小时','24小时']} />
+          backTint= {UColor.bgEchar} options={['5分钟','1小时','6小时','24小时']} />
         </View>
-        <View style={{flex:1,paddingTop:ScreenUtil.autoheight(10)}}>
+        <View style={{flex:1,paddingTop:ScreenUtil.autoheight(10), backgroundColor: UColor.bgEchar}}>
           {
             <Echarts option={this.props.lineDatas?this.props.lineDatas:{}} width={ScreenWidth} height={ScreenUtil.autoheight(200)} />
           }
         </View>
-        <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
+        <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row', backgroundColor: UColor.bgEchar}}>
             <View style={{width: ScreenUtil.autowidth(8),height: ScreenUtil.autowidth(8),borderRadius:4,backgroundColor:UColor.tintColor}}></View>
             <Text style={{color:UColor.arrow,fontSize: ScreenUtil.setSpText(11),marginLeft: 5}}>价格走势</Text>
             <View style={{width: ScreenUtil.autowidth(8),height: ScreenUtil.autowidth(8),borderRadius:4,backgroundColor:UColor.arrow,marginLeft: ScreenUtil.autowidth(10)}}></View>
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection:'column',
-    backgroundColor: UColor.secdColor,
+    backgroundColor: UColor.bgEchar,
   },
   scrollView: {
    
@@ -221,7 +221,8 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor:UColor.mainColor,
     flexDirection:"row",
-    padding: ScreenUtil.autowidth(20),
+    paddingHorizontal: ScreenUtil.autowidth(20),
+    paddingVertical: ScreenUtil.autowidth(10),
     borderBottomColor: UColor.secdColor,
     borderBottomWidth: 0.6,
   

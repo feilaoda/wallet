@@ -16,4 +16,5 @@ export default {
   blackColor: '#000000', //纯黑色 UColor.blackColor
   riseColor: '#F25C49', //涨卖收色 UColor.riseColor
   fallColor: '#25B36B', //跌买出色 UColor.fallColor
+  bgEchar: "#2f3b50", // Echar背景色
 };

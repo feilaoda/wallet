@@ -60,7 +60,7 @@ class Boot extends React.Component {
             </View>
             <View style={{justifyContent:'center',alignItems:'center',height:'100%'}}>
                 <View style={{height:'30%',justifyContent:'center',alignItems:'center'}}>
-                    <Text style={{color:UColor.fontColor,fontSize:24,textAlign:'center'}}>欢迎 EosToken</Text>
+                    <Text style={{color:UColor.fontColor,fontSize:24,textAlign:'center'}}>欢迎使用EosToken</Text>
                     <Text style={{color:UColor.mainColor,fontSize:18,marginTop:30,textAlign:'center'}}>您的EOS数字资产管家</Text>
                 </View>
                 <View style={{height:'50%',alignItems:'center'}}>

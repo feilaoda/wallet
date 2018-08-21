@@ -63,7 +63,7 @@ class WalletManage extends BaseComponent {
   onPress = (data, sectionID, rowID) => {
     const { navigate } = this.props.navigation;
     var func = this.updateState;
-    navigate('WalletDetail', { data, func });
+    navigate('WalletDetail', { data, func, isEye: this.state.isEye });
   }
 
   // 创建钱包

@@ -33,7 +33,7 @@ class AuthManage extends BaseComponent {
     //组件加载完成
     componentDidMount() {
         this.setState({
-            ownerPk: this.props.navigation.state.params.wallet.ownerPublic,
+            ownerPk: this.props.navigation.state.params.wallet.ownerPublic,//ownerPublic
             activePk: this.props.navigation.state.params.wallet.activePublic,
         })
     }
@@ -44,9 +44,9 @@ class AuthManage extends BaseComponent {
   }
  
   transferByOwner() {
-    const { navigate } = this.props.navigation;
-    navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
-
+    // const { navigate } = this.props.navigation;
+    // navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
+    EasyToast.show("该功能暂末开放！");
   }
 
   manageByActive() {
@@ -66,36 +66,40 @@ class AuthManage extends BaseComponent {
         <View style={styles.header}>
             <View style={styles.inptoutbg}>
 
-                {this.state.activePk != '' && <View style={styles.inptoutgo} >
-                    <View style={{flexDirection:'row',flex:1}}>
-                        <Text style={styles.inptitle}>Active关联公钥（管理者）</Text>
+                {this.state.activePk != '' && <View style={styles.addUserTitle} >
+                    <View style={{flexDirection:'row',flex:1,paddingHorizontal: 10,paddingTop:10,}}>
+                        <Text style={styles.inptitle}> Active关联公钥（管理者）</Text>
                         <TouchableHighlight onPress={() => { this.manageByActive() }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
                             <View style={styles.buttonView}>
                                 <Image source={UImage.adminAddB} style={styles.imgBtn} />
-                                <Text style={styles.buttonText}>添加用户</Text>
                             </View>
                         </TouchableHighlight>
                     </View>
+
                     <View style={styles.inptgo}>
                         <Text style={styles.inptext}>{this.state.activePk.substr(0, 26)}</Text>
                         <Text style={styles.inptext}>{this.state.activePk.substr(26)}</Text>
                     </View>
+
                 </View>
                 }
 
-                {this.state.ownerPk != '' && <View style={styles.inptoutgo} >
-                    <View style={{flexDirection:'row',}}>
-                        <Text style={styles.inptitle}>Owner关联公钥（拥有者）</Text>
+                {this.state.ownerPk != '' && <View style={styles.addUserTitle} >
+                    <View style={{flexDirection:'row',flex:1,paddingHorizontal: 10,paddingTop:10,}}>
+                        <Text style={styles.inptitle}> Owner关联公钥（拥有者）</Text>
                         <TouchableHighlight onPress={() => { this.transferByOwner() }} style={{flex: 1,}} activeOpacity={1} underlayColor={UColor.mainColor}>
                             <View style={styles.buttonView}>
-                                <Image source={UImage.adminB} style={styles.imgBtn} />
-                                <Text style={styles.buttonText}>过户操作</Text>
+                                <Image source={UImage.adminAddB} style={styles.imgBtn} />
                             </View>
                         </TouchableHighlight>
                     </View>
+
                     <View style={styles.inptgo}>
-                        <Text style={styles.inptext}>{this.state.ownerPk}</Text>
+                        <Text style={styles.inptext}>{this.state.ownerPk.substr(0, 26)}</Text>
+                        <Text style={styles.inptext}>{this.state.ownerPk.substr(26)}</Text>
                     </View>
+
+
                 </View>
                 }
             </View>
@@ -127,12 +131,35 @@ const styles = StyleSheet.create({
         backgroundColor: UColor.secdColor,
     },
     inptoutbg: {
-        backgroundColor: UColor.mainColor,
-        paddingHorizontal: 20,
-        paddingTop: 20,
-        paddingBottom: 30,
+        flex: 1,
+        flexDirection:'column',
+        backgroundColor: UColor.secdColor,
+
+        // backgroundColor: UColor.mainColor,
+    //     paddingHorizontal: 20,
+    //     paddingTop: 20,
+    //     paddingBottom: 30,
     },
+
+
+        //添加用户
+    addUserTitle: {
+        flex: 1,
+        paddingBottom: 5,
+        backgroundColor: UColor.mainColor,
+        margin:5,
+        // marginTop: 5,
+        // marginBottom: 10,
+        // marginLeft:10,
+        // marginRight:10,
+        borderRadius: 5,
+    },
+    
     inptoutgo: {
+        paddingBottom: 20,
+        backgroundColor: UColor.mainColor,
+    },
+    inptoutgoOwner: {
         paddingBottom: 20,
         backgroundColor: UColor.mainColor,
     },
@@ -157,9 +184,9 @@ const styles = StyleSheet.create({
 
     inptgo: {
         flex: 1,
-        height: 60,
-        paddingHorizontal: 10,
-        backgroundColor: UColor.secdColor,
+        height: 50,
+        paddingHorizontal: 15,
+        // backgroundColor: UColor.secdColor,
     },
     inptext: {
         fontSize: 14,
@@ -167,6 +194,7 @@ const styles = StyleSheet.create({
         color: UColor.arrow,
     },
     textout: {
+            marginTop: 30,
             paddingHorizontal: 16,
             paddingVertical: 10,
     },
@@ -184,8 +212,8 @@ const styles = StyleSheet.create({
         lineHeight: 25,
     },
     imgBtn: {
-        width: 20,
-        height: 20,
+        width: 30,
+        height: 30,
         marginBottom: 5,
         marginHorizontal:5,
       },
