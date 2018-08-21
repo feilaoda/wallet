@@ -514,7 +514,7 @@ class ImportEosKey extends BaseComponent {
         </Modal>  
         <Modal style={styles.businesmodal} animationType={'slide'} transparent={true}  visible={this.state.selectpromp} onRequestClose={()=>{}}>
             <TouchableOpacity style={styles.businestouchable} activeOpacity={1.0}>
-              <View style={styles.modalStyle}>
+              <View style={styles.modalStyle1}>
                 <View style={styles.subView}> 
                   <Text style={styles.titleout}/>
                   <Text style={styles.titleText}>请选择导入钱包</Text>
@@ -703,10 +703,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalStyle: {
-    // width: ScreenWidth - 20,
+    width: ScreenWidth - 20,
     backgroundColor: UColor.fontColor,
     borderRadius: 5,
-    // paddingHorizontal: ScreenUtil.autowidth(25),
+    paddingHorizontal: ScreenUtil.autowidth(25),
+  },
+  modalStyle1: {
+    width: ScreenWidth,
+    backgroundColor: UColor.fontColor,
+    borderRadius: 5,
+    paddingHorizontal: ScreenUtil.autowidth(10),
   },
   subView: {
     flexDirection: "row",
