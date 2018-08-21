@@ -33,9 +33,11 @@ class AuthChange extends BaseComponent {
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
-        // headerRight: (<Button  onPress={navigation.state.params.onPress}>  
-        //     <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>提交</Text>
-        // </Button>),    
+            headerRight: (<Button name="search" onPress={navigation.state.params.onPress}>
+            <View style={{ paddingHorizontal: ScreenUtil.autowidth(10), alignItems: 'center' }}>
+                <Image source={UImage.scan} style={{ width: ScreenUtil.autowidth(28), height: ScreenUtil.autowidth(28) }}></Image>
+            </View>
+          </Button>),
         };
     }
 
@@ -113,7 +115,8 @@ class AuthChange extends BaseComponent {
     constructor(props) {
         super(props);
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.props.navigation.setParams({ onPress: this.submission});
+        // this.props.navigation.setParams({ onPress: this.submission});
+        this.props.navigation.setParams({ onPress: this._rightTopClick });
         this.state = {
             dataSource: ds.cloneWithRows([]),
             // dataSource: ds.cloneWithRows(['row1', 'row2']),
@@ -128,12 +131,21 @@ class AuthChange extends BaseComponent {
 
         }
     }
+
+    _rightTopClick = () =>{
+        const { navigate } = this.props.navigation;
+        navigate('BarCode', {isTurnOut:true,coinType:this.state.name});
+      }
     //组件加载完成
     componentDidMount() {
         this.setState({
             activePk:this.props.navigation.state.params.wallet.activePublic,
         });
         this.getAccountInfo();
+        DeviceEventEmitter.addListener('scan_result', (data) => {
+            this.setState({inputText:data.toaccount})
+        });
+
     }
   
   componentWillUnmount(){
