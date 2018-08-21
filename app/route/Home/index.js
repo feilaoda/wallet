@@ -798,7 +798,9 @@ const styles = StyleSheet.create({
   },
 
   bgout: {
-    justifyContent: "center" 
+    justifyContent: "center" ,
+    width:ScreenWidth,
+    height: ScreenWidth*0.38,
   },
   head: {
     height: ScreenUtil.autoheight(70), 
@@ -828,24 +830,16 @@ const styles = StyleSheet.create({
   },
 
   addto: {
-    height: ScreenUtil.autoheight(120), 
-    // backgroundColor: UColor.mainColor, 
-    // flexDirection: "row",
+    flex: 1, 
+    flexDirection: "column",
     justifyContent: "space-between",
-    // borderBottomColor: UColor.tintColor, 
-    // borderBottomWidth: 2,
-    paddingHorizontal: ScreenUtil.autowidth(5),
+    paddingHorizontal: ScreenUtil.autowidth(20),
+    paddingVertical:  ScreenUtil.autoheight(15)
   },
   addout: {
     flexDirection: "row",
-    flex: 1,
     alignItems: 'center',
     marginTop: ScreenUtil.autoheight(20), 
-    marginLeft:ScreenUtil.autowidth(15),
-    // flex: 1, 
-    // flexDirection: "column", 
-    // alignItems: 'flex-start', 
-    // justifyContent: "center",
   },
 
   backoractivestyle: {
@@ -875,18 +869,14 @@ const styles = StyleSheet.create({
     marginHorizontal: ScreenUtil.autowidth(5),
   },
   addtoouttop: {
-    flex: 1,
     flexDirection: "row",
     alignItems: 'center', 
     justifyContent: "center", 
-    marginTop: ScreenUtil.autoheight(15),
   },
   addtoout: {
-    flex: 1,
     flexDirection: "row",
     alignItems: 'center', 
     justifyContent: "center", 
-    marginTop: ScreenUtil.autoheight(5),
   },
   addtoouttext: {
     fontSize: ScreenUtil.setSpText(20), 
@@ -968,8 +958,6 @@ const styles = StyleSheet.create({
     fontSize: ScreenUtil.setSpText(10),
     color: UColor.tintColor,
     textAlign: 'center',
-    paddingHorizontal: ScreenUtil.autowidth(8),
-    paddingVertical: ScreenUtil.autoheight(2),
   },
 
   notactivedout: {
@@ -984,8 +972,6 @@ const styles = StyleSheet.create({
     fontSize: ScreenUtil.setSpText(10),
     color: UColor.showy,
     textAlign: 'center', 
-    paddingHorizontal: ScreenUtil.autowidth(8),
-    paddingVertical: ScreenUtil.autoheight(2),
   },
 
   walletaccount: {
