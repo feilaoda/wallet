@@ -299,9 +299,6 @@ const styles = StyleSheet.create({
       paddingVertical: ScreenUtil.autoheight(7),
       marginBottom: ScreenUtil.autoheight(5),
     },
-    headleftout: {
-      paddingLeft: ScreenUtil.autowidth(15),
-    },
     headleftimg: {
       width: ScreenUtil.autowidth(18),
       height: ScreenUtil.autowidth(18),

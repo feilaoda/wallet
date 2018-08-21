@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, TextInput, Clipboard, ImageBackground, ScrollView } from 'react-native';
+import { Dimensions, DeviceEventEmitter, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, TextInput, Clipboard, ImageBackground, ScrollView, KeyboardAvoidingView } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import UImage from '../../utils/Img'
@@ -9,6 +9,7 @@ import { EasyShowLD } from '../../components/EasyShow'
 import ScreenUtil from '../../utils/ScreenUtil'
 const ScreenWidth = Dimensions.get('window').width;
 const ScreenHeight = Dimensions.get('window').height;
+var dismissKeyboard = require('dismissKeyboard');
 
 @connect(({ vote, wallet}) => ({ ...vote, ...wallet}))
 class FreeMortgage extends React.Component {
@@ -24,22 +25,40 @@ class FreeMortgage extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+        show: false,
+        labelname: '',
+      }
   }
 
   //加载地址数据
   componentDidMount() {
     this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" } });
+
+    DeviceEventEmitter.addListener('scan_result', (data) => {
+        if(data.toaccount){
+            this.setState({labelname:data.toaccount})
+        }
+      });   
+  }
+  Scan() {
+    const { navigate } = this.props.navigation;
+    navigate('BarCode', {isTurnOut:true,coinType:"EOS"});
   }
 
   delegatebw() {
     try {
+        if(this.state.labelname == null || this.state.labelname == ""){
+            EasyToast.show("请输入账号");
+            return;
+        }
         if (this.props.defaultWallet == null || this.props.defaultWallet.name == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
             EasyToast.show("未检测有效的EOS账号, 请检查您当前账号是否有效!");
             return;
         }
 
         EasyShowLD.loadingShow();
-        this.props.dispatch({type: "vote/delegatebw", payload: {username:this.props.defaultWallet.name}, callback:(resp) =>{
+        this.props.dispatch({type: "vote/delegatebw", payload: {username:this.state.labelname}, callback:(resp) =>{
                 EasyShowLD.dialogClose();
                 // alert(JSON.stringify(resp));
                 if(resp && resp.code=='0'){
@@ -59,9 +78,34 @@ class FreeMortgage extends React.Component {
 
   }
 
+  chkAccount(obj) {
+    var charmap = '.12345abcdefghijklmnopqrstuvwxyz';
+    for(var i = 0 ; i < obj.length;i++){
+        var tmp = obj.charAt(i);
+        for(var j = 0;j < charmap.length; j++){
+            if(tmp == charmap.charAt(j)){
+                break;
+            }
+        }
+        if(j >= charmap.length){
+            //非法字符
+            obj = obj.replace(tmp, ""); 
+            EasyToast.show('请输入正确的账号');
+        }
+    }
+    return obj;
+}
+
+  dismissKeyboardClick() {
+    dismissKeyboard();
+}
+
    
   render() {
     return (<View style={styles.container}>
+    <ScrollView  keyboardShouldPersistTaps="always">
+     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
+     <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
         <View style={styles.head}>
             <ImageBackground style={styles.bgout} source={UImage.freemortgage_bg} resizeMode="cover">
                 <Text style={styles.Explaintext}>本功能由EosToken提供，是免费帮助用户临时抵押资源使其账户能正常使用。</Text>
@@ -70,12 +114,26 @@ class FreeMortgage extends React.Component {
             </ImageBackground>
         </View>
         <View style={styles.btnout}>
-            <Button onPress={() => this.delegatebw()}>
-                <View style={styles.Applyout}>
-                    <Text style={styles.Applytext}>立即申请</Text>
-                </View>
-            </Button>
+            <Text style={styles.Applytext}>输入EOS账号</Text>
         </View>
+        <View style={styles.header}>  
+          <View style={styles.inptout} >
+              <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
+                  selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} maxLength={12} 
+                  placeholder="输入账号名" underlineColorAndroid="transparent" keyboardType="default"
+                  onChangeText={(labelname) => this.setState({ labelname: this.chkAccount(labelname)})}   
+                  />  
+              <TouchableOpacity onPress={this.Scan.bind(this,this.state.labelname)}>  
+                  <Image source={UImage.account_scan} style={styles.headleftimg} />
+              </TouchableOpacity>     
+          </View>    
+          <TouchableOpacity onPress={this.delegatebw.bind(this,this.state.labelname)} style={styles.Applyout}>  
+              <Text style={styles.canceltext}>提交申请</Text>
+          </TouchableOpacity>   
+      </View> 
+      </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </ScrollView>
     </View>
     );
   }
@@ -90,7 +148,6 @@ const styles = StyleSheet.create({
         paddingTop: ScreenUtil.autoheight(10),
     },
     head: {
-        flex: 1,
         flexDirection: "row",
         paddingVertical: ScreenUtil.autoheight(30),
         paddingHorizontal: ScreenUtil.autowidth(10)
@@ -115,22 +172,61 @@ const styles = StyleSheet.create({
         marginTop: ScreenUtil.autoheight(25),
     },
     btnout: {
-        flex: 1,
-        justifyContent: 'center',
+        flexDirection: "row",
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        height: ScreenUtil.autoheight(20),
+        marginHorizontal: ScreenUtil.autowidth(20),
     },
+
     Applyout: {
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
         height: ScreenUtil.autoheight(45),
+        width: ScreenUtil.autowidth(90),
         backgroundColor: UColor.tintColor,
         marginHorizontal: ScreenUtil.autowidth(20),
-        marginTop: ScreenUtil.autoheight(20),
-       
     },
     Applytext: {
         fontSize: ScreenUtil.setSpText(15),
         color: UColor.fontColor
     },
+
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingVertical: ScreenUtil.autoheight(7),
+      },
+      
+      headleftimg: {
+        width: ScreenUtil.autowidth(20),
+        height: ScreenUtil.autowidth(20),
+        marginHorizontal: ScreenUtil.autowidth(10),
+      },
+      inptout: {
+        flex: 1,
+        borderRadius: 5,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: 'center',
+        height: ScreenUtil.autoheight(45),
+        backgroundColor: UColor.mainColor,
+        marginLeft: ScreenUtil.autowidth(15),
+        paddingLeft: ScreenUtil.autowidth(10),
+      },
+      inpt: {
+        flex: 1,
+        color: UColor.arrow,
+        height: ScreenUtil.autoheight(45),
+        fontSize: ScreenUtil.setSpText(15),
+      },
+      canceltext: {
+        textAlign: 'center',
+        color: UColor.fontColor,
+        fontSize: ScreenUtil.setSpText(15),
+        paddingHorizontal:ScreenUtil.autowidth(8),
+      },
 });
 export default FreeMortgage;
