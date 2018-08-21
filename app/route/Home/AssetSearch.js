@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TextInput, Modal, Switch, TouchableOpacity  } from 'react-native';
+import { Dimensions, DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TextInput, Modal, Switch, TouchableOpacity  } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
 import UImage from '../../utils/Img'
@@ -9,7 +9,8 @@ import { EasyShowLD } from '../../components/EasyShow'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
 var dismissKeyboard = require('dismissKeyboard');
-
+const ScreenWidth = Dimensions.get('window').width;
+const ScreenHeight = Dimensions.get('window').height;
 @connect(({wallet, assets}) => ({...wallet, ...assets}))
 class AssetSearch extends BaseComponent {
 
@@ -189,7 +190,7 @@ class AssetSearch extends BaseComponent {
     render() {
         return (
             <View style={styles.container}>
-                  <View style={styles.header}>  
+                <View style={styles.header}>  
                     <View style={styles.inptout} >
                         <Image source={UImage.Magnifier_ash} style={styles.headleftimg} />
                         <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
@@ -209,12 +210,18 @@ class AssetSearch extends BaseComponent {
                     </TouchableOpacity>  
                 </View> 
                 {this.state.reveal&&<View style={styles.btnout}>
-                    <Text style={styles.prompttext}>提示：如果您没有搜索到您要找的Token，可以使用手动添加。</Text>
-                    <Button onPress={() => this.logout()}>
-                        <View style={styles.btnloginUser}>
-                            <Text style={styles.btntext}>手动添加</Text>
-                        </View>
-                    </Button>
+                  <View style={styles.manualout}>
+                      <Text style={styles.prompttext}>提示：如果您没有搜索到您要找的Token，可以使用手动添加。</Text>
+                      <Button onPress={() => this.logout()}>
+                          <View style={styles.btnloginUser}>
+                              <Text style={styles.btntext}>手动添加</Text>
+                          </View>
+                      </Button>
+                  </View>
+                  <View style={styles.logout}>
+                      <Image source={UImage.bottom_log} style={styles.logimg}/>
+                      <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
+                  </View>
                 </View>}
                 <ListView style={styles.tab} renderRow={this.renderRow} enableEmptySections={true} 
                   dataSource={this.state.dataSource.cloneWithRows(this.state.newAssetsList == null ? [] : this.state.newAssetsList)} 
@@ -418,14 +425,21 @@ const styles = StyleSheet.create({
       paddingRight: ScreenUtil.autowidth(10),
     },
     prompttext: {
-      fontSize: ScreenUtil.setSpText(15),
       color: UColor.arrow,
+      fontSize: ScreenUtil.setSpText(15),
       lineHeight: ScreenUtil.autoheight(30),
       padding: ScreenUtil.autowidth(30),
     },
     btnout: {
+        width: ScreenWidth,
+        height: ScreenHeight - 100,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    manualout: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     btnloginUser: {
       width: ScreenUtil.autowidth(150),
@@ -438,6 +452,21 @@ const styles = StyleSheet.create({
     btntext: {
       fontSize: ScreenUtil.setSpText(17),
       color: UColor.fontColor,
+    },
+    logout:{
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      paddingBottom: ScreenUtil.autoheight(20),
+    },
+    logimg: {
+      width: ScreenUtil.autowidth(50), 
+      height: ScreenUtil.autowidth(50)
+    },
+    logtext: {
+      fontSize: ScreenUtil.setSpText(14),
+      color: UColor.arrow,
+      lineHeight: ScreenUtil.autoheight(30),
     },
 })
 export default AssetSearch;

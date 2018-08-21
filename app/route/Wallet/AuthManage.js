@@ -44,9 +44,8 @@ class AuthManage extends BaseComponent {
   }
  
   transferByOwner() {
-    // const { navigate } = this.props.navigation;
-    // navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
-    EasyToast.show("该功能暂末开放！");
+    const { navigate } = this.props.navigation;
+    navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
   }
 
   manageByActive() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, StyleSheet, View, Clipboard, Text, ScrollView, Image, Platform, TextInput, Modal } from 'react-native';
+import { Dimensions, DeviceEventEmitter, StyleSheet, View, Clipboard, Text, ScrollView, Image, Linking, TextInput, Modal } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtil'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
@@ -67,10 +67,7 @@ class WalletDetail extends BaseComponent {
       super.componentWillUnmount();
       
     }
-  _rightButtonClick() {
-    //   console.log('右侧按钮点击了');  
-    this._setModalVisible();
-  }
+ 
 
   // 显示/隐藏 modal  
   _setModalVisible() {
@@ -147,27 +144,13 @@ class WalletDetail extends BaseComponent {
   eospark() {
     this._setModalVisible();
     EasyShowLD.dialogClose()
-    const { navigate } = this.props.navigation;
-    navigate('Web', { title: "区块浏览器", url: "https://eospark.com/MainNet/account/" + this.props.navigation.state.params.data.name});
+    Linking.openURL("https://eosmonitor.io/account/" + this.props.navigation.state.params.data.name);
   }
 
   eoseco() {
     this._setModalVisible();
     EasyShowLD.dialogClose()
-    const { navigate } = this.props.navigation;
-    navigate('Web', { title: "区块浏览器", url: "https://eoseco.com/accounts/" + this.props.navigation.state.params.data.name});
-  }
-
-  eosmonitor() {
-    EasyShowLD.dialogClose()
-    const { navigate } = this.props.navigation;
-    navigate('Web', { title: "区块浏览器", url: "https://eosmonitor.io/accounts/" + this.props.navigation.state.params.data.name});
-  }
-
-  eostracker() {
-    EasyShowLD.dialogClose()
-    const { navigate } = this.props.navigation;
-    navigate('Web', { title: "区块浏览器", url: "https://eostracker.io/accounts/" + this.props.navigation.state.params.data.name});
+    Linking.openURL("https://eoseco.com/accounts/" + this.props.navigation.state.params.data.name);
   }
 
   importWallet() {
@@ -526,7 +509,7 @@ class WalletDetail extends BaseComponent {
                 </View>
               </Button>
               <View style={styles.eosparkout}>
-                <Text style={styles.titletext}>eospark.com</Text>
+                <Text style={styles.titletext}>eosmonitor.io</Text>
                 <Button onPress={() => { this.eospark() }}>
                   <View style={styles.eosparktext}>
                   <Text style={styles.buttonText}>查看</Text>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { StyleSheet, View, Text, Image, Clipboard, } from 'react-native';
+import { StyleSheet, View, Text, Image, Clipboard, Linking} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import UColor from '../../utils/Colors'
 import Button from  '../../components/Button'
@@ -116,18 +116,21 @@ class TradeDetails extends BaseComponent {
     
   }
   prot(key, data = {}) {
-    const { navigate } = this.props.navigation;
     if (key == 'transactionId') {
-    navigate('Web', { title: "交易查询", url:'https://eospark.com/MainNet/tx/' + this.state.trade.transactionId});
+      // Linking.openURL(UrlHead + 'tx/' + this.state.trade.transactionId);
+      Linking.openURL(UrlHead + this.state.trade.transactionId);
     }else  if (key == 'from') {
-    navigate('Web', { title: "发送方", url:'https://eospark.com/MainNet/account/' + this.state.trade.from});
+      // Linking.openURL(UrlHead + 'account/' + this.state.trade.from);
+      Linking.openURL(UrlHead + this.state.trade.from);
     }else  if (key == 'to') {
-    navigate('Web', { title: "接受方", url:'https://eospark.com/MainNet/account/' + this.state.trade.to});
+      // Linking.openURL(UrlHead  + 'account/' + this.state.trade.to);
+      Linking.openURL(UrlHead + this.state.trade.to);
     }else  if (key == 'blockNum') {
-    if(this.state.trade.blockNum == null || this.state.trade.blockNum == ""){
-      return;
-    }
-    navigate('Web', { title: "区块高度", url:'https://eospark.com/MainNet/block/' + this.state.trade.blockNum});
+      if(this.state.trade.blockNum == null || this.state.trade.blockNum == ""){
+        return;
+      }
+      // Linking.openURL(UrlHead  + 'block/' + this.state.trade.blockNum);
+      Linking.openURL(UrlHead + this.state.trade.blockNum);
     }
   }
 
@@ -135,7 +138,8 @@ class TradeDetails extends BaseComponent {
 
 
   copy = (trade) => {
-    Clipboard.setString('https://eospark.com/MainNet/tx/' + trade.transactionId);
+    // Clipboard.setString( UrlHead + 'tx/' + trade.transactionId);
+    Clipboard.setString( UrlHead + trade.transactionId);
     EasyToast.show("复制成功");
   }
   
@@ -194,7 +198,7 @@ class TradeDetails extends BaseComponent {
           </View>
           <View style={styles.codeout}>
             <View style={styles.qrcode}>
-               <QRCode size={ScreenUtil.setSpText(90)} value={'https://eospark.com/MainNet/tx/' + this.state.trade.transactionId } />
+               <QRCode size={ScreenUtil.setSpText(90)} value={UrlHead + this.state.trade.transactionId } />
             </View>
             <Button onPress={this.copy.bind(this,this.state.trade)}>
                <View style={{backgroundColor: UColor.mainColor,borderRadius: 25,}}>
