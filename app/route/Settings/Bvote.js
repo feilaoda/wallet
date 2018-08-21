@@ -63,9 +63,7 @@ class Bvote extends BaseComponent {
 
   goPage(key, data = {}) {
     const { navigate } = this.props.navigation;
-    if (key == 'delegate'){
-      navigate('Delegate', {});
-    }else if (key == 'Imvote') {
+    if (key == 'Imvote') {
       navigate('Imvote', {});
     }else if (key == 'Nodevoting') {
       navigate('Nodevoting', {});
@@ -96,14 +94,7 @@ class Bvote extends BaseComponent {
                       </View>                     
                     </View>             
                 </View>
-                {/* <TouchableHighlight  onPress={this.goPage.bind(this, 'delegate')}>
-                  <ImageBackground  style={styles.lockoutsource} source={UImage.votea_bj} resizeMode="stretch">                               
-                      <Text style={styles.locktitle}>投票前划分锁仓</Text>
-                      <View style={styles.locktext}>
-                          <Image source={UImage.votea} style={styles.lockimg}/>
-                      </View>  
-                  </ImageBackground>
-                </TouchableHighlight>  */}
+                
                 <TouchableHighlight onPress={this.goPage.bind(this, 'Imvote')}>
                   <ImageBackground  style={styles.lockoutsource} source={UImage.votea_bj} resizeMode="stretch">              
                     <Text style={styles.locktitle}>我的投票</Text>

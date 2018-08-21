@@ -59,7 +59,6 @@ import Imvote from './Settings/Imvote'
 import Resources from './Settings/Resources'
 import undelegated from './Settings/undelegated'
 import Set from './Settings/Set'
-import Delegate from './Settings/Delegate'
 import Nodevoting from './Settings/Nodevoting'
 import Bvote from './Settings/Bvote'
 import MortgageRecord from './Settings/MortgageRecord'
@@ -251,9 +250,7 @@ const Nav = StackNavigator(
     Set: {
       screen: Set
     },
-    Delegate: {
-      screen: Delegate
-    },
+
     AgentInfo: {
       screen: AgentInfo
     },
