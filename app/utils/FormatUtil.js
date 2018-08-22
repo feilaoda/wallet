@@ -58,11 +58,14 @@ export const formatterUnit = (number) =>{
 
 export const formatEosQua = (amount, precision = 4) =>{
   var e = amount.split(" ");
-  if(e.length > 1 && e[1] == "IQ"){
-    precision = 3;
-  }
-  if(e.length > 1 && e[1] == "QB"){
-    return amount; // QB精度为1，这里不做精度转换
+  // if(e.length > 1 && e[1] == "IQ"){
+  //   precision = 3;
+  // }
+  // if(e.length > 1 && e[1] == "QB"){
+  //   return amount; // QB精度为1，这里不做精度转换
+  // }
+  if(precision == 0){
+    return amount;
   }
   r=e[0].split(".");
   if(r.length>1){
