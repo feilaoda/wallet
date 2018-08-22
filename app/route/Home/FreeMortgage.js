@@ -52,10 +52,10 @@ class FreeMortgage extends React.Component {
             EasyToast.show("请输入账号");
             return;
         }
-        if (this.props.defaultWallet == null || this.props.defaultWallet.name == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-            EasyToast.show("未检测有效的EOS账号, 请检查您当前账号是否有效!");
-            return;
-        }
+        // if (this.props.defaultWallet == null || this.props.defaultWallet.name == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+        //     EasyToast.show("未检测有效的EOS账号, 请检查您当前账号是否有效!");
+        //     return;
+        // }
 
         EasyShowLD.loadingShow();
         this.props.dispatch({type: "vote/delegatebw", payload: {username:this.state.labelname}, callback:(resp) =>{
@@ -103,8 +103,8 @@ class FreeMortgage extends React.Component {
    
   render() {
     return (<View style={styles.container}>
+    <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null} style={styles.tab}>
     <ScrollView  keyboardShouldPersistTaps="always">
-     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
      <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
         <View style={styles.head}>
             <ImageBackground style={styles.bgout} source={UImage.freemortgage_bg} resizeMode="cover">
@@ -132,8 +132,8 @@ class FreeMortgage extends React.Component {
           </TouchableOpacity>   
       </View> 
       </TouchableOpacity>
-      </KeyboardAvoidingView>
     </ScrollView>
+    </KeyboardAvoidingView>
     </View>
     );
   }
@@ -228,5 +228,8 @@ const styles = StyleSheet.create({
         fontSize: ScreenUtil.setSpText(15),
         paddingHorizontal:ScreenUtil.autowidth(8),
       },
+      tab: {
+        flex: 1,
+    }
 });
 export default FreeMortgage;
