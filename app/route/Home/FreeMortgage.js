@@ -52,10 +52,10 @@ class FreeMortgage extends React.Component {
             EasyToast.show("请输入账号");
             return;
         }
-        if (this.props.defaultWallet == null || this.props.defaultWallet.name == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
-            EasyToast.show("未检测有效的EOS账号, 请检查您当前账号是否有效!");
-            return;
-        }
+        // if (this.props.defaultWallet == null || this.props.defaultWallet.name == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
+        //     EasyToast.show("未检测有效的EOS账号, 请检查您当前账号是否有效!");
+        //     return;
+        // }
 
         EasyShowLD.loadingShow();
         this.props.dispatch({type: "vote/delegatebw", payload: {username:this.state.labelname}, callback:(resp) =>{
