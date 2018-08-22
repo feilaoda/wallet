@@ -450,7 +450,7 @@ class Home extends React.Component {
     }else{
       ret = (this.state.totalBalance == null || this.state.increase == null) ? '0.00' : ((this.state.increase>=0? "+" : "") +(((this.state.totalBalance * this.state.increase) / 100).toFixed(2)))
     }
-    return ret + '%';
+    return ret + '￥';
   }
 
   copyname(wallet) {

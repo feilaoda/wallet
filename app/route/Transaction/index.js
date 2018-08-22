@@ -360,7 +360,7 @@ class Transaction extends BaseComponent {
             if(!onRefreshing){
                 this.setState({logRefreshing: true});
             }
-            this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: this.props.defaultWallet.account,"pageCount":"2", last_id: this.state.logId}, callback: (resp) => {
+            this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: this.props.defaultWallet.account, last_id: this.state.logId}, callback: (resp) => {
                 try {
                     if(resp.code != '0' || ((resp.code == '0') && (this.props.etTradeLog.length == 0))){
                         this.setState({
