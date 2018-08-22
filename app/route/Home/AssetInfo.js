@@ -194,8 +194,8 @@ class AssetInfo extends BaseComponent {
                             <View style={styles.row}>
                                 <View style={styles.top}>
                                     <View style={styles.timequantity}>
-                                        <Text style={styles.timetext}>时间 : {this.transferTimeZone(rowData.blockTime)}</Text>
-                                        <Text style={styles.quantity}>数量 : {rowData.quantity.replace(c.asset.name, "")}</Text>
+                                        <Text style={styles.timetext}>时间 : <Text style={{color: UColor.lightgray}}>{this.transferTimeZone(rowData.blockTime)}</Text></Text>
+                                        <Text style={styles.quantity}>数量 : <Text style={{color: UColor.lightgray}}>{rowData.quantity.replace(c.asset.name, "")}</Text></Text>
                                     </View>
                                     {(rowData.blockNum == null || rowData.blockNum == '') ? 
                                         <View style={styles.unconfirmedout}>
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     },
     headmarket: {
         fontSize: ScreenUtil.setSpText(14),
-        color: UColor.arrow,
+        color: UColor.lightgray,
         marginTop: ScreenUtil.autowidth(5)
     },
 
