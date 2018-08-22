@@ -103,8 +103,8 @@ class FreeMortgage extends React.Component {
    
   render() {
     return (<View style={styles.container}>
+    <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null} style={styles.tab}>
     <ScrollView  keyboardShouldPersistTaps="always">
-     <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
      <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
         <View style={styles.head}>
             <ImageBackground style={styles.bgout} source={UImage.freemortgage_bg} resizeMode="cover">
@@ -132,8 +132,8 @@ class FreeMortgage extends React.Component {
           </TouchableOpacity>   
       </View> 
       </TouchableOpacity>
-      </KeyboardAvoidingView>
     </ScrollView>
+    </KeyboardAvoidingView>
     </View>
     );
   }
@@ -228,5 +228,8 @@ const styles = StyleSheet.create({
         fontSize: ScreenUtil.setSpText(15),
         paddingHorizontal:ScreenUtil.autowidth(8),
       },
+      tab: {
+        flex: 1,
+    }
 });
 export default FreeMortgage;
