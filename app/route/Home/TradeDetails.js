@@ -13,6 +13,7 @@ import BaseComponent from "../../components/BaseComponent";
 import moment from 'moment';
 var WeChat = require('react-native-wechat');
 
+const UrlHead = "https://eoseco.com/search?q=";
 @connect(({login}) => ({...login}))
 class TradeDetails extends BaseComponent {
     static navigationOptions = ({ navigation }) => {
