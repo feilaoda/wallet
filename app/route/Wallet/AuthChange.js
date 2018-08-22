@@ -367,7 +367,7 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
             <ScrollView keyboardShouldPersistTaps="always" >
                 <View style={styles.significantout}>
                     <Image source={UImage.warning} style={styles.imgBtnWarning} />
-                    <View style={{flex: 1,padding: 9,}}>
+                    <View style={{flex: 1,padding: 5,}}>
                         <Text style={styles.significanttext} >安全警告</Text>
                         <Text style={styles.significanttext} >请确保您清楚了解Active授权,并确保添加的授权用户是您信任的用户，添加的授权用户即可获得变更权限、转账和投票等操作的权限。</Text>
                     </View>
@@ -594,6 +594,9 @@ const styles = StyleSheet.create({
       significanttext: {
         color: UColor.warningRed,
         fontSize: 13, 
+        lineHeight:17,
+        // letterSpacing:1, //字符间距
+        // fontWeight: 'bold',//加粗
       },
     
       //添加用户框
