@@ -38,7 +38,7 @@ export class EasyShowLD {
     }
 
     static dialogClose() {
-      clearTimeout(this.handle);
+        clearTimeout(this.handle);
         this.map["LoadingDialog"].setState({
           "modalVisible": false,
         });
@@ -101,10 +101,12 @@ export class EasyShowLD {
     }
 
     static loadingClose() {
-      clearTimeout(this.handle);
-      this.map["LoadingDialog"].setState({
-        "modalVisible": false
-      });
+      // if(this.map["LoadingDialog"].state.loadingDialogFlag==LoadingShow){
+        clearTimeout(this.handle);
+        this.map["LoadingDialog"].setState({
+          "modalVisible": false
+        });
+      // }
     }
 
 }

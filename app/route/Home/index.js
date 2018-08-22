@@ -222,7 +222,7 @@ class Home extends React.Component {
     }
 
     this.props.dispatch({ type: 'assets/getBalance', payload: { accountName: this.props.defaultWallet.name, myAssets: this.props.myAssets}, callback: () => {
-      EasyShowLD.loadingClose();
+      // EasyShowLD.loadingClose();
     }});
   }
 
