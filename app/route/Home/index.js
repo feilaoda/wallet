@@ -561,14 +561,14 @@ class Home extends React.Component {
         <ImageBackground style={styles.bgout} source={UImage.home_bg} resizeMode="cover">
           <View style={styles.addto}>
                 <View style={styles.addtoouttop}>
-                 <Text style={{fontSize: ScreenUtil.setSpText(32), color: UColor.fontColor}}>{this.state.isEye ? ((this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance)) : '****'}</Text>
+                 <Text style={{fontSize: ScreenUtil.setSpText(32), color: UColor.fontColor}}>≈ {this.state.isEye ? ((this.props.defaultWallet == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) ? '0.00' : this.adjustTotalBalance(this.state.totalBalance)) : '****'}</Text>
                  <View style={(this.state.increase>=0 || this.state.totalBalance == "0.00")?styles.incdoout:styles.incupout}>
                    <Text style={styles.cupcdo}>{this.state.isEye ? this.getTodayIncrease() : '****'}</Text>
                  </View>
                 </View>
                 <View style={styles.addtoout} >
                     <Text style={styles.addtotext}> 总资产</Text>
-                    <Text style={styles.addtoouttext}>(≈￥)</Text>
+                    <Text style={styles.addtoouttext}>(￥)</Text>
                     <TouchableOpacity onPress={this.onPressReveal.bind(this,this.state.isEye)}>
                         <Image source={this.state.isEye ? UImage.reveal_wallet : UImage.reveal_h_wallet} style={styles.imgTeOy}/>
                     </TouchableOpacity>
