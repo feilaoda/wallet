@@ -374,8 +374,9 @@ EosUpdateAuth = (account, pvk,authArr, callback) => {
   render() {
 
     return (<View style={styles.container}>
-      <ScrollView keyboardShouldPersistTaps="handled" >
-            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
+        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null} style={styles.tab}>
+            <ScrollView keyboardShouldPersistTaps="handled" >
+  
 
                 <View style={styles.significantout}>
                     <Image source={UImage.warning} style={styles.imgBtnWarning} />
@@ -424,8 +425,8 @@ EosUpdateAuth = (account, pvk,authArr, callback) => {
                     </View>
                 </Button>
 
-            </KeyboardAvoidingView>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
     </View>);
   }
 }
@@ -649,6 +650,9 @@ const styles = StyleSheet.create({
         color: UColor.fontColor
     },
    
+    tab: {
+        flex: 1,
+    }
 });
 
 export default AuthTransfer;
