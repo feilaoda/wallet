@@ -108,9 +108,10 @@ class FreeMortgage extends React.Component {
      <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)}>
         <View style={styles.head}>
             <ImageBackground style={styles.bgout} source={UImage.freemortgage_bg} resizeMode="cover">
-                <Text style={styles.Explaintext}>本功能由EosToken提供，是免费帮助用户临时抵押资源使其账户能正常使用。</Text>
-                <Text style={styles.Explaintext}>温馨提示：成功获得免费抵押后，为了让账户正常使用，请尽快自行抵押。</Text>
-                <Text style={styles.Tipstext}>可获：计算资源=2.5 EOS  网络资源=0.5 EOS</Text>
+                <Text style={styles.Explaintext}>本功能由EosToken提供，是免费帮助用户临时抵押资源,使其账户能正常使用。</Text>
+                <Text style={styles.Explaintextmiddle}>温馨提示：成功申请免费抵押后，为了让账号持续正常使用，请尽快自行抵押。</Text>
+                <Text style={styles.Tipstext}>条件：计算资源{"<="}5ms或网络资源{"<="}10kb</Text>
+                <Text style={styles.Tipstext2}>可获：计算资源2.5EOS、网络资源0.5EOS</Text>
             </ImageBackground>
         </View>
         <View style={styles.btnout}>
@@ -165,11 +166,23 @@ const styles = StyleSheet.create({
         lineHeight: ScreenUtil.autoheight(30), 
         marginTop: ScreenUtil.autoheight(25),
     },
+    Explaintextmiddle: {
+        fontSize: ScreenUtil.setSpText(15),
+        color: UColor.arrow, 
+        lineHeight: ScreenUtil.autoheight(30), 
+        marginTop: ScreenUtil.autoheight(5),
+    },
     Tipstext: {
         fontSize: ScreenUtil.setSpText(12),
         color: UColor.tintColor, 
-        textAlign: 'right', 
+        // textAlign: 'right', 
         marginTop: ScreenUtil.autoheight(25),
+    },
+    Tipstext2: {
+        fontSize: ScreenUtil.setSpText(12),
+        color: UColor.tintColor, 
+        // textAlign: 'right', 
+        marginTop: ScreenUtil.autoheight(5),
     },
     btnout: {
         flexDirection: "row",
