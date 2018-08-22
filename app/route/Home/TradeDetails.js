@@ -12,6 +12,7 @@ import { EasyShowLD } from '../../components/EasyShow'
 import BaseComponent from "../../components/BaseComponent";
 import moment from 'moment';
 var WeChat = require('react-native-wechat');
+var UrlHead = "https://eoseco.com/search?q=";
 
 @connect(({login}) => ({...login}))
 class TradeDetails extends BaseComponent {
