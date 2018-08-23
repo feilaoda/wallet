@@ -34,6 +34,7 @@ export default {
   fav: require('../img/fav.png'),
   free_mortgage: require('../img/free_mortgage.png'),
   freemortgage_bg: require('../img/freemortgage_bg.png'),
+  navigation: require('../img/navigation.png'),
   guide:require('../img/guide.png'),
   home_bg: require('../img/home_bg.png'),
   imvote:require('../img/imvote.png'),

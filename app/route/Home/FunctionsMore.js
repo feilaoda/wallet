@@ -52,6 +52,8 @@ class FunctionsMore extends React.Component {
       this. _setModalVisible();
     }else if(key == 'FreeMortgage'){
         navigate('FreeMortgage');
+    }else if(key == 'navigation'){
+        Linking.openURL("https://eostoken.github.io/EOS-Navigator/");
     }else{
       EasyShowLD.dialogShow("温馨提示", "该功能正在紧急开发中，敬请期待！", "知道了", null, () => { EasyShowLD.dialogClose() });
     }
@@ -115,6 +117,12 @@ class FunctionsMore extends React.Component {
                 <View style={styles.headbtnout}>
                     <Image source={UImage.free_mortgage} style={styles.imgBtn} />
                     <Text style={styles.headbtntext}>免费抵押</Text>
+                </View>
+            </Button>
+            <Button onPress={this.onPress.bind(this, 'navigation')} style={styles.headbtn}>
+                <View style={styles.headbtnout}>
+                    <Image source={UImage.navigation} style={styles.imgBtn} />
+                    <Text style={styles.headbtntext}>EOS导航</Text>
                 </View>
             </Button>
         </View>
