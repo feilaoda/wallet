@@ -21,15 +21,20 @@ var dismissKeyboard = require('dismissKeyboard');
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 
+const OWNER_MODE=0;
+const ACTIVE_MODE=1;
+
+
 @connect(({wallet, vote}) => ({...wallet, ...vote}))
 class AuthTransfer extends BaseComponent {
 
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
-            headerTitle: params.wallet.name,
+            // headerTitle: params.wallet.name,
+            headerTitle: "Owner权限管理",
             headerStyle: {
-                paddingTop: ScreenUtil.autoheight(20),
+                paddingTop: ScreenUtil.autoheight(10),
                 backgroundColor: UColor.mainColor,
                 borderBottomWidth:0,
             },
@@ -64,7 +69,7 @@ class AuthTransfer extends BaseComponent {
             }
         }
         return ret;
-    }
+      }
 
     //提交
     submission = () =>{  
@@ -79,33 +84,34 @@ class AuthTransfer extends BaseComponent {
             return//暂不支持账号先
         }
         
-        for (var j = 0; j < this.state.authKeys.length; j++) {
-            if (this.state.authKeys[j].key ==this.state.inputText) {
-                EasyToast.show('授权公钥已存在');
+        for (var j = 0; j < this.state.authActiveKeys.length; j++) {
+            if (this.state.authActiveKeys[j].key ==this.state.inputText) {
+                EasyToast.show('添加授权公钥或账户已存在');
                 return;
             }
         }
-        var authTemp=this.state.ownerAuth;
+
+
+        var authTempActive=this.state.activeAuth;
 
         if (this.state.inputText.length > 12) {
             Eos.checkPublicKey(this.state.inputText, (r) => {
                 if (!r.isSuccess) {
-                    EasyToast.show('公钥格式不正确');
+                    EasyToast.show('您输入的公钥有误，请核对后再试！');
                     return;
                 }else{
-                    authTemp.data.auth.keys.push({weight:1,key:this.state.inputText})
-                    this.changeAuth(authTemp);
+                    authTempActive.data.auth.keys.push({weight:1,key:this.state.inputText})
+                    this.changeAuth(authTempActive);
                 }
             });
-        }else {
-        // if(this.state.inputText.length >= 1){
-        //     if(this.verifyAccount(this.state.inputText)==false){
-        //         EasyToast.show('请输入正确的账号');
-        //         return 
-        //     }
-        //     authTemp.data.auth.accounts.push({"weight":1,"permission":{"actor":this.state.inputText,"permission":"owner"}});
-        //     this.changeAuth(authTemp);
-        // }else{
+        }else if(this.state.inputText.length >= 1){
+            if(this.verifyAccount(this.state.inputText)==false){
+                EasyToast.show('请输入正确的账号');
+                return 
+            }
+            authTempActive.data.auth.accounts.push({"weight":1,"permission":{"actor":this.state.inputText,"permission":"active"}});
+            this.changeAuth(authTempActive);
+        }else{
             EasyToast.show('输入数据长度不正确');
         }
 
@@ -114,28 +120,39 @@ class AuthTransfer extends BaseComponent {
     constructor(props) {
         super(props);
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        // this.props.navigation.setParams({ onPress: this.submission});
         this.props.navigation.setParams({ onPress: this._rightTopClick });
         this.state = {
             dataSource: ds.cloneWithRows([]),
+            index: OWNER_MODE,//默认为OWNER
+            routes: [
+                { key: '0', title: 'Owner'},
+                { key: '1', title: 'Active'},
+              ],
             // dataSource: ds.cloneWithRows(['row1', 'row2']),
+            activePk:'',
             ownerPk:'',
             threshold:'1',//权阀值
-            authKeys:[],//授权的公钥组
+            authActiveKeys:[],//授权的公钥组
+            authOwnerKeys:[],//授权的公钥组
             isAuth:false,//当前的公钥是否在授权公钥的范围内
+            inputCount:0,
             inputText:'',
-            ownerAuth:'',//更改的数据组
+            activeAuth:'',//更改的数据组
+            
+
         }
     }
 
     _rightTopClick = () =>{
         const { navigate } = this.props.navigation;
         navigate('BarCode', {isTurnOut:true,coinType:this.state.name});
-    }
-    
+      }
     //组件加载完成
     componentDidMount() {
         this.setState({
             ownerPk:this.props.navigation.state.params.wallet.ownerPublic,
+            activePk:this.props.navigation.state.params.wallet.activePublic,
         });
         this.getAccountInfo();
         DeviceEventEmitter.addListener('scan_result', (data) => {
@@ -154,18 +171,38 @@ class AuthTransfer extends BaseComponent {
     EasyShowLD.loadingShow();
     this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.navigation.state.params.wallet.name},callback: (data) => {
         EasyShowLD.loadingClose();
-        var temp=[];
+        
         var authFlag=false;
-        var authTemp={
+        var tempActive=[];
+        var authTempActive={
             account: "eosio",
             name: "updateauth", 
             authorization: [{
             actor: '',//操作者 account
-            permission: 'owner'// active
+            permission: 'active'// active
             }], 
             data: {
                 account: '',//操作者 account
-                permission: 'owner',// active
+                permission: 'active',// active
+                parent: "owner",// owner
+                auth: {
+                    threshold: '',//总阀值 1
+                    keys: [],//公钥组 Keys
+                    accounts: [],//帐户组 Accounts
+                  }
+            }
+        };
+        var tempOwner=[];
+        var authTempOwner={
+            account: "eosio",
+            name: "updateauth", 
+            authorization: [{
+            actor: '',//操作者 account
+            permission: 'owner'// owner
+            }], 
+            data: {
+                account: '',//操作者 account
+                permission: 'owner',// owner
                 parent: "",// owner
                 auth: {
                     threshold: '',//总阀值 1
@@ -176,44 +213,64 @@ class AuthTransfer extends BaseComponent {
         };
 
         //active 
-        authTemp.authorization[0].actor=this.props.navigation.state.params.wallet.name;
-        authTemp.data.account=this.props.navigation.state.params.wallet.name;
-        authTemp.data.parent=data.permissions[1].parent;
-        authTemp.data.auth.threshold=data.permissions[1].required_auth.threshold;
-        authTemp.data.auth.keys=data.permissions[1].required_auth.keys;
-        authTemp.data.auth.accounts=data.permissions[1].required_auth.accounts;
+        authTempActive.authorization[0].actor=this.props.navigation.state.params.wallet.name;
+        authTempActive.data.account=this.props.navigation.state.params.wallet.name;
+        authTempActive.data.parent=data.permissions[0].parent;
+        authTempActive.data.auth.threshold=data.permissions[0].required_auth.threshold;
+        authTempActive.data.auth.keys=data.permissions[0].required_auth.keys;
+        authTempActive.data.auth.accounts=data.permissions[0].required_auth.accounts;
+        //账户（显示）
+        for(var i=0;i<authTempActive.data.auth.accounts.length;i++){
+            tempActive.push({weight:authTempActive.data.auth.accounts[i].weight,key:authTempActive.data.auth.accounts[i].permission.actor+"@"+authTempActive.data.auth.accounts[i].permission.permission});
+        }
+        //公钥
+        for(var i=0;i<authTempActive.data.auth.keys.length;i++){
+            tempActive.push({weight:authTempActive.data.auth.keys[i].weight,key:authTempActive.data.auth.keys[i].key});
+        }
 
-        //账户
-        for(var i=0;i<authTemp.data.auth.accounts.length;i++){
-            temp.push({weight:authTemp.data.auth.accounts[i].weight,key:authTemp.data.auth.accounts[i].permission.actor+"@"+authTemp.data.auth.accounts[i].permission.permission});
+        //owner 
+        authTempOwner.authorization[0].actor=this.props.navigation.state.params.wallet.name;
+        authTempOwner.data.account=this.props.navigation.state.params.wallet.name;
+        authTempOwner.data.parent=data.permissions[1].parent;
+        authTempOwner.data.auth.threshold=data.permissions[1].required_auth.threshold;
+        authTempOwner.data.auth.keys=data.permissions[1].required_auth.keys;
+        authTempOwner.data.auth.accounts=data.permissions[1].required_auth.accounts;
+
+        //账户（显示）
+        for(var i=0;i<authTempOwner.data.auth.accounts.length;i++){
+            tempOwner.push({weight:authTempOwner.data.auth.accounts[i].weight,key:authTempOwner.data.auth.accounts[i].permission.actor+"@"+authTempOwner.data.auth.accounts[i].permission.permission});
         }
 
         //公钥
-        for(var i=0;i<authTemp.data.auth.keys.length;i++){
-                temp.push({weight:authTemp.data.auth.keys[i].weight,key:authTemp.data.auth.keys[i].key});
+        for(var i=0;i<authTempOwner.data.auth.keys.length;i++){
+            tempOwner.push({weight:authTempOwner.data.auth.keys[i].weight,key:authTempOwner.data.auth.keys[i].key});
         }
+
         authFlag=true;//获取账户成功后可以
         this.setState({
-            threshold:data.permissions[1].required_auth.threshold,
+            threshold:data.permissions[0].required_auth.threshold,
             isAuth:authFlag,
-            authKeys:temp,//授权的公钥组
-            ownerAuth:authTemp,
+            authActiveKeys:tempActive,//授权的公钥组
+            authOwnerKeys:tempOwner,//授权的公钥组
+            activeAuth:authTempActive,
+            inputCount:0,
             inputText:'',
         });
+        // console.log("getaccountinfo=%s",JSON.stringify(data))
     } });
 } 
 
-EosUpdateAuth = (account, pvk,authArr, callback) => { 
+EosUpdateAuth = (account, pvk,authActiveArr, callback) => { 
     if (account == null) {
       if(callback) callback("无效账号");
       return;
     };
 
-    // console.log("authArr=%s",JSON.stringify(authArr))
+    console.log("authActiveArr=%s",JSON.stringify(authActiveArr))
 
     Eos.transaction({
         actions: [
-            authArr,
+            authActiveArr,
         ]
     }, pvk, (r) => {
       if(callback) callback(r);
@@ -221,7 +278,7 @@ EosUpdateAuth = (account, pvk,authArr, callback) => {
   };
 
 
-  changeAuth(authTemp){
+  changeAuth(authTempActive){
 
     const view =
         <View style={styles.passoutsource}>
@@ -243,7 +300,7 @@ EosUpdateAuth = (account, pvk,authArr, callback) => {
             if (plaintext_privateKey.indexOf('eostoken') != -1) {
                 
                 plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
-                this.EosUpdateAuth(this.props.navigation.state.params.wallet.name, plaintext_privateKey,authTemp,(r) => {
+                this.EosUpdateAuth(this.props.navigation.state.params.wallet.name, plaintext_privateKey,authTempActive,(r) => {
                     EasyShowLD.loadingClose();
                         // alert(JSON.stringify(r));
                         // console.log("r=%s",JSON.stringify(r))
@@ -271,6 +328,40 @@ EosUpdateAuth = (account, pvk,authArr, callback) => {
     dismissKeyboard();
   }
 
+  startTick(index){
+    // const {dispatch}=this.props;
+    // InteractionManager.runAfterInteractions(() => {
+    //   clearInterval(timer);
+    //   timer=setInterval(function(){
+    //     dispatch({type:'sticker/list',payload:{type:index}});
+    //   },7000);
+    // });
+  }
+
+
+  //获得typeid坐标
+  getRouteIndex(typeId){
+    //   return 0;
+    for(let i=0;i<this.state.routes.length;i++){
+        if(this.state.routes[i].key==typeId){
+            return i;
+        }
+    }
+  }
+
+//切换tab
+_handleIndexChange = index => {
+    // this.startTick(index);
+    // this.setState({index});
+    };
+    
+  _handleTabItemPress = ({ route }) => {
+    const index = this.getRouteIndex(route.key);
+    this.setState({index:index});
+
+  }
+
+
   //这个是用来删除当前行的
   deleteUser = (delKey) =>{  
 
@@ -284,24 +375,23 @@ EosUpdateAuth = (account, pvk,authArr, callback) => {
         return
     }
 
-    var authTemp=this.state.ownerAuth;
+    var authTempActive=this.state.activeAuth;
 
     
     if(delKey.length>12){
-        for (var i = 0; i < authTemp.data.auth.keys.length; i++) {
-            if (authTemp.data.auth.keys[i].key ==delKey) {
-                authTemp.data.auth.keys.splice(i, 1);
+        for (var i = 0; i < authTempActive.data.auth.keys.length; i++) {
+            if (authTempActive.data.auth.keys[i].key ==delKey) {
+                authTempActive.data.auth.keys.splice(i, 1);
             }
         }
     }else{
-        for (var i = 0; i < authTemp.data.auth.accounts.length; i++) {
-            if (authTemp.data.auth.accounts[i].permission.actor ==delKey) {
-                authTemp.data.auth.accounts.splice(i, 1);
+        for (var i = 0; i < authTempActive.data.auth.accounts.length; i++) {
+            if (authTempActive.data.auth.accounts[i].permission.actor ==delKey) {
+                authTempActive.data.auth.accounts.splice(i, 1);
             }
         }
     }
-// arrAccounts.push({"weight":1,"permission":{"actor":this.state.inputContent}});
-    this.changeAuth(authTemp);
+    this.changeAuth(authTempActive);
    
 }  
 
@@ -316,114 +406,106 @@ EosUpdateAuth = (account, pvk,authArr, callback) => {
             
             <View style={styles.titleStyle}>
                 <View style={styles.userAddView}>
-                    <Image source={UImage.adminAddA} style={styles.imgBtn} />
-                    <Text style={styles.buttonText}>已添加用户</Text>
+                    {/* <Image source={UImage.adminAddA} style={styles.imgBtn} /> */}
+                    {((this.state.index==OWNER_MODE?this.state.authOwnerKeys[0].key:this.state.authActiveKeys[0].key) == rowData.item.key) &&
+                        <Text style={styles.authText}>{this.state.index==OWNER_MODE?"管理者用户(Owner)":"管理者用户(Active)"}</Text>
+                    }
                 </View>
 
                 <View style={styles.buttonView}>
-                    <Text style={styles.weightText}>权阀值  </Text>
+                    <Text style={styles.weightText}>权重  </Text>
                     <Text style={styles.buttonText}>{rowData.item.weight}</Text>
                 </View>
             </View>
+            
 
-            <View style={styles.titleStyle}>
-                <Text style={styles.pktext}>{rowData.item.key}</Text>
-            </View>
-            {(this.state.ownerAuth.data.auth.keys.length>1 || rowData.item.key.length<50) &&
-            <TouchableHighlight onPress={() => { this.deleteUser(rowData.item.key) }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
-                <View style={styles.delButton}>
-                    <Text style={styles.delText}>删除</Text>
+            <View style={{flex:1,flexDirection: "row",}}>
+                <View style={styles.showPkStyle}>
+                    <Text style={styles.pktext}>{rowData.item.key}</Text>
                 </View>
-            </TouchableHighlight>
-            }
+                {/* {(this.state.activeAuth.data.auth.keys.length>1 || rowData.item.key.length<50) && */}
+                <TouchableHighlight onPress={() => { this.deleteUser(rowData.item.key) }}  >
+                    <View style={styles.delButton}>
+                        <Image source={UImage.delicon} style={styles.imgBtn} />
+                    </View>
+                </TouchableHighlight>
+                {/* } */}
+            </View>
+
        </View>
     )
   }
 
 
-  _renderRowInput(rowData){ // cell样式
-    // console.log("sectionID=%s",sectionID)
-    console.log("rowData=%s",JSON.stringify(rowData))
+
+  renderScene = ({route}) => {
+    if(route.key==''){
+      return (<View></View>)
+    }
     return (
-        
-        <View style={styles.addUserTitle} >
-            <View style={styles.titleStyle}>
-                <View style={styles.userAddView}>
-                    <Image source={UImage.adminAddA} style={styles.imgBtn} />
-                    <Text style={styles.buttonText}>添加授权用户</Text>
-                    {/* <Text style={styles.buttonText}>{rowData.index+1}</Text> */}
+        <View style={{flex:1,}}>
+            <FlatList
+                data={this.state.index==OWNER_MODE?(this.state.authOwnerKeys.length==null ?[]: this.state.authOwnerKeys):(this.state.authActiveKeys.length==null ?[]: this.state.authActiveKeys) }
+                extraData={this.state}
+                renderItem={this._renderRow.bind(this)} >
+            </FlatList>
+
+            <View style={styles.addUserTitle}>
+                <View style={styles.titleStyle}>
+                    <View style={styles.buttonView}>
+                        <Text style={styles.weightText}>权重  </Text>
+                        <Text style={styles.buttonText}>1</Text>
+                    </View>
                 </View>
 
-                <View style={styles.buttonView}>
-                    <Text style={styles.weightText}>权阀值  </Text>
-                    <Text style={styles.buttonText}>1</Text>
+                <View style={{flex:1,flexDirection: "row",}}>
+                    <TextInput ref={(ref) => this._lphone = ref} value={this.state.inputText} returnKeyType="next" editable={true}
+                        selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
+                        onChangeText={(inputText) => this.setState({ inputText: inputText})}   keyboardType="default" 
+                        placeholder={this.state.index==OWNER_MODE?"请您输入Owner公钥":"请您输入Active公钥 "} underlineColorAndroid="transparent"  multiline={true}  />
+
+                    <View style={styles.addButton}>
+                        <Image source={UImage.adminAddA} style={styles.imgBtn} />
+                    </View>
                 </View>
             </View>
 
-            <TextInput ref={(ref) => this._lphone = ref} value={rowData.item.value} returnKeyType="next" editable={true}
-                selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
-                onChangeText={(inputText) => this.setState({ inputText: inputText})}   keyboardType="default" 
-                placeholder="输入Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
-
+            <Button onPress={ this.submission.bind(this) }>
+                <View style={styles.btnoutsource}>
+                    <Text style={styles.btntext}>授权</Text>
+                </View>
+            </Button>
         </View>
-    )
+    );
   }
 
 
 
+
+  
   render() {
 
-    return (<View style={styles.container}>
+    return (
+    <View style={styles.container}>
         <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null} style={styles.tab}>
-            <ScrollView keyboardShouldPersistTaps="handled" >
-  
-
+            <ScrollView keyboardShouldPersistTaps="always" >
                 <View style={styles.significantout}>
                     <Image source={UImage.warning} style={styles.imgBtnWarning} />
-                    <View style={{flex: 1,paddingLeft: 5,}}>
-                        <Text style={styles.significanttext} >安全警告:请确保您清楚了解Active授权,并确保添加授权用户是您信任的用户，添加的用户将可进行账户权限变更和转账、投票等操作；授权非信任用户可能会导致账户权限被恶意变更，资产被转移。</Text>
+                    <View style={{flex: 1,padding: 5,}}>
+                        <Text style={styles.significanttext} >安全警告</Text>
+                        <Text style={styles.significanttext} >请确保您清楚了解owner授权,并确保添加的授权用户是您信任的用户，添加的授权用户将获得账号的全部权限（包括变更权限和转账投票）。</Text>
                     </View>
                 </View>
 
-                <FlatList
-                    data={this.state.authKeys.length==null ?[]: this.state.authKeys} 
-                    extraData={this.state}
-                    renderItem={this._renderRow.bind(this)} >
-                </FlatList>
-
-                {/* <FlatList
-                    data={this.state.inputText==''?['']:this.state.inputText} 
-                    extraData={this.state}
-                    renderItem={this._renderRowInput.bind(this)} >
-                </FlatList> */}
-
-                <View style={styles.inptoutgo} >
-                    <View style={styles.addUserTitle} >
-                        <View style={styles.titleStyle}>
-                            <View style={styles.userAddView}>
-                                <Image source={UImage.adminAddA} style={styles.imgBtn} />
-                                <Text style={styles.buttonText}>添加授权用户</Text>
-                                {/* <Text style={styles.buttonText}>{rowData.index+1}</Text> */}
-                            </View>
-
-                            <View style={styles.buttonView}>
-                                <Text style={styles.weightText}>权阀值  </Text>
-                                <Text style={styles.buttonText}>1</Text>
-                            </View>
-                        </View>
-
-                        <TextInput ref={(ref) => this._lphone = ref} value={this.state.inputText} returnKeyType="next" editable={true}
-                            selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
-                            onChangeText={(inputText) => this.setState({ inputText: inputText})}   keyboardType="default" 
-                            placeholder="输入Active公钥" underlineColorAndroid="transparent"  multiline={true}  />
-                        </View>
-                </View>
-
-                <Button onPress={ this.submission.bind(this) }>
-                    <View style={styles.btnoutsource}>
-                        <Text style={styles.btntext}>提交</Text>
-                    </View>
-                </Button>
+                <TabViewAnimated
+                lazy={true}
+                style={styles.containertab}
+                navigationState={this.state}
+                renderScene={this.renderScene.bind(this)}
+                renderHeader={(props)=><TabBar onTabPress={this._handleTabItemPress} labelStyle={{fontSize:ScreenUtil.setSpText(15),margin:0,marginBottom:10,paddingTop:10,color:UColor.lightgray}} indicatorStyle={{backgroundColor:UColor.tintColor,width:93,marginLeft:0,}} style={{backgroundColor:UColor.secdColor,}} tabStyle={{width:100,padding:0,margin:0,}} scrollEnabled={true} {...props}/>}
+                onIndexChange={this._handleIndexChange}
+                initialLayout={{height:0,width:ScreenWidth}}
+                />
 
             </ScrollView>
         </KeyboardAvoidingView>
@@ -437,9 +519,13 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         backgroundColor: UColor.secdColor,
     },
-    scrollView: {
 
-    },
+    containertab: {
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: UColor.secdColor,
+      },
+
     header: {
         marginTop: 50,
         backgroundColor: UColor.secdColor,
@@ -465,23 +551,34 @@ const styles = StyleSheet.create({
     //添加用户
     addUserTitle: {
         flex: 1,
-        marginTop: 5,
-        marginBottom: 10,
-        paddingBottom: 5,
+        marginTop: 1,
+        paddingBottom: 10,
         backgroundColor: UColor.mainColor,
-        // marginLeft:10,
-        // marginRight:10,
-        // borderRadius: 5,
-        
     },
 
     titleStyle:{
         flex:1,
         marginTop: 5,
-        marginLeft:20,
-        marginRight:20,
+        marginBottom: 1,
+        marginLeft:11,
+        marginRight:42,
         flexDirection:'row',
     },
+
+    showPkStyle: {
+        flex: 1,
+        fontSize: 15,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        // textAlignVertical: 'top',
+        marginLeft:15,
+        marginRight:5,
+        borderColor: UColor.arrow,
+        borderWidth: 1,
+        borderRadius: 5,
+    },
+
+
     inptitle: {
         // flex: 1,
         fontSize: 15,
@@ -502,21 +599,21 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         // paddingHorizontal: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
     },
     buttonText: {
+        fontSize: 12,
+        // lineHeight: 30,
+        color:  UColor.fontColor,
+    },
+    authText: {
         fontSize: 12,
         lineHeight: 30,
         color:  UColor.fontColor,
     },
 
-    // inptgo: {
-    //     flex: 1,
-    //     height: 60,
-    //     paddingHorizontal: 10,
-    //     backgroundColor: UColor.secdColor,
-    // },
+
     inptext: {
         fontSize: 14,
         lineHeight: 25,
@@ -540,22 +637,22 @@ const styles = StyleSheet.create({
         lineHeight: 25,
     },
     imgBtn: {
-        width: 25,
-        height: 25,
+        width: 23,
+        height: 24,
         // lineHeight:30,
-        marginTop: 0,
-        marginBottom: 5,
-        marginHorizontal:5,
+        // marginTop: 0,
+        // marginBottom: 5,
+        // marginHorizontal:5,
       },
 
     pktext: {
         fontSize: 14,
-        lineHeight: 25,
+        // lineHeight: 25,
         color: UColor.arrow,
     },
     weightText: {
         fontSize: 12,
-        lineHeight: 30,
+        // lineHeight: 30,
         color:  UColor.arrow,
     },
 
@@ -570,30 +667,41 @@ const styles = StyleSheet.create({
     delButton: {
         flex: 1,
         flexDirection: "row",
-        // paddingHorizontal: 5,
+        paddingHorizontal: 5,
         justifyContent: 'flex-end',
-        alignItems: 'flex-end',
+        alignItems: 'center',
+    },
+    //删除按键样式
+    addButton: {
+        // flex: 1,
+        flexDirection: "row",
+        paddingHorizontal: 5,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
     //警告样式
     significantout: {
         flexDirection: "row",
         alignItems: 'center', 
         marginHorizontal: 15,
-        marginVertical: 5,
+        marginVertical: 10,
         padding: 5,
-        backgroundColor: UColor.mainColor,
+        backgroundColor: UColor.secdColor,
         borderColor: UColor.riseColor,
         borderWidth: 1,
         borderRadius: 5,
       },
       imgBtnWarning: {
-        width: 30,
-        height: 30,
+        width: 23,
+        height: 20,
         margin:5,
       },
       significanttext: {
-        color: UColor.riseColor,
-        fontSize: 15, 
+        color: UColor.warningRed,
+        fontSize: 13, 
+        lineHeight:17,
+        // letterSpacing:1, //字符间距
+        // fontWeight: 'bold',//加粗
       },
     
       //添加用户框
@@ -607,20 +715,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
+
+
     inptgo: {
         flex: 1,
-        height: 60,
-        fontSize: 14,
+        
+        height: 57,
+        fontSize: 15,
         // lineHeight: 25,
         color: UColor.arrow,
         paddingHorizontal: 10,
+        paddingVertical: 10,
         textAlignVertical: 'top',
         backgroundColor: UColor.secdColor,
         marginLeft:15,
-        marginRight:15,
+        marginRight:5,
+        borderColor: UColor.arrow,
+        borderWidth: 1,
         borderRadius: 5,
     },
-
 
     passoutsource: {
         flexDirection: 'column', 
@@ -638,21 +751,26 @@ const styles = StyleSheet.create({
     },
     // 按钮  
     btnoutsource: {
-        marginHorizontal: ScreenUtil.autowidth(140),
-        height:  ScreenUtil.autoheight(40),
-        borderRadius: 6,
+        marginTop:15,
+        marginHorizontal: ScreenUtil.autowidth(137),
+        // width:ScreenUtil.autowidth(101),
+        // height:ScreenUtil.autoheight(41),
+        width:101,
+        height:41,
+        borderRadius: 5,
         backgroundColor: UColor.tintColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     btntext: {
-        fontSize: ScreenUtil.setSpText(16),
+        fontSize: ScreenUtil.setSpText(17),
         color: UColor.fontColor
     },
-   
+
     tab: {
         flex: 1,
     }
+   
 });
 
 export default AuthTransfer;
