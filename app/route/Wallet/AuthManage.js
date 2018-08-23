@@ -10,8 +10,11 @@ import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
 import { EasyToast } from '../../components/Toast';
 import BaseComponent from "../../components/BaseComponent";
+import { EasyShowLD } from "../../components/EasyShow"
+import Ionicons from 'react-native-vector-icons/Ionicons'
+
 var dismissKeyboard = require('dismissKeyboard');
-@connect(({login}) => ({...login}))
+@connect(({wallet, vote}) => ({...wallet, ...vote}))
 class AuthManage extends BaseComponent {
 
   static navigationOptions = {
@@ -28,6 +31,8 @@ class AuthManage extends BaseComponent {
     this.state = {
         ownerPk: '',
         activePk: '',
+        ownerThreshold:'1',//owner权阀值
+        activeThreshold:'1',//active权阀值
       }
   }
     //组件加载完成
@@ -36,6 +41,7 @@ class AuthManage extends BaseComponent {
             ownerPk: this.props.navigation.state.params.wallet.ownerPublic,//ownerPublic
             activePk: this.props.navigation.state.params.wallet.activePublic,
         })
+        this.getAccountInfo();
     }
   
   componentWillUnmount(){
@@ -43,6 +49,20 @@ class AuthManage extends BaseComponent {
     super.componentWillUnmount();
   }
  
+    //获取账户信息
+    getAccountInfo(){
+        EasyShowLD.loadingShow();
+        this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.navigation.state.params.wallet.name},callback: (data) => {
+            EasyShowLD.loadingClose();
+            
+            this.setState({
+                activeThreshold:data.permissions[0].required_auth.threshold,
+                ownerThreshold:data.permissions[1].required_auth.threshold,//owner权阀值
+            });
+            // console.log("getaccountinfo=%s",JSON.stringify(data))
+        } });
+    }
+
   transferByOwner() {
     const { navigate } = this.props.navigation;
     navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
@@ -64,48 +84,63 @@ class AuthManage extends BaseComponent {
       <ScrollView keyboardShouldPersistTaps="always">
         <View style={styles.header}>
             <View style={styles.inptoutbg}>
-
-                {this.state.activePk != '' && <View style={styles.addUserTitle} >
-                    <View style={{flexDirection:'row',flex:1,paddingHorizontal: 10,paddingTop:10,}}>
-                        <Text style={styles.inptitle}> Active关联公钥（管理者）</Text>
-                        <TouchableHighlight onPress={() => { this.manageByActive() }} style={{flex: 1,}} activeOpacity={0.5} underlayColor={UColor.mainColor}>
-                            <View style={styles.buttonView}>
-                                <Image source={UImage.adminAddB} style={styles.imgBtn} />
-                            </View>
-                        </TouchableHighlight>
-                    </View>
-
-                    <View style={styles.inptgo}>
-                        <Text style={styles.inptext}>{this.state.activePk.substr(0, 26)}</Text>
-                        <Text style={styles.inptext}>{this.state.activePk.substr(26)}</Text>
-                    </View>
-
-                </View>
-                }
-
                 {this.state.ownerPk != '' && <View style={styles.addUserTitle} >
-                    <View style={{flexDirection:'row',flex:1,paddingHorizontal: 10,paddingTop:10,}}>
-                        <Text style={styles.inptitle}> Owner关联公钥（拥有者）</Text>
-                        <TouchableHighlight onPress={() => { this.transferByOwner() }} style={{flex: 1,}} activeOpacity={1} underlayColor={UColor.mainColor}>
-                            <View style={styles.buttonView}>
-                                <Image source={UImage.adminAddB} style={styles.imgBtn} />
+                    <View style={{flex:1,flexDirection: "row",}}>
+                        <View style={{flex:1,flexDirection: "column",}}>
+                            <View style={styles.titleStyle}>
+                                <View style={styles.userAddView}>
+                                    <Text style={styles.inptitle}> Owner关联公钥（拥有者）</Text>
+                                </View>
+                                <View style={styles.buttonView}>
+                                    <Text style={styles.weightText}>权重阈值  </Text>
+                                    <Text style={styles.buttonText}>{this.state.activeThreshold}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.showPkStyle}>
+                                <Text style={styles.inptext}>{this.state.ownerPk}</Text>
+                            </View>
+                        </View>
+
+                        <TouchableHighlight onPress={() => { this.transferByOwner() }} activeOpacity={0.5} underlayColor={UColor.mainColor}>
+                            <View style={styles.enterButton}> 
+                                <Ionicons color={UColor.fontColor} name="ios-arrow-forward-outline" size={ScreenUtil.setSpText(21)} color={UColor.arrow} />     
                             </View>
                         </TouchableHighlight>
                     </View>
+                </View>}
 
-                    <View style={styles.inptgo}>
-                        <Text style={styles.inptext}>{this.state.ownerPk.substr(0, 26)}</Text>
-                        <Text style={styles.inptext}>{this.state.ownerPk.substr(26)}</Text>
+               {this.state.activePk != '' && <View style={styles.addUserTitle} >
+                    <View style={{flex:1,flexDirection: "row",}}>
+                        <View style={{flex:1,flexDirection: "column",}}>
+                            <View style={styles.titleStyle}>
+                                <View style={styles.userAddView}>
+                                    <Text style={styles.inptitle}> Active关联公钥（管理者）</Text>
+                                </View>
+                                <View style={styles.buttonView}>
+                                    <Text style={styles.weightText}>权重阈值  </Text>
+                                    <Text style={styles.buttonText}>{this.state.activeThreshold}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.showPkStyle}>
+                                <Text style={styles.inptext}>{this.state.activePk}</Text>
+                            </View>
+                        </View>
+
+                        <TouchableHighlight onPress={() => { this.manageByActive() }} activeOpacity={0.5} underlayColor={UColor.mainColor}>
+                            <View style={styles.enterButton}> 
+                                <Ionicons color={UColor.fontColor} name="ios-arrow-forward-outline" size={ScreenUtil.setSpText(21)} color={UColor.arrow} />     
+                            </View>
+                        </TouchableHighlight>
                     </View>
+                </View>}
 
 
-                </View>
-                }
+
             </View>
             <View style={styles.textout}>
-                <Text style={styles.titletext}>什么是拥有者权限？</Text>
+                <Text style={styles.titletext}>什么是拥有者权限（Owner）？</Text>
                 <Text style={styles.explaintext}>Owner 代表了对账户的所有权，可以对权限进行设置，管理Active和其他角色。</Text>
-                <Text style={styles.titletext}>什么是管理者权限？</Text>
+                <Text style={styles.titletext}>什么是管理者权限（Active）？</Text>
                 <Text style={styles.explaintext}>Active 用于日常使用，比如转账，投票等。</Text>
                 <Text style={styles.titletext}>什么是权重阈值？</Text>
                 <Text style={styles.explaintext}>权重阈值是使用该权限的最低权重要求。</Text>
@@ -144,16 +179,30 @@ const styles = StyleSheet.create({
         //添加用户
     addUserTitle: {
         flex: 1,
-        paddingBottom: 5,
+        // marginTop: 1,
+        margin: 5,
+        paddingBottom: 10,
         backgroundColor: UColor.mainColor,
-        margin:5,
-        // marginTop: 5,
-        // marginBottom: 10,
-        // marginLeft:10,
-        // marginRight:10,
         borderRadius: 5,
     },
-    
+    titleStyle:{
+        flex:1,
+        marginTop: 5,
+        marginBottom: 1,
+        marginLeft:11,
+        // marginRight:12,
+        flexDirection:'row',
+    },
+
+
+     //用户添加样式  
+     userAddView: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+    },
+
     inptoutgo: {
         paddingBottom: 20,
         backgroundColor: UColor.mainColor,
@@ -172,13 +221,19 @@ const styles = StyleSheet.create({
     buttonView: {
         flexDirection: "row",
         // paddingHorizontal: 5,
+        paddingRight: 10,
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
+    },
+    weightText: {
+        fontSize: 12,
+        lineHeight: 30,
+        color:  UColor.arrow,
     },
     buttonText: {
         fontSize: 12,
         lineHeight: 30,
-        color:  UColor.tintColor,
+        color:  UColor.fontColor,
     },
 
     inptgo: {
@@ -187,15 +242,33 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         // backgroundColor: UColor.secdColor,
     },
+
+    showPkStyle: {
+        flex: 1,
+        fontSize: 15,
+        paddingRight: 10,
+        // paddingHorizontal: 10,
+        // paddingVertical: 10,
+        // textAlignVertical: 'top',
+        marginLeft:15,
+        marginRight:5,
+        // borderColor: UColor.arrow,
+        // borderWidth: 1,
+        borderRadius: 5,
+    },
+
+
+
     inptext: {
         fontSize: 14,
         lineHeight: 25,
         color: UColor.arrow,
     },
     textout: {
-            marginTop: 30,
-            paddingHorizontal: 16,
-            paddingVertical: 10,
+            marginTop: 100,
+            paddingLeft: 20,
+            paddingRight: 30,
+            paddingVertical: 20,
     },
     titletext: {
         fontSize: 15,
@@ -204,11 +277,11 @@ const styles = StyleSheet.create({
     },
     explaintext: {
         fontSize: 13,
-        color: UColor.fontColor,
-        paddingLeft: 20,
+        color: UColor.arrow,
+        // paddingLeft: 20,
         paddingVertical: 5,
         marginBottom: 10,
-        lineHeight: 25,
+        // lineHeight: 25,
     },
     imgBtn: {
         width: 30,
@@ -216,6 +289,24 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginHorizontal:5,
       },
+
+
+     // 按钮  
+    enterButton: {
+        flex: 1,
+        paddingTop: 10,
+        flexDirection: "row",
+        paddingHorizontal: 10,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    bomout: {
+        paddingHorizontal: 5,
+        width: ScreenUtil.autowidth(40),
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+      },
+
 });
 
 export default AuthManage;
