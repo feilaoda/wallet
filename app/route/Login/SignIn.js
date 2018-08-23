@@ -130,31 +130,31 @@ class SignIn extends BaseComponent {
           <Text style={styles.shatur}>{this.props.pointInfo.share}</Text>
           <Text style={styles.sigsto}>{this.props.pointInfo.interact}</Text>
         </View>
-        <View style={styles.sigshaint}>
+        <View style={styles.sigshainttext}>
           <Text style={styles.sigstotext}>签到累计</Text>
           <Text style={styles.shaturtext}>分享资讯</Text>
           <Text style={styles.sigstotext}>资讯互动</Text>
         </View>
-        <View style={styles.stotur}>
+        {/* <View style={styles.stotur}>
           <Text style={styles.sigsto}>{this.props.pointInfo.store}</Text>
           <Text style={styles.shatur}>{this.props.pointInfo.turnin}</Text>
           <Text style={styles.sigsto}>{this.props.pointInfo.turnout}</Text>
-        </View>
-        <View style={styles.stoturtext}>
+        </View> */}
+        {/* <View style={styles.stoturtext}>
           <Text  style={styles.sigstotext}>资产存储</Text>
           <Text style={styles.shaturtext}>转入累计</Text>
           <Text style={styles.sigstotext}>转出累计</Text>
-        </View>
+        </View> */}
       </View>
       <Button onPress={() => this.signIn()}>
         <View style={styles.SignInbtnout} backgroundColor={this.state.Sign_in ? UColor.mainColor:UColor.tintColor}>
           <Text style={styles.SignInbtntext}>{this.state.Sign_in ? "已签到": "立即签到"}</Text>
         </View>
       </Button>
-      <Text style={styles.foottop}>积分细则：</Text>
+      <Text style={styles.foottop}>积分细则</Text>
       <Text style={styles.foottext}>1.签到每日可获得积分+1，连续签到可额外增加积分；</Text>
       <Text style={styles.foottext}>2.分享资讯到朋友圈或微信好友每日可获得积分+1；</Text>
-      <Text style={styles.foottext}>3.资讯浏览评点每日可获得积分+1；</Text>
+      <Text style={styles.foottext}>3.资讯浏览点评每日可获得积分+1；</Text>
       <Text style={styles.footbom}>4.积分可兑换官方礼品和提高用户权益，官方将会在后续开发积分价值体系，让拥有更多积分的用户享受官方VIP服务，敬请期待。</Text>
     </View>
   }
@@ -210,6 +210,12 @@ const styles = StyleSheet.create({
   sigshaint: { 
     flexDirection: "row",
     justifyContent: 'space-around',
+    marginTop: ScreenUtil.autoheight(20) 
+  },
+  sigshainttext: { 
+    flexDirection: "row",
+    justifyContent: 'space-around',
+    marginTop: ScreenUtil.autoheight(5) 
   },
   stotur: { 
     flexDirection: "row", 
@@ -244,10 +250,12 @@ const styles = StyleSheet.create({
     fontSize: ScreenUtil.setSpText(14), 
   },
   SignInbtnout: {
+
     height: ScreenUtil.autoheight(45),
     justifyContent: 'center',
     alignItems: 'center',
-    margin: ScreenUtil.autowidth(20),
+    margin: ScreenUtil.autowidth(10),
+    marginTop: ScreenUtil.autoheight(25),
     borderRadius: 5
   },
   SignInbtntext: {
@@ -257,20 +265,21 @@ const styles = StyleSheet.create({
   foottop: {
     color: UColor.arrow,
     fontSize: ScreenUtil.setSpText(14),
-    lineHeight: ScreenUtil.autoheight(20), 
+    lineHeight: ScreenUtil.autoheight(40), 
     marginLeft: ScreenUtil.autowidth(20),
+    marginTop: ScreenUtil.autoheight(10),
   },
   foottext: {
     color: UColor.arrow,
     fontSize: ScreenUtil.setSpText(14),
-    lineHeight: ScreenUtil.autoheight(20),
-    marginLeft: ScreenUtil.autowidth(10),
+    lineHeight: ScreenUtil.autoheight(25),
+    marginLeft: ScreenUtil.autowidth(15),
   },
   footbom: {
     color: UColor.arrow,
     fontSize: ScreenUtil.setSpText(14),
     lineHeight: ScreenUtil.autoheight(20),
-    marginHorizontal: ScreenUtil.autowidth(10),
+    marginLeft: ScreenUtil.autowidth(15),
   },
 });
 
