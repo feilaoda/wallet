@@ -27,7 +27,7 @@ class FreeMortgage extends React.Component {
     super(props);
     this.state = {
         show: false,
-        labelname: '',
+        labelname: (this.props.defaultWallet && this.props.defaultWallet.name) ? this.props.defaultWallet.name : '',
       }
   }
 
@@ -51,6 +51,16 @@ class FreeMortgage extends React.Component {
         if(this.state.labelname == null || this.state.labelname == ""){
             EasyToast.show("请输入账号");
             return;
+        }
+        //当前钱包账户，校验是否有激活
+        if(this.props.defaultWallet && this.props.defaultWallet.name){
+            if(this.state.labelname == this.props.defaultWallet.name){
+                if(!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived'))
+                {
+                    EasyToast.show("未检测有效的EOS账号, 请检查您当前账号是否有效!");
+                    return;
+                }
+            }
         }
         // if (this.props.defaultWallet == null || this.props.defaultWallet.name == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
         //     EasyToast.show("未检测有效的EOS账号, 请检查您当前账号是否有效!");
