@@ -57,7 +57,8 @@ import SplashScreen from 'react-native-splash-screen'
 import AgentInfo from './Settings/AgentInfo'
 import Imvote from './Settings/Imvote'
 import Resources from './Settings/Resources'
-import undelegated from './Settings/undelegated'
+import undelegated from './Settings/undelegated' 
+import WithdrawMoney from './Settings/WithdrawMoney'
 import Set from './Settings/Set'
 import Nodevoting from './Settings/Nodevoting'
 import Bvote from './Settings/Bvote'
@@ -120,27 +121,27 @@ const TabContainer = TabNavigator(
         return (<Image source={iconName} style={{ width: 20, height: 20, padding: 0, margin: 0, }} />);
       },
     }),
-    initialRouteName: "News",
+    initialRouteName: "News", // 默认页面组件
     lazy: true,
-    tabBarPosition: 'bottom',
-    swipeEnabled: false,
-    animationEnabled: false,
+    tabBarPosition: 'bottom', // 显示在底端，android 默认是显示在页面顶端的
+    swipeEnabled: false, // 是否可以左右滑动切换tab
+    animationEnabled: false, // 切换页面时是否有动画效果
     tabBarOptions: {
-      activeTintColor: UColor.tintColor,
-      inactiveTintColor: UColor.lightgray,
-      showIcon: true,
+      activeTintColor: UColor.tintColor, // 文字和图片选中颜色
+      inactiveTintColor: UColor.lightgray, // 文字和图片未选中颜色
+      showIcon: true, // android 默认不显示 icon, 需要设置为 true 才会显示
       showLabel: true,
-      style: {
+      style: { // TabBar 
         height: 49,
-        backgroundColor: UColor.secdColor,
+        backgroundColor: UColor.secdColor, 
         borderBottomWidth: 0,
       },
-      labelStyle: {
+      labelStyle: { // 文字
         fontSize: 10,
         margin: 0
       },
-      indicatorStyle: {
-        opacity: 0
+      indicatorStyle: { // 如TabBar下面显示有一条线，可以设高度为0后隐藏
+        opacity: 0 
       },
       tabStyle: {
         padding: 0,
@@ -246,6 +247,9 @@ const Nav = StackNavigator(
     },
     undelegated: {
       screen: undelegated
+    },
+    WithdrawMoney: {
+      screen: WithdrawMoney
     },
     Set: {
       screen: Set

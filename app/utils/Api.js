@@ -29,6 +29,9 @@ export const newsShare = rootaddr + '/news/share/';
 export const redirect = rootaddr + '/news/redirect/';
 export const fetchPoint = rootaddr + '/user/point/fetch';
 export const shareAddPoint = rootaddr + '/user/shareAddPoint';
+export const eostReceive = rootaddr + '/user/eostReceive'; 
+export const eostRecord = rootaddr + '/user/eostRecord';
+export const selectPoint = rootaddr + '/user/selectPoint';
 
 export const createAccount = rootaddr + '/user/createEosAccount';
 export const pushTransaction = rootaddr + '/eosrpc/pushTransaction';

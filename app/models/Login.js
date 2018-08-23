@@ -1,5 +1,5 @@
 import Request from '../utils/RequestUtil';
-import { existRegisteredUser,capture, register, login, changePwd, userInfo, signin, fetchPoint, isSigned } from '../utils/Api';
+import { existRegisteredUser,capture, register, login, changePwd, userInfo, signin, fetchPoint, isSigned, eostReceive, eostRecord, selectPoint } from '../utils/Api';
 import store from 'react-native-simple-store';
 import { EasyToast } from '../components/Toast';
 import Constants from '../utils/Constants'
@@ -177,6 +177,58 @@ export default {
           // alert(userpoint);
           // yield put({ type: 'update', payload: { pointInfo: resp.data } });
           // yield call(store.save, 'userpoint',userpoint);
+        }
+        if (callback) callback(resp);
+      } catch (error) {
+        if (callback) callback({ code: 500, msg: "网络异常" });
+      }
+    },
+    *changethemeSwitching ({ payload,callback }, { call, put }) {
+      var theme = yield call(store.get, 'theme');        
+      if (theme == null) {
+        theme = true;              
+      }else{
+        theme = !theme;
+      }
+      if (callback) callback({ theme: theme });
+      yield call(store.save, 'theme', theme);
+    },
+    *getthemeSwitching({ payload,callback }, { call, put }) {
+      var theme = yield call(store.get, 'theme');
+      if (theme == null) {
+          theme = false;  
+          //没有记录要保存         
+          yield call(store.save, 'theme', theme);
+      }
+      if (callback) callback({ theme: theme });
+    },
+    *geteostReceive({ payload, callback }, { call, put }) {
+      try {
+        const resp = yield call(Request.request, eostReceive, 'post', payload);
+        if (resp.code == 0) {
+         
+        }
+        if (callback) callback(resp);
+      } catch (error) {
+        if (callback) callback({ code: 500, msg: "网络异常" });
+      }
+    },
+    *geteostRecord({ payload, callback }, { call, put }) {
+      try {
+        const resp = yield call(Request.request, eostRecord, 'post', payload);
+        if (resp.code == 0) {
+         
+        }
+        if (callback) callback(resp);
+      } catch (error) {
+        if (callback) callback({ code: 500, msg: "网络异常" });
+      }
+    },
+    *getselectPoint({ payload, callback }, { call, put }) {
+      try {
+        const resp = yield call(Request.request, selectPoint, 'post', payload);
+        if (resp.code == 0) {
+         
         }
         if (callback) callback(resp);
       } catch (error) {

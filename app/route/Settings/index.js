@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter,NativeModules, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar, Switch,Linking, } from 'react-native';
+import { Dimensions, DeviceEventEmitter,NativeModules, InteractionManager,Modal, ListView, StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, Platform, ImageBackground, TextInput,Linking, } from 'react-native';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
 import Item from '../../components/Item'
@@ -32,20 +32,39 @@ class Setting extends React.Component {
       { avatar:UImage.my_help, name: "帮助中心", onPress: this.goPage.bind(this, "Helpcenter") },
       { avatar:UImage.my_system, name: "系统设置", onPress: this.goPage.bind(this, "set") },
     ];
+    this.state = {
+      isquery: false,
+      show: false,
+      walletName: '',
+    }
   }
 
-    //组件加载完成
-    componentDidMount() {
-      const {dispatch}=this.props;
-      this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }});
-      DeviceEventEmitter.addListener('nativeCallRn', (msg) => {
-        title = "React Native界面,收到数据：" + msg;
-        // ToastAndroid.show("发送成功", ToastAndroid.SHORT);
-        alert(title);
-      })
-    }
+  //组件加载完成
+  componentDidMount() {
+    const {dispatch}=this.props;
+    this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }});
+    DeviceEventEmitter.addListener('nativeCallRn', (msg) => {
+      title = "React Native界面,收到数据：" + msg;
+      // ToastAndroid.show("发送成功", ToastAndroid.SHORT);
+      alert(title);
+    })
+    this.eostRecord(); 
+  }
 
-    
+  eostRecord() {
+    if(this.props.loginUser){
+      this.props.dispatch({type:'login/geteostRecord',payload:{},callback:(carry)=>{
+        if(carry.code == 606){
+          this.setState({isquery: false})
+        }else if(carry.code == 0){
+          this.setState({isquery: true})
+        }else{
+          this.setState({isquery: false})
+        }
+      }})
+    }
+  }
+
   goPage(key, data = {}) {
     const { navigate } = this.props.navigation;
     if (key == "share") {
@@ -73,11 +92,9 @@ class Setting extends React.Component {
   skipNativeCall() {  
     let phone = '123123123';
     NativeModules.commModule.rnCallNative(phone);  
- }  
+  }  
 
-  /** 
- * Callback 通信方式 
- */
+  //Callback 通信方式 
   callbackComm(msg) {
     NativeModules.commModule.rnCallNativeFromCallback(msg, (result) => {
       alert("CallBack收到消息:" + result);
@@ -117,8 +134,63 @@ class Setting extends React.Component {
         console.log('call back data', data)
       })
     }
-
   }
+
+  selectpoint(){
+    if(this.state.isquery){
+      const { navigate } = this.props.navigation;
+      this.props.dispatch({type:'login/geteostRecord',payload:{},callback:(carry)=>{
+        navigate('WithdrawMoney', {carry});
+      }})
+    }else{
+      if(this.props.loginUser){
+        try {
+          this.props.dispatch({type:'login/getselectPoint',payload:{},callback:(integral)=>{
+            if(integral.code == 605){
+              const view = <Text style={styles.inptpasstext}>您当前的积分还不符合领取条件，请继续努力！</Text>
+              EasyShowLD.dialogShow("温馨提示",view,"知道了",null,()=>{EasyShowLD.dialogClose()}); 
+            }else if(integral.code == 607){
+              const view = <Text style={styles.inptpasstext}>您没有活动奖励可领取！</Text>
+              EasyShowLD.dialogShow("温馨提示",view,"知道了",null,()=>{EasyShowLD.dialogClose()}); 
+            }else{           
+              this._setModalVisible();
+              this.setState({walletName: this.props.defaultWallet ? this.props.defaultWallet.name : ''}); 
+            } 
+          }})
+        }catch (error) {
+          EasyShowLD.dialogClose();
+        }
+      }
+    }
+  }
+
+  eostreceive() {
+    if(this.state.walletName == ''){
+      EasyToast.show('请输入EOS主网账号');
+      return;
+    }
+    try {
+      this.props.dispatch({type:'login/geteostReceive',payload:{eos_account:this.state.walletName},callback:(carry)=>{
+        //alert(JSON.stringify(carry));
+        if(carry.code == 0 && carry.data == true){
+          EasyToast.show('提交成功！奖励将在3个工作日内到账，请注意查收！');
+        }
+        this._setModalVisible();
+        this.eostRecord();
+      }})
+    }catch (error) {
+      this._setModalVisible();
+      EasyShowLD.dialogClose();
+    }
+  }
+
+  // 显示/隐藏 modal  
+  _setModalVisible() {  
+    let isShow = this.state.show;  
+    this.setState({  
+      show:!isShow,  
+    });  
+  }  
 
   render() {
     return <View style={styles.container}>
@@ -154,8 +226,8 @@ class Setting extends React.Component {
                 </View>
                 <View style={styles.Withdrawout}>
                   {
-                    this.props.loginUser && <Button onPress={() => { EasyShowLD.dialogShow("温馨提示", "暂未开放，敬请期待！", "知道了", null, () => { EasyShowLD.dialogClose() }); }} style={styles.Withdrawbtn}>
-                      <Text style={styles.Withdrawtext}>领取</Text>
+                    this.props.loginUser && <Button onPress={this.selectpoint.bind(this)} style={styles.Withdrawbtn}>
+                      <Text style={styles.Withdrawtext}>{this.state.isquery ? '领取记录' : '领取'}</Text>
                     </Button>
                   }
                 </View>
@@ -172,11 +244,48 @@ class Setting extends React.Component {
             </View>
           </View>
       </ScrollView>
+      <Modal style={styles.touchableouts} animationType={'none'} transparent={true}  visible={this.state.show} onRequestClose={()=>{}}>
+            <TouchableOpacity style={styles.pupuoBackup} activeOpacity={1.0}>
+              <View style={{ width: ScreenWidth-20, backgroundColor: UColor.fontColor, borderRadius: 5, }}>
+              {/* <ImageBackground source={UImage.congratulate} resizeMode="cover" style={styles.linebgout}> */}
+                <View style={styles.subViewBackup}> 
+                  <Button onPress={this._setModalVisible.bind(this)} style={styles.buttonView}>
+                      <Ionicons style={{ color: UColor.baseline}} name="ios-close-outline" size={30} />
+                  </Button>
+                </View>
+                <View style={styles.warningout}>
+                    <Text style={styles.contentText}>领取奖励</Text>
+                    <Text style={styles.headtitle}>恭喜您！已符合领取条件。</Text>
+                    <View style={styles.accountoue} >
+                        <Text style={styles.inptitle}>您的领取账号：</Text>
+                        <TextInput ref={(ref) => this._raccount = ref}  value={this.state.walletName} keyboardType="default"   
+                            selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}      
+                            placeholder="请输入EOS主网账号" underlineColorAndroid="transparent" keyboardType="default"  
+                            onChangeText={(walletName) => this.setState({ walletName })} maxLength = {12}
+                        />
+                    </View>
+                </View>
+                {/* </ImageBackground> */}
+                <Button onPress={this.eostreceive.bind(this)} style={styles.butout}>
+                    <View style={styles.deleteout}>
+                        <Text style={styles.deletetext}>提交</Text>
+                    </View>
+                </Button> 
+               
+              </View> 
+            </TouchableOpacity>
+        </Modal>
     </View>
   }
 }
 
 const styles = StyleSheet.create({
+ 
+  inptpasstext: {
+    fontSize: ScreenUtil.setSpText(15),
+    color: UColor.arrow,
+    lineHeight: ScreenUtil.autoheight(30),
+  },
   container: {
     flex: 1,
     flexDirection: 'column',
@@ -296,6 +405,98 @@ const styles = StyleSheet.create({
     color: UColor.fontColor,
     marginRight: ScreenUtil.autowidth(5)
   },
+
+
+
+  touchableouts: {
+    flex: 1,
+    flexDirection: "column",
+  },
+  pupuoBackup: {
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    backgroundColor: UColor.mask,
+  },
+
+  linebgout: {
+    width: ScreenWidth - 30,
+    height: (ScreenWidth - 30) * 0.407,
+  },
+
+  subViewBackup: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    width: ScreenWidth-20,
+    height: ScreenUtil.autoheight(30),
+  },
+  buttonView: {
+    width: ScreenUtil.autowidth(30),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  contentText: {
+    fontSize: ScreenUtil.setSpText(18),
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingBottom: ScreenUtil.autoheight(20),
+  },
+
+  warningout: {
+    paddingHorizontal: ScreenUtil.autowidth(30),
+  }, 
+  accountoue: {
+    height: ScreenUtil.autoheight(45),
+    alignItems: 'center',
+    flexDirection: "row",
+  },
+  headtitle: {
+    color: UColor.showy,
+    fontSize: ScreenUtil.setSpText(14),
+    lineHeight: ScreenUtil.autoheight(25),
+  },
+  inptitle: {
+    color: UColor.blackColor,
+    fontSize: ScreenUtil.setSpText(14),
+  },
+  inpt: {
+    flex: 1,
+    color: UColor.arrow,
+    fontSize: ScreenUtil.setSpText(14),
+    height: ScreenUtil.autoheight(40),
+    paddingLeft: ScreenUtil.autowidth(2),
+    borderBottomWidth: 0.5,
+    borderBottomColor: UColor.baseline,
+  },
+
+  imgBtnBackup: {
+    width: ScreenUtil.autowidth(30),
+    height: ScreenUtil.autowidth(30),
+  },
+  butout: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  deleteout: {
+    height: ScreenUtil.autoheight(42),
+    width: ScreenUtil.autowidth(100),
+    marginVertical: ScreenUtil.autoheight(15),
+    borderRadius: 3,
+    backgroundColor: UColor.tintColor,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  deletetext: {
+    fontSize: ScreenUtil.setSpText(16),
+    color: UColor.fontColor
+  },
+
+
+  
+
+
+
+
 });
 
 export default Setting;
