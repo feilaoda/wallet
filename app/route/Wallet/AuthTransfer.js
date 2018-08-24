@@ -83,16 +83,26 @@ class AuthTransfer extends BaseComponent {
             EasyToast.show("输入不能为空");
             return//暂不支持账号先
         }
+
+        var authTemp='';
+        var authKeys=[];
+
+        if(this.state.index==OWNER_MODE){
+            authKeys=this.state.authOwnerKeys;
+            authTemp=this.state.ownerAuth;
+        }else if(this.state.index==ACTIVE_MODE){
+            authKeys=this.state.authActiveKeys;
+            authTemp=this.state.activeAuth;
+        }else{
+            return
+        }
         
-        for (var j = 0; j < this.state.authActiveKeys.length; j++) {
-            if (this.state.authActiveKeys[j].key ==this.state.inputText) {
-                EasyToast.show('添加授权公钥或账户已存在');
+        for (var j = 0; j < authKeys.length; j++) {
+            if (authKeys[j].key ==this.state.inputText) {
+                EasyToast.show('添加授权公钥已存在');
                 return;
             }
         }
-
-
-        var authTempActive=this.state.activeAuth;
 
         if (this.state.inputText.length > 12) {
             Eos.checkPublicKey(this.state.inputText, (r) => {
@@ -100,17 +110,10 @@ class AuthTransfer extends BaseComponent {
                     EasyToast.show('您输入的公钥有误，请核对后再试！');
                     return;
                 }else{
-                    authTempActive.data.auth.keys.push({weight:1,key:this.state.inputText})
-                    this.changeAuth(authTempActive);
+                    authTemp.data.auth.keys.push({weight:1,key:this.state.inputText})
+                    this.changeAuth(authTemp);
                 }
             });
-        }else if(this.state.inputText.length >= 1){
-            if(this.verifyAccount(this.state.inputText)==false){
-                EasyToast.show('请输入正确的账号');
-                return 
-            }
-            authTempActive.data.auth.accounts.push({"weight":1,"permission":{"actor":this.state.inputText,"permission":"active"}});
-            this.changeAuth(authTempActive);
         }else{
             EasyToast.show('输入数据长度不正确');
         }
@@ -139,7 +142,7 @@ class AuthTransfer extends BaseComponent {
             inputCount:0,
             inputText:'',
             activeAuth:'',//更改的数据组
-            
+            ownerAuth:'',//更改的数据组
 
         }
     }
@@ -179,7 +182,7 @@ class AuthTransfer extends BaseComponent {
             name: "updateauth", 
             authorization: [{
             actor: '',//操作者 account
-            permission: 'active'// active
+            permission: 'owner'// active
             }], 
             data: {
                 account: '',//操作者 account
@@ -253,6 +256,7 @@ class AuthTransfer extends BaseComponent {
             authActiveKeys:tempActive,//授权的公钥组
             authOwnerKeys:tempOwner,//授权的公钥组
             activeAuth:authTempActive,
+            ownerAuth:authTempOwner,
             inputCount:0,
             inputText:'',
         });
@@ -260,17 +264,17 @@ class AuthTransfer extends BaseComponent {
     } });
 } 
 
-EosUpdateAuth = (account, pvk,authActiveArr, callback) => { 
+EosUpdateAuth = (account, pvk,authArr, callback) => { 
     if (account == null) {
       if(callback) callback("无效账号");
       return;
     };
 
-    console.log("authActiveArr=%s",JSON.stringify(authActiveArr))
+    console.log("authArr=%s",JSON.stringify(authArr))
 
     Eos.transaction({
         actions: [
-            authActiveArr,
+            authArr,
         ]
     }, pvk, (r) => {
       if(callback) callback(r);
@@ -278,7 +282,7 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
   };
 
 
-  changeAuth(authTempActive){
+  changeAuth(authTemp){
 
     const view =
         <View style={styles.passoutsource}>
@@ -292,7 +296,8 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
             return;
         }
         
-        var privateKey = this.props.navigation.state.params.wallet.activePrivate;
+        // var privateKey = this.props.navigation.state.params.wallet.activePrivate;
+        var privateKey = this.props.navigation.state.params.wallet.ownerPrivate;
         try {
             EasyShowLD.loadingShow();
             var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.navigation.state.params.wallet.salt);
@@ -300,10 +305,10 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
             if (plaintext_privateKey.indexOf('eostoken') != -1) {
                 
                 plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
-                this.EosUpdateAuth(this.props.navigation.state.params.wallet.name, plaintext_privateKey,authTempActive,(r) => {
+                this.EosUpdateAuth(this.props.navigation.state.params.wallet.name, plaintext_privateKey,authTemp,(r) => {
                     EasyShowLD.loadingClose();
                         // alert(JSON.stringify(r));
-                        // console.log("r=%s",JSON.stringify(r))
+                        console.log("r=%s",JSON.stringify(r))
                         if(r.isSuccess==true){
                             EasyToast.show('授权变更成功！');
                         }else{
@@ -328,15 +333,6 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
     dismissKeyboard();
   }
 
-  startTick(index){
-    // const {dispatch}=this.props;
-    // InteractionManager.runAfterInteractions(() => {
-    //   clearInterval(timer);
-    //   timer=setInterval(function(){
-    //     dispatch({type:'sticker/list',payload:{type:index}});
-    //   },7000);
-    // });
-  }
 
 
   //获得typeid坐标
@@ -351,14 +347,25 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
 
 //切换tab
 _handleIndexChange = index => {
-    // this.startTick(index);
-    // this.setState({index});
+    console.log("index=%s",index);
+    if(this.state.index!=index){
+        this.setState({
+            index:index,
+            inputText:'',
+        });
+    }
     };
     
   _handleTabItemPress = ({ route }) => {
-    const index = this.getRouteIndex(route.key);
-    this.setState({index:index});
+    console.log("route=%s",JSON.stringify(route));
 
+    const indexn = this.getRouteIndex(route.key);
+    if(this.state.index!=indexn){
+        this.setState({
+            index:indexn,
+            inputText:'',
+        });
+    }
   }
 
 
@@ -371,27 +378,35 @@ _handleIndexChange = index => {
     }
 
     if(this.state.isAuth==false){
-        EasyToast.show("找不到对应的公钥或账号");
+        // EasyToast.show("找不到对应的公钥或账号");
+        EasyToast.show("网络繁忙，请刷新再重试");
         return
     }
 
-    var authTempActive=this.state.activeAuth;
+    var authTemp='';
 
-    
+    if(this.state.index==OWNER_MODE){
+        authTemp=this.state.ownerAuth;
+    }else if(this.state.index==ACTIVE_MODE){
+        authTemp=this.state.activeAuth;
+    }else{
+        return
+    }
+
     if(delKey.length>12){
-        for (var i = 0; i < authTempActive.data.auth.keys.length; i++) {
-            if (authTempActive.data.auth.keys[i].key ==delKey) {
-                authTempActive.data.auth.keys.splice(i, 1);
+        for (var i = 0; i < authTemp.data.auth.keys.length; i++) {
+            if (authTemp.data.auth.keys[i].key ==delKey) {
+                authTemp.data.auth.keys.splice(i, 1);
             }
         }
     }else{
-        for (var i = 0; i < authTempActive.data.auth.accounts.length; i++) {
-            if (authTempActive.data.auth.accounts[i].permission.actor ==delKey) {
-                authTempActive.data.auth.accounts.splice(i, 1);
+        for (var i = 0; i < authTemp.data.auth.accounts.length; i++) {
+            if (authTemp.data.auth.accounts[i].permission.actor ==delKey) {
+                authTemp.data.auth.accounts.splice(i, 1);
             }
         }
     }
-    this.changeAuth(authTempActive);
+    this.changeAuth(authTemp);
    
 }  
 
