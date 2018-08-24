@@ -38,6 +38,8 @@ class SignIn extends BaseComponent {
       Sign_in: false,
       accumulative: 0,
       newaccumulative: 0,
+      interval: 0,
+      last: 0,
     }
   }
 
@@ -55,9 +57,11 @@ class SignIn extends BaseComponent {
           });         
         }else if(data.code == 0) {
           this.setState({
-              accumulative:this.props.pointInfo.signin + this.props.pointInfo.share + this.props.pointInfo.interact + this.props.pointInfo.store + this.props.pointInfo.turnin + this.props.pointInfo.turnout
+              accumulative: this.props.pointInfo.signin + this.props.pointInfo.share + this.props.pointInfo.interact + this.props.pointInfo.store + this.props.pointInfo.turnin + this.props.pointInfo.turnout,
           })
-          this.dynamic(this.state.accumulative);
+
+          this.setState({interval: (((this.state.accumulative / 50).toFixed(0) == 0) ? 1: (this.state.accumulative / 50).toFixed(0))});
+          this.dynamic(this.state.last, this.state.accumulative);
         }
       },
     });
@@ -83,12 +87,14 @@ class SignIn extends BaseComponent {
           })
         }else if(data.code == 0) {
           EasyToast.show("签到成功");
+          this.setState({last: this.state.accumulative});
           this.props.dispatch({ type: 'login/fetchPoint', payload: { uid: Constants.uid },callback:(data) =>{
             this.setState({
               Sign_in: true,
-              accumulative:this.props.pointInfo.signin + this.props.pointInfo.share + this.props.pointInfo.interact + this.props.pointInfo.store + this.props.pointInfo.turnin + this.props.pointInfo.turnout
+              accumulative:this.props.pointInfo.signin + this.props.pointInfo.share + this.props.pointInfo.interact + this.props.pointInfo.store + this.props.pointInfo.turnin + this.props.pointInfo.turnout,
             })
-            this.dynamic(this.state.accumulative);
+            this.setState({interval: (((this.state.accumulative - this.state.last) / 50).toFixed(0) == 0) ? 1: ((this.state.accumulative - this.state.last) / 50).toFixed(0)});
+            this.dynamic(this.state.last, this.state.accumulative);
           } });
         } else {
           EasyToast.show(data.msg);
@@ -101,16 +107,21 @@ class SignIn extends BaseComponent {
     })
   }
 
-  dynamic(integral){
-    var num = 0;
+  dynamic(lastIntegral, integral){
+    var num = lastIntegral;
     let timer = setInterval(()=>{
-      num++;
-      if(num==integral){
+      num += this.state.interval;
+      if(num < integral){
+        this.setState({
+          newaccumulative:num
+        })
+      }else if(num >= integral){
+        this.setState({
+          newaccumulative:integral
+        })
         clearInterval(timer)
       }  
-      this.setState({
-        newaccumulative:num
-      })
+
     },1);
   }
 
