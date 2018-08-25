@@ -26,7 +26,7 @@ var CryptoJS = require("crypto-js");
 var dismissKeyboard = require('dismissKeyboard');
 const transactionOption = ['最新交易','我的交易','最近大单','持仓大户'];
 
-@connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
+@connect(({transaction,sticker,wallet,vote}) => ({...transaction, ...sticker, ...wallet, ...vote}))
 class Ram extends BaseComponent {
 
     static navigationOptions = ({ navigation }) => {
@@ -399,13 +399,19 @@ class Ram extends BaseComponent {
     if (this.props.defaultWallet == null || this.props.defaultWallet.account == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
       return;
     }
-    this.props.dispatch({
-        type: 'wallet/getBalance', payload: { contract: "eosio.token", account: this.props.defaultWallet.account, symbol: 'EOS' }, callback: (data) => {
-          if (data.code == '0') {
-            this.setEosBalance(data.data);
-          }
-        }
-      })
+
+    try {
+        this.props.dispatch({
+            type: 'wallet/getBalance', payload: { contract: "eosio.token", account: this.props.defaultWallet.account, symbol: 'EOS' }, callback: (data) => {
+              if (data && data.code == '0') {
+                this.setEosBalance(data.data);
+              }
+            }
+          })
+    } catch (error) {
+        
+    }
+
 }
 
   
@@ -773,6 +779,13 @@ class Ram extends BaseComponent {
     return true;
   }
 
+  openTradePanel(){
+    this.setState({ business: false });
+    this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }, callback: () => {
+        this.getAccountInfo();
+    }});
+  }
+
   render() {
     return <View style={styles.container}>
     <TouchableOpacity style={styles.transactiontou}  onPress={this.openbusiness.bind(this)} activeOpacity={0.8}>
@@ -1022,7 +1035,7 @@ class Ram extends BaseComponent {
     </KeyboardAvoidingView> 
 
     <Modal style={styles.businesmodal} animationType={'slide'} transparent={true} onRequestClose={() => {this.setState({business: false}) }} visible={this.state.business}>
-        <TouchableOpacity onPress={() => this.setState({ business: false })} style={styles.businestouchable} activeOpacity={1.0}> 
+        <TouchableOpacity onPress={this.openTradePanel.bind(this)} style={styles.businestouchable} activeOpacity={1.0}> 
             <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null}>
                 <TouchableOpacity style={styles.busines} activeOpacity={1.0}>
                     <View style={styles.businesout}>
