@@ -41,7 +41,6 @@ class Transaction extends BaseComponent {
             />
           
           ),
-          header:null,  //隐藏顶部导航栏
           headerStyle: {
             paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,

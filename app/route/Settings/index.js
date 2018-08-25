@@ -18,6 +18,12 @@ var DeviceInfo = require('react-native-device-info');
 class Setting extends React.Component {
 
   static navigationOptions = {
+    title: "我的",
+    headerStyle: {
+        paddingTop: ScreenUtil.autoheight(20),
+        backgroundColor: UColor.mainColor,
+        borderBottomWidth:0,
+    },      
     tabBarLabel: '我的',
     tabBarIcon: ({ focused}) => (
       <Image resizeMode='stretch'
@@ -382,7 +388,7 @@ const styles = StyleSheet.create({
 
   footer: {
     flex: 1,
-    marginTop: ScreenUtil.autoheight(30),
+    marginVertical: ScreenUtil.autoheight(20),
     flexDirection: 'column'
   },
   foottext: {

@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: UColor.secdColor,
-    paddingTop:Platform.OS == 'ios' ? 30 : 20,
+    paddingTop:ScreenUtil.autoheight(20),
   },
   switem: {
     paddingBottom: ScreenUtil.autoheight(10),
