@@ -92,7 +92,7 @@ class RecordQueryRam extends React.Component {
   // 根据账号查找交易记录
   query = (labelname) =>{
     if (labelname == ""||labelname == undefined||labelname==null) {
-      EasyToast.show('请输入Eos账号');
+      EasyToast.show('请输入EOS账号');
       return;
     }else{
       if(this.state.logRefreshing){
@@ -230,7 +230,7 @@ class RecordQueryRam extends React.Component {
               <Image source={UImage.Magnifier_ash} style={styles.headleftimg} />
               <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
                   selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} maxLength={12} 
-                  placeholder="输入EOS账号名" underlineColorAndroid="transparent" keyboardType="default"
+                  placeholder="输入EOS账号" underlineColorAndroid="transparent" keyboardType="default"
                   onChangeText={(labelname) => this.setState({ labelname })}   
                   />  
               <TouchableOpacity onPress={this.Scan.bind(this,this.state.labelname)}>  

@@ -223,7 +223,7 @@ class RecordQueryET extends React.Component {
               <Image source={UImage.Magnifier_ash} style={styles.headleftimg}></Image>
               <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
                   selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} maxLength={12} 
-                  placeholder="输入账号名" underlineColorAndroid="transparent" keyboardType="default"
+                  placeholder="输入账号" underlineColorAndroid="transparent" keyboardType="default"
                   onChangeText={(labelname) => this.setState({ labelname })}   
                   />  
               <TouchableOpacity onPress={this.Scan.bind(this,this.state.labelname)}>  
