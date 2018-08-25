@@ -83,7 +83,7 @@ class WalletManage extends BaseComponent {
   // 导入钱包
   importWallet() {
     const { navigate } = this.props.navigation;
-    navigate('ImportEosKey');
+    navigate('ImportEosKey',{});
   }
 
   updateState(state) {

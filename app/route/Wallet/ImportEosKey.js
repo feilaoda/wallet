@@ -18,17 +18,26 @@ var dismissKeyboard = require('dismissKeyboard');
 @connect(({ wallet }) => ({ ...wallet }))
 class ImportEosKey extends BaseComponent {
 
-  static navigationOptions = {
-    title: '导入EOS私钥',
-    headerStyle: {
-      paddingTop: ScreenUtil.autoheight(20),
-      backgroundColor: UColor.mainColor,
-      borderBottomWidth:0,
-    },
-  };
+  static navigationOptions = ({ navigation }) => {
+    const params = navigation.state.params || {};
+    return {
+      
+      title: '导入EOS私钥',
+      headerStyle: {
+        paddingTop: ScreenUtil.autoheight(20),
+        backgroundColor: UColor.secdColor,
+        borderBottomWidth:0,
+      },
+      headerRight: (<Button  onPress={navigation.state.params.onPress}>  
+          <Text style={{color: UColor.arrow, fontSize: 18,justifyContent: 'flex-end',paddingRight:15}}>{params.isSenior?"":"高级导入"}</Text>
+      </Button>),    
+      };
+}
+
 
   constructor(props) {
     super(props);
+    this.props.navigation.setParams({ onPress: this.seniorImport});
     this.state = {
       reWalletpwd: '',
       walletpwd: '',
@@ -46,12 +55,20 @@ class ImportEosKey extends BaseComponent {
       selectpromp: false,  //选择钱包
       walletList: [],  //获取到的账户
       keyObj:{},       //导入密钥对象
+      isSenior:false,//是否是高级设置
     };
   }
 
   //组件加载完成
   componentDidMount() {
     const { dispatch } = this.props;
+    var seniorFlag=false;
+    if(this.props.navigation.state.params.isSenior==true){
+      seniorFlag=true;
+    }
+    this.setState({
+      isSenior: seniorFlag
+    });
   }
 
   componentWillUnmount() {
@@ -71,6 +88,13 @@ class ImportEosKey extends BaseComponent {
     }else  if (key == 'howImportPrivatekey') {
     navigate('Web', { title: "如何导入私钥", url: "http://static.eostoken.im/html/importPrivatekey.html" });
     }
+  }
+
+  //高级导入
+  seniorImport = () =>{  
+    // this.props.navigation.goBack();                                 
+    const { navigate } = this.props.navigation;
+    navigate('ImportEosKey',{isSenior:true});
   }
 
   checkClick() {
@@ -427,6 +451,15 @@ class ImportEosKey extends BaseComponent {
                   <Text style={styles.headtitle}>直接复制粘贴钱包私钥文件内容至输入框。或者直接输入私钥</Text>
               </View>      */}
               <View style={styles.inptoutbg}>
+                {this.state.isSenior==true &&
+                <View style={styles.inptoutgo} >
+                  {/* <Text style={styles.inptitle}>私钥</Text> */}
+                  <TextInput ref={(ref) => this._lphone = ref} value={this.state.activePk} returnKeyType="next" editable={true}
+                    selectionColor={UColor.tintColor} style={styles.inptgo} placeholderTextColor={UColor.arrow} autoFocus={false} 
+                    onChangeText={(activePk) => this.setState({ activePk })}  onChange={this.intensity()} keyboardType="default"
+                    placeholder="粘贴或输入owner私钥" underlineColorAndroid="transparent"  multiline={true}  maxLength={90}/>
+                </View>}
+
                 <View style={styles.inptoutgo} >
                   {/* <Text style={styles.inptitle}>私钥</Text> */}
                   <TextInput ref={(ref) => this._lphone = ref} value={this.state.activePk} returnKeyType="next" editable={true}
@@ -434,6 +467,8 @@ class ImportEosKey extends BaseComponent {
                     onChangeText={(activePk) => this.setState({ activePk })}  onChange={this.intensity()} keyboardType="default"
                     placeholder="粘贴或输入active私钥" underlineColorAndroid="transparent"  multiline={true}  maxLength={90}/>
                 </View>
+
+
               <View style={styles.inptout}>
                   <View style={{flexDirection: 'row',}}>
                     <Text style={styles.inptitle}>设置密码</Text>
@@ -449,7 +484,9 @@ class ImportEosKey extends BaseComponent {
                     placeholder="输入密码至少8位,建议大小写字母与数字混合" secureTextEntry={true} onChange={this.intensity()} />
               </View>
               <View style={styles.inptout} >
-                  <Text style={styles.inptitle}>确认密码</Text>
+                  <View style={{flexDirection: 'row',}}>
+                    <Text style={styles.inptitle}>确认密码</Text>
+                  </View>
                   <TextInput ref={(ref) => this._lpass = ref} value={this.state.reWalletpwd} returnKeyType="next" editable={true} 
                       selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} secureTextEntry={true} maxLength={Constants.PWD_MAX_LENGTH}
                       placeholder="重复密码" underlineColorAndroid="transparent"  autoFocus={false} onChange={this.intensity()}
@@ -478,10 +515,11 @@ class ImportEosKey extends BaseComponent {
                   <Text style={styles.privatekeytext}>如何导入私钥？</Text>
                 </View>
               </Button>
+              {this.state.isSenior!=true &&
               <View style={styles.logout}>
                   <Image source={UImage.bottom_log} style={styles.logimg}/>
                   <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
-              </View>
+              </View>}
             </View>
         </TouchableOpacity>
         <Modal style={styles.touchableout} animationType={'slide'} transparent={true}  visible={this.state.show} onRequestClose={()=>{}}>

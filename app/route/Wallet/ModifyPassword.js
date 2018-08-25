@@ -141,7 +141,7 @@ class ModifyPassword extends BaseComponent {
     importEosKey() {
         this.props.navigation.goBack();                                 
         const { navigate } = this.props.navigation;
-        navigate('ImportEosKey');
+        navigate('ImportEosKey',{});
     }
 
     intensity() {

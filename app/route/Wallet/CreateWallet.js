@@ -62,7 +62,7 @@ class createWallet extends BaseComponent {
   importWallet() {
     // 导入钱包
     const { navigate } = this.props.navigation;
-    navigate('ImportEosKey');
+    navigate('ImportEosKey',{});
     // EasyToast.show('测试网络暂不开放');
   }
   backupWallet(wallet) {
