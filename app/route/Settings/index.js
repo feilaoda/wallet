@@ -148,6 +148,8 @@ class Setting extends React.Component {
   }
 
   selectpoint(){
+    EasyShowLD.dialogShow("温馨提示", "即将开放，敬请关注！", "知道了", null, () => { EasyShowLD.dialogClose() });
+    return;
     const { navigate } = this.props.navigation;
     if(this.state.isquery){
       this.props.dispatch({type:'login/geteostRecord',payload:{},callback:(carry)=>{
