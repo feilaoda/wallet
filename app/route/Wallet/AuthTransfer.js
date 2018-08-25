@@ -347,18 +347,17 @@ EosUpdateAuth = (account, pvk,authArr, callback) => {
 
 //切换tab
 _handleIndexChange = index => {
-    console.log("index=%s",index);
+    // console.log("index=%s",index);
     if(this.state.index!=index){
         this.setState({
             index:index,
             inputText:'',
         });
     }
-    };
+};
     
   _handleTabItemPress = ({ route }) => {
-    console.log("route=%s",JSON.stringify(route));
-
+    // console.log("route=%s",JSON.stringify(route));
     const indexn = this.getRouteIndex(route.key);
     if(this.state.index!=indexn){
         this.setState({

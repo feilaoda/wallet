@@ -84,8 +84,8 @@ class AuthManage extends BaseComponent {
     }
 
   transferByOwner() {
-    const { navigate } = this.props.navigation;
-    navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
+    // const { navigate } = this.props.navigation;
+    // navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
   }
 
   manageByActive() {
