@@ -18,7 +18,12 @@ var DeviceInfo = require('react-native-device-info');
 class Setting extends React.Component {
 
   static navigationOptions = {
-    title: '我的'
+    tabBarLabel: '我的',
+    tabBarIcon: ({ focused}) => (
+      <Image resizeMode='stretch'
+          source={focused ? UImage.tab_4_h : UImage.tab_4} style={{width: ScreenUtil.autoheight(20), height: ScreenUtil.autoheight(20), }}
+      />
+    ),
   };
   
   constructor(props) {

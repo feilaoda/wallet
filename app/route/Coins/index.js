@@ -4,6 +4,7 @@ import {Dimensions,DeviceEventEmitter,NativeModules, InteractionManager,ListView
 import {TabViewAnimated, TabBar, SceneMap} from 'react-native-tab-view';
 import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
+import UImage from '../../utils/Img'
 import ScreenUtil from '../../utils/ScreenUtil'
 import AnalyticsUtil from '../../utils/AnalyticsUtil';
 import Button from  '../../components/Button'
@@ -22,7 +23,13 @@ let currentTab=0;
 class Coins extends React.Component {
 
   static navigationOptions = {
-    title: '行情'
+    title: '行情',
+    tabBarLabel: '行情',
+    tabBarIcon: ({ focused}) => (
+      <Image resizeMode='stretch'
+          source={focused ? UImage.tab_2_h : UImage.tab_2} style={{width: ScreenUtil.autoheight(20), height: ScreenUtil.autoheight(20),}}
+      />
+    ),
   };
   
   constructor(props) {

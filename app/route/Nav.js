@@ -12,6 +12,7 @@ import Community from './Settings/Community'
 import News from './News'
 import Settings from './Settings'
 import Splash from './Splash'
+import Homepage from './Homepage'
 import Web from '../route/Web'
 import Coin from './Coins/Detail'
 import Login from './Login'
@@ -95,36 +96,37 @@ const TabContainer = TabNavigator(
     Settings: { screen: Settings }
   },
   {
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        switch (routeName) {
-          case 'Home':
-            iconName = focused ? UImage.tab_1_h : UImage.tab_1
-            break;
-          case 'Coins':
-            iconName = focused ? UImage.tab_2_h : UImage.tab_2
-            break;
-          case 'Ram':
-            iconName = focused ? UImage.tab_5_h : UImage.tab_5
-            break;  
-          case 'Transaction':
-            iconName = focused ? UImage.tab_5_h : UImage.tab_5
-            break;  
-          case 'News':
-            iconName = focused ? UImage.tab_3_h : UImage.tab_3
-            break;
-          case 'Settings':
-            iconName = focused ? UImage.tab_4_h : UImage.tab_4
-        }
-        return (<Image source={iconName} style={{ width: 20, height: 20, padding: 0, margin: 0, }} />);
-      },
-    }),
+    // navigationOptions: ({ navigation }) => ({
+    //   tabBarIcon: ({ focused }) => {
+    //     const { routeName } = navigation.state;
+    //     let iconName;
+    //     switch (routeName) {
+    //       case 'Home':
+    //         iconName = focused ? UImage.tab_1_h : UImage.tab_1
+    //         break;
+    //       case 'Coins':
+    //         iconName = focused ? UImage.tab_2_h : UImage.tab_2
+    //         break;
+    //       case 'Ram':
+    //         iconName = focused ? UImage.tab_5_h : UImage.tab_5
+    //         break;  
+    //       case 'Transaction':
+    //         iconName = focused ? UImage.tab_5_h : UImage.tab_5
+    //         break;  
+    //       case 'News':
+    //         iconName = focused ? UImage.tab_3_h : UImage.tab_3
+    //         break;
+    //       case 'Settings':
+    //         iconName = focused ? UImage.tab_4_h : UImage.tab_4
+    //     }
+    //     return (<Image source={iconName} style={{ width: 20, height: 20, padding: 0, margin: 0, }} />);
+    //   },
+    // }),
     initialRouteName: "News", // 默认页面组件
     lazy: true,
     tabBarPosition: 'bottom', // 显示在底端，android 默认是显示在页面顶端的
     swipeEnabled: false, // 是否可以左右滑动切换tab
+    tabBarComponent:props => <Homepage {...props}/>,//用作渲染tab bar的组件
     animationEnabled: false, // 切换页面时是否有动画效果
     tabBarOptions: {
       activeTintColor: UColor.tintColor, // 文字和图片选中颜色
@@ -342,6 +344,11 @@ const Nav = StackNavigator(
       headerMode: 'screen',
       cardStyle: { backgroundColor: UColor.fontColor },
       transitionConfig: (() => ({
+        transitionSpec: {
+          duration: 300,
+          easing: Easing.linear(),
+          timing: Animated.timing,
+        },
         screenInterpolator: CardStackStyleInterpolator.forHorizontal,
       })),
       onTransitionStart: (() => {

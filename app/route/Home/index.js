@@ -18,13 +18,13 @@ import { Eos } from "react-native-eosjs";
 class Home extends React.Component {
 
   static navigationOptions = {
-    title: '钱包',
+    tabBarLabel: '钱包',
+    tabBarIcon: ({ focused}) => (
+      <Image resizeMode='stretch'
+          source={focused ? UImage.tab_1_h : UImage.tab_1} style={{width: ScreenUtil.autoheight(20), height: ScreenUtil.autoheight(20),}}
+      />
+    ),
     header: null,
-    headerStyle: {
-      // paddingTop: ScreenUtil.autoheight(20),
-      backgroundColor: UColor.mainColor,
-      borderBottomWidth:0,
-    },
   };
 
   constructor(props) {

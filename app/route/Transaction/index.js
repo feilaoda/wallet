@@ -34,6 +34,13 @@ class Transaction extends BaseComponent {
         const params = navigation.state.params || {};
         return {
           title: 'ET交易所',
+          tabBarLabel: '交易',
+          tabBarIcon: ({ focused}) => (
+            <Image resizeMode='stretch'
+                source={focused ? UImage.tab_5_h : UImage.tab_5} style={{width: ScreenUtil.autoheight(40), height: ScreenUtil.autoheight(40), marginBottom: ScreenUtil.autoheight(15), }}
+            />
+          
+          ),
           header:null,  //隐藏顶部导航栏
           headerStyle: {
             paddingTop: ScreenUtil.autoheight(20),
