@@ -206,8 +206,9 @@ class TurnOut extends BaseComponent {
                                         { 
                                             //弹出提示框,可申请免费抵押功能
                                             const view =
-                                            <View style={styles.passoutsource}>
-                                            <Text style={styles.Explaintext}>该账号资源(NET/CPU)不足!EosToken官方提供免费抵押功能,您可以使用免费抵押后再进行该操作。</Text>
+                                            <View style={styles.passoutsource2}>
+                                            <Text style={styles.Explaintext2}>该账号资源(NET/CPU)不足！</Text>
+                                            <Text style={styles.Explaintext2}>EosToken官方提供免费抵押功能,您可以使用免费抵押后再进行该操作。</Text>
                                             </View>
                                             EasyShowLD.dialogShow("资源受限", view, "申请免费抵押", "放弃", () => {
                                                 
@@ -424,6 +425,15 @@ const styles = StyleSheet.create({
     passoutsource: {
         flexDirection: 'column', 
         alignItems: 'center'
+    },
+    passoutsource2: {
+        flexDirection: 'column', 
+        alignItems: 'flex-start'
+    },
+    Explaintext2: {
+        fontSize: ScreenUtil.setSpText(15),
+        color: UColor.arrow, 
+        lineHeight: ScreenUtil.autoheight(30), 
     },
     inptpass: {
         color: UColor.tintColor,
