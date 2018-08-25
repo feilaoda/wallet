@@ -501,8 +501,7 @@ export default {
         *getFreeMortgage({ payload, callback }, { call, put }) {
             try{
                 const resp = yield call(Request.request, getFreeMortgage, 'post', payload);
-                var tt =  getFreeMortgage;
-                alert('getFreeMortgage: '+JSON.stringify(resp) + tt);
+                // alert('getFreeMortgage: '+JSON.stringify(resp);
                 if(resp.code=='0'){               
                     // yield put({ type: 'updateRamPriceLine', payload: { data: resp.data, ...payload } });
                 }else{
