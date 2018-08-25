@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TextInput, TouchableHighlight, TouchableOpacity, Modal,Platform  } from 'react-native';
+import { Dimensions, DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, TextInput, TouchableHighlight, TouchableOpacity, Modal,Platform,KeyboardAvoidingView,ScrollView  } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
@@ -608,6 +608,8 @@ class ImportEosKey extends BaseComponent {
     let {feedBackText, selection} = this.state;
     return (
       <View style={styles.container}>
+      <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "padding" : null} style={styles.tab}>
+      <ScrollView keyboardShouldPersistTaps="always" >
         <TouchableOpacity activeOpacity={1.0} onPress={this.dismissKeyboardClick.bind(this)} style={{flex: 1,}}>
             <View style={styles.header}>
               {/* <View style={styles.headout}>
@@ -750,7 +752,8 @@ class ImportEosKey extends BaseComponent {
               </View>
             </TouchableOpacity>
         </Modal>  
-
+        </ScrollView>
+</KeyboardAvoidingView>
       </View>
     );
   }
@@ -1060,7 +1063,9 @@ payertext: {
       width: ScreenUtil.autowidth(25), 
       height: ScreenUtil.autowidth(25),
   },
-
+  tab: {
+    flex: 1,
+}
 });
 
 export default ImportEosKey;
