@@ -112,7 +112,7 @@ class AuthManage extends BaseComponent {
                                     <Text style={styles.inptitle}> Owner关联公钥（拥有者）</Text>
                                 </View>
                                 <View style={styles.buttonView}>
-                                    <Text style={styles.weightText}>权重阈值  </Text>
+                                    <Text style={styles.weightText}>权重阀值  </Text>
                                     <Text style={styles.buttonText}>{this.state.activeThreshold}</Text>
                                 </View>
                             </View>
@@ -137,7 +137,7 @@ class AuthManage extends BaseComponent {
                                     <Text style={styles.inptitle}> Active关联公钥（管理者）</Text>
                                 </View>
                                 <View style={styles.buttonView}>
-                                    <Text style={styles.weightText}>权重阈值  </Text>
+                                    <Text style={styles.weightText}>权重阀值 </Text>
                                     <Text style={styles.buttonText}>{this.state.activeThreshold}</Text>
                                 </View>
                             </View>
