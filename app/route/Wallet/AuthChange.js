@@ -369,7 +369,7 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
                     <Image source={UImage.warning} style={styles.imgBtnWarning} />
                     <View style={{flex: 1,padding: 5,}}>
                         <Text style={styles.significanttext} >安全警告</Text>
-                        <Text style={styles.significanttext} >请确保您清楚了解Active授权,并确保添加的授权用户是您信任的用户，添加的授权用户即可获得变更权限、转账和投票等操作的权限。</Text>
+                        <Text style={styles.significanttext} >请确保您清楚了解Active授权,并确保添加的授权用户是您信任的用户，添加的授权用户将可获得变更权限、转账和投票等操作的权限。</Text>
                     </View>
                 </View>
 
