@@ -34,7 +34,7 @@ class Transaction extends BaseComponent {
         const params = navigation.state.params || {};
         return {
           title: 'ET交易所',
-          tabBarLabel: '交易',
+          tabBarLabel: '交易所',
           tabBarIcon: ({ focused}) => (
             <Image resizeMode='stretch'
                 source={focused ? UImage.tab_5_h : UImage.tab_5} style={{width: ScreenUtil.autoheight(40), height: ScreenUtil.autoheight(40), marginBottom: ScreenUtil.autoheight(15), }}

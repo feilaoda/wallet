@@ -32,7 +32,7 @@ class Ram extends BaseComponent {
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
-            tabBarLabel: '交易',
+            tabBarLabel: '交易所',
             tabBarIcon: ({ focused}) => (
               <Image resizeMode='stretch'
                   source={focused ? UImage.tab_5_h : UImage.tab_5} style={{width: ScreenUtil.autoheight(40), height: ScreenUtil.autoheight(40), }}
