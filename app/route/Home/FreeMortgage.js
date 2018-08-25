@@ -67,21 +67,28 @@ class FreeMortgage extends React.Component {
         //     return;
         // }
 
-        EasyShowLD.loadingShow();
-        this.props.dispatch({type: "vote/delegatebw", payload: {username:this.state.labelname}, callback:(resp) =>{
-                EasyShowLD.dialogClose();
-                // alert(JSON.stringify(resp));
-                if(resp && resp.code=='0'){
-                    EasyToast.show("恭喜您！已经获得免费抵押，请到资源管理中查看");
-                }else{
-                    if(resp && resp.data){
-                        EasyToast.show("抱歉，" + resp.data);
-                    }else{
-                        EasyToast.show("网络异常, 请稍后再试~");
+        this.props.dispatch({type:'wallet/getFreeMortgage',payload:{username:this.state.labelname},callback:(resp)=>{ 
+            if(resp.code == 601){
+               EasyToast.show("您已经免费抵押过，把机会留给别人吧");
+            }else{
+                EasyShowLD.loadingShow();
+                this.props.dispatch({type: "vote/delegatebw", payload: {username:this.state.labelname}, callback:(resp) =>{
+                        EasyShowLD.dialogClose();
+                        // alert(JSON.stringify(resp));
+                        if(resp && resp.code=='0'){
+                            EasyToast.show("恭喜您！已经获得免费抵押，请到资源管理中查看");
+                        }else{
+                            if(resp && resp.data){
+                                EasyToast.show("抱歉，" + resp.data);
+                            }else{
+                                EasyToast.show("网络异常, 请稍后再试~");
+                            }
+                        }
                     }
-                }
+                }) 
             }
-        })           
+          }
+        });
     }catch (error) {
         EasyShowLD.dialogClose();
     }

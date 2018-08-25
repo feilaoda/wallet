@@ -107,6 +107,8 @@ export default {
   tab_4: require('../img/tab_4.png'),
   tab_5_h:require('../img/tab_5_h.png'),
   tab_5:require('../img/tab_5.png'),
+  tab_6_h:require('../img/tab_6_h.png'),
+  tab_6:require('../img/tab_6.png'),
   tag:require('../img/tag.png'),
   Tick_h:require('../img/Tick_h.png'),
   Tick:require('../img/Tick.png'),

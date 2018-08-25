@@ -1,5 +1,5 @@
 import Request from '../utils/RequestUtil';
-import { address, getAccountsByPuk, isExistAccountName, getintegral, isExistAccountNameAndPublicKey } from '../utils/Api';
+import { address, getAccountsByPuk, isExistAccountName, getintegral, isExistAccountNameAndPublicKey,getFreeMortgage } from '../utils/Api';
 import { EasyToast } from '../components/Toast';
 
 import store from 'react-native-simple-store';
@@ -497,6 +497,23 @@ export default {
             }
             if (callback) callback({ reveal: reveal });
           },
+          //根据指定账户，查询是否已使用过免费抵押功能
+        *getFreeMortgage({ payload, callback }, { call, put }) {
+            try{
+                const resp = yield call(Request.request, getFreeMortgage, 'post', payload);
+                var tt =  getFreeMortgage;
+                alert('getFreeMortgage: '+JSON.stringify(resp) + tt);
+                if(resp.code=='0'){               
+                    // yield put({ type: 'updateRamPriceLine', payload: { data: resp.data, ...payload } });
+                }else{
+                    EasyToast.show(resp.msg);
+                }
+                if (callback) callback(resp);                
+            } catch (error) {
+                EasyToast.show('网络繁忙,请稍后!');
+                if (callback) callback({ code: 500, msg: "网络异常" });                
+            }
+        },
 
          *isExistAccountNameAndPublicKey({payload, callback},{call,put}) {
             // alert('22' + JSON.stringify(payload) )

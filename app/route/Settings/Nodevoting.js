@@ -129,6 +129,29 @@ class Nodevoting extends BaseComponent {
                             AnalyticsUtil.onEvent('vote');
                             EasyToast.show("投票成功");
                         }else{
+                            if(r.data.code){
+                                var errcode = r.data.code;
+                                if(errcode == 3080002 || errcode == 3080003|| errcode == 3080004 || errcode == 3080005
+                                    || errcode == 3081001)
+                                {
+                                    this.props.dispatch({type:'wallet/getFreeMortgage',payload:{username:this.props.defaultWallet.account},callback:(resp)=>{ 
+                                    if(resp.code == 608)
+                                    { 
+                                        //弹出提示框,可申请免费抵押功能
+                                        const view =
+                                        <View style={styles.passoutsource}>
+                                        <Text style={styles.Explaintext}>该账号资源(NET/CPU)不足!EosToken官方提供免费抵押功能,您可以使用免费抵押后再进行该操作。</Text>
+                                        </View>
+                                        EasyShowLD.dialogShow("资源受限", view, "申请免费抵押", "放弃", () => {
+                                            
+                                        const { navigate } = this.props.navigation;
+                                        navigate('FreeMortgage', {});
+                                        // EasyShowLD.dialogClose();
+                                        }, () => { EasyShowLD.dialogClose() });
+                                    }
+                                }});
+                                }
+                            }
                             var errmsg = "投票失败: "+ r.data.msg;
                             EasyToast.show(errmsg);
                         }
