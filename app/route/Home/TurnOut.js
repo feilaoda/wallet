@@ -536,7 +536,7 @@ const styles = StyleSheet.create({
     },
 
     amounttext: {
-        fontSize: ScreenUtil.setSpText(26),
+        fontSize: ScreenUtil.setSpText(25),
         paddingVertical: ScreenUtil.autoheight(15), 
         lineHeight: ScreenUtil.autoheight(10),
         color:UColor.blackColor,
