@@ -42,7 +42,7 @@ class Helpcenter extends BaseComponent {
   goPage(key, data = {}) {
     const { navigate } = this.props.navigation;
     if (key == "commonproblem"){
-      navigate('Web', { title: "EOS常见问题", url: "http://static.eostoken.im/html/20180705/1530781835326.html" });
+      navigate('Web', { title: "EOS常见问题", url: "http://static.eostoken.im/html/20180802/1533189528050.html" });
     } else if (key == "wallet") {
       navigate('Web', { title: "帮助中心", url: "http://static.eostoken.im/html/Wallet.html" });
     } else if (key == 'ks') {
