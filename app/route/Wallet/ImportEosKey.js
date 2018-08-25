@@ -168,7 +168,7 @@ class ImportEosKey extends BaseComponent {
         }
       }
     }).catch((error)=>{
-        EasyToast.show("私钥格式错误");
+        EasyToast.show('无效的私钥，请检查输入是否正确');
     });
 
     // Eos.checkPrivateKey(this.state.activePk, (r) => {
