@@ -632,7 +632,7 @@ class Route extends React.Component {
       Constants.isNetWorkOffline = !isConnected;
     });
 
-    NetInfo.isConnected.addEventListener('change',this.handleConnectivityChange);
+    NetInfo.isConnected.addEventListener('connectionChange',this.handleConnectivityChange);
   }
 
   handleConnectivityChange(isConnected){
