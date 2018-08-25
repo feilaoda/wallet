@@ -121,6 +121,11 @@ class News extends React.Component {
 
   //下拉刷新
   onRefresh = (typeId, refresh) => {
+    //加载广告
+    if (!this.props.banners || this.props.banners.length == 0) {
+      this.props.dispatch({ type: 'banner/list', payload: {} });
+    }
+
     this.props.dispatch({ type: 'news/list', payload: { type: typeId, page: 1, newsRefresh: refresh } });
     const index = this.getRouteIndex(typeId);
     if (index >= 0) {
