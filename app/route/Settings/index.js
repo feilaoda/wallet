@@ -148,8 +148,8 @@ class Setting extends React.Component {
   }
 
   selectpoint(){
+    const { navigate } = this.props.navigation;
     if(this.state.isquery){
-      const { navigate } = this.props.navigation;
       this.props.dispatch({type:'login/geteostRecord',payload:{},callback:(carry)=>{
         navigate('WithdrawMoney', {carry});
       }})
@@ -159,7 +159,10 @@ class Setting extends React.Component {
           this.props.dispatch({type:'login/getselectPoint',payload:{},callback:(integral)=>{
             if(integral.code == 605){
               const view = <Text style={styles.inptpasstext}>您当前的积分还不符合领取条件，请继续努力！</Text>
-              EasyShowLD.dialogShow("温馨提示",view,"知道了",null,()=>{EasyShowLD.dialogClose()}); 
+              EasyShowLD.dialogShow("温馨提示", view, "查看", "关闭", () => {
+                navigate('Web', { title: "活动奖励领取条件", url: "http://static.eostoken.im/html/20180802/1533189528050.html" });
+                EasyShowLD.dialogClose()
+              }, () => { EasyShowLD.dialogClose() });
             }else if(integral.code == 607){
               const view = <Text style={styles.inptpasstext}>您没有活动奖励可领取！</Text>
               EasyShowLD.dialogShow("温馨提示",view,"知道了",null,()=>{EasyShowLD.dialogClose()}); 
@@ -184,7 +187,7 @@ class Setting extends React.Component {
       this.props.dispatch({type:'login/geteostReceive',payload:{eos_account:this.state.walletName},callback:(carry)=>{
         //alert(JSON.stringify(carry));
         if(carry.code == 0 && carry.data == true){
-          EasyToast.show('提交成功！奖励将在3个工作日内到账，请注意查收！');
+          EasyToast.show('提交成功，将于3个工作日内审核并发放，感谢您的支持！');
         }
         this._setModalVisible();
         this.eostRecord();
