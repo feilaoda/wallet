@@ -502,11 +502,11 @@ export default {
             try{
                 const resp = yield call(Request.request, getFreeMortgage, 'post', payload);
                 // alert('getFreeMortgage: '+JSON.stringify(resp);
-                if(resp.code=='0'){               
-                    // yield put({ type: 'updateRamPriceLine', payload: { data: resp.data, ...payload } });
-                }else{
-                    EasyToast.show(resp.msg);
-                }
+                // if(resp.code=='0'){    
+
+                // }else{
+                //     EasyToast.show(resp.msg);
+                // }
                 if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
