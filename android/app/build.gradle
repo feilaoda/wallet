@@ -103,7 +103,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
-        versionName "2.3.1.4"
+        versionName "2.3.1.6"
         manifestPlaceholders = [
                 JPUSH_APPKEY: "00c4f7dbd060f57fcdcfff10",
                 APP_CHANNEL : "default"
@@ -115,10 +115,10 @@ android {
     }
     signingConfigs {
         release {
-        //    storeFile file(MYAPP_RELEASE_STORE_FILE)
-        //    storePassword MYAPP_RELEASE_STORE_PASSWORD
-        //    keyAlias MYAPP_RELEASE_KEY_ALIAS
-        //    keyPassword MYAPP_RELEASE_KEY_PASSWORD
+           storeFile file(MYAPP_RELEASE_STORE_FILE)
+           storePassword MYAPP_RELEASE_STORE_PASSWORD
+           keyAlias MYAPP_RELEASE_KEY_ALIAS
+           keyPassword MYAPP_RELEASE_KEY_PASSWORD
         }
     }
     splits {
@@ -132,7 +132,7 @@ android {
     buildTypes {
         release {
             buildConfigField "String", "CODEPUSH_KEY", '"nWLV6jUyyok4YcvHwit9bHKHoL8Od2d1e747-00dc-4337-91b1-dcf9377d3873"'
-            // signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
