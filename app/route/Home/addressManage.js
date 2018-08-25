@@ -160,7 +160,7 @@ class addressManage extends BaseComponent {
         this.props.navigation.goBack();  //正常返回上一个页面
 
         if(this.state.isTurnOut){
-            DeviceEventEmitter.emit('scan_result',coins);
+            DeviceEventEmitter.emit('transfer_scan_result',coins);
         }else{
             const { navigate } = this.props.navigation;
             navigate('TurnOut', { coins: coins });

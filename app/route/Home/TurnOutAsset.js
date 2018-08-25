@@ -69,7 +69,7 @@ class TurnOutAsset extends BaseComponent {
             name: params.asset.name,
             balance: tmpbalance == null ? '0.0000' : tmpbalance,
         })
-        DeviceEventEmitter.addListener('scan_result', (data) => {
+        DeviceEventEmitter.addListener('transfer_scan_result', (data) => {
             try {
                 //TODO: 开启扫码已做检测判断资产类型是否匹配，在此不必判断,this.state.name取值不准。
                 // if(data.symbol){
@@ -97,7 +97,7 @@ class TurnOutAsset extends BaseComponent {
     componentWillUnmount(){
         //结束页面前，资源释放操作
         super.componentWillUnmount();
-        DeviceEventEmitter.removeListener('scan_result');
+        DeviceEventEmitter.removeListener('transfer_scan_result');
       }
 
     onPress(action) {
