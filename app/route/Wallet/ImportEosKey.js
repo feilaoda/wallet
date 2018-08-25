@@ -152,11 +152,12 @@ class ImportEosKey extends BaseComponent {
     .then((rdata)=>{
         if (!rdata) {
           EasyToast.show('无效的Active私钥，请检查输入是否正确');
-        }
-        if(this.state.ownerPk==""){
-          this.createWalletByPrivateKey(this.state.ownerPk, this.state.activePk);
         }else{
-          return this.checkPk(this.state.ownerPk);
+          if(this.state.ownerPk==""){
+            this.createWalletByPrivateKey(this.state.ownerPk, this.state.activePk);
+          }else{
+            return this.checkPk(this.state.ownerPk);
+          }
         }
       })
     .then((rdata)=>{
@@ -726,7 +727,7 @@ class ImportEosKey extends BaseComponent {
                   </Button>
                 </View>
 
-                <ListView style={styles.tab} renderRow={this.renderRow} enableEmptySections={true} 
+                <ListView style={{}} renderRow={this.renderRow} enableEmptySections={true} 
                     dataSource={this.state.dataSource.cloneWithRows(this.state.walletList == null ? [] : this.state.walletList)} 
                     renderRow={(rowData, sectionID, rowID) => (                 
                         <View style={styles.businessout}>
