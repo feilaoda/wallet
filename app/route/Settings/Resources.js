@@ -59,7 +59,6 @@ class Resources extends BaseComponent {
         isMemory: true,
         isCalculation: false,
         isNetwork: false,
-        isBuyForOther: false,
         isOwn: true,
         isOthers: false,
         isLease: true,
@@ -191,7 +190,6 @@ class Resources extends BaseComponent {
       }else if(this.state.isNetwork){
         this.goPage('isNetwork');
       }else{
-        // this.goPage('isBuyForOther');
       }   
   }
 
@@ -962,9 +960,7 @@ class Resources extends BaseComponent {
                                 {this.resourceButton(styles.memorytab, this.state.isMemory, 'isMemory', '内存资源')}  
                                 {this.resourceButton(styles.calculationtab, this.state.isCalculation, 'isCalculation', '计算资源')}  
                                 {this.resourceButton(styles.networktab, this.state.isNetwork, 'isNetwork', '网络资源')}  
-                                {/* {this.resourceButton(styles.buttontab, this.state.isBuyForOther, 'isBuyForOther', '内存交易')}   */}
                             </View> 
-                            {this.state.isBuyForOther?<View style={styles.nothave}><Text style={styles.copytext}>请稍候 ，程序猿玩命加班中...</Text></View>:
                             <View style={styles.nhaaout}>
                                 {this.state.isMemory?<View style={styles.wterout}>
                                 <View style={styles.OwnOthers}>  
@@ -1068,7 +1064,7 @@ class Resources extends BaseComponent {
                                         </View>
                                     </View>}
                                 </View>}
-                            </View>}
+                            </View>
                             {this.state.isMemory?
                             <View style={styles.basc}>
                                 <Text style={styles.basctext}>· 当前内存价格：{this.state.Currentprice}/KB</Text>
@@ -1398,7 +1394,8 @@ const styles = StyleSheet.create({
     },
     ratiotext: {
         fontSize: ScreenUtil.setSpText(12),
-        color: UColor.fontColor
+        color: UColor.fontColor,
+        textAlign: 'center',
     },
     recordtext: {
         fontSize: ScreenUtil.setSpText(12),
