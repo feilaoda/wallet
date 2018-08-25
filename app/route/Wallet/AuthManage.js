@@ -123,7 +123,7 @@ class AuthManage extends BaseComponent {
 
                         <TouchableHighlight onPress={() => { this.transferByOwner() }} activeOpacity={0.5} underlayColor={UColor.mainColor}>
                             <View style={styles.enterButton}> 
-                                <Ionicons color={UColor.fontColor} name="ios-arrow-forward-outline" size={ScreenUtil.setSpText(21)} color={UColor.arrow} />     
+                                {/* <Ionicons color={UColor.fontColor} name="ios-arrow-forward-outline" size={ScreenUtil.setSpText(21)} color={UColor.arrow} />      */}
                             </View>
                         </TouchableHighlight>
                     </View>
