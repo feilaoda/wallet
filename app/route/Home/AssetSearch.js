@@ -195,7 +195,7 @@ class AssetSearch extends BaseComponent {
                         <Image source={UImage.Magnifier_ash} style={styles.headleftimg} />
                         <TextInput ref={(ref) => this._raccount = ref} value={this.state.labelname} returnKeyType="go"
                             selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow} autoCorrect={true}
-                            placeholder="输入token名称或合约账户搜索" underlineColorAndroid="transparent" keyboardType="default"
+                            placeholder="输入token名称或合约账户" underlineColorAndroid="transparent" keyboardType="default"
                             onChangeText={(labelname) => this.setState({ labelname })} 
                             />
                         <TouchableOpacity onPress={this.Scan.bind(this)}>  
