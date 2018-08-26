@@ -40,7 +40,7 @@ export default class Tab extends Component {
                 <View
                     style={styles.tabItem}>
                     {this.props.renderIcon(TabScene)}
-                    <Text style={{ ...styles.tabText,marginTop:ScreenUtil.autoheight(10),color }}>{this.props.getLabel(TabScene)}</Text>
+                    <Text style={{ ...styles.tabText,marginTop:ScreenUtil.autoheight(5),color }}>{this.props.getLabel(TabScene)}</Text>
                 </View>
             </TouchableOpacity>
         );
