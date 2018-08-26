@@ -84,8 +84,8 @@ class AuthManage extends BaseComponent {
     }
 
   transferByOwner() {
-    // const { navigate } = this.props.navigation;
-    // navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
+    const { navigate } = this.props.navigation;
+    navigate('AuthTransfer', { wallet:this.props.navigation.state.params.wallet});
   }
 
   manageByActive() {
@@ -123,7 +123,7 @@ class AuthManage extends BaseComponent {
 
                         <TouchableHighlight onPress={() => { this.transferByOwner() }} activeOpacity={0.5} underlayColor={UColor.mainColor}>
                             <View style={styles.enterButton}> 
-                                {/* <Ionicons color={UColor.fontColor} name="ios-arrow-forward-outline" size={ScreenUtil.setSpText(21)} color={UColor.arrow} />      */}
+                                <Ionicons color={UColor.fontColor} name="ios-arrow-forward-outline" size={ScreenUtil.setSpText(21)} color={UColor.arrow} />     
                             </View>
                         </TouchableHighlight>
                     </View>
