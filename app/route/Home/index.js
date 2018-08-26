@@ -483,8 +483,12 @@ class Home extends React.Component {
 
   isTipShow() {
     if (Platform.OS == 'ios') {
-      if (this.props.defaultWallet  && !this.props.defaultWallet.isBackups) {
-        return true;
+      if(this.props.tipFlagIOS==true){
+        if(this.props.defaultWallet.account != null){
+          if(this.props.defaultWallet.isBackups==false){
+            return true;
+          }
+        }
       }
     }
     return false;
@@ -656,7 +660,7 @@ class Home extends React.Component {
           )}                
          />  
 
-        <Modal style={styles.touchableouts} animationType={'none'} transparent={true}  visible={this.props.tipFlagIOS==false?false:this.isTipShow()  } onRequestClose={()=>{}}>
+        <Modal style={styles.touchableouts} animationType={'none'} transparent={true}  visible={this.isTipShow()} onRequestClose={()=>{}}>
             <TouchableOpacity style={styles.pupuoBackup} activeOpacity={1.0}>
               <View style={{ width: ScreenWidth-20, backgroundColor: UColor.fontColor, borderRadius: 5, position: 'absolute', }}>
                 <View style={styles.subViewBackup}> 

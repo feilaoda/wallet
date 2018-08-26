@@ -827,6 +827,12 @@ class Route extends React.Component {
             DeviceEventEmitter.emit('changeTab', action.routeName);
           }
         }});
+
+        if(Platform.OS == 'ios'){
+          this.props.dispatch({ type: 'wallet/updateTipState', payload: {tipFlagIOS: true}});
+        }else{
+          this.props.dispatch({ type: 'wallet/updateTipState', payload: {tipFlagIOS: false}});
+        }
       }
       this.props.dispatch({ type: 'wallet/scanInvalidWallet', callback: (invalidWalletArr) => {
         if(invalidWalletArr == null || invalidWalletArr.length == 0){
@@ -836,22 +842,18 @@ class Route extends React.Component {
         }
       }});
 
-      if(Platform.OS == 'ios'){
-        this.props.dispatch({ type: 'wallet/updateTipState', payload: {tipFlagIOS: true}});
-      }else{
-        this.props.dispatch({ type: 'wallet/updateTipState', payload: {tipFlagIOS: false}});
-      }
-
     }else if((action && action.routeName && action.routeName == "Transaction") || (action && action.routeName && action.routeName == "Ram")){
       this.stopTimer();
       this.startTxTimer();
       DeviceEventEmitter.emit('changeTab', action.routeName);
+      this.props.dispatch({ type: 'wallet/updateTipState', payload: {tipFlagIOS: false}});
     }else if (action && action.routeName && (action.routeName == "Coins" || action.routeName == "News" || action.routeName == "Settings")) {
       this.stopTimer();
       this.stopTxTimer();
       if (action && action.routeName) {
         DeviceEventEmitter.emit('changeTab', action.routeName);
       }
+      this.props.dispatch({ type: 'wallet/updateTipState', payload: {tipFlagIOS: false}});
     }
   }
   createWallet() {
