@@ -41,6 +41,7 @@ class Transaction extends BaseComponent {
             />
           
           ),
+          header: null,
           headerStyle: {
             paddingTop: ScreenUtil.autoheight(20),
             backgroundColor: UColor.mainColor,
