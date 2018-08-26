@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
 
     showPkStyle: {
         flex: 1,
-        fontSize: 15,
+        // fontSize: 15,
         paddingHorizontal: 10,
         paddingVertical: 10,
         // textAlignVertical: 'top',

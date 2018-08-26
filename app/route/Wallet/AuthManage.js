@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
 
     showPkStyle: {
         flex: 1,
-        fontSize: 15,
+        // fontSize: 15,
         paddingRight: 10,
         // paddingHorizontal: 10,
         // paddingVertical: 10,
