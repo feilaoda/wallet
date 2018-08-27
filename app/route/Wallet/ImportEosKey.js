@@ -489,7 +489,7 @@ class ImportEosKey extends BaseComponent {
         return ;
       }
 
-      EasyShowLD.loadingShow('正在请求');
+      // EasyShowLD.loadingShow('正在请求');
       // 保存钱包信息
       this.props.dispatch({
         type: 'wallet/saveWalletList',
