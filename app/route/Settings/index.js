@@ -148,53 +148,64 @@ class Setting extends React.Component {
   }
 
   selectpoint(){
-    const { navigate } = this.props.navigation;
-    if(this.state.isquery){
-      this.props.dispatch({type:'login/geteostRecord',payload:{},callback:(carry)=>{
-        navigate('WithdrawMoney', {carry});
-      }})
-    }else{
-      if(this.props.loginUser){
-        try {
-          this.props.dispatch({type:'login/getselectPoint',payload:{},callback:(integral)=>{
-            if(integral.code == 605){
-              const view = <Text style={styles.inptpasstext}>您当前的积分还不符合领取条件,请继续努力！</Text>
-              EasyShowLD.dialogShow("温馨提示", view, "查看", "关闭", () => {
-                navigate('Web', { title: "活动奖励领取条件", url: "http://static.eostoken.im/html/20180802/1533189528050.html" });
-                EasyShowLD.dialogClose()
-              }, () => { EasyShowLD.dialogClose() });
-            }else if(integral.code == 607){
-              const view = <Text style={styles.inptpasstext}>您没有活动奖励可领取！</Text>
-              EasyShowLD.dialogShow("温馨提示",view,"知道了",null,()=>{EasyShowLD.dialogClose()}); 
-            }else{           
-              this._setModalVisible();
-              this.setState({walletName: this.props.defaultWallet ? this.props.defaultWallet.name : ''}); 
-            } 
-          }})
-        }catch (error) {
-          EasyShowLD.dialogClose();
+    if(this.props.defaultWallet != null && this.props.defaultWallet.name != null && (!this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived'))){
+      EasyToast.show("当前主网账号未激活，请重新导入EOS账号。");
+      return;
+    }
+    if (this.props.defaultWallet != null && this.props.defaultWallet.name != null && this.props.defaultWallet.isactived && this.props.defaultWallet.hasOwnProperty('isactived')) {
+      EasyShowLD.loadingShow();
+      const { navigate } = this.props.navigation;
+      if(this.state.isquery){
+        this.props.dispatch({type:'login/geteostRecord',payload:{},callback:(carry)=>{
+          EasyShowLD.loadingClose();   
+          navigate('WithdrawMoney', {carry});
+        }})
+      }else{
+        if(this.props.loginUser){
+          try {
+            this.props.dispatch({type:'login/getselectPoint',payload:{},callback:(integral)=>{
+              EasyShowLD.loadingClose();
+              if(integral.code == 605){
+                const view = <Text style={styles.inptpasstext}>您当前的积分还不符合领取条件,请继续努力！</Text>
+                EasyShowLD.dialogShow("温馨提示", view, "查看", "关闭", () => {
+                  navigate('Web', { title: "活动奖励领取条件", url: "http://static.eostoken.im/html/20180802/1533189528050.html" });
+                  EasyShowLD.dialogClose()
+                }, () => { EasyShowLD.dialogClose() });
+              }else if(integral.code == 607){
+                const view = <Text style={styles.inptpasstext}>您没有活动奖励可领取！</Text>
+                EasyShowLD.dialogShow("温馨提示",view,"知道了",null,()=>{EasyShowLD.dialogClose()}); 
+              }else{         
+                this._setModalVisible();
+                this.setState({walletName: this.props.defaultWallet ? this.props.defaultWallet.name : ''}); 
+              } 
+            }})
+          }catch (error) {
+            EasyShowLD.dialogClose();
+            EasyShowLD.loadingClose();
+          }
         }
       }
+    }else{
+      EasyToast.show('请先导入钱包');
     }
   }
 
   eostreceive() {
-    if(this.state.walletName == ''){
-      EasyToast.show('请输入EOS主网账号');
-      return;
-    }
     try {
+      EasyShowLD.loadingShow();
       this.props.dispatch({type:'login/geteostReceive',payload:{eos_account:this.state.walletName},callback:(carry)=>{
-        //alert(JSON.stringify(carry));
+        EasyShowLD.loadingClose();
         if(carry.code == 0 && carry.data == true){
           EasyToast.show('提交成功，将于3个工作日内审核并发放，感谢您的支持！');
+          this.eostRecord();
+        }else{
+          EasyToast.show('请重新登陆');
+          navigate('Login', {});
         }
         this._setModalVisible();
-        this.eostRecord();
       }})
     }catch (error) {
       this._setModalVisible();
-      EasyShowLD.dialogClose();
     }
   }
 
@@ -271,12 +282,13 @@ class Setting extends React.Component {
                     <Text style={styles.contentText}>领取奖励</Text>
                     <Text style={styles.headtitle}>恭喜您！已符合领取条件。</Text>
                     <View style={styles.accountoue} >
-                        <Text style={styles.inptitle}>您的领取账号：</Text>
-                        <TextInput ref={(ref) => this._raccount = ref}  value={this.state.walletName} keyboardType="default"   
+                        <Text style={styles.inptitle}>您的主网账号：</Text>
+                        <Text style={styles.inpt}>{this.state.walletName}</Text>
+                        {/* <TextInput ref={(ref) => this._raccount = ref}  value={this.state.walletName} keyboardType="default"   
                             selectionColor={UColor.tintColor} style={styles.inpt} placeholderTextColor={UColor.arrow}      
                             placeholder="请输入EOS主网账号" underlineColorAndroid="transparent" keyboardType="default"  
                             onChangeText={(walletName) => this.setState({ walletName })} maxLength = {12}
-                        />
+                        /> */}
                     </View>
                 </View>
                 {/* </ImageBackground> */}
@@ -296,11 +308,10 @@ class Setting extends React.Component {
 const styles = StyleSheet.create({
  
   inptpasstext: {
-    // width: ScreenWidth,
     fontSize: ScreenUtil.setSpText(15),
     color: UColor.arrow,
     lineHeight: ScreenUtil.autoheight(30),
-    textAlign: "center",
+    textAlign: "left",
   },
   container: {
     flex: 1,
@@ -479,10 +490,6 @@ const styles = StyleSheet.create({
     flex: 1,
     color: UColor.arrow,
     fontSize: ScreenUtil.setSpText(14),
-    height: ScreenUtil.autoheight(40),
-    paddingLeft: ScreenUtil.autowidth(2),
-    borderBottomWidth: 0.5,
-    borderBottomColor: UColor.baseline,
   },
 
   imgBtnBackup: {
@@ -506,12 +513,6 @@ const styles = StyleSheet.create({
     fontSize: ScreenUtil.setSpText(16),
     color: UColor.fontColor
   },
-
-
-  
-
-
-
 
 });
 

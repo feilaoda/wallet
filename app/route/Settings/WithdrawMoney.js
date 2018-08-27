@@ -13,7 +13,7 @@ var dismissKeyboard = require('dismissKeyboard');
 @connect(({transaction,sticker,wallet}) => ({...transaction, ...sticker, ...wallet}))
 class WithdrawMoney extends React.Component {
   static navigationOptions = {
-    title: "提币记录",
+    title: "领取记录",
     headerStyle: {
       paddingTop: ScreenUtil.autoheight(20),
       backgroundColor: UColor.mainColor,
@@ -33,20 +33,26 @@ class WithdrawMoney extends React.Component {
   render() {
     const carry = this.props.navigation.state.params.carry.data;
     return (<View style={styles.container}>
-            <View style={styles.package}>
-              <View style={styles.leftout}>
-                <Text style={styles.payertext}>提取数量：<Text style={{color: UColor.fontColor}}>{carry.eost} EOS</Text></Text>
-                <Text style={styles.payertext}>接受账号：<Text style={{color: UColor.fontColor}}>{carry.eos_account}</Text></Text>
-                <Text style={styles.payertext}>时间：<Text style={{color: UColor.fontColor}}>{moment(carry.createdate).format("YYYY-MM-DD HH:mm")}</Text></Text>
-                {/* <Text style={styles.timetext}>时间{moment(rowData.record_date).add(8,'hours').format('MM-DD HH:mm:ss')}</Text> */}
-              </View>
-              <View style={styles.rightout}>
-                {carry.type == 'audit' && <Text style={styles.selltext}>正在审核</Text>}
-                {carry.type == 'receive' && <Text style={styles.buytext}>已提取</Text>}
-                {carry.type == 'notpass' && <Text style={styles.buytext}>未通过</Text>}
-                <Text style={styles.presentprice}>状态</Text>
-              </View>
-            </View>
+      <View style={styles.package}>
+        <View style={styles.leftout}>
+          <Text style={styles.payertext}>领取数量：<Text style={{color: UColor.fontColor}}>{carry.eost} EOS</Text></Text>
+          <Text style={styles.payertext}>接受账号：<Text style={{color: UColor.fontColor}}>{carry.eos_account}</Text></Text>
+          <Text style={styles.payertext}>时间：<Text style={{color: UColor.fontColor}}>{moment(carry.createdate).format("YYYY-MM-DD HH:mm")}</Text></Text>
+          {/* <Text style={styles.timetext}>时间{moment(rowData.record_date).add(8,'hours').format('MM-DD HH:mm:ss')}</Text> */}
+        </View>
+        <View style={styles.rightout}>
+          {carry.type == 'audit' && <Text style={styles.selltext}>审核中</Text>}
+          {carry.type == 'receive' && <Text style={styles.buytext}>已提取</Text>}
+          {carry.type == 'notpass' && <Text style={styles.buytext}>未通过</Text>}
+          <Text style={styles.presentprice}>状态</Text>
+        </View>
+      </View>
+      <View style={{flex: 1, justifyContent: "flex-end",}}>
+          <View style={styles.significantout}>
+              <Text style={styles.significanttext} >审核中说明</Text>
+              <Text style={styles.significanttext} >您的领取奖励已提交成功！奖励将在3个工作日内到账，请注意查收！</Text>
+          </View>
+      </View>
     </View>
     );
   }
@@ -101,6 +107,19 @@ const styles = StyleSheet.create({
     presentprice: {
       fontSize: ScreenUtil.setSpText(14),
       color: UColor.arrow,
+    },
+
+    significantout: {
+      margin: ScreenUtil.autowidth(20),
+      padding: ScreenUtil.autowidth(10),
+      borderColor: UColor.arrow,
+      borderWidth: 1,
+      borderRadius: 10,
+    },
+    significanttext: {
+      color: UColor.arrow,
+      fontSize: ScreenUtil.setSpText(14), 
+      lineHeight: ScreenUtil.autoheight(25),
     },
 });
 export default WithdrawMoney;
