@@ -216,9 +216,11 @@ class Setting extends React.Component {
         if(carry.code == 0 && carry.data == true){
           EasyToast.show('提交成功，将于3个工作日内审核并发放，感谢您的支持！');
           this.eostRecord();
-        }else{
+        }else if(carry.code == 403){
           EasyToast.show('请重新登陆');
           navigate('Login', {});
+        }else{
+          EasyToast.show(carry && carry.msg ? carry.msg : "抱歉, 提交失败! 请稍后再试");
         }
         this._setModalVisible();
       }})
