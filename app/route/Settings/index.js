@@ -158,7 +158,11 @@ class Setting extends React.Component {
       if(this.state.isquery){
         this.props.dispatch({type:'login/geteostRecord',payload:{},callback:(carry)=>{
           EasyShowLD.loadingClose();   
-          navigate('WithdrawMoney', {carry});
+          if(carry.code == 0){
+            navigate('WithdrawMoney', {carry});
+          }else{
+            EasyToast.show(carry && carry.msg ? carry.msg : "抱歉,未获取到您的奖励记录");
+          }
         }})
       }else{
         if(this.props.loginUser){
@@ -174,10 +178,7 @@ class Setting extends React.Component {
               }else if(integral.code == 607){
                 const view = <Text style={styles.inptpasstext}>您没有活动奖励可领取！</Text>
                 EasyShowLD.dialogShow("温馨提示",view,"知道了",null,()=>{EasyShowLD.dialogClose()}); 
-              }else if(integral.code == 403){
-                EasyShowLD.loadingClose();
-                EasyToast.show('登陆已失效, 请重新登陆');
-              }else{         
+              }else if(integral.code == 0){         
                 EasyShowLD.loadingClose();
                 if (Platform.OS == 'ios') {
                   var th = this;
@@ -191,7 +192,10 @@ class Setting extends React.Component {
                   }
                 // this._setModalVisible();
                 // this.setState({walletName: this.props.defaultWallet ? this.props.defaultWallet.name : ''}); 
-              } 
+              }else{
+                EasyShowLD.loadingClose();
+                EasyToast.show(integral && integral.msg ? integral.msg : "抱歉,您未达到奖励获取条件");
+              }
             }})
           }catch (error) {
             EasyShowLD.dialogClose();
