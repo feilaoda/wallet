@@ -164,7 +164,7 @@ class Setting extends React.Component {
         if(this.props.loginUser){
           try {
             this.props.dispatch({type:'login/getselectPoint',payload:{},callback:(integral)=>{
-              EasyShowLD.loadingClose();
+              // EasyShowLD.loadingClose();
               if(integral.code == 605){
                 const view = <Text style={styles.inptpasstext}>您当前的积分还不符合领取条件,请继续努力！</Text>
                 EasyShowLD.dialogShow("温馨提示", view, "查看", "关闭", () => {
@@ -175,8 +175,19 @@ class Setting extends React.Component {
                 const view = <Text style={styles.inptpasstext}>您没有活动奖励可领取！</Text>
                 EasyShowLD.dialogShow("温馨提示",view,"知道了",null,()=>{EasyShowLD.dialogClose()}); 
               }else{         
-                this._setModalVisible();
-                this.setState({walletName: this.props.defaultWallet ? this.props.defaultWallet.name : ''}); 
+                EasyShowLD.loadingClose();
+                if (Platform.OS == 'ios') {
+                  var th = this;
+                    this.handle = setTimeout(() => {
+                      th._setModalVisible();
+                      th.setState({walletName: this.props.defaultWallet ? this.props.defaultWallet.name : ''}); 
+                    }, 100);
+                  }else{
+                    this._setModalVisible();
+                    this.setState({walletName: this.props.defaultWallet ? this.props.defaultWallet.name : ''}); 
+                  }
+                // this._setModalVisible();
+                // this.setState({walletName: this.props.defaultWallet ? this.props.defaultWallet.name : ''}); 
               } 
             }})
           }catch (error) {
