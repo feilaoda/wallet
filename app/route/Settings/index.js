@@ -148,8 +148,6 @@ class Setting extends React.Component {
   }
 
   selectpoint(){
-    EasyShowLD.dialogShow("温馨提示", "即将开放，敬请关注！", "知道了", null, () => { EasyShowLD.dialogClose() });
-    return;
     const { navigate } = this.props.navigation;
     if(this.state.isquery){
       this.props.dispatch({type:'login/geteostRecord',payload:{},callback:(carry)=>{
@@ -160,7 +158,7 @@ class Setting extends React.Component {
         try {
           this.props.dispatch({type:'login/getselectPoint',payload:{},callback:(integral)=>{
             if(integral.code == 605){
-              const view = <Text style={styles.inptpasstext}>您当前的积分还不符合领取条件，请继续努力！</Text>
+              const view = <Text style={styles.inptpasstext}>您当前的积分还不符合领取条件,请继续努力！</Text>
               EasyShowLD.dialogShow("温馨提示", view, "查看", "关闭", () => {
                 navigate('Web', { title: "活动奖励领取条件", url: "http://static.eostoken.im/html/20180802/1533189528050.html" });
                 EasyShowLD.dialogClose()
@@ -298,9 +296,11 @@ class Setting extends React.Component {
 const styles = StyleSheet.create({
  
   inptpasstext: {
+    // width: ScreenWidth,
     fontSize: ScreenUtil.setSpText(15),
     color: UColor.arrow,
     lineHeight: ScreenUtil.autoheight(30),
+    textAlign: "center",
   },
   container: {
     flex: 1,
