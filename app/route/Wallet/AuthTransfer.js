@@ -458,6 +458,8 @@ _handleIndexChange = index => {
     }
     return (
         <View style={{flex:1,}}>
+                <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null} style={styles.tab}>
+            <ScrollView keyboardShouldPersistTaps="always" >
             <FlatList
                 data={this.state.index==OWNER_MODE?(this.state.authOwnerKeys.length==null ?[]: this.state.authOwnerKeys):(this.state.authActiveKeys.length==null ?[]: this.state.authActiveKeys) }
                 extraData={this.state}
@@ -489,6 +491,8 @@ _handleIndexChange = index => {
                     <Text style={styles.btntext}>授权</Text>
                 </View>
             </Button>
+            </ScrollView>
+        </KeyboardAvoidingView>
         </View>
     );
   }
@@ -501,28 +505,30 @@ _handleIndexChange = index => {
 
     return (
     <View style={styles.container}>
-        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? "position" : null} style={styles.tab}>
-            <ScrollView keyboardShouldPersistTaps="always" >
-                <View style={styles.significantout}>
-                    <Image source={UImage.warning} style={styles.imgBtnWarning} />
-                    <View style={{flex: 1,padding: 5,}}>
-                        <Text style={styles.significanttext} >安全警告</Text>
-                        <Text style={styles.significanttext} >请确保您清楚了解owner授权,并确保添加的授权用户是您信任的用户，添加的授权用户将获得账号的全部权限（包括变更权限和转账投票）。</Text>
-                    </View>
-                </View>
+    
+        <View style={styles.significantout}>
+            <Image source={UImage.warning} style={styles.imgBtnWarning} />
+            <View style={{flex: 1,padding: 5,}}>
+                <Text style={styles.significanttext} >安全警告</Text>
+                <Text style={styles.significanttext} >请确保您清楚了解owner授权,并确保添加的授权用户是您信任的用户，添加的授权用户将获得账号的全部权限（包括变更权限和转账投票）。</Text>
+            </View>
+        </View>
 
-                <TabViewAnimated
-                lazy={true}
-                style={styles.containertab}
-                navigationState={this.state}
-                renderScene={this.renderScene.bind(this)}
-                renderHeader={(props)=><TabBar onTabPress={this._handleTabItemPress} labelStyle={{fontSize:ScreenUtil.setSpText(15),margin:0,marginBottom:10,paddingTop:10,color:UColor.lightgray}} indicatorStyle={{backgroundColor:UColor.tintColor,width:93,marginLeft:0,}} style={{backgroundColor:UColor.secdColor,}} tabStyle={{width:100,padding:0,margin:0,}} scrollEnabled={true} {...props}/>}
-                onIndexChange={this._handleIndexChange}
-                initialLayout={{height:0,width:ScreenWidth}}
-                />
+        <TabViewAnimated
+        lazy={true}
+        style={styles.containertab}
+        navigationState={this.state}
+        renderScene={this.renderScene.bind(this)}
+        renderHeader={(props)=><TabBar onTabPress={this._handleTabItemPress} 
+        labelStyle={{fontSize:ScreenUtil.setSpText(15),margin:0,marginBottom:10,paddingTop:10,color:UColor.lightgray}} 
+        indicatorStyle={{backgroundColor:UColor.tintColor,width:93,marginLeft:0,}} 
+        style={{backgroundColor:UColor.secdColor,}} 
+        tabStyle={{width:100,padding:0,margin:0,}} 
+        scrollEnabled={true} {...props}/>}
+        onIndexChange={this._handleIndexChange}
+        initialLayout={{height:0,width:ScreenWidth}}
+        />
 
-            </ScrollView>
-        </KeyboardAvoidingView>
     </View>);
   }
 }
