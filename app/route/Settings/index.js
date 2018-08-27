@@ -174,6 +174,9 @@ class Setting extends React.Component {
               }else if(integral.code == 607){
                 const view = <Text style={styles.inptpasstext}>您没有活动奖励可领取！</Text>
                 EasyShowLD.dialogShow("温馨提示",view,"知道了",null,()=>{EasyShowLD.dialogClose()}); 
+              }else if(integral.code == 403){
+                EasyShowLD.loadingClose();
+                EasyToast.show('登陆已失效, 请重新登陆');
               }else{         
                 EasyShowLD.loadingClose();
                 if (Platform.OS == 'ios') {
