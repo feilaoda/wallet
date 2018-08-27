@@ -168,7 +168,7 @@ class Setting extends React.Component {
               if(integral.code == 605){
                 const view = <Text style={styles.inptpasstext}>您当前的积分还不符合领取条件,请继续努力！</Text>
                 EasyShowLD.dialogShow("温馨提示", view, "查看", "关闭", () => {
-                  navigate('Web', { title: "活动奖励领取条件", url: "http://static.eostoken.im/html/20180802/1533189528050.html" });
+                  navigate('Web', { title: "活动奖励领取条件", url: "http://static.eostoken.im/html/20180827/1535363208929.html" });
                   EasyShowLD.dialogClose()
                 }, () => { EasyShowLD.dialogClose() });
               }else if(integral.code == 607){
