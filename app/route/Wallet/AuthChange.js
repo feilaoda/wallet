@@ -142,7 +142,7 @@ class AuthChange extends BaseComponent {
         this.setState({
             activePk:this.props.navigation.state.params.wallet.activePublic,
         });
-        this.getAccountInfo();
+        this.getAuthInfo();
         DeviceEventEmitter.addListener('scan_result', (data) => {
             this.setState({inputText:data.toaccount})
         });
@@ -155,64 +155,69 @@ class AuthChange extends BaseComponent {
   }
  
   //获取账户信息
-  getAccountInfo(){
+  getAuthInfo(){
     EasyShowLD.loadingShow();
-    this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.navigation.state.params.wallet.name},callback: (data) => {
+    this.props.dispatch({ type: 'vote/getAuthInfo', payload: { page:1,username: this.props.navigation.state.params.wallet.name},callback: (resp) => {
         EasyShowLD.loadingClose();
-        var temp=[];
-        var authFlag=false;
-        var authTempActive={
-            account: "eosio",
-            name: "updateauth", 
-            authorization: [{
-            actor: '',//操作者 account
-            permission: 'active'// active
-            }], 
-            data: {
-                account: '',//操作者 account
-                permission: 'active',// active
-                parent: "owner",// owner
-                auth: {
-                    threshold: '',//总阀值 1
-                    keys: [],//公钥组 Keys
-                    accounts: [],//帐户组 Accounts
-                  }
+
+        if(resp && resp.code == '0'){
+            var temp=[];
+            var authFlag=false;
+            var authTempActive={
+                account: "eosio",
+                name: "updateauth", 
+                authorization: [{
+                actor: '',//操作者 account
+                permission: 'active'// active
+                }], 
+                data: {
+                    account: '',//操作者 account
+                    permission: 'active',// active
+                    parent: "owner",// owner
+                    auth: {
+                        threshold: '',//总阀值 1
+                        keys: [],//公钥组 Keys
+                        accounts: [],//帐户组 Accounts
+                      }
+                }
+            };
+    
+            //active 
+            authTempActive.authorization[0].actor=this.props.navigation.state.params.wallet.name;
+            authTempActive.data.account=this.props.navigation.state.params.wallet.name;
+            authTempActive.data.parent=resp.data.permissions[0].parent;
+            authTempActive.data.auth.threshold=resp.data.permissions[0].required_auth.threshold;
+            authTempActive.data.auth.keys=resp.data.permissions[0].required_auth.keys;
+            authTempActive.data.auth.accounts=resp.data.permissions[0].required_auth.accounts;
+    
+            //账户
+            for(var i=0;i<authTempActive.data.auth.accounts.length;i++){
+                // if(authTempActive.data.auth.accounts[i].permission.actor != this.props.navigation.state.params.wallet.name){
+                    temp.push({weight:authTempActive.data.auth.accounts[i].weight,key:authTempActive.data.auth.accounts[i].permission.actor+"@"+authTempActive.data.auth.accounts[i].permission.permission});
+                // }
             }
-        };
-
-        //active 
-        authTempActive.authorization[0].actor=this.props.navigation.state.params.wallet.name;
-        authTempActive.data.account=this.props.navigation.state.params.wallet.name;
-        authTempActive.data.parent=data.permissions[0].parent;
-        authTempActive.data.auth.threshold=data.permissions[0].required_auth.threshold;
-        authTempActive.data.auth.keys=data.permissions[0].required_auth.keys;
-        authTempActive.data.auth.accounts=data.permissions[0].required_auth.accounts;
-
-        //账户
-        for(var i=0;i<authTempActive.data.auth.accounts.length;i++){
-            // if(authTempActive.data.auth.accounts[i].permission.actor != this.props.navigation.state.params.wallet.name){
-                temp.push({weight:authTempActive.data.auth.accounts[i].weight,key:authTempActive.data.auth.accounts[i].permission.actor+"@"+authTempActive.data.auth.accounts[i].permission.permission});
-            // }
+    
+            //公钥
+            for(var i=0;i<authTempActive.data.auth.keys.length;i++){
+                // if(authTempActive.data.auth.keys[i].key != this.props.navigation.state.params.wallet.activePublic){
+                    temp.push({weight:authTempActive.data.auth.keys[i].weight,key:authTempActive.data.auth.keys[i].key});
+                // }else{
+                    
+                // }
+            }
+            authFlag=true;//获取账户成功后可以
+            this.setState({
+                threshold:resp.data.permissions[0].required_auth.threshold,
+                isAuth:authFlag,
+                authKeys:temp,//授权的公钥组
+                activeAuth:authTempActive,
+                inputCount:0,
+                inputText:'',
+            });
+        }else{
+            this.setState({isAuth: false});
         }
 
-        //公钥
-        for(var i=0;i<authTempActive.data.auth.keys.length;i++){
-            // if(authTempActive.data.auth.keys[i].key != this.props.navigation.state.params.wallet.activePublic){
-                temp.push({weight:authTempActive.data.auth.keys[i].weight,key:authTempActive.data.auth.keys[i].key});
-            // }else{
-                
-            // }
-        }
-        authFlag=true;//获取账户成功后可以
-        this.setState({
-            threshold:data.permissions[0].required_auth.threshold,
-            isAuth:authFlag,
-            authKeys:temp,//授权的公钥组
-            activeAuth:authTempActive,
-            inputCount:0,
-            inputText:'',
-        });
-        // console.log("getaccountinfo=%s",JSON.stringify(data))
     } });
 } 
 
@@ -265,7 +270,7 @@ EosUpdateAuth = (account, pvk,authActiveArr, callback) => {
                         }else{
                             EasyToast.show('授权变更失败！');
                         }
-                        this.getAccountInfo();//刷新一下
+                        this.getAuthInfo();//刷新一下
                     });
             } else {
                 EasyShowLD.loadingClose();

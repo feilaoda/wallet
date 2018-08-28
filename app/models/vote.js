@@ -63,7 +63,18 @@ export default {
             if (callback) callback(accountInfo);
         }
      },
-
+     /**
+      *  获取eos账户授权信息
+      */
+     *getAuthInfo({payload,callback},{call,put}) {
+        try{
+            const resp = yield call(Request.request, getAccountInfo, 'post', payload);
+            if(callback) callback(resp);
+        } catch (error) {
+            EasyToast.show('网络繁忙,请稍后!');
+            if (callback) callback({ code: 500, msg: "网络异常" });
+        }
+     },
     /**
       *  获取eos赎回信息
       */

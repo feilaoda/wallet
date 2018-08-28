@@ -157,7 +157,7 @@ class AuthTransfer extends BaseComponent {
             ownerPk:this.props.navigation.state.params.wallet.ownerPublic,
             activePk:this.props.navigation.state.params.wallet.activePublic,
         });
-        this.getAccountInfo();
+        this.getAuthInfo();
         DeviceEventEmitter.addListener('scan_result', (data) => {
             this.setState({inputText:data.toaccount})
         });
@@ -170,97 +170,101 @@ class AuthTransfer extends BaseComponent {
   }
  
   //获取账户信息
-  getAccountInfo(){
+  getAuthInfo(){
     EasyShowLD.loadingShow();
-    this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.navigation.state.params.wallet.name},callback: (data) => {
+    this.props.dispatch({ type: 'vote/getAuthInfo', payload: { page:1,username: this.props.navigation.state.params.wallet.name},callback: (resp) => {
         EasyShowLD.loadingClose();
         
-        var authFlag=false;
-        var tempActive=[];
-        var authTempActive={
-            account: "eosio",
-            name: "updateauth", 
-            authorization: [{
-            actor: '',//操作者 account
-            permission: 'owner'// active
-            }], 
-            data: {
-                account: '',//操作者 account
-                permission: 'active',// active
-                parent: "owner",// owner
-                auth: {
-                    threshold: '',//总阀值 1
-                    keys: [],//公钥组 Keys
-                    accounts: [],//帐户组 Accounts
-                  }
+        if(resp && resp.code == '0'){
+            var authFlag=false;
+            var tempActive=[];
+            var authTempActive={
+                account: "eosio",
+                name: "updateauth", 
+                authorization: [{
+                actor: '',//操作者 account
+                permission: 'owner'// active
+                }], 
+                data: {
+                    account: '',//操作者 account
+                    permission: 'active',// active
+                    parent: "owner",// owner
+                    auth: {
+                        threshold: '',//总阀值 1
+                        keys: [],//公钥组 Keys
+                        accounts: [],//帐户组 Accounts
+                      }
+                }
+            };
+            var tempOwner=[];
+            var authTempOwner={
+                account: "eosio",
+                name: "updateauth", 
+                authorization: [{
+                actor: '',//操作者 account
+                permission: 'owner'// owner
+                }], 
+                data: {
+                    account: '',//操作者 account
+                    permission: 'owner',// owner
+                    parent: "",// owner
+                    auth: {
+                        threshold: '',//总阀值 1
+                        keys: [],//公钥组 Keys
+                        accounts: [],//帐户组 Accounts
+                      }
+                }
+            };
+    
+            //active 
+            authTempActive.authorization[0].actor=this.props.navigation.state.params.wallet.name;
+            authTempActive.data.account=this.props.navigation.state.params.wallet.name;
+            authTempActive.data.parent=resp.data.permissions[0].parent;
+            authTempActive.data.auth.threshold=resp.data.permissions[0].required_auth.threshold;
+            authTempActive.data.auth.keys=resp.data.permissions[0].required_auth.keys;
+            authTempActive.data.auth.accounts=resp.data.permissions[0].required_auth.accounts;
+            //账户（显示）
+            for(var i=0;i<authTempActive.data.auth.accounts.length;i++){
+                tempActive.push({weight:authTempActive.data.auth.accounts[i].weight,key:authTempActive.data.auth.accounts[i].permission.actor+"@"+authTempActive.data.auth.accounts[i].permission.permission});
             }
-        };
-        var tempOwner=[];
-        var authTempOwner={
-            account: "eosio",
-            name: "updateauth", 
-            authorization: [{
-            actor: '',//操作者 account
-            permission: 'owner'// owner
-            }], 
-            data: {
-                account: '',//操作者 account
-                permission: 'owner',// owner
-                parent: "",// owner
-                auth: {
-                    threshold: '',//总阀值 1
-                    keys: [],//公钥组 Keys
-                    accounts: [],//帐户组 Accounts
-                  }
+            //公钥
+            for(var i=0;i<authTempActive.data.auth.keys.length;i++){
+                tempActive.push({weight:authTempActive.data.auth.keys[i].weight,key:authTempActive.data.auth.keys[i].key});
             }
-        };
-
-        //active 
-        authTempActive.authorization[0].actor=this.props.navigation.state.params.wallet.name;
-        authTempActive.data.account=this.props.navigation.state.params.wallet.name;
-        authTempActive.data.parent=data.permissions[0].parent;
-        authTempActive.data.auth.threshold=data.permissions[0].required_auth.threshold;
-        authTempActive.data.auth.keys=data.permissions[0].required_auth.keys;
-        authTempActive.data.auth.accounts=data.permissions[0].required_auth.accounts;
-        //账户（显示）
-        for(var i=0;i<authTempActive.data.auth.accounts.length;i++){
-            tempActive.push({weight:authTempActive.data.auth.accounts[i].weight,key:authTempActive.data.auth.accounts[i].permission.actor+"@"+authTempActive.data.auth.accounts[i].permission.permission});
-        }
-        //公钥
-        for(var i=0;i<authTempActive.data.auth.keys.length;i++){
-            tempActive.push({weight:authTempActive.data.auth.keys[i].weight,key:authTempActive.data.auth.keys[i].key});
-        }
-
-        //owner 
-        authTempOwner.authorization[0].actor=this.props.navigation.state.params.wallet.name;
-        authTempOwner.data.account=this.props.navigation.state.params.wallet.name;
-        authTempOwner.data.parent=data.permissions[1].parent;
-        authTempOwner.data.auth.threshold=data.permissions[1].required_auth.threshold;
-        authTempOwner.data.auth.keys=data.permissions[1].required_auth.keys;
-        authTempOwner.data.auth.accounts=data.permissions[1].required_auth.accounts;
-
-        //账户（显示）
-        for(var i=0;i<authTempOwner.data.auth.accounts.length;i++){
-            tempOwner.push({weight:authTempOwner.data.auth.accounts[i].weight,key:authTempOwner.data.auth.accounts[i].permission.actor+"@"+authTempOwner.data.auth.accounts[i].permission.permission});
-        }
-
-        //公钥
-        for(var i=0;i<authTempOwner.data.auth.keys.length;i++){
-            tempOwner.push({weight:authTempOwner.data.auth.keys[i].weight,key:authTempOwner.data.auth.keys[i].key});
+    
+            //owner 
+            authTempOwner.authorization[0].actor=this.props.navigation.state.params.wallet.name;
+            authTempOwner.data.account=this.props.navigation.state.params.wallet.name;
+            authTempOwner.data.parent=resp.data.permissions[1].parent;
+            authTempOwner.data.auth.threshold=resp.data.permissions[1].required_auth.threshold;
+            authTempOwner.data.auth.keys=resp.data.permissions[1].required_auth.keys;
+            authTempOwner.data.auth.accounts=resp.data.permissions[1].required_auth.accounts;
+    
+            //账户（显示）
+            for(var i=0;i<authTempOwner.data.auth.accounts.length;i++){
+                tempOwner.push({weight:authTempOwner.data.auth.accounts[i].weight,key:authTempOwner.data.auth.accounts[i].permission.actor+"@"+authTempOwner.data.auth.accounts[i].permission.permission});
+            }
+    
+            //公钥
+            for(var i=0;i<authTempOwner.data.auth.keys.length;i++){
+                tempOwner.push({weight:authTempOwner.data.auth.keys[i].weight,key:authTempOwner.data.auth.keys[i].key});
+            }
+    
+            authFlag=true;//获取账户成功后可以
+            this.setState({
+                threshold:resp.data.permissions[0].required_auth.threshold,
+                isAuth:authFlag,
+                authActiveKeys:tempActive,//授权的公钥组
+                authOwnerKeys:tempOwner,//授权的公钥组
+                activeAuth:authTempActive,
+                ownerAuth:authTempOwner,
+                inputCount:0,
+                inputText:'',
+            });
+        }else{
+            this.setState({isAuth: false});
         }
 
-        authFlag=true;//获取账户成功后可以
-        this.setState({
-            threshold:data.permissions[0].required_auth.threshold,
-            isAuth:authFlag,
-            authActiveKeys:tempActive,//授权的公钥组
-            authOwnerKeys:tempOwner,//授权的公钥组
-            activeAuth:authTempActive,
-            ownerAuth:authTempOwner,
-            inputCount:0,
-            inputText:'',
-        });
-        // console.log("getaccountinfo=%s",JSON.stringify(data))
     } });
 } 
 
@@ -314,7 +318,7 @@ EosUpdateAuth = (account, pvk,authArr, callback) => {
                         }else{
                             EasyToast.show('授权变更失败！');
                         }
-                        this.getAccountInfo();//刷新一下
+                        this.getAuthInfo();//刷新一下
                     });
             } else {
                 EasyShowLD.loadingClose();

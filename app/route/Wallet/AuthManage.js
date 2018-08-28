@@ -41,7 +41,7 @@ class AuthManage extends BaseComponent {
             ownerPk: this.props.navigation.state.params.wallet.ownerPublic,//ownerPublic
             activePk: this.props.navigation.state.params.wallet.activePublic,
         })
-        this.getAccountInfo();
+        this.getAuthInfo();
     }
   
   componentWillUnmount(){
@@ -50,36 +50,39 @@ class AuthManage extends BaseComponent {
   }
  
     //获取账户信息
-    getAccountInfo(){
+    getAuthInfo(){
         EasyShowLD.loadingShow();
-        this.props.dispatch({ type: 'vote/getaccountinfo', payload: { page:1,username: this.props.navigation.state.params.wallet.name},callback: (data) => {
+        this.props.dispatch({ type: 'vote/getAuthInfo', payload: { page:1,username: this.props.navigation.state.params.wallet.name},callback: (resp) => {
             EasyShowLD.loadingClose();
-            var temActiveKey='';
-            var temOwnerKey='';
 
-            var authTempOwner=data.permissions[1].required_auth.keys
-            var authTempActive=data.permissions[0].required_auth.keys
-            //公钥
-            for(var i=0;i<authTempOwner.length;i++){
-                if((authTempOwner[i].key == this.props.navigation.state.params.wallet.activePublic)||(authTempOwner[i].key == this.props.navigation.state.params.wallet.ownerPublic)){
-                    temOwnerKey=authTempOwner[i].key;
+            if(resp && resp.code == '0'){
+                var temActiveKey='';
+                var temOwnerKey='';
+    
+                var authTempOwner=resp.data.permissions[1].required_auth.keys
+                var authTempActive=resp.data.permissions[0].required_auth.keys
+                //公钥
+                for(var i=0;i<authTempOwner.length;i++){
+                    if((authTempOwner[i].key == this.props.navigation.state.params.wallet.activePublic)||(authTempOwner[i].key == this.props.navigation.state.params.wallet.ownerPublic)){
+                        temOwnerKey=authTempOwner[i].key;
+                    }
                 }
+    
+                for(var i=0;i<authTempActive.length;i++){
+                    if((authTempActive[i].key == this.props.navigation.state.params.wallet.activePublic)||(authTempActive[i].key == this.props.navigation.state.params.wallet.ownerPublic)){
+                        temActiveKey=authTempActive[i].key;
+                    }
+                }
+    
+                this.setState({
+                    activeThreshold:resp.data.permissions[0].required_auth.threshold,
+                    ownerThreshold:resp.data.permissions[1].required_auth.threshold,//owner权阀值
+    
+                    ownerPk: temOwnerKey,
+                    activePk: temActiveKey,
+                });
             }
 
-            for(var i=0;i<authTempActive.length;i++){
-                if((authTempActive[i].key == this.props.navigation.state.params.wallet.activePublic)||(authTempActive[i].key == this.props.navigation.state.params.wallet.ownerPublic)){
-                    temActiveKey=authTempActive[i].key;
-                }
-            }
-
-            this.setState({
-                activeThreshold:data.permissions[0].required_auth.threshold,
-                ownerThreshold:data.permissions[1].required_auth.threshold,//owner权阀值
-
-                ownerPk: temOwnerKey,
-                activePk: temActiveKey,
-            });
-            // console.log("getaccountinfo=%s",JSON.stringify(data))
         } });
     }
 
