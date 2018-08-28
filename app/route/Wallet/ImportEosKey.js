@@ -306,7 +306,7 @@ class ImportEosKey extends BaseComponent {
             reject(rdata);
           }
           if (rdata == undefined || rdata.code != '0') {
-            this.opendelay(active_publicKey, rdata);
+            this.opendelay(publicKey, rdata);
             reject(rdata);
           }else{
             resolve(rdata);
@@ -343,16 +343,19 @@ class ImportEosKey extends BaseComponent {
         }else{
           EasyShowLD.loadingClose();
           // this.setState({selectpromp: true,walletList : array,keyObj:keyObj});  
-          if (Platform.OS == 'ios') {
+          if(array && array.length == 1){ // 只有一个账号时直接导入，不弹选择框
+            this.state.walletList.push({name: array[0].name, isChecked: true});
+            this.setState({keyObj:keyObj});
+            this.specifiedAccountToWallet(this.state.walletList);   
+          }else if (Platform.OS == 'ios') {
             this.setState({walletList : array,keyObj:keyObj});  
             var th = this;
               this.handle = setTimeout(() => {
                 th.setState({selectpromp: true}); 
               }, 100);
-            }else{
-              this.setState({selectpromp: true,walletList : array,keyObj:keyObj});  
-            }
-
+          }else{
+            this.setState({selectpromp: true,walletList : array,keyObj:keyObj});  
+          }
 
         }
       })
@@ -373,16 +376,20 @@ class ImportEosKey extends BaseComponent {
             }
           }
         }
-        // this.setState({selectpromp: true,walletList : arrayAll,keyObj:keyObj});  
-        if (Platform.OS == 'ios') {
+        // this.setState({selectpromp: true,walletList : arrayAll,keyObj:keyObj});
+        if(arrayAll && arrayAll.length == 1){ // 只有一个账号时直接导入，不弹选择框
+          this.state.walletList.push({name: arrayAll[0].name, isChecked: true});
+          this.setState({keyObj:keyObj});
+          this.specifiedAccountToWallet(this.state.walletList);   
+        }else if (Platform.OS == 'ios') {
           this.setState({walletList : arrayAll,keyObj:keyObj});  
           var th = this;
             this.handle = setTimeout(() => {
-              th.setState({selectpromp: true}); 
-            }, 100);
-          }else{
-            this.setState({selectpromp: true,walletList : arrayAll,keyObj:keyObj});  
-          }
+            th.setState({selectpromp: true}); 
+          }, 100);
+        }else{
+          this.setState({selectpromp: true,walletList : arrayAll,keyObj:keyObj});  
+        }
 
       }
     })
@@ -453,6 +460,7 @@ class ImportEosKey extends BaseComponent {
   // }
   specifiedAccountToWallet(account_names){
     var walletList = [];
+    var index = 0;
     var salt;
     Eos.randomPrivateKey((r) => {
       salt = r.data.ownerPrivate.substr(0, 18);
@@ -481,7 +489,8 @@ class ImportEosKey extends BaseComponent {
         result.account = account_names[i].name;
         result.isactived = true;
         result.salt = salt;
-        walletList[i] = result;
+        walletList[index] = result;
+        index += 1;
       }
       if(walletList.length < 1)
       {
@@ -590,7 +599,7 @@ class ImportEosKey extends BaseComponent {
     {
       this.specifiedAccountToWallet(this.state.walletList);
     }else{
-      EasyToast.show("请选择导入钱包");
+      EasyToast.show("您未选择需要导入的钱包");
     }
   }
 
