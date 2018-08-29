@@ -16,6 +16,9 @@ export default {
                 if(payload.page==1){
                     yield put({type:'upstatus',payload:{newsRefresh:true}});
                 }
+
+                var news = yield call(store.get, "news_list_"+payload.type);
+
                 const resp = yield call(Request.request,newsList+payload.type+"?page="+payload.page,'get');
                 if(resp.code=='0'){
                     let dts = new Array();
@@ -35,12 +38,26 @@ export default {
                          dts.push(item);
                     }
                     yield put({type:'update',payload:{data:dts,...payload}});
+                    if(payload.page == 1){
+                        yield call(store.save, "news_list_"+payload.type, dts);
+                    }else{
+                        var newsInCache = yield call(store.get, "news_list_"+payload.type);
+                        if(newsInCache){
+                            yield call(store.save, "news_list_"+payload.type, newsInCache.concat(dts));
+                        }
+                    }
                 }else{
                     EasyToast.show(resp.msg);
+                    if(payload.page==1){
+                        yield put({type:'update',payload:{data:news,...payload}});
+                    }
                 }
                 yield put({type:'upstatus',payload:{newsRefresh:false}});
             } catch (error) {
                 yield put({type:'upstatus',payload:{newsRefresh:false}});
+                if(payload.page==1){
+                    yield put({type:'update',payload:{data:news,...payload}});
+                }
                 EasyToast.show('网络繁忙,请稍后!');
             }
         },
