@@ -214,7 +214,7 @@ export default {
                     words_active: _words_active.toString(),
                     salt: wallet.salt,
                     isactived: wallet.isactived,
-                    isBackups: false
+                    isBackups: wallet.isBackups,
                 }
     
                 walletArr[walletArr.length] = _wallet;

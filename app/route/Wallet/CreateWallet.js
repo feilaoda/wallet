@@ -156,7 +156,8 @@ class createWallet extends BaseComponent {
                 result.name = this.state.walletName;
                 result.account = this.state.walletName;
                 result.salt = salt;
-                result.isactived = false
+                result.isactived = false;
+                result.isBackups = false;
                 this.props.dispatch({
                   type: 'wallet/saveWallet',
                   wallet: result,

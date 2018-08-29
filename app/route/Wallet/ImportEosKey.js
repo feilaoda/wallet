@@ -488,6 +488,7 @@ class ImportEosKey extends BaseComponent {
         result.name = account_names[i].name;
         result.account = account_names[i].name;
         result.isactived = true;
+        result.isBackups = true; // 导入私钥的情况不需要再提示未备份
         result.salt = salt;
         walletList[index] = result;
         index += 1;
