@@ -137,18 +137,23 @@ export default {
       }
     },
     *fetchPoint({ payload, callback }, { call, put }) {
+      var userpointInCache = yield call(store.get, 'userpoint_'+payload.uid);
       try {
         const resp = yield call(Request.request, fetchPoint, 'post', { ...payload });
         if (resp.code == 0) {
           const userpoint = resp.data;
-          // alert("fetchPoint: " + JSON.stringify(userpoint));
           yield put({ type: 'updateSign', payload: { pointInfo: resp.data } });
-          // yield call(store.save, 'userpoint',userpoint);
-          //  alert("fetchPoint: " + JSON.stringify(payload));
+          yield call(store.save, 'userpoint_'+payload.uid,userpoint);
+        }else{
+          if(userpointInCache){
+            yield put({ type: 'updateSign', payload: { pointInfo: userpointInCache } });
+          }
         }
         if (callback) callback(resp);
       } catch (error) {
-        // alert("error: " + JSON.stringify(error));
+        if(userpointInCache){
+          yield put({ type: 'updateSign', payload: { pointInfo: userpointInCache } });
+        }
         if (callback) callback({ code: 500, msg: "网络异常" });
       }
     },

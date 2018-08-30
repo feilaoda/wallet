@@ -55,7 +55,7 @@ class SignIn extends BaseComponent {
               EasyToast.show("登陆已失效, 请重新登陆!");
             }
           });         
-        }else if(data.code == 0) {
+        }else {
           this.setState({
               accumulative: this.props.pointInfo.signin + this.props.pointInfo.share + this.props.pointInfo.interact + this.props.pointInfo.store + this.props.pointInfo.turnin + this.props.pointInfo.turnout,
           })
