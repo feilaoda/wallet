@@ -104,22 +104,28 @@ class Set extends BaseComponent {
   }
 
   checkVersion(){
-    //升级
-    this.props.dispatch({
-      type: 'common/upgrade', payload: { os: DeviceInfo.getSystemName() }, callback: (data) => {
-        if (data.code == 0) {
-          if (DeviceInfo.getVersion() < data.data.version) {
-            if (data.data.must == 1) {
-              EasyShowLD.dialogShow("版本更新", data.data.intr, "升级", null, () => { this.doUpgrade(data.data.url, data.data.version) })
-            } else {
-              EasyShowLD.dialogShow("版本更新", data.data.intr, "升级", "取消", () => { this.doUpgrade(data.data.url, data.data.version) })
+    try {
+      EasyShowLD.loadingShow();
+      //升级
+      this.props.dispatch({
+        type: 'common/upgrade', payload: { os: DeviceInfo.getSystemName() }, callback: (data) => {
+          EasyShowLD.loadingClose();
+          if (data.code == 0) {
+            if (DeviceInfo.getVersion() < data.data.version) {
+              if (data.data.must == 1) {
+                EasyShowLD.dialogShow("版本更新", data.data.intr, "升级", null, () => { this.doUpgrade(data.data.url, data.data.version) })
+              } else {
+                EasyShowLD.dialogShow("版本更新", data.data.intr, "升级", "取消", () => { this.doUpgrade(data.data.url, data.data.version) })
+              }
+            }else{
+              EasyToast.show("当前已是最新版本");
             }
-          }else{
-            EasyToast.show("当前已是最新版本");
           }
         }
-      }
-    });
+      });      
+    } catch (error) {
+      EasyShowLD.loadingClose();
+    }
   }
 
   render() {
@@ -163,7 +169,7 @@ class Set extends BaseComponent {
             <View style={styles.listItem}>
                 <View style={styles.listInfo}>
                   <View style={styles.scrollView}>
-                    <Text style={styles.listInfoTitle}>检查新版本</Text>
+                    <Text style={styles.listInfoTitle}>检测新版本</Text>
                   </View>
                   {/* <View style={styles.listInfoRight}>            
                     <Font.Ionicons name="ios-arrow-forward-outline" size={16} color={UColor.arrow} />
