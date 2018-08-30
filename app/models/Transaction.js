@@ -16,32 +16,49 @@ export default {
     },
     effects: {
         *getRamInfo({payload,callback},{call,put}) {
+            var ramInfoInCache = yield call(store.get, "ramInfo");
             try{
                 const resp = yield call(Request.request, getRamInfo, 'post', payload);
                 if(resp.code=='0'){               
                     yield put({ type: 'updateInfo', payload: { ramInfo:resp.data } });
+                    yield call(store.save, "ramInfo", resp.data);
                 }else{
                     EasyToast.show(resp.msg);
+                    yield put({ type: 'updateInfo', payload: { ramInfo:ramInfoInCache } });
                 }
                 if (callback) callback(resp);
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                yield put({ type: 'updateInfo', payload: { ramInfo:ramInfoInCache } });
                 if (callback) callback({ code: 500, msg: "网络异常" });
             }
         },
         *getRamPriceLine({payload,callback},{call,put}) {
+            var ramPriceLineInCache = yield call(store.get, "ramPriceLine");
             try{
                 const resp = yield call(Request.request, getRamPriceLine + payload.type, 'post', payload);
                 // alert("getRamPriceLine : " + JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateRamPriceLine', payload: { data: resp.data, ...payload } });
-                    
+                    yield call(store.save, "ramPriceLine", resp);
                 }else{
                     EasyToast.show(resp.msg);
+                    if(ramPriceLineInCache){
+                        yield put({ type: 'updateRamPriceLine', payload: { data: ramPriceLineInCache.data, ...payload } });
+                        if (callback) callback(ramPriceLineInCache);
+                    }else{
+                        if (callback) callback(resp);
+                    }
                 }
                 if (callback) callback(resp);
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if(ramPriceLineInCache){
+                    yield put({ type: 'updateRamPriceLine', payload: { data: ramPriceLineInCache.data, ...payload } });
+                    if (callback) callback(ramPriceLineInCache);
+                }else{
+                    if (callback) callback({ code: 500, msg: "网络异常" });                
+                }          
             }
         },
         *clearRamPriceLine({ payload }, { call, put }) {
@@ -53,51 +70,87 @@ export default {
         },
         //所有交易查询
         *getRamTradeLog({ payload, callback }, { call, put }) {
+            var ramTradeLogInCache = yield call(store.get, "ramTradeLog");
+
             try{
                 const resp = yield call(Request.request, getRamTradeLog, 'post', payload);
                 // alert('getRamTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateTradeLog', payload: { data:resp.data, ...payload } });
-                    
+                    yield call(store.save, "ramTradeLog", resp);
+                    if (callback) callback(resp);                
                 }else{
                     EasyToast.show(resp.msg);
+                    if(ramTradeLogInCache && ramTradeLogInCache.data){
+                        yield put({ type: 'updateTradeLog', payload: { data:ramTradeLogInCache.data, ...payload } });
+                        if (callback) callback(ramTradeLogInCache); 
+                    }else{
+                        if (callback) callback(resp);                
+                    }
                 }
-                if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
-                if (callback) callback({ code: 500, msg: "网络异常" });                
+                if(ramTradeLogInCache && ramTradeLogInCache.data){
+                    yield put({ type: 'updateTradeLog', payload: { data:ramTradeLogInCache.data, ...payload } });
+                    if (callback) callback(ramTradeLogInCache); 
+                }else{
+                    if (callback) callback({ code: 500, msg: "网络异常" });                
+                }             
             }
         },
         *getRamBigTradeLog({ payload, callback }, { call, put }) {
+            var ramBigTradeLogInCache = yield call(store.get, "ramBigTradeLog");
             try{
                 const resp = yield call(Request.request, getRamBigTradeLog, 'post', payload);
                 // alert('getRamBigTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateBigTradeLog', payload: { ramBigTradeLog:resp.data } });
-                    
+                    yield call(store.save, "ramBigTradeLog", resp);
+                    if (callback) callback(resp);                
                 }else{
                     EasyToast.show(resp.msg);
+                    if(ramBigTradeLogInCache){
+                        yield put({ type: 'updateBigTradeLog', payload: { ramBigTradeLog:ramBigTradeLogInCache.data } });
+                        if (callback) callback(ramBigTradeLogInCache);                
+                    }else{
+                        if (callback) callback(resp);                
+                    }
                 }
-                if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
-                if (callback) callback({ code: 500, msg: "网络异常" });                
+                if(ramBigTradeLogInCache){
+                    yield put({ type: 'updateBigTradeLog', payload: { ramBigTradeLog:ramBigTradeLogInCache.data } });
+                    if (callback) callback(ramBigTradeLogInCache); 
+                }else{
+                    if (callback) callback({ code: 500, msg: "网络异常" });                
+                }
             }
         },
         *getMyRamTradeLog({ payload, callback }, { call, put }) {
+            var myRamTradeLogInCache = yield call(store.get, "myRamTradeLog");
+
             try{
                 const resp = yield call(Request.request, getRamTradeLogByAccount, 'post', payload);
                 // alert('getRamTradeLogByAccount: '+JSON.stringify(resp));
                 if(resp && resp.code=='0'){               
                     yield put({ type: 'updateMyTradeLog', payload: { data:resp.data, ...payload  } });
-                    
+                    yield call(store.save, "myRamTradeLog", resp);
+                    if (callback) callback(resp);                        
                 }else{
                     EasyToast.show(resp.msg);
+                    if(myRamTradeLogInCache){
+                        if (callback) callback(myRamTradeLogInCache);                
+                    }else{
+                        if (callback) callback(resp);                
+                    }
                 }
-                if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
-                if (callback) callback({ code: 500, msg: "网络异常" });                
+                if(myRamTradeLogInCache){
+                    if (callback) callback(myRamTradeLogInCache);                
+                }else{
+                    if (callback) callback({ code: 500, msg: "网络异常" });                
+                }
             }
         },
         //个人交易记录查询
@@ -118,35 +171,60 @@ export default {
             }
         },
         *getBigRamRank({ payload, callback }, { call, put }) {
+            var bigRamRankInCache = yield call(store.get, "bigRamRank");
+
             try{
                 const resp = yield call(Request.request, getBigRamRank, 'get');
                 // alert('getBigRamRank: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateBigRamRank', payload: { bigRamRank:resp.data } });
-                    
+                    yield call(store.save, "bigRamRank", resp);
+                    if (callback) callback(resp); 
                 }else{
                     EasyToast.show(resp.msg);
+                    if(bigRamRankInCache){
+                        yield put({ type: 'updateBigRamRank', payload: { bigRamRank:bigRamRankInCache.data } });
+                        if (callback) callback(bigRamRankInCache);                
+                    }else{
+                        if (callback) callback(resp);                
+                    }
                 }
-                if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
-                if (callback) callback({ code: 500, msg: "网络异常" });                
+                if(bigRamRankInCache){
+                    yield put({ type: 'updateBigRamRank', payload: { bigRamRank:bigRamRankInCache.data } });
+                    if (callback) callback(bigRamRankInCache);                
+                }else{
+                    if (callback) callback({ code: 500, msg: "网络异常" });                
+                }
             }
         },
         //ramK线图
         *getRamKLines({ payload, callback }, { call, put }) {
+            var ramPriceKLine = yield call(store.get, "ramPriceKLine");
+
             try{
                 const resp = yield call(Request.request, getRamKLines, 'post', payload);
                 //  alert('getRamKLines: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     // yield put({ type: 'updateRamPriceLine', payload: { data: resp.data, ...payload } });
+                    yield call(store.save, "ramPriceKLine", resp);
+                    if (callback) callback(resp);                
                 }else{
                     EasyToast.show(resp.msg);
+                    if(ramPriceKLine){
+                        if (callback) callback(ramPriceKLine);                
+                    }else{
+                        if (callback) callback(resp);                
+                    }
                 }
-                if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
-                if (callback) callback({ code: 500, msg: "网络异常" });                
+                if(ramPriceKLine){
+                    if (callback) callback(ramPriceKLine);                
+                }else{
+                    if (callback) callback({ code: 500, msg: "网络异常" });                
+                }            
             }
         },
 

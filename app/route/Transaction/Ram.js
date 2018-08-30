@@ -203,7 +203,7 @@ class Ram extends BaseComponent {
             }
             this.props.dispatch({type: 'transaction/getRamKLines',payload: {pageSize: "180", dateType: dateType}, callback: (resp) => {
                 this.setState({logRefreshing: false});
-                if(resp.code == '0'){
+                if(resp && resp.code == '0'){
                     if(resp.data && resp.data.length > 0){
                     // // 数据意义：日期(record_date),开盘(open)，收盘(close)，最低(min)，最高(max),交易量(volum)
                     // var data = splitData([
