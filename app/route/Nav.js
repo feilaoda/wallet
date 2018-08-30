@@ -745,17 +745,16 @@ class Route extends React.Component {
     });
   }
 
+  // 此定时器本来用于刷新钱包资产页面，现在暂时取消定时刷新，仅切换至钱包页面时刷新一次，其后通过下拉刷新方式刷新，减少系统开支
   startTimer(){
-    this.timer = setInterval( ()  =>{
-      // this.getBalance();
-      // this.getIncrease();
+    // this.timer = setInterval( ()  =>{
       DeviceEventEmitter.emit('refreshWalletInfo', '');
 
-    },30000);
+    // },30000);
   }
 
   stopTimer(){
-    this.timer && clearTimeout(this.timer);
+    // this.timer && clearTimeout(this.timer);
   }
 
   startTxTimer(){
@@ -802,10 +801,6 @@ class Route extends React.Component {
             }else{
               this.props.dispatch({ type: 'wallet/updateGuideState', payload: {guide: false}, callback: (data) => {
                 this.startTimer();
-                // this.timer = setInterval( ()  =>{
-                //   this.getBalance();
-                //   this.getIncrease();
-                // },30000);
       
                 if (action && action.routeName) {
                   DeviceEventEmitter.emit('changeTab', action.routeName);
