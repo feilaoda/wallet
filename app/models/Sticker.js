@@ -32,21 +32,29 @@ export default {
         }
       },
       *list({payload,callback},{call,put}) {
+        var coinsInfoInCache = yield call(store.get, 'coinsInfo');
+
         try{
-          
           yield put({type:'updateLoading',payload:{loading:true}});
           
           const resp = yield call(Request.request,sticker,'get');
           if(resp.code=='0'){
               yield put({type:'update',payload:{...payload,data:resp.data}});
+              yield call(store.save, 'coinsInfo',resp.data);
           }else{
             yield put({type:'updateLoading',payload:{loading:false}});
             EasyToast.show(resp.msg);
+            if(coinsInfoInCache){
+              yield put({type:'update',payload:{type: -1, data: coinsInfoInCache}});
+            }
           }
           if (callback) callback();
         }catch(err){
           yield put({type:'updateLoading',payload:{loading:false}});
           EasyToast.show('网络繁忙,请稍后!');
+          if(coinsInfoInCache){
+            yield put({type:'update',payload:{type: -1, data: coinsInfoInCache}});
+          }
         }
       },
       *loadStorage(action,{ call, put }) {

@@ -11,28 +11,46 @@ export default {
     },
     effects: {
         *list({ payload }, { call, put }) {
+            var conLineDataInCache = yield call(store.get, 'coinLineData_'+payload.coin+"_"+payload.type);
+
             try {
                 const resp = yield call(Request.request, line + payload.coin + "?type=" + payload.type, 'get');
                 if (resp.code == '0') {
                     yield put({ type: 'update', payload: { data: resp.data, ...payload } });
+                    yield call(store.save, 'coinLineData_'+payload.coin+"_"+payload.type,resp.data);
                 } else {
                     EasyToast.show(resp.msg);
+                    if(conLineDataInCache){
+                        yield put({ type: 'update', payload: { data: conLineDataInCache, ...payload } });
+                    }
                 }
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if(conLineDataInCache){
+                    yield put({ type: 'update', payload: { data: conLineDataInCache, ...payload } });
+                }
             }
         },
 
         *info({ payload }, { call, put }) {
+            var coinInfoInCache = yield call(store.get, 'coinInfo_'+payload.id);
+
             try {
                 const resp = yield call(Request.request, coinInfo + payload.id, 'get');
                 if (resp.code == '0') {
                     yield put({ type: 'updateInfo', payload: { info: resp.data, ...payload } });
+                    yield call(store.save, 'coinInfo_'+payload.id,resp.data);
                 } else {
                     EasyToast.show(resp.msg);
+                    if(coinInfoInCache){
+                        yield put({ type: 'updateInfo', payload: { info: coinInfoInCache, ...payload } });
+                    }
                 }
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if(coinInfoInCache){
+                    yield put({ type: 'updateInfo', payload: { info: coinInfoInCache, ...payload } });
+                }
             }
         },
 
