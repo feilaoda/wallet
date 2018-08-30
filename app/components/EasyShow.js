@@ -163,20 +163,20 @@ export class LoadingDialog extends React.Component {
             onShow={()=>{console.log('dailog modal show...')}}>
 
           {this.state.loadingDialogFlag==LoadingShow &&
-          <View style={[styles.load_box, this.props.loadingStyle]}>
+          <View style={[styles.load_box,{backgroundColor: UColor.blackColor}, this.props.loadingStyle]}>
               <ActivityIndicator animating={true} color={this.props.color || UColor.fontColor} size={'large'} style={styles.load_progress} />
-              <Text style={[styles.load_text, this.props.textStyle]}>{this.state.text}</Text>
+              <Text style={[styles.load_text,{color: UColor.fontColor}, this.props.textStyle]}>{this.state.text}</Text>
           </View>}
 
           {this.state.loadingDialogFlag==DailogShow &&
             <TouchableWithoutFeedback>
-              <View style={styles.backgroundOverlay}>
+              <View style={[styles.backgroundOverlay,{backgroundColor: UColor.mask}]}>
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null}>
-                  <View style={[styles.modalContainer,styles.modalContainerPadding]}>
+                  <View style={[styles.modalContainer,styles.modalContainerPadding,{backgroundColor:UColor.btnColor}]}>
                     <TouchableWithoutFeedback>
                       <View>
                         <View style={styles.titleContainer}>
-                            <Text style={[material.title,{color:UColor.mainColor}]}>{this.state.title}</Text>
+                            <Text style={[material.title,{color:UColor.startup}]}>{this.state.title}</Text>
                         </View>
                         <View style={[styles.contentContainer,styles.contentContainerPadding]}>
                           {
@@ -187,20 +187,20 @@ export class LoadingDialog extends React.Component {
                           {this.state.disLabel?(
                             <TouchableHighlight
                               testID="dialog-cancel-button"
-                              style={styles.disactionContainer}
+                              style={[styles.disactionContainer,{backgroundColor: UColor.showy}]}
                               underlayColor={UColor.arrow}
                               onPress={()=>{this.setState({modalVisible:false})}}>
-                              <Text style={[material.button, { color: UColor.fontColor }]}>{this.state.disLabel}</Text>
+                              <Text style={[material.button, { color: UColor.btnColor }]}>{this.state.disLabel}</Text>
                             </TouchableHighlight>
                           ):null
                         }
                         {this.state.okHandler?(
                             <TouchableHighlight
                               testID="dialog-ok-button"
-                              style={styles.okactionContainer}
+                              style={[styles.okactionContainer,{backgroundColor: UColor.tintColor}]}
                               underlayColor={UColor.arrow}
                               onPress={this.state.okHandler}>
-                              <Text style={[material.button, { color: UColor.fontColor }]}>{this.state.okLable}</Text>
+                              <Text style={[material.button, { color: UColor.btnColor }]}>{this.state.okLable}</Text>
                             </TouchableHighlight>
                           ):null
                         }
@@ -227,7 +227,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: UColor.mask,
   },
   modalContainer: {
     marginHorizontal: 10,
@@ -237,7 +236,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     elevation: 24,
     overflow: 'hidden',
-    backgroundColor:UColor.fontColor,
     borderRadius: 5,
   },
   modalContainerPadding: {
@@ -281,7 +279,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: UColor.showy,
     borderRadius: 3,
   },
   okactionContainer: {
@@ -291,7 +288,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: UColor.tintColor,
     borderRadius: 3,
   },
 
@@ -299,7 +295,6 @@ const styles = StyleSheet.create({
 load_box: {
     width: 100,
     height: 100,
-    backgroundColor: UColor.blackColor,
     alignItems: 'center',
     marginLeft: ScreenWidth / 2 - 50,
     marginTop: ScreenHeight / 2 - 50,
@@ -312,7 +307,6 @@ load_progress: {
 },
 load_text: {
     marginTop: 70,
-    color: UColor.fontColor,
 },
 
 

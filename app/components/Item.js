@@ -59,9 +59,9 @@ export default class Item extends Component {
     font = font||"Ionicons"
  
     return (
-      <View style={[styles.listItem,{marginTop: first?ScreenUtil.autoheight(15):0}]}>
+      <View style={[styles.listItem,{backgroundColor: UColor.mainColor,marginTop: first?ScreenUtil.autoheight(15):0}]}>
         {icon?(<Icon name={icon} size={iconSize||ScreenUtil.setSpText(20)} style={{width: ScreenUtil.autowidth(22), marginRight:ScreenUtil.autowidth(5), textAlign:"center"}} color={color || UColor.blueDeep} />):null}
-        <View style={[styles.listInfo, {borderTopWidth: !first?0.5:0}]}>
+        <View style={[styles.listInfo, {borderTopColor: UColor.secdColor,borderTopWidth: !first?0.5:0}]}>
           {avatar?(<Image source={avatar} style={{width: ScreenUtil.autowidth(28), height: ScreenUtil.autowidth(28), resizeMode: "cover", overflow:"hidden",marginRight:ScreenUtil.autowidth(10),}}/>):null}
           <View style={{flex: 1}}><Text style={{color:UColor.fontColor, fontSize:ScreenUtil.autowidth(16)}}>{name}</Text></View>
           <View style={styles.listInfoRight}>
@@ -93,7 +93,6 @@ Item.Button = ItemButton
 const styles = StyleSheet.create({
   listItem: {
     height: itemHeight,
-    backgroundColor: UColor.mainColor,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -111,7 +110,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderTopColor: UColor.secdColor
   },
   listInfoRight: {
     flexDirection: "row",
