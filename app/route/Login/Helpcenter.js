@@ -4,6 +4,7 @@ import UImage from "../../utils/Img";
 import UColor from '../../utils/Colors'
 import Item from '../../components/Item'
 import ScreenUtil from '../../utils/ScreenUtil'
+import Header from '../../components/Header'
 import { EasyShowLD } from "../../components/EasyShow"
 import BaseComponent from "../../components/BaseComponent";
 
@@ -11,13 +12,9 @@ class Helpcenter extends BaseComponent {
 
   static navigationOptions = {
     title: '帮助中心',
-    headerStyle: {
-      paddingTop: ScreenUtil.autoheight(20),
-      backgroundColor: UColor.mainColor,
-      borderBottomWidth:0,
-    },
+    header:null, 
   };
-
+ 
   constructor(props) {
     super(props);
     this.config = [
@@ -77,28 +74,33 @@ class Helpcenter extends BaseComponent {
   }
 
   render() {
-    return <View style={styles.container}>
-        <View style={styles.touchableout}>
+    return <View style={[styles.container,{backgroundColor: UColor.secdColor}]}>
+        <Header {...this.props} onPressLeft={true} title="帮助中心" />
+        <View style={[styles.touchableout,{paddingTop: ScreenUtil.autoheight(10),marginBottom: ScreenUtil.autoheight(1)}]}>
           <TouchableHighlight onPress={this.goPage.bind(this, 'commonproblem')} style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
-            <View style={styles.listItem} borderColor={UColor.arrow}>
-              <Text style={styles.fontColortext}>EOS常见问题？</Text>
+            <View style={[styles.listItem,{backgroundColor: UColor.mainColor,marginRight: 0.5,}]} borderColor={UColor.arrow}>
+              <Image source={UImage.commonwt} style={styles.problem}/>
+              <Text style={[styles.fontColortext,{color:UColor.fontColor}]}>EOS常见问题？</Text>
             </View>
           </TouchableHighlight>
           <TouchableHighlight onPress={this.goPage.bind(this, 'NoviceMustRead')} style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
-            <View style={styles.listItem} borderColor={UColor.arrow}>
-              <Text style={styles.fontColortext}>新手必读？</Text>
+            <View style={[styles.listItem,{backgroundColor: UColor.mainColor,marginLeft: 0.5,}]} borderColor={UColor.arrow}>
+              <Image source={UImage.mustread} style={styles.problem}/>
+              <Text style={[styles.fontColortext,{color:UColor.fontColor}]}>新手必读？</Text>
             </View>
           </TouchableHighlight>
         </View>
         <View style={styles.touchableout}>
           <TouchableHighlight onPress={this.goPage.bind(this, 'Troubleshooting')}  style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
-            <View style={styles.listItem} borderColor={UColor.arrow}>
-              <Text style={styles.fontColortext} >疑难解答？</Text>
+            <View style={[styles.listItem,{backgroundColor: UColor.mainColor,marginRight: 0.5,}]} borderColor={UColor.arrow}>
+              <Image source={UImage.difficult} style={styles.problem}/>
+              <Text style={[styles.fontColortext,{color:UColor.fontColor}]}>疑难解答？</Text>
             </View>
           </TouchableHighlight>
           <TouchableHighlight onPress={this.goPage.bind(this, 'pf')} style={styles.touchable} activeOpacity={0.5} underlayColor={UColor.secdColor}>
-            <View style={styles.listItem} borderColor={UColor.tintColor}>
-              <Text style={styles.tintColortext}  >问题反馈</Text>
+            <View style={[styles.listItem,{backgroundColor: UColor.mainColor,marginLeft: 0.5,}]} borderColor={UColor.tintColor}>
+              <Image source={UImage.feedback} style={styles.problem}/>
+              <Text style={[styles.tintColortext,{color:UColor.fontColor}]}>问题反馈</Text>
             </View>
           </TouchableHighlight>
         </View>
@@ -107,7 +109,7 @@ class Helpcenter extends BaseComponent {
         </View>
         <View style={styles.logout}>
             <Image source={UImage.bottom_log} style={styles.logimg}/>
-            <Text style={styles.logtext}>EosToken 专注柚子生态</Text>
+            <Text style={[styles.logtext,{color: UColor.arrow}]}>EosToken 专注柚子生态</Text>
         </View>
     </View>
   }
@@ -117,33 +119,30 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       flexDirection: 'column',
-      backgroundColor: UColor.secdColor,
     },
     touchableout: {
       flexDirection: "row",
-      paddingTop: ScreenUtil.autoheight(15),
-      paddingHorizontal: ScreenUtil.autowidth(5),
     },
     touchable:{
-      flex: 1, 
-      marginHorizontal: ScreenUtil.autowidth(3), 
+      flex: 1,  
+    },
+    problem: {
+      width: ScreenUtil.autowidth(30), 
+      height: ScreenUtil.autowidth(30)
     },
     fontColortext: {
-      fontSize: ScreenUtil.setSpText(15),
-      color:UColor.fontColor,
+      paddingTop: ScreenUtil.autoheight(5),
+      fontSize: ScreenUtil.setSpText(12),
     },
     tintColortext: {
-      fontSize: ScreenUtil.setSpText(15),
-      color:UColor.tintColor
+      paddingTop: ScreenUtil.autoheight(5),
+      fontSize: ScreenUtil.setSpText(12),
     },
     listItem: {
       height: ScreenUtil.autoheight(70),
-      backgroundColor: UColor.mainColor,
-      flexDirection: "row",
+      flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
-      borderWidth: 1,
-      borderRadius: 5, 
     },
     logout:{
       flex: 1,
@@ -157,7 +156,6 @@ const styles = StyleSheet.create({
     },
     logtext: {
       fontSize: ScreenUtil.setSpText(14),
-      color: UColor.arrow,
       lineHeight: ScreenUtil.autoheight(30),
     }
 });
