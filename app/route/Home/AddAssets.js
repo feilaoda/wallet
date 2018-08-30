@@ -48,7 +48,13 @@ class AddAssets extends BaseComponent {
       this.props.dispatch({ type: 'assets/list', payload: { page: 1}, callback: () => {
         EasyShowLD.loadingClose();
       } });
-      this.props.dispatch({ type: 'assets/myAssetInfo'});
+
+      this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" }, callback: () => {
+        if(this.props.defaultWallet && this.props.defaultWallet.name){
+          this.props.dispatch({ type: 'assets/myAssetInfo', payload: { accountName: this.props.defaultWallet.name}});
+        }
+      }});
+
       DeviceEventEmitter.addListener('updateAssetList', (data) => {
         this.props.dispatch({ type: 'assets/list', payload: { page: 1} });
       });
@@ -99,7 +105,7 @@ class AddAssets extends BaseComponent {
 
     try {
       EasyShowLD.loadingShow();
-      this.props.dispatch({ type: 'assets/addMyAsset', payload: {asset: asset, value: value}, callback: (data) => {
+      this.props.dispatch({ type: 'assets/addMyAsset', payload: {accountName: this.props.defaultWallet.account, asset: asset, value: value}, callback: (data) => {
         this.setState({isAdding: false});
         EasyShowLD.loadingClose();
       } });

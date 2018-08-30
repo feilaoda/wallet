@@ -155,7 +155,7 @@ class AssetSearch extends BaseComponent {
       return;
     }
     // EasyShowLD.loadingShow();
-    this.props.dispatch({ type: 'assets/addMyAsset', payload: {asset: asset, value: value}, callback: (data) => {
+    this.props.dispatch({ type: 'assets/addMyAsset', payload: {accountName: this.props.defaultWallet.account, asset: asset, value: value}, callback: (data) => {
       // EasyShowLD.loadingClose();
     } });
   }

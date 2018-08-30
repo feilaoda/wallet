@@ -136,12 +136,13 @@ class Home extends React.Component {
     this.listener.remove();  
   }
 
-  getMyAssetsInfo(){
+  getMyAssetsInfo(getAssetsInfoCallback){
     if (this.props.defaultWallet == null || this.props.defaultWallet.name == null || !this.props.defaultWallet.isactived || !this.props.defaultWallet.hasOwnProperty('isactived')) {
       return;
     }
-    this.props.dispatch({ type: 'assets/myAssetInfo', payload: { page: 1, isInit: true}, callback: (myAssets) => {
+    this.props.dispatch({ type: 'assets/myAssetInfo', payload: { page: 1, isInit: true, accountName: this.props.defaultWallet.name}, callback: (myAssets) => {
       this.props.dispatch({ type: 'assets/fetchMyAssetsFromNet', payload: { accountName: this.props.defaultWallet.name}, callback: () => {
+        if(getAssetsInfoCallback) getAssetsInfoCallback();
         this.getAssetBalance();    
       }});
     }});
@@ -385,11 +386,14 @@ class Home extends React.Component {
       try {
         this.setState({assetRefreshing: true});
         this.props.dispatch({ type: 'wallet/changeWallet', payload: { data }, callback: () => {
-          this.props.dispatch({ type: 'assets/clearBalance', payload: {}, callback: () => {
-            this.props.dispatch({ type: 'assets/getBalance', payload: { accountName: this.props.defaultWallet.name, myAssets: this.props.myAssets}, callback: () => {
-              this.setState({assetRefreshing: false});
-            }});
-          }});
+          // this.props.dispatch({ type: 'assets/clearBalance', payload: {accountName: this.props.defaultWallet.name}, callback: () => {
+          //   this.props.dispatch({ type: 'assets/getBalance', payload: { accountName: this.props.defaultWallet.name, myAssets: this.props.myAssets}, callback: () => {
+          //     this.setState({assetRefreshing: false});
+          //   }});
+          // }});
+          this.getMyAssetsInfo(() => {
+            this.setState({assetRefreshing: false});
+          });
         }});
         this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" } });
       } catch (error) {

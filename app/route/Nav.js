@@ -412,9 +412,12 @@ class Route extends React.Component {
         }
       }
       });
-    } });
 
-    this.props.dispatch({ type: 'assets/myAssetInfo', payload: { page: 1}, callback: (myAssets) => {}});
+      if(this.props.defaultWallet && this.props.defaultWallet.name){
+        this.props.dispatch({ type: 'assets/myAssetInfo', payload: { page: 1, accountName: this.props.defaultWallet.name}, callback: (myAssets) => {}});
+      }
+
+    } });
 
   }
  
