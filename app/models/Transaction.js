@@ -231,118 +231,170 @@ export default {
         //ET交易所接口
         //交易列表
         *getETList({payload,callback},{call,put}) {
+            var etListInCache = yield call(store.get, "etList");
             try{
                 const resp = yield call(Request.request, getETList, 'get');
                 //  alert('getETList: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETList', payload: { etlist:resp.data } });
-                    
+                    yield call(store.save, "etList", resp.data);
                 }else{
                     EasyToast.show(resp.msg);
+                    if(etListInCache){
+                        yield put({ type: 'updateETList', payload: { etlist:etListInCache } });
+                    }
                 }
-                if (callback) callback(resp);                
+                if (callback) callback(resp); 
+
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if(etListInCache){
+                    yield put({ type: 'updateETList', payload: { etlist:etListInCache } });
+                }
                 if (callback) callback({ code: 500, msg: "网络异常" });                
             }
           },
         //获取币信息
         *getETInfo({payload,callback},{call,put}) {
+            var etInfoInCache = yield call(store.get, "etInfo_"+payload.code);
             try{
                 const resp = yield call(Request.request, getETInfo + payload.code, 'get');
                 // alert('getETInfo: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETInfo', payload: { etinfo:resp.data } });
-                    
+                    yield call(store.save, "etInfo_"+payload.code, resp.data);
                 }else{
                     EasyToast.show(resp.msg);
+                    if(etInfoInCache){
+                        yield put({ type: 'updateETInfo', payload: { etinfo:etInfoInCache } });
+                    }
                 }
                 if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if(etInfoInCache){
+                    yield put({ type: 'updateETInfo', payload: { etinfo:etInfoInCache } });
+                }
                 if (callback) callback({ code: 500, msg: "网络异常" });                
             }
         },
         //et时分图
         *getETPriceLine({payload,callback},{call,put}) {
+            var etLineInCache = yield call(store.get, "etLine_"+payload.code+"_"+payload.type);
             try{
                 const resp = yield call(Request.request, getETPriceLine + payload.code + '/' + payload.type, 'post', payload);
                 // alert("getETPriceLine : " + JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETPriceLine', payload: { data: resp.data, ...payload } });
-                    
+                    yield call(store.save, "etLine_"+payload.code+"_"+payload.type, resp.data);
                 }else{
                     EasyToast.show(resp.msg);
+                    if(etLineInCache){
+                        yield put({ type: 'updateETPriceLine', payload: { data: etLineInCache, ...payload } });
+                    }
                 }
                 if (callback) callback(resp);
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if(etLineInCache){
+                    yield put({ type: 'updateETPriceLine', payload: { data: etLineInCache, ...payload } });
+                }
+                if (callback) callback({ code: 500, msg: "网络异常" });                
             }
         },
         //et K线图
         *getETKLine({ payload, callback }, { call, put }) {
+            var etKLineInCache = yield call(store.get, "etKLine_"+payload.code+"_"+payload.dateType);
             try{
                 const resp = yield call(Request.request, getETKLine, 'post', payload);
                 // alert('getETKLine: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
-                    // yield put({ type: 'updateRamPriceLine', payload: { data: resp.data, ...payload } });
+                    yield put({ type: 'updateETKLine', payload: { etKLine: resp.data, ...payload } });
+                    yield call(store.save, "etKLine_"+payload.code+"_"+payload.dateType, resp.data);
                 }else{
                     EasyToast.show(resp.msg);
+                    if(etKLineInCache){
+                        yield put({ type: 'updateETKLine', payload: { etKLine: etKLineInCache, ...payload } });
+                    }
                 }
                 if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if(etKLineInCache){
+                    yield put({ type: 'updateETKLine', payload: { etKLine: etKLineInCache, ...payload } });
+                }
                 if (callback) callback({ code: 500, msg: "网络异常" });                
             }
         },
         //ET获取最新交易单
         *getETTradeLog({ payload, callback }, { call, put }) {
+            var etTradeLogInCache =yield call(store.get, "etTradeLog_"+payload.code);
             try{
                 const resp = yield call(Request.request, getETTradeLog + payload.code, 'post', payload);
                 // alert('getETTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETTradeLog', payload: { etTradeLog:resp.data } });
-                    
+                    yield call(store.save, "etTradeLog_"+payload.code, resp.data);
                 }else{
                     EasyToast.show(resp.msg);
+                    if(etTradeLogInCache){
+                        yield put({ type: 'updateETTradeLog', payload: { etTradeLog:etTradeLogInCache } });
+                    }
                 }
                 if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if(etTradeLogInCache){
+                    yield put({ type: 'updateETTradeLog', payload: { etTradeLog:etTradeLogInCache } });
+                }
                 if (callback) callback({ code: 500, msg: "网络异常" });                
             }
         },
         //ET获取大单交易单
         *getETBigTradeLog({ payload, callback }, { call, put }) {
+            var etBigTradeLogInCache = yield call(store.get, "etBigTradeLog_" + payload.code);
             try{
                 const resp = yield call(Request.request, getETBigTradeLog + payload.code, 'post', payload);
                 //  alert('getETBigTradeLog: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETBigTradeLog', payload: { etBigTradeLog:resp.data } });
-                    
+                    yield call(store.save, "etBigTradeLog_" + payload.code, resp.data);
                 }else{
                     EasyToast.show(resp.msg);
+                    if(etBigTradeLogInCache){
+                        yield put({ type: 'updateETBigTradeLog', payload: { etBigTradeLog: etBigTradeLogInCache } });
+                    }
                 }
                 if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if(etBigTradeLogInCache){
+                    yield put({ type: 'updateETBigTradeLog', payload: { etBigTradeLog: etBigTradeLogInCache } });
+                }
                 if (callback) callback({ code: 500, msg: "网络异常" });                
             }
         },
         //ET 根据账号分页获取用户最新交易单
         *getETTradeLogByAccount({ payload, callback }, { call, put }) {
+            var etTradeLogByAccountInCache = yield call(store.get, "etTradeLogByAccount" );
             try{
                 const resp = yield call(Request.request, getETTradeLogByAccount, 'post', payload);
                 // alert('getETTradeLogByAccount: '+JSON.stringify(resp));
                 if(resp.code=='0'){               
                     yield put({ type: 'updateETTradeLog', payload: { etTradeLog:resp.data } });
-                    
+                    yield call(store.save, "etTradeLogByAccount", resp.data);
                 }else{
                     EasyToast.show(resp.msg);
+                    if(etTradeLogByAccountInCache){
+                        yield put({ type: 'updateETTradeLog', payload: { etTradeLog:etTradeLogByAccountInCache } });
+                    }
                 }
                 if (callback) callback(resp);                
             } catch (error) {
                 EasyToast.show('网络繁忙,请稍后!');
+                if(etTradeLogByAccountInCache){
+                    yield put({ type: 'updateETTradeLog', payload: { etTradeLog:etTradeLogByAccountInCache } });
+                }
                 if (callback) callback({ code: 500, msg: "网络异常" });                
             }
         },
@@ -418,6 +470,9 @@ export default {
         updateETPriceLine(state, action) {      
             let etLineDatas = combineET(action.payload.data);
             return { ...state, etLineDatas };
+        },
+        updateETKLine(state, action) {      
+            return { ...state, ...action.payload };
         },
         updateETTradeLog(state, action) {
             return { ...state, ...action.payload };

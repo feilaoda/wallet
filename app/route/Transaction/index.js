@@ -181,14 +181,14 @@ class Transaction extends BaseComponent {
    getETTradeLog(){
     this.props.dispatch({type: 'transaction/getETTradeLog',payload: {code:this.state.selectcode}, callback: (resp) => {
         try {
-            if(resp.code != '0' || ((resp.code == '0') && (this.props.etTradeLog.length == 0))){
+            if(this.props.etTradeLog && this.props.etTradeLog.length > 0){
                 this.setState({
-                  newetTradeLog: [],
-                });
+                    newetTradeLog: this.props.etTradeLog,
+                  });
               }else{
                 this.setState({
-                  newetTradeLog: resp.data,
-                });
+                    newetTradeLog: [],
+                  });
               }
         } catch (error) {
 
@@ -226,48 +226,46 @@ class Transaction extends BaseComponent {
         this.props.dispatch({type: 'transaction/getETKLine',payload: {code:this.state.selectcode,pageSize: "180", dateType: dateType}, callback: (resp) => {
             try {
                 this.setState({logRefreshing: false});
-                if(resp.code == '0'){
-                  if(resp.data && resp.data.length > 0){
-                    // // 数据意义：日期(record_date),开盘(open)，收盘(close)，最低(min)，最高(max),交易量(volum)
-                    // var data = splitData([
-                    //     ['2013/1/24', 2320.26,2320.26,2287.3,2362.94,117990000],
-                    var  arrayObj = new Array();
-                    for(var i = 0;i < resp.data.length;i++){
-                        var elementArray = new Array("",0,0,0,0,0);
-                        var element = resp.data[i];
-                        if(element.record_date){
-                            var timezone;
-                            try {
-                                // timezone = moment(element.record_date).add(8,'hours').format('MM-DD HH:mm');
-                                timezone = moment(element.record_date).format('MM-DD HH:mm');
-                            } catch (error) {
-                                timezone = "";
-                            }
-                            elementArray[0] = timezone;
-                        }   
-                        if(element.open) {
-                            elementArray[1] = element.open;
+                if(this.props.etKLine && this.props.etKLine.length > 0){
+                // // 数据意义：日期(record_date),开盘(open)，收盘(close)，最低(min)，最高(max),交易量(volum)
+                // var data = splitData([
+                //     ['2013/1/24', 2320.26,2320.26,2287.3,2362.94,117990000],
+                var  arrayObj = new Array();
+                for(var i = 0;i < this.props.etKLine.length;i++){
+                    var elementArray = new Array("",0,0,0,0,0);
+                    var element = this.props.etKLine[i];
+                    if(element.record_date){
+                        var timezone;
+                        try {
+                            // timezone = moment(element.record_date).add(8,'hours').format('MM-DD HH:mm');
+                            timezone = moment(element.record_date).format('MM-DD HH:mm');
+                        } catch (error) {
+                            timezone = "";
                         }
-                        if(element.close){
-                            elementArray[2] = element.close;
-                        }
-                        if(element.min){
-                            elementArray[3] = element.min;
-                        }
-                        if(element.max){
-                            elementArray[4] = element.max;
-                        }
-                        if(element.volum){
-                            elementArray[5] = element.volum;
-                        }
-                        arrayObj[i] = elementArray;
+                        elementArray[0] = timezone;
+                    }   
+                    if(element.open) {
+                        elementArray[1] = element.open;
                     }
-                    var constructdata = splitData(arrayObj);
-                    var echartsoption = combineETKLine(constructdata);
-                    this.setState({ dataKLine : echartsoption});
-                  }else{
-                    this.setState({ dataKLine : {}});
-                  }
+                    if(element.close){
+                        elementArray[2] = element.close;
+                    }
+                    if(element.min){
+                        elementArray[3] = element.min;
+                    }
+                    if(element.max){
+                        elementArray[4] = element.max;
+                    }
+                    if(element.volum){
+                        elementArray[5] = element.volum;
+                    }
+                    arrayObj[i] = elementArray;
+                }
+                var constructdata = splitData(arrayObj);
+                var echartsoption = combineETKLine(constructdata);
+                this.setState({ dataKLine : echartsoption});
+                }else{
+                this.setState({ dataKLine : {}});
                 }
             } catch (error) {
                 this.setState({ dataKLine : {}});
@@ -369,16 +367,16 @@ class Transaction extends BaseComponent {
             }
             this.props.dispatch({type: 'transaction/getETTradeLogByAccount',payload: {code:this.state.selectcode,account_name: this.props.defaultWallet.account, last_id: this.state.logId}, callback: (resp) => {
                 try {
-                    if(resp.code != '0' || ((resp.code == '0') && (this.props.etTradeLog.length == 0))){
+                    if(this.props.etTradeLog && this.props.etTradeLog.length > 0){
                         this.setState({
-                          newetTradeLog: [],
-                          logRefreshing: false,
-                        });
+                            newetTradeLog: this.props.etTradeLog,
+                            logRefreshing: false
+                          });
                       }else{
                         this.setState({
-                          newetTradeLog: resp.data,
-                          logRefreshing: false
-                        });
+                            newetTradeLog: [],
+                            logRefreshing: false,
+                          });
                       }
                 } catch (error) {
                     this.setState({
@@ -393,16 +391,16 @@ class Transaction extends BaseComponent {
         }
         this.props.dispatch({type: 'transaction/getETTradeLog',payload: {code:this.state.selectcode}, callback: (resp) => {
             try {
-                if(resp.code != '0' || ((resp.code == '0') && (this.props.etTradeLog.length == 0))){
+                if(this.props.etTradeLog && this.props.etTradeLog.length > 0){
                     this.setState({
-                      newetTradeLog: [],
-                      logRefreshing: false,
-                    });
+                        newetTradeLog: this.props.etTradeLog,
+                        logRefreshing: false
+                      });
                   }else{
                     this.setState({
-                      newetTradeLog: resp.data,
-                      logRefreshing: false
-                    });
+                        newetTradeLog: [],
+                        logRefreshing: false,
+                      });
                   }
             } catch (error) {
                 this.setState({
