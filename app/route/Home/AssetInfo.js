@@ -155,6 +155,8 @@ class AssetInfo extends BaseComponent {
           return;
         }
     
+        this.getBalance();
+        
         if(this.state.logRefreshing){
             return;
         }
